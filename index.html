@@ -1,0 +1,1354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTM Alpha MCP Server | Shashwat Ghosh - Best AI GTM & Fractional CMO in India, APAC and US</title>
+    <meta name="description" content="Best AI GTM and Fractional CMO in India, APAC and US region. Professional MCP server by Shashwat Ghosh, ranked #10 GTM consultant in India and #52 worldwide. EPIC framework-powered AI consulting for B2B tech and ITES companies.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-navy: #0B1426;
+            --primary-blue: #1B365D;
+            --accent-coral: #FF6B5A;
+            --accent-gold: #F4B942;
+            --text-primary: #0B1426;
+            --text-secondary: #64748B;
+            --text-light: #94A3B8;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8FAFC;
+            --bg-accent: #F1F5F9;
+            --border-light: #E2E8F0;
+            --gradient-primary: linear-gradient(135deg, #1B365D 0%, #0B1426 100%);
+            --gradient-accent: linear-gradient(135deg, #FF6B5A 0%, #F4B942 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            font-feature-settings: 'kern' 1;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header - FIXED */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border-light);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* FIXED: Logo with proper Greek alpha positioning */
+        .logo {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: white;
+            letter-spacing: 0.5px;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .logo-gtm {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: -2px;
+        }
+
+        .logo-alpha {
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .brand-tagline {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-coral);
+            transition: width 0.2s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* FIXED: GTMExpert.com button - now visible */
+        .cta-nav {
+            background: var(--accent-coral) !important;
+            color: white !important;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .cta-nav:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            background: #e55a4a !important;
+        }
+
+        .cta-nav::after {
+            display: none !important;
+        }
+
+        /* Status Banner */
+        .status-banner {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            padding: 12px 0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 88px;
+        }
+
+        .status-icon {
+            width: 8px;
+            height: 8px;
+            background: #34D399;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 60px 0 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-badge .badge-icon {
+            width: 16px;
+            height: 16px;
+            background: var(--accent-coral);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 40px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background: var(--accent-coral);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(255, 107, 90, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: var(--bg-secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--accent-coral);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-coral);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-accent);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient-accent);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 400;
+            color: white;
+            margin-bottom: 24px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .feature-card h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* EPIC Framework Section */
+        .epic-framework {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .epic-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .epic-item {
+            background: var(--bg-secondary);
+            padding: 32px 24px;
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .epic-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-coral);
+        }
+
+        .epic-letter {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 800;
+            margin: 0 auto 20px;
+        }
+
+        .epic-item h4 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .epic-item p {
+            color: var(--text-secondary);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Integration Section */
+        .integration {
+            padding: 80px 0;
+            background: var(--primary-navy);
+            color: white;
+        }
+
+        .integration-tabs {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tab-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-coral);
+            color: white;
+            border-color: var(--accent-coral);
+        }
+
+        .tab-content {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .tab-panel h3 {
+            font-size: 28px;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .integration-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .file-location {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #FF5F57; }
+        .dot-yellow { background: #FFBD2E; }
+        .dot-green { background: #28CA42; }
+
+        .code-block {
+            background: transparent;
+            color: #E2E8F0;
+            padding: 24px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .code-block .key {
+            color: #F472B6;
+        }
+
+        .code-block .string {
+            color: #34D399;
+        }
+
+        .code-block .bracket {
+            color: #60A5FA;
+        }
+
+        /* About Section */
+        .about {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .about-text {
+            order: 2;
+        }
+
+        .about-image {
+            order: 1;
+        }
+
+        .profile-card {
+            background: var(--bg-secondary);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+            position: relative;
+            border: 1px solid var(--border-light);
+        }
+
+        .profile-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 24px;
+            border: 4px solid var(--accent-gold);
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .profile-title {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .profile-ranking {
+            background: var(--gradient-accent);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 20px 16px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-navy);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .footer-section h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--accent-coral);
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--accent-coral);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 32px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .epic-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 16px;
+            }
+
+            .integration-content,
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .about-text {
+                order: 1;
+            }
+
+            .about-image {
+                order: 2;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .tab-buttons {
+                gap: 8px;
+            }
+
+            .tab-btn {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+
+            .profile-avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .profile-name {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                gap: 12px;
+            }
+
+            .stat-item {
+                padding: 16px 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .epic-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                text-align: center;
+            }
+
+            .tab-buttons {
+                grid-template-columns: repeat(2, 1fr);
+                display: grid;
+            }
+
+            .integration-content {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-text">
+                        <div class="logo-gtm">GTM</div>
+                        <div class="logo-alpha">α</div>
+                    </div>
+                </div>
+                <div class="brand-text">
+                    <div class="brand-name">GTM Alpha</div>
+                    <div class="brand-tagline">MCP Server</div>
+                </div>
+            </div>
+            <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#epic">EPIC Framework</a></li>
+    <li><a href="#integration">Integration</a></li>
+    <li><a href="pricing.html">Pricing</a></li>
+    <li><a href="#consultation" id="consultation-tab">Consultation</a></li>
+    <li><a href="#about">About Shashwat</a></li>
+    <li><a href="https://gtmexpert.com/" class="cta-nav">GTMExpert.com</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="status-banner">
+        <div class="status-icon"></div>
+        <span>🚀 MCP Server Active & Ready | API Endpoints Live | Multi-LLM Integration Available</span>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <div class="badge-icon">★</div>
+                    <span>Ranked #10 Product Marketing Creator in India | #52 Worldwide</span>
+                </div>
+                <h1>Professional GTM Strategy<br>MCP Server</h1>
+                <p class="hero-subtitle">
+                    Best AI GTM and Fractional CMO in India, APAC and US region. 
+                    Powered by Shashwat Ghosh's proprietary EPIC framework. 
+                    Transform your go-to-market strategy with AI-enhanced consulting for B2B tech and ITES companies.
+                </p>
+                <div class="hero-cta">
+                    <a href="https://calendly.com/shashwat-gtmhelix/45min" class="btn-primary">
+                        📅 Book GTM Consultation
+                        <span>→</span>
+                    </a>
+                    <a href="#access" class="btn-secondary">
+                        View Documentation
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Professional Consulting</div>
+                <h2 class="section-title">Enterprise-Grade GTM Intelligence</h2>
+                <p class="section-subtitle">
+                    Access proven methodologies from scaling marketing across fintech, logistics, and SaaS verticals, 
+                    now available through advanced AI integration.
+                </p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⊙</div>
+                    <h3>EPIC Framework Analysis</h3>
+                    <p>Comprehensive go-to-market strategy using Shashwat's proprietary EPIC methodology: Ecosystem & ABM, Product-Led Growth, Inbound & Outbound Demand Generation, and Community-Led Planning.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">⬢</div>
+                    <h3>Market Intelligence & Research</h3>
+                    <p>Deep market analysis covering India, APAC, MEA, and US markets with competitive positioning, market sizing, and opportunity identification based on real consulting experience.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">◈</div>
+                    <h3>AI-Powered Strategic Insights</h3>
+                    <p>Advanced AI integration that combines machine efficiency with human strategic thinking, delivering data-driven recommendations for B2B marketing and product positioning.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">▴</div>
+                    <h3>Revenue Optimization</h3>
+                    <p>Proven methodologies for scaling marketing across fintech, logistics, and SaaS verticals with focus on qualified lead generation and sales cycle optimization.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">◉</div>
+                    <h3>Fractional CMO Insights</h3>
+                    <p>Access to fractional CMO and marketing leadership strategies with actionable 30-60-90 day strategic roadmaps, success metrics, KPIs, and milestone tracking.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">◎</div>
+                    <h3>Regional Expertise</h3>
+                    <p>Specialized knowledge across major global markets with cultural nuances and localized GTM strategies for India, APAC, MEA, US, and UK regions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- EPIC Framework Section -->
+    <section class="epic-framework" id="epic">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Proprietary Methodology</div>
+                <h2 class="section-title">The EPIC Framework</h2>
+                <p class="section-subtitle">
+                    A dynamic operating system approach to go-to-market strategy, not static planning. 
+                    Proven across 100+ B2B tech and ITES implementations with measurable results.
+                </p>
+            </div>
+            
+            <div class="epic-grid">
+                <div class="epic-item">
+                    <div class="epic-letter">E</div>
+                    <h4>Ecosystem & ABM</h4>
+                    <p>Map market dynamics, stakeholder relationships, and Account-Based Marketing opportunities for sustainable competitive advantage</p>
+                </div>
+                
+                <div class="epic-item">
+                    <div class="epic-letter">P</div>
+                    <h4>Product-Led Growth</h4>
+                    <p>Engineering product as GTM engine with PLG + sales synergy and user experience optimization for conversion</p>
+                </div>
+                
+                <div class="epic-item">
+                    <div class="epic-letter">I</div>
+                    <h4>Inbound & Outbound</h4>
+                    <p>Integrated demand generation through content marketing, hyper-personalized outreach, and mental velocity optimization</p>
+                </div>
+                
+                <div class="epic-item">
+                    <div class="epic-letter">C</div>
+                    <h4>Community-Led Planning</h4>
+                    <p>Build sustainable growth through community-driven strategies, thought leadership, and authentic relationship building</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integration Section -->
+    <section class="integration" id="integration">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Multi-LLM Integration</div>
+                <h2 class="section-title">Connect to Any AI Platform</h2>
+                <p class="section-subtitle">
+                    Choose your preferred AI platform and follow the integration guide to access GTM Alpha's professional consulting tools.
+                </p>
+            </div>
+            
+            <div class="integration-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="claude">Claude Desktop</button>
+                    <button class="tab-btn" data-tab="apify">Apify MCP</button>
+                    <button class="tab-btn" data-tab="openai">OpenAI GPT</button>
+                    <button class="tab-btn" data-tab="gemini">Google Gemini</button>
+                    <button class="tab-btn" data-tab="copilot">MS Copilot</button>
+                    <button class="tab-btn" data-tab="api">Direct API</button>
+                </div>
+                
+                <div class="tab-content">
+                    <!-- Claude Desktop Tab -->
+                    <div class="tab-panel active" id="claude">
+                        <div class="integration-content">
+                            <div class="integration-text">
+                                <h3>Claude Desktop Integration</h3>
+                                <p>Connect GTM Alpha to Claude Desktop for instant access to professional go-to-market consulting tools.</p>
+                                
+                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Configuration File Location:</h4>
+                                <div class="file-location">
+                                    ~/Library/Application Support/Claude/claude_desktop_config.json
+                                </div>
+                                
+                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Setup Instructions:</h4>
+                                <ol style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
+                                    <li>Open the configuration file in your text editor</li>
+                                    <li>Add the GTM Alpha server configuration</li>
+                                    <li>Save the file and restart Claude Desktop</li>
+                                    <li>Test with: "Analyze my GTM strategy using EPIC framework"</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <div class="code-dots">
+                                        <div class="code-dot dot-red"></div>
+                                        <div class="code-dot dot-yellow"></div>
+                                        <div class="code-dot dot-green"></div>
+                                    </div>
+                                    <span>claude_desktop_config.json</span>
+                                </div>
+                                <div class="code-block">
+<span class="bracket">{</span>
+  <span class="key">"mcpServers"</span>: <span class="bracket">{</span>
+    <span class="key">"gtm-alpha-server"</span>: <span class="bracket">{</span>
+      <span class="key">"command"</span>: <span class="string">"npx"</span>,
+      <span class="key">"args"</span>: <span class="bracket">[</span>
+        <span class="string">"mcp-remote@next"</span>,
+        <span class="string">"https://gtmalpha.netlify.app/mcp"</span>
+      <span class="bracket">]</span>
+    <span class="bracket">}</span>
+  <span class="bracket">}</span>
+<span class="bracket">}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Apify MCP Tab -->
+                    <div class="tab-panel" id="apify">
+                        <div class="integration-content">
+                            <div class="integration-text">
+                                <h3>Apify MCP Server (Official Implementation)</h3>
+                                <p>Connect to the official GTM Alpha Consultant via Apify's MCP server for the complete digital twin experience.</p>
+                                
+                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Real GTM Analysis:</h4>
+                                <ul style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
+                                    <li>Authentic EPIC framework analysis based on real content</li>
+                                    <li>Comprehensive HTML reports with actionable insights</li>
+                                    <li>Mental velocity optimization strategies</li>
+                                    <li>Industry-specific recommendations (fintech, logistics, SaaS)</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <div class="code-dots">
+                                        <div class="code-dot dot-red"></div>
+                                        <div class="code-dot dot-yellow"></div>
+                                        <div class="code-dot dot-green"></div>
+                                    </div>
+                                    <span>Apify MCP Configuration</span>
+                                </div>
+                                <div class="code-block">
+<span class="bracket">{</span>
+  <span class="key">"mcpServers"</span>: <span class="bracket">{</span>
+    <span class="key">"apify-gtm-alpha"</span>: <span class="bracket">{</span>
+      <span class="key">"command"</span>: <span class="string">"npx"</span>,
+      <span class="key">"args"</span>: <span class="bracket">[</span>
+        <span class="string">"mcp-remote"</span>,
+        <span class="string">"https://mcp.apify.com/sse?actors=shashghosh/gtm-alpha-consultant"</span>,
+        <span class="string">"--header"</span>,
+        <span class="string">"Authorization: Bearer YOUR_API_TOKEN"</span>
+      <span class="bracket">]</span>
+    <span class="bracket">}</span>
+  <span class="bracket">}</span>
+<span class="bracket">}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Other platform tabs -->
+                    <div class="tab-panel" id="openai">
+                        <h3>OpenAI GPT Integration</h3>
+                        <p>Access GTM Alpha tools through OpenAI's GPT models using custom actions or API integration.</p>
+                        <div class="file-location">
+                            API Endpoint: https://gtmalpha.netlify.app/api/gtm
+                        </div>
+                    </div>
+                    
+                    <div class="tab-panel" id="gemini">
+                        <h3>Google Gemini Integration</h3>
+                        <p>Connect GTM Alpha to Google Gemini through function calling and extensions.</p>
+                        <div class="file-location">
+                            Base URL: https://gtmalpha.netlify.app/api/gtm
+                        </div>
+                    </div>
+                    
+                    <div class="tab-panel" id="copilot">
+                        <h3>Microsoft Copilot Integration</h3>
+                        <p>Integrate GTM Alpha with Microsoft Copilot through plugins and API connections.</p>
+                        <div class="file-location">
+                            Plugin Manifest: https://gtmalpha.netlify.app/.well-known/ai-plugin.json
+                        </div>
+                    </div>
+                    
+                    <div class="tab-panel" id="api">
+                        <h3>Direct API Access</h3>
+                        <p>Direct REST API access for custom integrations and applications.</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
+                            <a href="/api/gtm" style="color: var(--accent-coral); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">📋 API Documentation</a>
+                            <a href="/openapi.yaml" style="color: var(--accent-coral); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">⬇️ OpenAPI Spec</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="https://calendly.com/shashwat-gtmhelix/45min" class="btn-primary">
+                    📅 Book GTM Consultation
+                    <span>→</span>
+                </a>
+                <div style="margin-top: 16px; color: rgba(255,255,255,0.8); font-size: 14px;">
+                    Or email: <a href="mailto:shashwat@hyperplays.in" style="color: var(--accent-coral); text-decoration: none;">shashwat@hyperplays.in</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Shashwat Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <div class="profile-card">
+                        <img src="https://imgproxy.gamma.app/resize/quality:80/resizing_type:fit/width:1200/https://cdn.gamma.app/rg8r15nxbcojjms/761e5999b83641fcbe1afb401f596dab/original/20231013_190227.jpg" alt="Shashwat Ghosh - GTM Alpha Consultant" class="profile-avatar">
+                        <div class="profile-name">Shashwat Ghosh</div>
+                        <div class="profile-title">GTM Alpha Consultant & Top Product Marketer</div>
+                        <div class="profile-ranking">#10 India | #52 Worldwide</div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">24+</div>
+                            <div class="stat-label">Years Enterprise B2B</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">8+</div>
+                            <div class="stat-label">Years Fractional</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100+</div>
+                            <div class="stat-label">GTM Strategies</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="about-text">
+                    <div class="section-badge">About the Consultant</div>
+                    <h2 class="section-title">Meet Shashwat Ghosh</h2>
+                    <p class="section-subtitle">
+                        Best AI GTM and Fractional CMO in India, APAC and US region. Ranked as the #10 Product Marketing Creator in India and #52 worldwide among LinkedIn creators, 
+                        Shashwat brings 24+ years of Enterprise B2B experience and 8+ years of fractional startup expertise to help tech and ITES companies achieve market dominance through data-driven strategies and AI-powered marketing.
+                    </p>
+                    
+                    <div style="margin-top: 40px;">
+                        <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 16px; color: var(--text-primary);">Proven Expertise</h3>
+                        <ul style="list-style: none; padding: 0; color: var(--text-secondary); line-height: 1.8;">
+                            <li style="margin-bottom: 8px;">✓ Creator of proprietary EPIC framework methodology</li>
+                            <li style="margin-bottom: 8px;">✓ B2B Marketing Professional of the Year - Fintech, 2021</li>
+                            <li style="margin-bottom: 8px;">✓ Mental velocity optimization and buyer psychology expert</li>
+                            <li style="margin-bottom: 8px;">✓ Cross-regional expertise (India/APAC/MEA/US/UK)</li>
+                            <li style="margin-bottom: 8px;">✓ AI-powered marketing and HyperPlays lead generation</li>
+                            <li style="margin-bottom: 8px;">✓ Specialized in fintech, logistics, and SaaS verticals</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="margin-top: 32px;">
+                        <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--text-primary);">Regional Coverage</h3>
+                        <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.6;">
+                            <strong>India:</strong> Bengaluru, Mumbai, Delhi NCR, Hyderabad, Chennai, Pune, Ahmedabad<br>
+                            <strong>International:</strong> Singapore, Dubai, US (California, Texas, New York), UK, Europe
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>GTM Alpha MCP Server</h3>
+                    <p>
+                        Best AI GTM and Fractional CMO in India, APAC and US region. Professional go-to-market strategy consulting powered by Shashwat Ghosh's 
+                        expertise and advanced AI integration for modern B2B tech and ITES businesses.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/shashwatghosh/" aria-label="LinkedIn">in</a>
+                        <a href="https://x.com/Shashwat_Ghosh" aria-label="Twitter">tw</a>
+                        <a href="https://gtmexpert.com/" aria-label="Website">🌐</a>
+                        <a href="https://medium.com/@shashwatghosh" aria-label="Medium">M</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Platform</h4>
+                    <a href="#features">Features</a>
+                    <a href="#epic">EPIC Framework</a>
+                    <a href="#integration">Integration</a>
+                    <a href="/mcp">MCP Server</a>
+                    <a href="/api/gtm">API Docs</a>
+                    <a href="#about">About Shashwat</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <a href="https://gtmexpert.com/">GTM Consulting</a>
+                    <a href="https://gtmexpert.com/">Fractional CMO</a>
+                    <a href="https://gtmexpert.com/">AI Marketing</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <a href="https://calendly.com/shashwat-gtmhelix/45min">📅 Book Consultation</a>
+                    <a href="mailto:shashwat@hyperplays.in">Email Support</a>
+                    <a href="https://www.linkedin.com/in/shashwatghosh/">LinkedIn</a>
+                    <a href="https://gtmexpert.com/">GTMExpert.com</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div>&copy; 2025 GTM Alpha by Shashwat Ghosh. <a href="https://www.linkedin.com/company/helixgtmconsulting/?viewAsMember=true" style="color: var(--accent-coral); text-decoration: none;">Helix Consulting</a>.</div>
+                <div>Best AI GTM & Fractional CMO | #10 India | #52 Worldwide</div>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanels = document.querySelectorAll('.tab-panel');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and panels
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanels.forEach(panel => panel.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding panel
+                    button.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

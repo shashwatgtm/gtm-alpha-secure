@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTM Alpha Pricing | Professional GTM Consulting Plans</title>
+    <meta name="description" content="Professional GTM consulting pricing plans. From free beta analysis to enterprise solutions. Best AI GTM and Fractional CMO services by Shashwat Ghosh.">
+    <meta name="keywords" content="GTM consulting pricing, go-to-market strategy pricing, EPIC framework pricing, fractional CMO cost, B2B marketing pricing">
+    <meta name="author" content="Shashwat Ghosh - GTM Alpha Consulting">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-navy: #0B1426;
+            --primary-blue: #1B365D;
+            --accent-coral: #FF6B5A;
+            --accent-gold: #F4B942;
+            --text-primary: #0B1426;
+            --text-secondary: #64748B;
+            --text-light: #94A3B8;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8FAFC;
+            --bg-accent: #F1F5F9;
+            --border-light: #E2E8F0;
+            --gradient-primary: linear-gradient(135deg, #1B365D 0%, #0B1426 100%);
+            --gradient-accent: linear-gradient(135deg, #FF6B5A 0%, #F4B942 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            font-feature-settings: 'kern' 1;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border-light);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 52px;
+            height: 52px;
+            background: var(--gradient-accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 18px;
+            color: white;
+            letter-spacing: 1px;
+            font-family: 'Inter', sans-serif;
+            line-height: 1;
+            text-align: center;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .brand-tagline {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-coral);
+            transition: width 0.2s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .cta-nav {
+            background: var(--accent-coral);
+            color: white !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .cta-nav:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            color: white !important;
+        }
+
+        .cta-nav::after {
+            display: none;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            color: var(--text-primary);
+            font-size: 24px;
+            z-index: 1001;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 20, 38, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 80px 24px 24px;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        .mobile-nav-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            align-items: center;
+            margin-top: 60px;
+        }
+
+        .mobile-nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav-links a:hover {
+            color: var(--accent-coral);
+            transform: translateY(-2px);
+        }
+
+        .mobile-cta {
+            background: var(--accent-coral);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 18px;
+            margin-top: 40px;
+            display: inline-block;
+        }
+
+        /* Status Banner */
+        .status-banner {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            padding: 12px 0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 72px;
+        }
+
+        .status-icon {
+            width: 8px;
+            height: 8px;
+            background: #34D399;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Beta Banner */
+        .beta-banner {
+            background: var(--gradient-accent);
+            color: white;
+            padding: 12px 0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 14px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .beta-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .beta-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .countdown {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 40px 0 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-badge .badge-icon {
+            width: 16px;
+            height: 16px;
+            background: var(--accent-coral);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        /* Main Content */
+        .main-content {
+            background: white;
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+
+        /* Section styling */
+        .section {
+            padding: 40px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--accent-coral);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 40px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Pricing Toggle */
+        .pricing-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin: 30px 0;
+        }
+
+        .toggle-label {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .toggle-label.active {
+            color: var(--text-primary);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 32px;
+            background: var(--border-light);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--accent-coral);
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            transform: translateX(28px);
+        }
+
+        .discount-badge {
+            background: var(--accent-gold);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Pricing Grid */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .pricing-card {
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 16px;
+            padding: 40px 30px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-coral);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent-coral);
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pricing-card.featured::before {
+            content: 'Recommended Plan';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-coral);
+            color: white;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .plan-description {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .plan-price {
+            margin-bottom: 30px;
+        }
+
+        .price-amount {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        .price-period {
+            color: var(--text-secondary);
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .price-note {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+
+        .plan-features li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 15px;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .feature-included {
+            background: #10B981;
+            color: white;
+        }
+
+        .feature-excluded {
+            background: #EF4444;
+            color: white;
+        }
+
+        .feature-premium {
+            background: var(--accent-gold);
+            color: white;
+        }
+
+        .plan-cta {
+            width: 100%;
+            background: var(--primary-navy);
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .plan-cta:hover {
+            background: var(--accent-coral);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .pricing-card.featured .plan-cta {
+            background: var(--accent-coral);
+        }
+
+        .pricing-card.featured .plan-cta:hover {
+            background: var(--primary-navy);
+        }
+
+        /* Volume Discount Blurb */
+        .volume-discount {
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 16px 0;
+            text-align: center;
+        }
+
+        .volume-discount .discount-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .volume-discount .discount-details {
+            font-size: 13px;
+        }
+
+        /* MCP/API Pricing Section */
+        .mcp-section {
+            background: var(--bg-secondary);
+            padding: 50px 0;
+            border-radius: 16px;
+            margin: 50px 0;
+        }
+
+        .mcp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .mcp-card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .mcp-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .mcp-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+        }
+
+        .mcp-price {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--accent-coral);
+            margin-bottom: 16px;
+        }
+
+        .mcp-description {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .usage-tiers {
+            background: var(--bg-accent);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .usage-tiers h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .tier-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .tier-item:last-child {
+            border-bottom: none;
+        }
+
+        .tier-name {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .tier-allowance {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 50px 0;
+        }
+
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border-light);
+            margin-bottom: 20px;
+        }
+
+        .faq-question {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            padding: 20px 0;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question:hover {
+            color: var(--accent-coral);
+        }
+
+        .faq-answer {
+            padding-bottom: 20px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: none;
+        }
+
+        .faq-answer.active {
+            display: block;
+        }
+
+        .faq-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-navy);
+            color: white;
+            padding: 40px 0 24px;
+        }
+
+        .footer-content {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .footer-brand h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent-coral);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        .social-links a {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+
+        .social-links a:hover {
+            background: var(--accent-coral);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 16px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mcp-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .pricing-toggle {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo-container">
+                <div class="logo">
+                    <span style="line-height: 1; display: block;">GTM<br><span style="font-size: 18px;">α</span></span>
+                </div>
+                <div class="brand-text">
+                    <div class="brand-name">GTM Alpha</div>
+                    <div class="brand-tagline">MCP Server</div>
+                </div>
+            </div>
+            
+            <!-- Desktop Navigation -->
+            <ul class="nav-links">
+                <li><a href="/#features">Features</a></li>
+                <li><a href="/#epic">EPIC Framework</a></li>
+                <li><a href="/#integration">Integration</a></li>
+                <li><a href="/pricing" class="active">Pricing</a></li>
+                <li><a href="/consultation">Consultation</a></li>
+                <li><a href="/#about">About</a></li>
+                <li><a href="https://gtmexpert.com/" class="cta-nav">GTMExpert.com</a></li>
+            </ul>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+        </nav>
+
+        <!-- Mobile Navigation -->
+        <div class="mobile-menu" id="mobileMenu">
+            <ul class="mobile-nav-links">
+                <li><a href="/#features" onclick="closeMobileMenu()">Features</a></li>
+                <li><a href="/#epic" onclick="closeMobileMenu()">EPIC Framework</a></li>
+                <li><a href="/#integration" onclick="closeMobileMenu()">Integration</a></li>
+                <li><a href="/pricing" onclick="closeMobileMenu()">Pricing</a></li>
+                <li><a href="/consultation" onclick="closeMobileMenu()">Consultation</a></li>
+                <li><a href="/#about" onclick="closeMobileMenu()">About</a></li>
+                <li><a href="https://gtmexpert.com/" class="mobile-cta" onclick="closeMobileMenu()">GTMExpert.com</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <div class="status-banner">
+        <div class="status-icon"></div>
+        <span>Professional GTM Consulting Active • Pricing Plans Available</span>
+    </div>
+
+    <div class="beta-banner" id="betaBanner" style="display: none;">
+        <div class="beta-content">
+            <span>🎉 LIMITED TIME: FREE Premium Analysis during Beta!</span>
+            <span class="countdown" id="countdown">Loading...</span>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <div class="badge-icon">💰</div>
+                    <span>Transparent Pricing • No Hidden Fees • Pay Only When You Get Value</span>
+                </div>
+                <h1>GTM Alpha Consulting Pricing</h1>
+                <p class="hero-subtitle">
+                    Professional go-to-market strategy consulting with transparent pricing. 
+                    From free beta analysis to enterprise solutions, choose the plan that fits your growth stage.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="main-content">
+            <section class="section" id="pricing">
+                <div class="section-header">
+                    <div class="section-badge">Pricing Plans</div>
+                    <h2 class="section-title">Choose Your GTM Success Plan</h2>
+                    <p class="section-subtitle">
+                        Scalable pricing from initial consultation to full fractional CMO partnership. 
+                        All plans include the proven EPIC framework methodology.
+                    </p>
+                </div>
+
+                <div class="pricing-toggle">
+                    <span class="toggle-label active" id="monthlyLabel">Monthly</span>
+                    <div class="toggle-switch" id="pricingToggle"></div>
+                    <span class="toggle-label" id="annualLabel">Annual <span class="discount-badge">Save 12%</span></span>
+                </div>
+                
+                <div class="pricing-grid">
+                    <!-- Premium Plan -->
+                    <div class="pricing-card">
+                        <div class="plan-name">Premium Analysis</div>
+                        <div class="plan-description">Comprehensive GTM consultation report with EPIC framework analysis</div>
+                        <div class="plan-price">
+                            <div class="price-amount" id="premiumPrice">$30</div>
+                            <div class="price-period">one-time</div>
+                            <div class="price-note" id="premiumNote">Currently FREE during beta!</div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><span class="feature-icon feature-included">✓</span> EPIC Framework Analysis</li>
+                            <li><span class="feature-icon feature-included">✓</span> Digital Presence Audit</li>
+                            <li><span class="feature-icon feature-included">✓</span> Market Intelligence Report</li>
+                            <li><span class="feature-icon feature-included">✓</span> 6-Month Implementation Roadmap</li>
+                            <li><span class="feature-icon feature-included">✓</span> Professional PDF Report</li>
+                            <li><span class="feature-icon feature-excluded">✗</span> No MCP/API Access</li>
+                            <li><span class="feature-icon feature-excluded">✗</span> No Follow-up Sessions</li>
+                        </ul>
+                        <a href="/.netlify/functions/create-payment-beta" onclick="startPayment('premium')" class="plan-cta">Get Premium Analysis</a>
+                    </div>
+
+                    <!-- Strategic Plan -->
+                    <div class="pricing-card featured">
+                        <div class="plan-name">Strategic Partner</div>
+                        <div class="plan-description">Per-hour strategic consultation sessions with volume discounts</div>
+                        <div class="plan-price">
+                            <div class="price-amount">$308</div>
+                            <div class="price-period">per hour</div>
+                            <div class="price-note">Base rate for individual sessions</div>
+                        </div>
+                        
+                        <!-- Volume Discount Blurb -->
+                        <div class="volume-discount">
+                            <div class="discount-title">💰 Volume Discounts Available</div>
+                            <div class="discount-details">
+                                <strong>3+ hours:</strong> 5% off ($292/hr) • <strong>5+ hours:</strong> 8% off ($283/hr)
+                            </div>
+                        </div>
+                        
+                        <ul class="plan-features">
+                            <li><span class="feature-icon feature-included">✓</span> Premium Analysis Included</li>
+                            <li><span class="feature-icon feature-included">✓</span> Progress Audit Sessions</li>
+                            <li><span class="feature-icon feature-included">✓</span> Custom Implementation Planning</li>
+                            <li><span class="feature-icon feature-included">✓</span> Remote Consulting Sessions</li>
+                            <li><span class="feature-icon feature-premium">★</span> 5 Free MCP/API Calls/Month</li>
+                            <li><span class="feature-icon feature-premium">★</span> Additional calls: $2/call</li>
+                            <li><span class="feature-icon feature-included">✓</span> Flexible Scheduling</li>
+                        </ul>
+                        <a href="/.netlify/functions/create-payment-beta" onclick="startPayment('strategic')" class="plan-cta">Book Strategic Session</a>
+                    </div>
+
+                    <!-- Fractional Plan -->
+                    <div class="pricing-card">
+                        <div class="plan-name">Fractional Partner</div>
+                        <div class="plan-description">1-year program with hands-on implementation guidance</div>
+                        <div class="plan-price">
+                            <div class="price-amount" id="fractionalPrice">$4,613</div>
+                            <div class="price-period" id="fractionalPeriod">per month</div>
+                            <div class="price-note" id="fractionalNote">Quarterly: Save $1,108 • Annual: Save $6,648</div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><span class="feature-icon feature-included">✓</span> Serious companies ready for transformation</li>
+                            <li><span class="feature-icon feature-included">✓</span> Hands-on implementation with expert guidance</li>
+                            <li><span class="feature-icon feature-included">✓</span> 1-year program with 2hrs/week live calls</li>
+                            <li><span class="feature-icon feature-included">✓</span> True fractional CMO positioning</li>
+                            <li><span class="feature-icon feature-included">✓</span> All Strategic Partner features included</li>
+                            <li><span class="feature-icon feature-premium">★</span> 20 Free MCP/API Calls/Month</li>
+                            <li><span class="feature-icon feature-premium">★</span> Additional calls: $2/call</li>
+                        </ul>
+                        <a href="/.netlify/functions/create-payment-beta" onclick="startPayment('fractional')" class="plan-cta">Start Fractional Partnership</a>
+                    </div>
+
+                    <!-- Enterprise Plan -->
+                    <div class="pricing-card">
+                        <div class="plan-name">Enterprise Plan</div>
+                        <div class="plan-description">Team licensing with unlimited consultations and white-label access</div>
+                        <div class="plan-price">
+                            <div class="price-amount" id="enterprisePrice">$1,538</div>
+                            <div class="price-period" id="enterprisePeriod">per month</div>
+                            <div class="price-note" id="enterpriseNote">3 licenses • $513/license • Scale to 10 licenses</div>
+                        </div>
+                        <ul class="plan-features">
+                            <li><span class="feature-icon feature-included">✓</span> Agencies, consulting firms, large teams</li>
+                            <li><span class="feature-icon feature-included">✓</span> White-label licensing and unlimited access</li>
+                            <li><span class="feature-icon feature-included">✓</span> Minimum 3/5/10 licenses required</li>
+                            <li><span class="feature-icon feature-included">✓</span> API access with priority support</li>
+                            <li><span class="feature-icon feature-included">✓</span> Each license works for Strategic OR Fractional</li>
+                            <li><span class="feature-icon feature-premium">★</span> 100 Free MCP/API Calls/Month</li>
+                            <li><span class="feature-icon feature-premium">★</span> Additional calls: $1/call (50% discount)</li>
+                        </ul>
+                        <a href="mailto:shashwat@hyperplays.in" class="plan-cta">Contact for Enterprise</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MCP/API Pricing Section -->
+            <section class="mcp-section">
+                <div class="section-header">
+                    <div class="section-badge">MCP & API Pricing</div>
+                    <h2 class="section-title">Pay-Per-Use API & MCP Access</h2>
+                    <p class="section-subtitle">
+                        Access GTM Alpha's powerful analysis tools programmatically. 
+                        Perfect for developers and businesses needing automated GTM insights.
+                    </p>
+                </div>
+
+                <div class="mcp-grid">
+                    <div class="mcp-card">
+                        <div class="mcp-title">Individual Actors</div>
+                        <div class="mcp-price">$2<span style="font-size: 16px; color: var(--text-secondary);"> per call</span></div>
+                        <div class="mcp-description">
+                            Access specific GTM analysis components individually via MCP/API calls. Each component provides targeted insights for your GTM strategy.
+                            <br><br><strong>Available Components:</strong>
+                            <br>• EPIC Framework Analyzer
+                            <br>• Digital Presence Auditor
+                            <br>• Market Intelligence Scanner
+                            <br>• Implementation Roadmap Generator
+                            <br>• Mental Velocity Optimizer
+                            <br>• Community Growth Analyzer
+                            <br>• Inbound/Outbound Strategy Planner
+                            <br><br><em>Payment required for each call beyond free tier allowances.</em>
+                        </div>
+                    </div>
+
+                    <div class="mcp-card">
+                        <div class="mcp-title">Complete Report</div>
+                        <div class="mcp-price">$15<span style="font-size: 16px; color: var(--text-secondary);"> per call</span></div>
+                        <div class="mcp-description">
+                            Full GTM Alpha consultation report via API/MCP access. Equivalent to Premium Analysis but delivered programmatically for integration into your systems.
+                            <br><br>Perfect for integration into your existing workflows and automation systems.
+                            <br><br><em>Payment required for each call beyond free tier allowances.</em>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="usage-tiers">
+                    <h3>Usage Allowances by Plan</h3>
+                    <div class="tier-item">
+                        <div>
+                            <div class="tier-name">Premium</div>
+                            <div class="tier-allowance">No MCP/API access included</div>
+                        </div>
+                        <div style="color: var(--text-light);">—</div>
+                    </div>
+                    <div class="tier-item">
+                        <div>
+                            <div class="tier-name">Strategic Partner</div>
+                            <div class="tier-allowance">5 free MCP/API calls/month, then $2/call</div>
+                        </div>
+                        <div style="color: var(--accent-coral); font-weight: 600;">5 free</div>
+                    </div>
+                    <div class="tier-item">
+                        <div>
+                            <div class="tier-name">Fractional Partner</div>
+                            <div class="tier-allowance">20 free MCP/API calls/month, then $2/call</div>
+                        </div>
+                        <div style="color: var(--accent-coral); font-weight: 600;">20 free</div>
+                    </div>
+                    <div class="tier-item">
+                        <div>
+                            <div class="tier-name">Enterprise Plan</div>
+                            <div class="tier-allowance">100 free MCP/API calls/month, then $1/call</div>
+                        </div>
+                        <div style="color: var(--accent-gold); font-weight: 600;">100 free</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ Section -->
+            <section class="faq-section">
+                <div class="section-header">
+                    <div class="section-badge">FAQ</div>
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                    <p class="section-subtitle">
+                        Everything you need to know about GTM Alpha pricing and services.
+                    </p>
+                </div>
+
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            What's included in the beta free offer?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            During our beta period (until July 15, 2025), we're offering the Premium Analysis ($30 value) completely free. This includes the full EPIC framework analysis, digital presence audit, market intelligence report, 6-month roadmap, and professional PDF report. Only the initial consultation is free - other services (Strategic, Fractional, Enterprise) are paid from day 1.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            Are payment processing fees included in the prices?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Yes! All displayed prices include payment processing fees. We add a 2.5% markup to cover PayPal fees, so the price you see is exactly what you pay. No surprises or additional charges.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How do volume discounts work for Strategic Partner sessions?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Strategic Partner sessions are $308/hour. If you book 3+ hours, you get 5% off ($292/hour). For 5+ hours, you get 8% off ($283/hour). The discount applies to the total booking, not individual sessions.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            What are the savings with annual billing?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Annual billing saves you 12% on Fractional and Enterprise plans. For Fractional ($4,613/month), annual billing costs $48,708 instead of $55,356 - saving you $6,648! Quarterly billing saves 8%.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How does Enterprise licensing work?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Enterprise plans include multiple licenses: Starter (3 licenses) for $1,538/month, Growth (5 licenses) for $2,564/month, or Scale (10 licenses) for $3,590/month. Each license can be used for either Strategic Partner sessions OR Fractional Partner access. It's perfect for agencies, consulting firms, and large teams.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            How do MCP/API billing work beyond free tiers?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Each plan includes free MCP/API calls monthly (Strategic: 5, Fractional: 20, Enterprise: 100). Beyond the free tier, you pay per additional call: $2/call for Strategic and Fractional, $1/call for Enterprise. Payment is processed via PayPal when you exceed your free allowance, then you can consult with Shashwat for strategic guidance.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            Can I upgrade or downgrade my plan?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            Yes! You can upgrade from Premium to Strategic to Fractional at any time. Downgrades are processed at the end of your current billing cycle. Enterprise customers can adjust license counts with 30 days notice. Contact us for plan changes.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-question">
+                            Is there a money-back guarantee?
+                            <span class="faq-icon">+</span>
+                        </button>
+                        <div class="faq-answer">
+                            We offer a 30-day satisfaction guarantee on Fractional and Enterprise plans. If you're not completely satisfied with the value delivered, we'll refund your investment. Premium and Strategic sessions are final due to the immediate delivery of personalized consultation.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>GTM Alpha MCP Server</h3>
+                    <p>
+                        Best AI GTM and Fractional CMO in India, APAC and US region. Powered by Shashwat Ghosh's proprietary EPIC framework. 
+                        Transform your go-to-market strategy with AI-enhanced consulting for B2B tech and ITES companies.
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="/#features">Features</a>
+                    <a href="/#epic">EPIC Framework</a>
+                    <a href="/#integration">Integration</a>
+                    <a href="/pricing">Pricing</a>
+                    <a href="/consultation">Consultation</a>
+                    <a href="/#about">About Shashwat</a>
+                    <a href="https://gtmexpert.com/">GTMExpert.com</a>
+                    <a href="https://calendly.com/shashwat-gtmhelix/45min">Book Call</a>
+                    <a href="mailto:shashwat@hyperplays.in">Contact</a>
+                </div>
+                
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/shashwatghosh/" aria-label="LinkedIn">in</a>
+                    <a href="https://x.com/Shashwat_Ghosh" aria-label="Twitter">tw</a>
+                    <a href="https://gtmexpert.com/" aria-label="Website">🌐</a>
+                    <a href="https://gtmexpert.substack.com/" aria-label="Substack">S</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div>&copy; 2025 GTM Alpha MCP Server by Shashwat Ghosh. Best AI GTM & Fractional CMO | #10 India | #52 Worldwide | Compatible with Claude, OpenAI, Gemini, Copilot, Llama, Ollama</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu functionality
+        function toggleMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('active');
+        }
+
+        function closeMobileMenu() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.remove('active');
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const menuBtn = document.querySelector('.mobile-menu-btn');
+            
+            if (!mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
+                mobileMenu.classList.remove('active');
+            }
+        });
+
+        // Payment integration
+        function startPayment(tier) {
+            // Collect basic consultation data for payment
+            const consultationData = {
+                client_name: 'Quick Purchase',
+                company_name: 'Direct Purchase',
+                tier: tier,
+                payment_method: 'direct'
+            };
+
+            // Call payment function
+            fetch('/.netlify/functions/create-payment-beta', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    consultation_data: consultationData,
+                    tier: tier,
+                    payment_frequency: 'monthly'
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.approval_url) {
+                    // Redirect to PayPal
+                    window.location.href = data.approval_url;
+                } else if (data.beta_offer) {
+                    // Handle free beta
+                    alert('🎉 FREE during beta! Redirecting to consultation form...');
+                    window.location.href = '/consultation';
+                } else {
+                    alert('Payment setup failed. Please try again or contact support.');
+                }
+            })
+            .catch(error => {
+                console.error('Payment error:', error);
+                alert('Payment error occurred. Please try again or contact support.');
+            });
+        }
+
+        // Beta countdown and pricing logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const BETA_END_DATE = new Date('2025-07-15T23:59:59Z');
+            let isAnnual = false;
+
+            // Suppress CSS security errors in development
+            const originalConsoleError = console.error;
+            console.error = function(...args) {
+                const message = args.join(' ');
+                if (message.includes('SecurityError') || message.includes('cssRules') || message.includes('fonts.googleapis.com')) {
+                    return; // Suppress CSS-related security errors
+                }
+                originalConsoleError.apply(console, args);
+            };
+
+            // Check if beta is active
+            function isBetaActive() {
+                return new Date() <= BETA_END_DATE;
+            }
+
+            // Update beta banner and countdown
+            function updateBetaBanner() {
+                const betaBanner = document.getElementById('betaBanner');
+                const countdown = document.getElementById('countdown');
+                
+                if (isBetaActive()) {
+                    betaBanner.style.display = 'block';
+                    
+                    function updateCountdown() {
+                        const now = new Date();
+                        const timeLeft = BETA_END_DATE - now;
+                        
+                        if (timeLeft > 0) {
+                            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                            
+                            countdown.textContent = `${days}d ${hours}h ${minutes}m remaining`;
+                        } else {
+                            betaBanner.style.display = 'none';
+                        }
+                    }
+                    
+                    updateCountdown();
+                    setInterval(updateCountdown, 60000); // Update every minute
+                }
+            }
+
+            // Pricing calculations
+            const pricing = {
+                premium: {
+                    monthly: isBetaActive() ? 0 : 30,
+                    annual: isBetaActive() ? 0 : 30
+                },
+                fractional: {
+                    monthly: 4613,
+                    annual: 4058 // 12% discount
+                },
+                enterprise: {
+                    monthly: 1538,
+                    annual: 1353 // 12% discount
+                }
+            };
+
+            // Update pricing display
+            function updatePricing() {
+                const suffix = isAnnual ? 'annual' : 'monthly';
+                
+                // Premium
+                document.getElementById('premiumPrice').textContent = 
+                    pricing.premium[suffix] === 0 ? 'FREE' : `$${pricing.premium[suffix]}`;
+                document.getElementById('premiumNote').textContent = 
+                    pricing.premium[suffix] === 0 ? 'Currently FREE during beta!' : 'Professional consultation report';
+
+                // Fractional
+                document.getElementById('fractionalPrice').textContent = `$${pricing.fractional[suffix]}`;
+                document.getElementById('fractionalPeriod').textContent = isAnnual ? 'per month (billed annually)' : 'per month';
+                document.getElementById('fractionalNote').textContent = isAnnual ? 
+                    `Annual billing saves $6,648 per year` : 
+                    'Quarterly: Save $1,108 • Annual: Save $6,648';
+
+                // Enterprise
+                document.getElementById('enterprisePrice').textContent = `$${pricing.enterprise[suffix]}`;
+                document.getElementById('enterprisePeriod').textContent = isAnnual ? 'per month (billed annually)' : 'per month';
+                document.getElementById('enterpriseNote').textContent = isAnnual ?
+                    `Annual billing: 3 licenses • $${Math.round(pricing.enterprise[suffix] / 3)}/license` :
+                    '3 licenses • $513/license • Scale to 10 licenses';
+            }
+
+            // Pricing toggle
+            const pricingToggle = document.getElementById('pricingToggle');
+            const monthlyLabel = document.getElementById('monthlyLabel');
+            const annualLabel = document.getElementById('annualLabel');
+
+            pricingToggle.addEventListener('click', function() {
+                isAnnual = !isAnnual;
+                pricingToggle.classList.toggle('active', isAnnual);
+                monthlyLabel.classList.toggle('active', !isAnnual);
+                annualLabel.classList.toggle('active', isAnnual);
+                updatePricing();
+            });
+
+            // FAQ functionality
+            const faqQuestions = document.querySelectorAll('.faq-question');
+            faqQuestions.forEach(question => {
+                question.addEventListener('click', function() {
+                    const answer = this.nextElementSibling;
+                    const isActive = answer.classList.contains('active');
+                    
+                    // Close all other FAQs
+                    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('active'));
+                    document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
+                    
+                    // Toggle current FAQ
+                    if (!isActive) {
+                        answer.classList.add('active');
+                        this.classList.add('active');
+                    }
+                });
+            });
+
+            // Initialize
+            updateBetaBanner();
+            updatePricing();
+
+            // Fetch live pricing from API (suppress errors during development)
+            try {
+                fetch('/.netlify/functions/get-pricing')
+                    .then(response => {
+                        if (!response.ok) throw new Error('API not available');
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.beta_status && data.beta_status.active) {
+                            updateBetaBanner();
+                        }
+                    })
+                    .catch(error => {
+                        // Silently handle API errors during development
+                        console.log('Pricing API not deployed yet - using static pricing');
+                    });
+            } catch (error) {
+                // Handle any other errors silently
+                console.log('Development mode - using static pricing');
+            }
+        });
+    </script>
+</body>
+</html>
