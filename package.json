@@ -2,7 +2,6 @@
   "name": "gtm-alpha-mcp-server",
   "version": "1.0.0",
   "description": "GTM Alpha Consultation MCP Server - Expert GTM strategy using Shashwat Ghosh's EPIC framework",
-  "type": "module",
   "main": "netlify/functions/mcp.js",
   "scripts": {
     "dev": "netlify dev",
