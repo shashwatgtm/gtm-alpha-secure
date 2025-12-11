@@ -33,6 +33,7 @@ Add to your Claude Desktop configuration (`claude_desktop_config.json`):
   }
 }
 '''
+
 MCP Inspector (Testing)
 npx @modelcontextprotocol/inspector npx mcp-remote@next https://gtmalpha.netlify.app/.netlify/functions/mcp
 
@@ -50,6 +51,7 @@ curl -X POST https://gtmalpha.netlify.app/.netlify/functions/mcp \
     "gtm_challenge": "Need better market positioning"
   }'
   '''
+
 The EPIC Framework
 A dynamic operating system approach to go-to-market strategy by Shashwat Ghosh. Proven across 100+ B2B tech and ITES implementations.
 
