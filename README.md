@@ -36,6 +36,15 @@ Add to your Claude Desktop configuration (claude_desktop_config.json):
 
     npx @modelcontextprotocol/inspector npx mcp-remote@next https://gtmalpha.netlify.app/.netlify/functions/mcp
 
+## Available Tools
+
+| Tool | Description |
+|------|-------------|
+| gtm_alpha_real_consultation | Get expert GTM strategy analysis using EPIC framework with real backend calculations, 30-day persistence, and progress tracking |
+| epic_progress_tracker | Track GTM progress over time with real baseline comparisons and improvement metrics |
+| epic_framework_deep_audit | Comprehensive EPIC audit with component analysis using real calculation engine |
+| premium_consultation_scheduler | Get information about premium GTM strategy sessions and direct booking with Shashwat Ghosh |
+
 ## The EPIC Framework
 
 A dynamic operating system approach to go-to-market strategy by Shashwat Ghosh. Proven across 100+ B2B tech and ITES implementations.
@@ -69,6 +78,14 @@ A dynamic operating system approach to go-to-market strategy by Shashwat Ghosh. 
 
     curl -X POST https://gtmalpha.netlify.app/.netlify/functions/mcp -H "Content-Type: application/json" -d '{"action":"consultation","client_name":"Your Name","company_name":"Your Company","industry":"Technology","business_stage":"venture-seed","gtm_challenge":"Need better market positioning"}'
 
+### OpenAI GPT Actions
+
+Schema available at: https://gtmalpha.netlify.app/.netlify/functions/mcp/openai-schema
+
+### Google Gemini Functions
+
+Functions definition at: https://gtmalpha.netlify.app/.netlify/functions/mcp/gemini-functions
+
 ## About
 
 Created by **Shashwat Ghosh**, GTM Alpha Consultant & Fractional CMO.
@@ -78,6 +95,10 @@ Created by **Shashwat Ghosh**, GTM Alpha Consultant & Fractional CMO.
 - **100+** GTM strategies implemented
 - **B2B Marketing Professional of the Year** - Fintech, 2021
 - Regional expertise: India, APAC, MEA, US, UK
+
+## npm Package
+
+    npm i @shashwatgtmalpha/gtm-alpha-mcp-server
 
 ## License
 
