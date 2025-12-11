@@ -1,15 +1,24 @@
 {
-  "name": "gtm-alpha-mcp-server",
-  "version": "1.0.0",
-  "description": "GTM Alpha Consultation MCP Server - Expert GTM strategy using Shashwat Ghosh's EPIC framework",
+  "name": "@shashwatgtmalpha/gtm-alpha-mcp-server",
+  "version": "1.0.1",
+  "description": "GTM Alpha Consultant MCP Server - Professional GTM strategy consultation using Shashwat Ghosh's EPIC framework with real backend calculations, 30-day persistence, and progress tracking",
   "main": "netlify/functions/mcp.js",
+  "mcpName": "io.github.shashwatgtm/gtm-alpha-consultant",
   "scripts": {
     "dev": "netlify dev",
     "build": "npm install",
     "start": "node netlify/functions/mcp.js",
     "test": "npx @modelcontextprotocol/inspector netlify/functions/mcp.js",
     "deploy": "netlify deploy --prod",
-    "inspect": "npx @modelcontextprotocol/inspector npx mcp-remote@next https://cerulean-tulumba-d7c460.netlify.app/mcp"
+    "inspect": "npx @modelcontextprotocol/inspector npx mcp-remote@next https://gtmalpha.netlify.app/.netlify/functions/mcp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shashwatgtm/gtm-alpha-secure"
+  },
+  "homepage": "https://gtmalpha.netlify.app",
+  "bugs": {
+    "url": "https://github.com/shashwatgtm/gtm-alpha-secure/issues"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.4.0",
@@ -30,7 +39,9 @@
     "epic-framework",
     "shashwat-ghosh",
     "ai-assistant",
-    "claude"
+    "claude",
+    "openai",
+    "gemini"
   ],
   "author": "Shashwat Ghosh <shashwat@gtmalpha.com>",
   "license": "MIT"
