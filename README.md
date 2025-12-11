@@ -7,16 +7,15 @@ A Model Context Protocol (MCP) server providing expert Go-To-Market (GTM) strate
 
 ## Features
 
-- **EPIC Framework Analysis** - Expert GTM scoring across Ecosystem, Product, Ideal Customer Profile, and Channels
+- **EPIC Framework Analysis** - Comprehensive GTM strategy using proprietary methodology
 - **Real Backend Calculations** - Dynamic analysis based on actual business context
 - **30-Day Persistence** - Consultation results cached for business consistency
-- **Progress Tracking** - Compare EPIC scores across consultations over time
+- **Progress Tracking** - Compare scores across consultations over time
 - **Multi-LLM Support** - Works with Claude, OpenAI GPT, Google Gemini, and more
 
 ## Live Endpoint
 
 https://gtmalpha.netlify.app/.netlify/functions/mcp
-
 
 ## Installation
 
@@ -34,38 +33,34 @@ Add to your Claude Desktop configuration (`claude_desktop_config.json`):
   }
 }
 
-
-**## MCP Inspector (Testing)**
+MCP Inspector (Testing)
 npx @modelcontextprotocol/inspector npx mcp-remote@next https://gtmalpha.netlify.app/.netlify/functions/mcp
 
-**### The EPIC Framework**
+The EPIC Framework
 A dynamic operating system approach to go-to-market strategy by Shashwat Ghosh. Proven across 100+ B2B tech and ITES implementations.
 
-**## E - Ecosystem & Account-Based Marketing (ABM)**
+E - Ecosystem & Account-Based Marketing (ABM)
 Build and leverage partnerships with ITeS, BPO, Payment Gateways, ERP vendors
 Targeted ABM strategies with refined account lists and buyer personas
 ICP research to engage the right accounts effectively
 Amplify reach through analyst firms, PR agencies, and trade associations
-
-**## P - Product-Led Growth (PLG)**
+P - Product-Led Growth (PLG)
 Frictionless user experience across all touchpoints
 Drive customer acquisition through product-led strategies
 Identify upsell/cross-sell opportunities
 Implement strategies to reduce customer churn
-
-**## I - Inbound & Outbound Demand Generation**
+I - Inbound & Outbound Demand Generation
 Inbound: Website, SEO, social channels, performance marketing
 Outbound: BDR/SDR team development, database enrichment, account research
 Ensure a consistent flow of qualified leads
-
-**## C - Community-Led Planning**
+C - Community-Led Planning
 Foster Word-of-Mouth (WoM) marketing
 Develop robust reference programs and customer success stories
 Engage with peer review sites
 Establish customer advocacy initiatives
+API Usage
+Direct REST API
 
-**### API Usage**
-**## Direct REST API**
 curl -X POST https://gtmalpha.netlify.app/.netlify/functions/mcp \
   -H "Content-Type: application/json" \
   -d '{
@@ -76,8 +71,7 @@ curl -X POST https://gtmalpha.netlify.app/.netlify/functions/mcp \
     "business_stage": "venture-seed",
     "gtm_challenge": "Need better market positioning"
   }'
-
-**### About**
+About
 Created by Shashwat Ghosh, GTM Alpha Consultant & Fractional CMO.
 
 Ranked #10 Product Marketing Creator in India | #52 Worldwide
@@ -85,12 +79,11 @@ Ranked #10 Product Marketing Creator in India | #52 Worldwide
 100+ GTM strategies implemented
 B2B Marketing Professional of the Year - Fintech, 2021
 Regional expertise: India, APAC, MEA, US, UK
-
-**## License**
+License
 MIT
 
-**## Links**
-Live MCP Server https://gtmalpha.netlify.app/.netlify/functions/mcp
-Main Website https://gtmalpha.netlify.app/
-GTM Expert Services https://gtmexpert.com/epic-gtm-services
-Book Consultation https://calendly.com/shashwat-gtmhelix/45min
+Links
+Live MCP Server
+Main Website
+GTM Expert Services
+Book Consultation
