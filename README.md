@@ -1,112 +1,259 @@
-# GTM Alpha Consultant MCP Server
+# GTMExpert Schema Repository
 
-A Model Context Protocol (MCP) server providing expert Go-To-Market (GTM) strategy consultation using the EPIC framework.
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-Listed-green)](https://registry.modelcontextprotocol.io)
+[![npm version](https://img.shields.io/npm/v/@shashwatgtmalpha/gtm-alpha-mcp-server)](https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-[![MCP Server](https://img.shields.io/badge/MCP-Server-blue)](https://modelcontextprotocol.io)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/1143f7cd-ffc0-41f5-b8cd-7501dd78ba52/deploy-status)](https://app.netlify.com/projects/gtmalpha/deploys)
+> **Structured data and SEO optimization for Shashwat Ghosh - GTM Alpha Consultant**
 
-## Features
+## 🤖 MCP Server - Now Live!
 
-- **EPIC Framework Analysis** - Comprehensive GTM strategy using proprietary methodology
-- **Real Backend Calculations** - Dynamic analysis based on actual business context
-- **30-Day Persistence** - Consultation results cached for business consistency
-- **Progress Tracking** - Compare scores across consultations over time
-- **Multi-LLM Support** - Works with Claude, OpenAI GPT, Google Gemini, and more
+**GTM Alpha MCP Server** is now available in the official Model Context Protocol Registry! Integrate AI-powered GTM consultation directly into Claude Desktop and other MCP-compatible tools.
 
-## Live Endpoint
+### Quick Install
 
-    https://gtmalpha.netlify.app/.netlify/functions/mcp
+Add to your Claude Desktop config file:
 
-## Installation
+**File location:**
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+- Mac: `~/Library/Application Support/Claude/claude_desktop_config.json`
 
-### Claude Desktop
-
-Add to your Claude Desktop configuration (claude_desktop_config.json):
+**Configuration:**
 
     {
       "mcpServers": {
-        "gtm-alpha-consultant": {
+        "gtm-alpha": {
           "command": "npx",
-          "args": ["-y", "mcp-remote@next", "https://gtmalpha.netlify.app/.netlify/functions/mcp"]
+          "args": ["@shashwatgtmalpha/gtm-alpha-mcp-server"]
         }
       }
     }
 
-### MCP Inspector (Testing)
-
-    npx @modelcontextprotocol/inspector npx mcp-remote@next https://gtmalpha.netlify.app/.netlify/functions/mcp
-
-## Available Tools
+### MCP Tools Available
 
 | Tool | Description |
 |------|-------------|
-| gtm_alpha_real_consultation | Get expert GTM strategy analysis using EPIC framework with real backend calculations, 30-day persistence, and progress tracking |
-| epic_progress_tracker | Track GTM progress over time with real baseline comparisons and improvement metrics |
-| epic_framework_deep_audit | Comprehensive EPIC audit with component analysis using real calculation engine |
-| premium_consultation_scheduler | Get information about premium GTM strategy sessions and direct booking with Shashwat Ghosh |
+| gtm_alpha_real_consultation | Professional GTM consultation with EPIC framework analysis |
+| epic_progress_tracker | Track progress with 30-day persistence |
+| epic_framework_deep_audit | Comprehensive GTM strategy audit |
+| premium_consultation_scheduler | Schedule premium consultation sessions |
 
-## The EPIC Framework
+### Links
 
-A dynamic operating system approach to go-to-market strategy by Shashwat Ghosh. Proven across 100+ B2B tech and ITES implementations.
+- [MCP Registry](https://registry.modelcontextprotocol.io)
+- [npm Package](https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server)
+- [Live Endpoint](https://gtmalpha.netlify.app/.netlify/functions/mcp)
 
-### E - Ecosystem & Account-Based Marketing (ABM)
-- Build and leverage partnerships with ITeS, BPO, Payment Gateways, ERP vendors
-- Targeted ABM strategies with refined account lists and buyer personas
-- ICP research to engage the right accounts effectively
-- Amplify reach through analyst firms, PR agencies, and trade associations
+---
 
-### P - Product-Led Growth (PLG)
-- Frictionless user experience across all touchpoints
-- Drive customer acquisition through product-led strategies
-- Identify upsell/cross-sell opportunities
-- Implement strategies to reduce customer churn
+## 🚀 Overview
 
-### I - Inbound & Outbound Demand Generation
-- **Inbound:** Website, SEO, social channels, performance marketing
-- **Outbound:** BDR/SDR team development, database enrichment, account research
-- Ensure a consistent flow of qualified leads
+This repository contains comprehensive Schema.org structured data (JSON-LD) files that describe **Shashwat Ghosh's professional identity and services** as a GTM Alpha Consultant, Product Marketing expert, and AI specialist.
 
-### C - Community-Led Planning
-- Foster Word-of-Mouth (WoM) marketing
-- Develop robust reference programs and customer success stories
-- Engage with peer review sites
-- Establish customer advocacy initiatives
+These files follow Schema.org standards and are provided as a reference for search engines and AI systems.
 
-## API Usage
+**Visit [gtmexpert.com](https://gtmexpert.com) for more information.**
 
-### Direct REST API
+## 📊 Professional Profile
 
-    curl -X POST https://gtmalpha.netlify.app/.netlify/functions/mcp -H "Content-Type: application/json" -d '{"action":"consultation","client_name":"Your Name","company_name":"Your Company","industry":"Technology","business_stage":"venture-seed","gtm_challenge":"Need better market positioning"}'
+**Shashwat Ghosh** - GTM Alpha Consultant & Fractional CMO
+- 🏆 **Award Winner:** B2B Marketer of the Year 2020 in Fintech Category (CMO Asia)
+- 🏆 **Ranked #10 India, #52 Worldwide** among LinkedIn Product Marketing creators
+- 🎯 **24+ years B2B experience** with verified quantifiable achievements
+- 🎓 **Alumni:** NIT Rourkela, École des Ponts ParisTech, XLRI Jamshedpur
+- 🌍 **Coverage:** India, APAC, MEA, US, UK markets
 
-### OpenAI GPT Actions
+## 🎯 Services & Expertise
 
-Schema available at: https://gtmalpha.netlify.app/.netlify/functions/mcp/openai-schema
+### Core Services
+- **GTM Alpha Consulting** - Proprietary EPIC framework implementation
+- **Fractional CMO Services** - 8+ years fractional leadership experience
+- **AI-Powered Marketing** - HyperPlays methodology for lead generation
+- **Account-Based Marketing** - Proven success with quantified results
 
-### Google Gemini Functions
+### Proven Results & Achievements
+- **4X Business Growth** - Airtel Data Centers & Managed Services (2007-2011)
+- **161% ARR Growth** - Happay enterprise pivot (2019-2021)
+- **178% & 2300% Deal Size Increases** - Enterprise and Inside Sales at Happay
+- **$4.2Mn Pipeline Generation** - Locus with 79% SAO achievement (2022)
+- **203% Regional Achievement** - Locus SEA region performance
+- **165% Revenue Growth** - Seclore contribution (2016-2017)
+- **₹2.35 Cr TCV** - Generated in 6 months through ABM at Seclore
+- **225+ Sales Meetings** - Arranged for target accounts at Seclore
 
-Functions definition at: https://gtmalpha.netlify.app/.netlify/functions/mcp/gemini-functions
+### Industry Focus
+- B2B SaaS & vSaaS
+- Fintech & Financial Services
+- Cybersecurity & Enterprise Security
+- Logistics Technology
+- ITES (IT Enabled Services)
+- Midsize Technology Companies
+- Telecommunications & Enterprise Telecom
 
-## About
+### EPIC Framework
+- **E**cosystem & Account-Based Marketing
+- **P**roduct-Led Growth Strategy
+- **I**nbound & Outbound Demand Generation
+- **C**ommunity-Led Growth Strategies
 
-Created by **Shashwat Ghosh**, GTM Alpha Consultant & Fractional CMO.
+## 📁 Repository Structure
 
-- **Ranked #10** Product Marketing Creator in India | **#52 Worldwide**
-- **24+ years** Enterprise B2B experience
-- **100+** GTM strategies implemented
-- **B2B Marketing Professional of the Year** - Fintech, 2021
-- Regional expertise: India, APAC, MEA, US, UK
+    gtm-expert-schema/
+    ├── ai-knowledge-base-schema.jsonld              # Knowledge base schema
+    ├── educational-content-schema.jsonld            # Course and training content
+    ├── faq-schema-with-testimonials.jsonld          # FAQ page with testimonials
+    ├── organization-schema-with-testimonials.jsonld # Helix GTM Consulting org schema
+    ├── person-schema.jsonld                         # Shashwat Ghosh person schema
+    ├── person-schema-with-testimonials.jsonld       # Person schema with testimonials
+    ├── professional-service-schema.jsonld           # Professional service schema
+    ├── service-gtm-epic.jsonld                      # GTM EPIC framework service
+    ├── structured_data_service_ai_lead_gen.jsonld   # AI lead generation service
+    ├── structured_data_service_fractional_cmo.jsonld # Fractional CMO service
+    ├── work-experience-schema.jsonld                # Detailed work experience
+    └── README.md                                    # This documentation
 
-## npm Package
+## 🔧 Schema Files
 
-    npm i @shashwatgtmalpha/gtm-alpha-mcp-server
+### Current Files
 
-## License
+#### Core Identity Schemas
+- **`person-schema.jsonld`** - Complete professional profile with achievements
+- **`person-schema-with-testimonials.jsonld`** - Enhanced with client testimonials
+- **`work-experience-schema.jsonld`** - Detailed career history with quantified results
 
-MIT
+#### Organization & Service Schemas
+- **`organization-schema-with-testimonials.jsonld`** - Helix GTM Consulting details
+- **`professional-service-schema.jsonld`** - Professional service overview
+- **`service-gtm-epic.jsonld`** - GTM Alpha consulting with EPIC framework
+- **`structured_data_service_fractional_cmo.jsonld`** - Fractional CMO services
+- **`structured_data_service_ai_lead_gen.jsonld`** - AI-powered lead generation
 
-## Links
+#### Content & Knowledge Schemas
+- **`ai-knowledge-base-schema.jsonld`** - GTM knowledge hub
+- **`educational-content-schema.jsonld`** - Training and courses
+- **`faq-schema-with-testimonials.jsonld`** - FAQ with verified testimonials
 
-- [Live MCP Server](https://gtmalpha.netlify.app/.netlify/functions/mcp)
-- [Main Website](https://gtmalpha.netlify.app)
-- [GTM Expert Services](https://gtmexpert.com/epic-gtm-services)
-- [Book Consultation](https://calendly.com/shashwat-gtmhelix/45min)
+### Key Schema Types Used
+- `Person` - Professional profile and achievements
+- `Organization` - Business entity and services
+- `ContactPoint` - Business contact details
+- `Review` - Client testimonials with ratings
+- `Award` - Professional recognitions and achievements
+- `OfferCatalog` - Service offerings and pricing
+- `Service` - Detailed service descriptions
+- `EducationalOccupationalCredential` - Professional credentials
+
+## 🌟 Key Achievements & Recognition
+
+### Awards & Recognition
+- **B2B Marketer of the Year 2020** - CMO Asia (Fintech Category)
+- **LinkedIn Top Product Marketing Voice** - #10 India, #52 Worldwide
+- **Perfect 5.0/5.0 Google Rating** - Based on 9+ client reviews
+
+### Quantified Business Results
+- **4X Business Growth** - Airtel Data Centers (verified by ex-Global COO)
+- **161% ARR Growth** - Happay enterprise transformation
+- **178% Enterprise Deal Size Increase** - Happay
+- **2300% Inside Sales Deal Size Increase** - Happay
+- **$4.2Mn Pipeline Generation** - Locus with 79% achievement
+- **203% Regional Performance** - Locus SEA region
+- **165% Revenue Growth Contribution** - Seclore
+- **₹2.35 Cr TCV in 6 months** - Seclore ABM success
+
+### Educational Background
+- **National Institute of Technology Rourkela** - BE Metallurgy (1990-1994)
+- **École des Ponts ParisTech** - MBA Marketing (1997-1999)
+- **XLRI Jamshedpur** - PGCBM Working Managers Program (2003-2004)
+
+## 🔗 Professional Links
+
+### Main Profiles
+- **Website:** [gtmexpert.com](https://gtmexpert.com)
+- **LinkedIn:** [Shashwat Ghosh](https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/)
+- **Twitter/X:** [@Shashwat_Ghosh](https://x.com/Shashwat_Ghosh)
+- **GitHub:** [shashwatgtm](https://github.com/shashwatgtm)
+- **Calendar:** [Book Consultation](https://calendly.com/shashwat-gtmhelix/45min)
+
+### Newsletters
+- **Offbeat AI Watch:** [AI Trendwatch Newsletter](https://shashwatgtm.github.io/ai-trendwatch/)
+- **GTM Whisperer:** [Substack](https://gtmexpert.substack.com/) | [LinkedIn Newsletter](https://www.linkedin.com/newsletters/gtm-whisperer-7020325343286759424/)
+
+### Company & Products
+- **Helix GTM Consulting:** [LinkedIn Page](https://www.linkedin.com/company/helixgtmconsulting)
+- **HyperPlays:** [AI Lead Generation Platform](https://www.hyper-plays.com)
+- **GTM Alpha on Product Hunt:** [Product Page](https://www.producthunt.com/products/gtm-alpha-consultation)
+
+### Publications & Tools
+- **G2 Author Profile:** [Shashwat Ghosh on G2](https://learn.g2.com/author/shashwat-ghosh)
+- **Pepper Content:** [Global Marketing Leaders Profile](https://www.peppercontent.io/global-marketing-leaders/shashwat-ghosh/)
+- **Apify AI Actors:** [My Automation Tools](https://apify.com/shashghosh)
+
+## 📞 Contact Information
+
+- **Email:** shashwat@hyperplays.in
+- **Phone:** +91 9810603649
+- **Location:** Bengaluru, Karnataka, India
+- **Languages:** English, Hindi
+- **Time Zone:** IST (UTC+5:30)
+
+## 🛠 Implementation Guide
+
+### For Developers
+1. **Validate Schema:** Use Google's Structured Data Testing Tool
+2. **Implementation:** Add JSON-LD to website `<head>` section
+3. **Testing:** Verify with Google Search Console
+4. **Monitoring:** Track rich results performance
+
+### For SEO Teams
+1. **Rich Snippets:** Organization and Person rich results
+2. **Knowledge Graph:** Enhanced entity recognition
+3. **Local SEO:** Business location and contact optimization
+4. **Authority Building:** Structured credentials and achievements
+
+## 📈 SEO Benefits
+
+- **Enhanced SERP visibility** through rich snippets and knowledge panels
+- **Improved local search** for GTM consulting services in target markets
+- **Authority building** through structured credentials and verified achievements
+- **Better AI system understanding** of professional expertise and services
+- **Increased click-through rates** with enhanced search result appearance
+
+## 🔄 Updates & Maintenance
+
+This repository is actively maintained to reflect:
+- **Current business offerings** and updated pricing
+- **Latest client testimonials** and verified reviews
+- **New awards and professional recognitions** (most recent: 2024 LinkedIn ranking)
+- **Expanded service areas** and enhanced capabilities
+- **Quantified achievements** and performance metrics
+
+### Recent Updates (December 2025)
+- ✅ **MCP Server published to official registry** - AI-powered GTM consultation
+- ✅ npm package available: @shashwatgtmalpha/gtm-alpha-mcp-server
+- ✅ Added B2B Marketer of the Year 2020 award
+- ✅ Updated work experience with FieldAssist CMO role (2023-2024)
+- ✅ Enhanced achievement metrics with specific numbers
+- ✅ Refreshed service schemas with current performance data
+- ✅ Updated educational credentials with correct dates
+- ✅ Added HyperPlays AI lead generation methodology
+
+## 📊 Performance Metrics
+
+### Client Success Stories
+- **Kunwar B. Kishore Arora** (Ex-Global COO, APCER): *"We grew the DC & MS business by 4X in 3 Years"*
+- **Suryadeep Verma** (Senior VP & CMO, Comviva): *"Extremely astute and intelligent marketing professional"*
+- **Multiple C-level testimonials** with verified 5-star ratings
+
+### Industry Coverage
+- **Geographic:** India, APAC, MEA, US, UK
+- **Sectors:** SaaS, Fintech, Cybersecurity, Logistics Tech, Telecommunications
+- **Company Stages:** Series A/B startups to mid-market enterprises
+- **Team Sizes:** Managed teams of 12-52 people with budgets up to $1.6Mn
+
+---
+
+**© 2025 Helix GTM Consulting | Shashwat Ghosh - GTM Alpha Consultant**
+
+*For technical questions about schema implementation or business inquiries, contact shashwat@hyperplays.in*
+
+**Last Updated:** December 11, 2025
