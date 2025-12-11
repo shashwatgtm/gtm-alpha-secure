@@ -32,10 +32,24 @@ Add to your Claude Desktop configuration (`claude_desktop_config.json`):
     }
   }
 }
-
+'''
 MCP Inspector (Testing)
 npx @modelcontextprotocol/inspector npx mcp-remote@next https://gtmalpha.netlify.app/.netlify/functions/mcp
 
+API Usage
+Direct REST API
+
+curl -X POST https://gtmalpha.netlify.app/.netlify/functions/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "action": "consultation",
+    "client_name": "Your Name",
+    "company_name": "Your Company",
+    "industry": "Technology",
+    "business_stage": "venture-seed",
+    "gtm_challenge": "Need better market positioning"
+  }'
+  '''
 The EPIC Framework
 A dynamic operating system approach to go-to-market strategy by Shashwat Ghosh. Proven across 100+ B2B tech and ITES implementations.
 
@@ -58,32 +72,14 @@ Foster Word-of-Mouth (WoM) marketing
 Develop robust reference programs and customer success stories
 Engage with peer review sites
 Establish customer advocacy initiatives
-API Usage
-Direct REST API
-
-curl -X POST https://gtmalpha.netlify.app/.netlify/functions/mcp \
-  -H "Content-Type: application/json" \
-  -d '{
-    "action": "consultation",
-    "client_name": "Your Name",
-    "company_name": "Your Company",
-    "industry": "Technology",
-    "business_stage": "venture-seed",
-    "gtm_challenge": "Need better market positioning"
-  }'
 About
 Created by Shashwat Ghosh, GTM Alpha Consultant & Fractional CMO.
 
-Ranked #10 Product Marketing Creator in India | #52 Worldwide
+Ranked #10 Product Marketing Creator in India, #52 Worldwide
 24+ years Enterprise B2B experience
 100+ GTM strategies implemented
 B2B Marketing Professional of the Year - Fintech, 2021
-Regional expertise: India, APAC, MEA, US, UK
-License
-MIT
-
 Links
-Live MCP Server
-Main Website
-GTM Expert Services
-Book Consultation
+Live MCP Server: https://gtmalpha.netlify.app/.netlify/functions/mcp
+Main Website: https://gtmalpha.netlify.app
+Book Consultation: https://calendly.com/shashwat-gtmhelix/45min
