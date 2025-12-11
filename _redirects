@@ -1,0 +1,5 @@
+# Redirect old URLs to new ones
+/mcp              /integration
+/api/gtm          /api-docs
+/#consultation    /consultation
+/#access          /integration

@@ -1,7 +1,7 @@
 // netlify/functions/payment-success-beta.js
 // Handle successful PayPal payments and trigger consultation generation
 
-const paypal = require('@paypal/checkout-server-sdk');
+import paypal from '@paypal/checkout-server-sdk';
 
 // Same PayPal client setup
 const Environment = process.env.NODE_ENV === 'production' 
@@ -15,7 +15,7 @@ const paypalClient = new paypal.core.PayPalHttpClient(
   )
 );
 
-exports.handler = async (event, context) => {
+export default async (req, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -23,20 +23,19 @@ exports.handler = async (event, context) => {
     'Content-Type': 'application/json'
   };
 
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers };
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 200, headers });
   }
 
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers,
-      body: JSON.stringify({ error: 'Method not allowed' })
-    };
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers
+    });
   }
 
   try {
-    const { order_id } = JSON.parse(event.body);
+    const { order_id } = await req.json();
     
     // Capture the payment
     const request = new paypal.orders.OrdersCaptureRequest(order_id);
@@ -53,32 +52,35 @@ exports.handler = async (event, context) => {
       const paypalFee = amountPaid * 0.029 + 0.30;
       const yourNetRevenue = basePrice; // Your actual revenue after our markup
       
-      console.log(`✅ Payment completed for ${customData.company_name}`);
-      console.log(`💰 Amount paid: $${amountPaid}`);
-      console.log(`📊 Tier: ${tier} (${paymentFrequency})`);
-      console.log(`💵 Your net revenue: $${yourNetRevenue}`);
+      console.log(`Payment completed for ${customData.company_name}`);
+      console.log(`Amount paid: $${amountPaid}`);
+      console.log(`Tier: ${tier} (${paymentFrequency})`);
+      console.log(`Your net revenue: $${yourNetRevenue}`);
       
       // Generate consultation for all paid services
       let consultationResult;
       try {
-        const analyzeFunction = require('./analyze');
-        consultationResult = await analyzeFunction.handler({
-          httpMethod: 'POST',
-          body: JSON.stringify(consultationData)
-        }, context);
+        const { default: analyzeFunction } = await import('./analyze.js');
+        
+        // Create a new request object with the consultation data
+        const analyzeReq = {
+          method: 'POST',
+          json: async () => consultationData
+        };
+        
+        consultationResult = await analyzeFunction(analyzeReq, context);
       } catch (analyzeError) {
         console.error('Error generating consultation:', analyzeError);
-        return {
-          statusCode: 500,
-          headers,
-          body: JSON.stringify({
-            success: false,
-            error: 'Consultation generation failed',
-            payment_status: 'completed',
-            transaction_id: capture.result.id,
-            message: 'Payment successful but consultation generation failed. Contact support.'
-          })
-        };
+        return new Response(JSON.stringify({
+          success: false,
+          error: 'Consultation generation failed',
+          payment_status: 'completed',
+          transaction_id: capture.result.id,
+          message: 'Payment successful but consultation generation failed. Contact support.'
+        }), {
+          status: 500,
+          headers
+        });
       }
 
       // Determine MCP/API access based on tier
@@ -139,79 +141,80 @@ exports.handler = async (event, context) => {
         }
       }
 
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          success: true,
-          payment_status: 'completed',
-          transaction_id: capture.result.id,
-          
-          // Payment details
-          payment_details: {
-            amount_paid: amountPaid,
-            tier: tier,
-            payment_frequency: paymentFrequency,
-            service_name: capture.result.purchase_units[0].description
-          },
-          
-          // Revenue breakdown (for your records)
-          revenue_breakdown: {
-            gross_received: amountPaid,
-            paypal_fee: paypalFee.toFixed(2),
-            your_net_revenue: yourNetRevenue,
-            markup_covered_fees: true
-          },
-          
-          // Savings information
-          savings_info: savingsInfo,
-          
-          // MCP/API access details
-          mcp_api_access: mcpApiAccess,
-          
-          // Next steps for different tiers
-          next_steps: {
-            premium: tier === 'premium' ? 'Your consultation is ready! Consider upgrading to Strategic for ongoing support.' : null,
-            strategic: tier === 'strategic' ? 'Schedule your strategic sessions and start using your 5 free MCP calls.' : null,
-            fractional: tier === 'fractional' ? 'Welcome to the 1-year program! Your first 2-hour session will be scheduled soon.' : null,
-            enterprise: tier === 'enterprise' ? 'Team access activated! Distribute licenses and start using 100 free MCP calls.' : null
-          },
-          
-          // The consultation results
-          consultation: JSON.parse(consultationResult.body),
-          
-          // Contact information
-          support: {
-  email: 'shashwat@hyperplays.in',
-  message: 'Contact us for any questions about your consultation or service access.'
-}
-        })
-      };
+      return new Response(JSON.stringify({
+        success: true,
+        payment_status: 'completed',
+        transaction_id: capture.result.id,
+        
+        // Payment details
+        payment_details: {
+          amount_paid: amountPaid,
+          tier: tier,
+          payment_frequency: paymentFrequency,
+          service_name: capture.result.purchase_units[0].description
+        },
+        
+        // Revenue breakdown (for your records)
+        revenue_breakdown: {
+          gross_received: amountPaid,
+          paypal_fee: paypalFee.toFixed(2),
+          your_net_revenue: yourNetRevenue,
+          markup_covered_fees: true
+        },
+        
+        // Savings information
+        savings_info: savingsInfo,
+        
+        // MCP/API access details
+        mcp_api_access: mcpApiAccess,
+        
+        // Next steps for different tiers
+        next_steps: {
+          premium: tier === 'premium' ? 'Your consultation is ready! Consider upgrading to Strategic for ongoing support.' : null,
+          strategic: tier === 'strategic' ? 'Schedule your strategic sessions and start using your 5 free MCP calls.' : null,
+          fractional: tier === 'fractional' ? 'Welcome to the 1-year program! Your first 2-hour session will be scheduled soon.' : null,
+          enterprise: tier === 'enterprise' ? 'Team access activated! Distribute licenses and start using 100 free MCP calls.' : null
+        },
+        
+        // The consultation results
+        consultation: await consultationResult.json(),
+        
+        // Contact information
+        support: {
+          email: 'shashwat@hyperplays.in',
+          message: 'Contact us for any questions about your consultation or service access.'
+        }
+      }), {
+        status: 200,
+        headers
+      });
       
     } else {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({
-          success: false,
-          error: 'Payment not completed',
-          status: capture.result.status,
-          message: 'Payment was not successfully processed. Please try again.'
-        })
-      };
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Payment not completed',
+        status: capture.result.status,
+        message: 'Payment was not successfully processed. Please try again.'
+      }), {
+        status: 400,
+        headers
+      });
     }
 
   } catch (error) {
     console.error('PayPal payment verification error:', error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({
-        success: false,
-        error: 'Payment verification failed',
-        message: error.message,
-        support: 'Please contact support with your order details.'
-      })
-    };
+    return new Response(JSON.stringify({
+      success: false,
+      error: 'Payment verification failed',
+      message: error.message,
+      support: 'Please contact support with your order details.'
+    }), {
+      status: 500,
+      headers
+    });
   }
+};
+
+export const config = {
+  path: "/api/payment-success"
 };

@@ -55,7 +55,7 @@
             padding: 0 24px;
         }
 
-        /* Header */
+        /* Header - Matching Home Page Exactly */
         header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(20px) saturate(180%);
@@ -81,20 +81,38 @@
         }
 
         .logo {
-            width: 52px;
-            height: 52px;
+            width: 56px;
+            height: 56px;
             background: var(--gradient-accent);
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
-            font-size: 18px;
             color: white;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             font-family: 'Inter', sans-serif;
+            position: relative;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             line-height: 1;
-            text-align: center;
+        }
+
+        .logo-gtm {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: -2px;
+        }
+
+        .logo-alpha {
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
         }
 
         .brand-text {
@@ -154,88 +172,24 @@
         }
 
         .cta-nav {
-            background: var(--accent-coral);
+            background: var(--accent-coral) !important;
             color: white !important;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 8px;
             font-weight: 600;
             font-size: 14px;
             transition: all 0.2s ease;
+            text-decoration: none;
         }
 
         .cta-nav:hover {
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
-            color: white !important;
+            background: #e55a4a !important;
         }
 
         .cta-nav::after {
-            display: none;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            padding: 8px;
-            cursor: pointer;
-            color: var(--text-primary);
-            font-size: 24px;
-            z-index: 1001;
-        }
-
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(11, 20, 38, 0.95);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            padding: 80px 24px 24px;
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-        }
-
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-
-        .mobile-nav-links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-            align-items: center;
-            margin-top: 60px;
-        }
-
-        .mobile-nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 24px;
-            font-weight: 600;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-nav-links a:hover {
-            color: var(--accent-coral);
-            transform: translateY(-2px);
-        }
-
-        .mobile-cta {
-            background: var(--accent-coral);
-            color: white;
-            padding: 16px 32px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 18px;
-            margin-top: 40px;
-            display: inline-block;
+            display: none !important;
         }
 
         /* Status Banner */
@@ -250,7 +204,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            margin-top: 72px;
+            margin-top: 88px;
         }
 
         .status-icon {
@@ -789,79 +743,78 @@
             transform: rotate(45deg);
         }
 
-        /* Footer */
+        /* Footer - Matching Home Page Exactly */
         footer {
             background: var(--primary-navy);
             color: white;
-            padding: 40px 0 24px;
+            padding: 60px 0 30px;
         }
 
         .footer-content {
-            text-align: center;
-            margin-bottom: 24px;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 40px;
         }
 
         .footer-brand h3 {
             font-size: 24px;
             font-weight: 700;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
 
         .footer-brand p {
             color: rgba(255, 255, 255, 0.7);
             line-height: 1.6;
-            margin-bottom: 20px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 24px;
         }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
+        .footer-section h4 {
+            font-size: 16px;
+            font-weight: 600;
             margin-bottom: 20px;
-            flex-wrap: wrap;
+            color: var(--accent-coral);
         }
 
-        .footer-links a {
+        .footer-section a {
             color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
             font-size: 14px;
             transition: color 0.2s ease;
         }
 
-        .footer-links a:hover {
-            color: var(--accent-coral);
+        .footer-section a:hover {
+            color: white;
         }
 
         .footer-bottom {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 20px;
-            text-align: center;
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             font-size: 14px;
             color: rgba(255, 255, 255, 0.6);
         }
 
         .social-links {
             display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-top: 16px;
+            gap: 16px;
         }
 
         .social-links a {
-            width: 36px;
-            height: 36px;
+            width: 40px;
+            height: 40px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             text-decoration: none;
             transition: all 0.2s ease;
-            font-size: 14px;
         }
 
         .social-links a:hover {
@@ -877,14 +830,6 @@
 
             .nav-links {
                 display: none;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .mobile-menu {
-                display: block;
             }
 
             .hero h1 {
@@ -907,9 +852,14 @@
                 grid-template-columns: 1fr;
             }
 
-            .footer-links {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom {
                 flex-direction: column;
-                gap: 12px;
+                gap: 20px;
             }
 
             .pricing-toggle {
@@ -924,7 +874,10 @@
         <nav class="container">
             <div class="logo-container">
                 <div class="logo">
-                    <span style="line-height: 1; display: block;">GTM<br><span style="font-size: 18px;">α</span></span>
+                    <div class="logo-text">
+                        <div class="logo-gtm">GTM</div>
+                        <div class="logo-alpha">α</div>
+                    </div>
                 </div>
                 <div class="brand-text">
                     <div class="brand-name">GTM Alpha</div>
@@ -932,33 +885,16 @@
                 </div>
             </div>
             
-            <!-- Desktop Navigation -->
             <ul class="nav-links">
                 <li><a href="/#features">Features</a></li>
                 <li><a href="/#epic">EPIC Framework</a></li>
                 <li><a href="/#integration">Integration</a></li>
                 <li><a href="/pricing" class="active">Pricing</a></li>
                 <li><a href="/consultation">Consultation</a></li>
-                <li><a href="/#about">About</a></li>
+                <li><a href="/#about">About Shashwat</a></li>
                 <li><a href="https://gtmexpert.com/" class="cta-nav">GTMExpert.com</a></li>
             </ul>
-
-            <!-- Mobile Menu Button -->
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
         </nav>
-
-        <!-- Mobile Navigation -->
-        <div class="mobile-menu" id="mobileMenu">
-            <ul class="mobile-nav-links">
-                <li><a href="/#features" onclick="closeMobileMenu()">Features</a></li>
-                <li><a href="/#epic" onclick="closeMobileMenu()">EPIC Framework</a></li>
-                <li><a href="/#integration" onclick="closeMobileMenu()">Integration</a></li>
-                <li><a href="/pricing" onclick="closeMobileMenu()">Pricing</a></li>
-                <li><a href="/consultation" onclick="closeMobileMenu()">Consultation</a></li>
-                <li><a href="/#about" onclick="closeMobileMenu()">About</a></li>
-                <li><a href="https://gtmexpert.com/" class="mobile-cta" onclick="closeMobileMenu()">GTMExpert.com</a></li>
-            </ul>
-        </div>
     </header>
 
     <div class="status-banner">
@@ -968,7 +904,7 @@
 
     <div class="beta-banner" id="betaBanner" style="display: none;">
         <div class="beta-content">
-            <span>🎉 LIMITED TIME: FREE Premium Analysis during Beta!</span>
+            <span>🎉 LIMITED TIME: FREE Premium Analysis till Diwali 2025!</span>
             <span class="countdown" id="countdown">Loading...</span>
         </div>
     </div>
@@ -1015,7 +951,7 @@
                         <div class="plan-price">
                             <div class="price-amount" id="premiumPrice">$30</div>
                             <div class="price-period">one-time</div>
-                            <div class="price-note" id="premiumNote">Currently FREE during beta!</div>
+                            <div class="price-note" id="premiumNote">FREE till Diwali 2025!</div>
                         </div>
                         <ul class="plan-features">
                             <li><span class="feature-icon feature-included">✓</span> EPIC Framework Analysis</li>
@@ -1026,7 +962,7 @@
                             <li><span class="feature-icon feature-excluded">✗</span> No MCP/API Access</li>
                             <li><span class="feature-icon feature-excluded">✗</span> No Follow-up Sessions</li>
                         </ul>
-                        <a href="/.netlify/functions/create-payment-beta" onclick="startPayment('premium')" class="plan-cta">Get Premium Analysis</a>
+                        <a href="/consultation" class="plan-cta">Get Premium Analysis</a>
                     </div>
 
                     <!-- Strategic Plan -->
@@ -1056,7 +992,7 @@
                             <li><span class="feature-icon feature-premium">★</span> Additional calls: $2/call</li>
                             <li><span class="feature-icon feature-included">✓</span> Flexible Scheduling</li>
                         </ul>
-                        <a href="/.netlify/functions/create-payment-beta" onclick="startPayment('strategic')" class="plan-cta">Book Strategic Session</a>
+                        <a href="/consultation" class="plan-cta">Book Strategic Session</a>
                     </div>
 
                     <!-- Fractional Plan -->
@@ -1077,7 +1013,7 @@
                             <li><span class="feature-icon feature-premium">★</span> 20 Free MCP/API Calls/Month</li>
                             <li><span class="feature-icon feature-premium">★</span> Additional calls: $2/call</li>
                         </ul>
-                        <a href="/.netlify/functions/create-payment-beta" onclick="startPayment('fractional')" class="plan-cta">Start Fractional Partnership</a>
+                        <a href="/consultation" class="plan-cta">Start Fractional Partnership</a>
                     </div>
 
                     <!-- Enterprise Plan -->
@@ -1193,7 +1129,7 @@
                             <span class="faq-icon">+</span>
                         </button>
                         <div class="faq-answer">
-                            During our beta period (until July 15, 2025), we're offering the Premium Analysis ($30 value) completely free. This includes the full EPIC framework analysis, digital presence audit, market intelligence report, 6-month roadmap, and professional PDF report. Only the initial consultation is free - other services (Strategic, Fractional, Enterprise) are paid from day 1.
+                            During our beta period (FREE offer till Diwali 2025 - October 20), we're offering the Premium Analysis ($30 value) completely free. This includes the full EPIC framework analysis, digital presence audit, market intelligence report, 6-month roadmap, and professional PDF report. Only the initial consultation is free - other services (Strategic, Fractional, Enterprise) are paid from day 1.
                         </div>
                     </div>
 
@@ -1277,114 +1213,55 @@
                 <div class="footer-brand">
                     <h3>GTM Alpha MCP Server</h3>
                     <p>
-                        Best AI GTM and Fractional CMO in India, APAC and US region. Powered by Shashwat Ghosh's proprietary EPIC framework. 
-                        Transform your go-to-market strategy with AI-enhanced consulting for B2B tech and ITES companies.
+                        Best AI GTM and Fractional CMO in India, APAC and US region. Professional go-to-market strategy consulting powered by Shashwat Ghosh's 
+                        expertise and advanced AI integration for modern B2B tech and ITES businesses.
                     </p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/shashwatghosh/" aria-label="LinkedIn">in</a>
+                        <a href="https://x.com/Shashwat_Ghosh" aria-label="Twitter">tw</a>
+                        <a href="https://gtmexpert.com/" aria-label="Website">🌐</a>
+                        <a href="https://medium.com/@shashwatghosh" aria-label="Medium">M</a>
+                    </div>
                 </div>
                 
-                <div class="footer-links">
+                <div class="footer-section">
+                    <h4>Platform</h4>
                     <a href="/#features">Features</a>
                     <a href="/#epic">EPIC Framework</a>
                     <a href="/#integration">Integration</a>
                     <a href="/pricing">Pricing</a>
                     <a href="/consultation">Consultation</a>
                     <a href="/#about">About Shashwat</a>
-                    <a href="https://gtmexpert.com/">GTMExpert.com</a>
-                    <a href="https://calendly.com/shashwat-gtmhelix/45min">Book Call</a>
-                    <a href="mailto:shashwat@hyperplays.in">Contact</a>
                 </div>
                 
-                <div class="social-links">
-                    <a href="https://www.linkedin.com/in/shashwatghosh/" aria-label="LinkedIn">in</a>
-                    <a href="https://x.com/Shashwat_Ghosh" aria-label="Twitter">tw</a>
-                    <a href="https://gtmexpert.com/" aria-label="Website">🌐</a>
-                    <a href="https://gtmexpert.substack.com/" aria-label="Substack">S</a>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <a href="https://gtmexpert.com/">GTM Consulting</a>
+                    <a href="https://gtmexpert.com/">Fractional CMO</a>
+                    <a href="https://gtmexpert.com/">AI Marketing</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <a href="/consultation">📅 Book Consultation</a>
+                    <a href="mailto:shashwat@hyperplays.in">Email Support</a>
+                    <a href="https://www.linkedin.com/in/shashwatghosh/">LinkedIn</a>
+                    <a href="https://gtmexpert.com/">GTMExpert.com</a>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <div>&copy; 2025 GTM Alpha MCP Server by Shashwat Ghosh. Best AI GTM & Fractional CMO | #10 India | #52 Worldwide | Compatible with Claude, OpenAI, Gemini, Copilot, Llama, Ollama</div>
+                <div>&copy; 2025 GTM Alpha by Shashwat Ghosh. <a href="https://www.linkedin.com/company/helixgtmconsulting/?viewAsMember=true" style="color: var(--accent-coral); text-decoration: none;">Helix Consulting</a>.</div>
+                <div>Best AI GTM & Fractional CMO | #10 India | #52 Worldwide</div>
             </div>
         </div>
     </footer>
 
     <script>
-        // Mobile menu functionality
-        function toggleMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.toggle('active');
-        }
-
-        function closeMobileMenu() {
-            const mobileMenu = document.getElementById('mobileMenu');
-            mobileMenu.classList.remove('active');
-        }
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const mobileMenu = document.getElementById('mobileMenu');
-            const menuBtn = document.querySelector('.mobile-menu-btn');
-            
-            if (!mobileMenu.contains(event.target) && !menuBtn.contains(event.target)) {
-                mobileMenu.classList.remove('active');
-            }
-        });
-
-        // Payment integration
-        function startPayment(tier) {
-            // Collect basic consultation data for payment
-            const consultationData = {
-                client_name: 'Quick Purchase',
-                company_name: 'Direct Purchase',
-                tier: tier,
-                payment_method: 'direct'
-            };
-
-            // Call payment function
-            fetch('/.netlify/functions/create-payment-beta', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    consultation_data: consultationData,
-                    tier: tier,
-                    payment_frequency: 'monthly'
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.approval_url) {
-                    // Redirect to PayPal
-                    window.location.href = data.approval_url;
-                } else if (data.beta_offer) {
-                    // Handle free beta
-                    alert('🎉 FREE during beta! Redirecting to consultation form...');
-                    window.location.href = '/consultation';
-                } else {
-                    alert('Payment setup failed. Please try again or contact support.');
-                }
-            })
-            .catch(error => {
-                console.error('Payment error:', error);
-                alert('Payment error occurred. Please try again or contact support.');
-            });
-        }
-
         // Beta countdown and pricing logic
         document.addEventListener('DOMContentLoaded', function() {
-            const BETA_END_DATE = new Date('2025-07-15T23:59:59Z');
+            const BETA_END_DATE = new Date('2025-10-20T23:59:59Z'); // Diwali 2025
             let isAnnual = false;
-
-            // Suppress CSS security errors in development
-            const originalConsoleError = console.error;
-            console.error = function(...args) {
-                const message = args.join(' ');
-                if (message.includes('SecurityError') || message.includes('cssRules') || message.includes('fonts.googleapis.com')) {
-                    return; // Suppress CSS-related security errors
-                }
-                originalConsoleError.apply(console, args);
-            };
 
             // Check if beta is active
             function isBetaActive() {
@@ -1408,7 +1285,7 @@
                             const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                             const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
                             
-                            countdown.textContent = `${days}d ${hours}h ${minutes}m remaining`;
+                            countdown.textContent = `${days}d ${hours}h ${minutes}m until Diwali 2025`;
                         } else {
                             betaBanner.style.display = 'none';
                         }
@@ -1443,17 +1320,17 @@
                 document.getElementById('premiumPrice').textContent = 
                     pricing.premium[suffix] === 0 ? 'FREE' : `$${pricing.premium[suffix]}`;
                 document.getElementById('premiumNote').textContent = 
-                    pricing.premium[suffix] === 0 ? 'Currently FREE during beta!' : 'Professional consultation report';
+                    pricing.premium[suffix] === 0 ? 'FREE till Diwali 2025!' : 'Professional consultation report';
 
                 // Fractional
-                document.getElementById('fractionalPrice').textContent = `$${pricing.fractional[suffix]}`;
+                document.getElementById('fractionalPrice').textContent = `$${pricing.fractional[suffix].toLocaleString()}`;
                 document.getElementById('fractionalPeriod').textContent = isAnnual ? 'per month (billed annually)' : 'per month';
                 document.getElementById('fractionalNote').textContent = isAnnual ? 
                     `Annual billing saves $6,648 per year` : 
                     'Quarterly: Save $1,108 • Annual: Save $6,648';
 
                 // Enterprise
-                document.getElementById('enterprisePrice').textContent = `$${pricing.enterprise[suffix]}`;
+                document.getElementById('enterprisePrice').textContent = `$${pricing.enterprise[suffix].toLocaleString()}`;
                 document.getElementById('enterprisePeriod').textContent = isAnnual ? 'per month (billed annually)' : 'per month';
                 document.getElementById('enterpriseNote').textContent = isAnnual ?
                     `Annual billing: 3 licenses • $${Math.round(pricing.enterprise[suffix] / 3)}/license` :
@@ -1495,27 +1372,6 @@
             // Initialize
             updateBetaBanner();
             updatePricing();
-
-            // Fetch live pricing from API (suppress errors during development)
-            try {
-                fetch('/.netlify/functions/get-pricing')
-                    .then(response => {
-                        if (!response.ok) throw new Error('API not available');
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.beta_status && data.beta_status.active) {
-                            updateBetaBanner();
-                        }
-                    })
-                    .catch(error => {
-                        // Silently handle API errors during development
-                        console.log('Pricing API not deployed yet - using static pricing');
-                    });
-            } catch (error) {
-                // Handle any other errors silently
-                console.log('Development mode - using static pricing');
-            }
         });
     </script>
 </body>

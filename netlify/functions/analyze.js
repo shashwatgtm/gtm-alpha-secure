@@ -63,7 +63,7 @@ const GTM_ALPHA_ENGINE = {
     };
 
     // Apply challenge-based adjustments
-    const challengeText = gtm_challenge.toLowerCase();
+    const challengeText = (gtm_challenge || '').toLowerCase();
     Object.keys(challengeKeywords).forEach(keyword => {
       if (challengeText.includes(keyword)) {
         const adjustment = challengeKeywords[keyword];
@@ -205,13 +205,13 @@ const GTM_ALPHA_ENGINE = {
     const { company_name, gtm_challenge, business_stage } = inputData;
     
     // Real consultation insight based on GTM Alpha methodology
-    const baseInsight = `I've consistently observed in client engagements that ${business_stage} companies like ${company_name}, your specific challenge represents a critical GTM optimization opportunity. Ask any startup founder if you have a go-to-market (GTM) problem. It's entirely possible that the answer would be no because startup founders and CXOs think that GTM is a top-of-the-funnel (TOFU) problem, marketing problem, product use case problem, or sales team problem. And that's the problem.`;
+    const baseInsight = `Based on my experience with ${business_stage} companies, your specific challenge represents a critical GTM optimization opportunity. Most founders think GTM is just a marketing or sales problem, but it's actually a comprehensive operating system.`;
 
     const focusSpecificInsights = {
-      'Product-Led Growth Acceleration': `Your challenge requires treating GTM as a dynamic operating system where Product-Led Growth Acceleration becomes your primary lever for sustainable competitive advantage. Engineering product as GTM engine, PLG + sales synergy, user experience optimization for conversion.`,
-      'Ecosystem & ABM-led Sales Motion': `Focus on leveraging unique data advantages, partner ecosystems, relationship intelligence for enterprise sales acceleration. Building strategic partnerships and account-based approaches that create sustainable competitive moats.`,
-      'Inbound & Outbound Demand Generation': `Integrated approach combining content marketing excellence with hyper-personalized outreach. Focus on eliminating decision dead zones in your buyer journey rather than optimizing vanity metrics.`,
-      'Community-Led Growth Strategy': `Community-driven advocacy and authentic relationship building as primary growth engine. Focus on creating genuine value exchange and thought leadership positioning.`
+      'Product-Led Growth Acceleration': `Your challenge requires treating GTM as a dynamic operating system where Product-Led Growth becomes your primary lever. Focus on engineering product as GTM engine, PLG + sales synergy, and user experience optimization for conversion.`,
+      'Ecosystem & ABM-led Sales Motion': `Focus on leveraging unique data advantages, partner ecosystems, and relationship intelligence for enterprise sales acceleration. Build strategic partnerships and account-based approaches that create sustainable competitive moats.`,
+      'Inbound & Outbound Demand Generation': `Implement an integrated approach combining content marketing excellence with hyper-personalized outreach. Focus on eliminating decision dead zones in your buyer journey rather than optimizing vanity metrics.`,
+      'Community-Led Growth Strategy': `Build community-driven advocacy and authentic relationship building as your primary growth engine. Focus on creating genuine value exchange and thought leadership positioning.`
     };
 
     return baseInsight + '\n\n' + focusSpecificInsights[primaryFocus];
@@ -368,7 +368,7 @@ const GTM_ALPHA_ENGINE = {
   },
 
   generateMentalVelocityAnalysis(inputData) {
-    return `From my experience with B2B buyers, I've found that optimizing for mental velocity - the speed of buyer hypothesis-to-resolution progression - is more critical than traditional funnel metrics. For your situation: focus on eliminating decision dead zones in your buyer journey rather than optimizing vanity metrics.`;
+    return `Based on B2B buyer psychology, optimizing for mental velocity - the speed of buyer hypothesis-to-resolution progression - is more critical than traditional funnel metrics. Focus on eliminating decision dead zones in your buyer journey.`;
   },
 
   // Generate complete HTML report with PDF download functionality
@@ -378,7 +378,7 @@ const GTM_ALPHA_ENGINE = {
     
     const digitalSection = analysis.digitalInsights ? `
     <div class="section">
-        <h2>💻 Digital Presence Analysis</h2>
+        <h2>Digital Presence Analysis</h2>
         <p><strong>Digital Maturity Level:</strong> ${analysis.digitalInsights.digital_maturity_level}</p>
         ${analysis.digitalInsights.key_digital_strengths.length > 0 ? `
         <h3>Digital Strengths:</h3>
@@ -433,7 +433,7 @@ const GTM_ALPHA_ENGINE = {
 </head>
 <body>
     <div class="report-container" id="report-content">
-        <button class="pdf-download" onclick="downloadPDF()">📄 Download PDF</button>
+        <button class="pdf-download" onclick="downloadPDF()">Download PDF</button>
         
         <div class="header">
             <h1>GTM Alpha Consultation Report</h1>
@@ -445,13 +445,13 @@ const GTM_ALPHA_ENGINE = {
         </div>
 
         <div class="section primary-focus">
-            <h2>🎯 Strategic Focus Areas</h2>
+            <h2>Strategic Focus Areas</h2>
             <p><strong>Primary Focus:</strong> ${analysis.primaryFocus}</p>
             <p><strong>Secondary Focus:</strong> ${analysis.secondaryFocus}</p>
         </div>
 
         <div class="section">
-            <h2>⚡ EPIC Framework Scores</h2>
+            <h2>EPIC Framework Scores</h2>
             <div class="epic-scores">
                 <div class="epic-item">
                     <div class="epic-letter">E</div>
@@ -477,21 +477,21 @@ const GTM_ALPHA_ENGINE = {
         </div>
 
         <div class="section">
-            <h2>🧠 GTM Alpha Insights</h2>
+            <h2>GTM Alpha Insights</h2>
             <p>${analysis.insights}</p>
         </div>
 
         ${digitalSection}
 
         <div class="section">
-            <h2>🚀 Strategic Recommendations</h2>
+            <h2>Strategic Recommendations</h2>
             <ul>
                 ${analysis.recommendations.map(rec => `<li>${rec}</li>`).join('')}
             </ul>
         </div>
 
         <div class="section">
-            <h2>📅 GTM Implementation Roadmap</h2>
+            <h2>GTM Implementation Roadmap</h2>
             <div class="roadmap">
                 <div class="roadmap-item">
                     <h3>Days 1-30: Foundation</h3>
@@ -521,12 +521,12 @@ const GTM_ALPHA_ENGINE = {
         </div>
 
         <div class="section">
-            <h2>⚡ Mental Velocity Analysis</h2>
+            <h2>Mental Velocity Analysis</h2>
             <p>${analysis.mentalVelocityAnalysis}</p>
         </div>
 
         <div class="section">
-            <h2>📞 Next Steps</h2>
+            <h2>Next Steps</h2>
             <p>For personalized implementation support and detailed strategy development:</p>
             <ul>
                 <li><a href="https://calendly.com/shashwat-gtmhelix/45min">Book Premium Consultation</a></li>
@@ -560,8 +560,8 @@ const GTM_ALPHA_ENGINE = {
   }
 };
 
-// Main Netlify function
-exports.handler = async (event, context) => {
+// Main Netlify function (ES6 export)
+export default async (req, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -569,20 +569,19 @@ exports.handler = async (event, context) => {
     'Content-Type': 'application/json'
   };
 
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers };
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 200, headers });
   }
 
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers,
-      body: JSON.stringify({ error: 'Method not allowed' })
-    };
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers
+    });
   }
 
   try {
-    const inputData = JSON.parse(event.body);
+    const inputData = await req.json();
     
     // Validate required fields - support both formats (company+market OR client_name+company_name)
     const companyName = inputData.company_name || inputData.company;
@@ -591,13 +590,12 @@ exports.handler = async (event, context) => {
     const gtmChallenge = inputData.gtm_challenge || inputData.current_challenges || '';
     
     if (!companyName || !industry) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({
-          error: 'Missing required fields: company name and industry/market are required'
-        })
-      };
+      return new Response(JSON.stringify({
+        error: 'Missing required fields: company name and industry/market are required'
+      }), {
+        status: 400,
+        headers
+      });
     }
 
     // Enhanced input data for compatibility with Railway backend format
@@ -636,61 +634,64 @@ exports.handler = async (event, context) => {
     const timestamp = new Date().toISOString();
 
     // Response format matching Railway backend for compatibility
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        success: true,
-        runId: consultationId,
-        status: 'SUCCEEDED',
-        data: {
-          consultation_id: consultationId,
-          report_url: `data:text/html;base64,${Buffer.from(htmlReport).toString('base64')}`,
+    return new Response(JSON.stringify({
+      success: true,
+      runId: consultationId,
+      status: 'SUCCEEDED',
+      data: {
+        consultation_id: consultationId,
+        report_url: `data:text/html;base64,${Buffer.from(htmlReport).toString('base64')}`,
+        primary_focus: analysis.primaryFocus,
+        epic_scores: epicScores,
+        consultation_output: analysis.insights,
+        timestamp: timestamp,
+        digital_insights: digitalAnalysis ? analysis.digitalInsights : null
+      },
+      analysis: {
+        epic_framework: {
+          ecosystem: `Ecosystem & ABM Score: ${epicScores.E}/100 - ${analysis.primaryFocus.includes('Ecosystem') ? 'Primary Focus' : 'Secondary opportunity'}`,
+          product_led: `Product-Led Score: ${epicScores.P}/100 - ${analysis.primaryFocus.includes('Product') ? 'Primary Focus' : 'Growth optimization needed'}`,
+          inbound: `Inbound & Outbound Score: ${epicScores.I}/100 - ${analysis.primaryFocus.includes('Inbound') ? 'Primary Focus' : 'Demand generation strategy required'}`,
+          community: `Community-Led Score: ${epicScores.C}/100 - ${analysis.primaryFocus.includes('Community') ? 'Primary Focus' : 'Community-driven growth opportunity'}`
+        },
+        recommendations: analysis.recommendations,
+        market_insights: {
           primary_focus: analysis.primaryFocus,
+          secondary_focus: analysis.secondaryFocus,
           epic_scores: epicScores,
-          consultation_output: analysis.insights,
-          timestamp: timestamp,
-          digital_insights: digitalAnalysis ? analysis.digitalInsights : null
+          digital_maturity: digitalAnalysis ? digitalAnalysis.digital_maturity_score : null
         },
-        analysis: {
-          epic_framework: {
-            ecosystem: `Ecosystem & ABM Score: ${epicScores.E}/100 - ${analysis.primaryFocus.includes('Ecosystem') ? 'Primary Focus' : 'Secondary opportunity'}`,
-            product_led: `Product-Led Score: ${epicScores.P}/100 - ${analysis.primaryFocus.includes('Product') ? 'Primary Focus' : 'Growth optimization needed'}`,
-            inbound: `Inbound & Outbound Score: ${epicScores.I}/100 - ${analysis.primaryFocus.includes('Inbound') ? 'Primary Focus' : 'Demand generation strategy required'}`,
-            community: `Community-Led Score: ${epicScores.C}/100 - ${analysis.primaryFocus.includes('Community') ? 'Primary Focus' : 'Community-driven growth opportunity'}`
-          },
-          recommendations: analysis.recommendations,
-          market_insights: {
-            primary_focus: analysis.primaryFocus,
-            secondary_focus: analysis.secondaryFocus,
-            epic_scores: epicScores,
-            digital_maturity: digitalAnalysis ? digitalAnalysis.digital_maturity_score : null
-          },
-          implementation_roadmap: analysis.roadmap,
-          mental_velocity_analysis: analysis.mentalVelocityAnalysis,
-          digital_presence_analysis: digitalAnalysis,
-          consultation_id: consultationId,
-          timestamp: timestamp,
-          html_report: htmlReport
-        },
-        consoleUrl: `#consultation-${consultationId}`,
-        datasetUrl: `#report-${consultationId}`,
-        consultation_link: 'https://calendly.com/shashwat-gtmhelix/45min',
-        generated_by: 'GTM Alpha Engine - Shashwat Ghosh EPIC Framework'
-      })
-    };
+        implementation_roadmap: analysis.roadmap,
+        mental_velocity_analysis: analysis.mentalVelocityAnalysis,
+        digital_presence_analysis: digitalAnalysis,
+        consultation_id: consultationId,
+        timestamp: timestamp,
+        html_report: htmlReport
+      },
+      consoleUrl: `#consultation-${consultationId}`,
+      datasetUrl: `#report-${consultationId}`,
+      consultation_link: 'https://calendly.com/shashwat-gtmhelix/45min',
+      generated_by: 'GTM Alpha Engine - Shashwat Ghosh EPIC Framework'
+    }), {
+      status: 200,
+      headers
+    });
 
   } catch (error) {
     console.error('Error in GTM analysis:', error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({
-        success: false,
-        error: 'Internal server error',
-        message: error.message,
-        runId: `ERROR-${Date.now()}`
-      })
-    };
+    return new Response(JSON.stringify({
+      success: false,
+      error: 'Internal server error',
+      message: error.message,
+      runId: `ERROR-${Date.now()}`
+    }), {
+      status: 500,
+      headers
+    });
   }
+};
+
+// Export configuration for Netlify
+export const config = {
+  path: "/api/analyze"
 };

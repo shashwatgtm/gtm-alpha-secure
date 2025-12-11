@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integration Guide | GTM Alpha MCP Server</title>
+    <meta name="description" content="Complete integration guide for GTM Alpha MCP Server. Connect with Claude, OpenAI, Google Gemini, MS Copilot, and more.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Copy all the CSS from index.html here - it's the same styles */
+        :root {
+            --primary-navy: #0B1426;
+            --primary-blue: #1B365D;
+            --accent-coral: #FF6B5A;
+            --accent-gold: #F4B942;
+            --text-primary: #0B1426;
+            --text-secondary: #64748B;
+            --text-light: #94A3B8;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8FAFC;
+            --bg-accent: #F1F5F9;
+            --border-light: #E2E8F0;
+            --gradient-primary: linear-gradient(135deg, #1B365D 0%, #0B1426 100%);
+            --gradient-accent: linear-gradient(135deg, #FF6B5A 0%, #F4B942 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid var(--border-light);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: white;
+            position: relative;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .logo-gtm {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: -2px;
+        }
+
+        .logo-alpha {
+            font-size: 20px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+
+        .brand-tagline {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-coral);
+            transition: width 0.2s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .cta-nav {
+            background: var(--accent-coral) !important;
+            color: white !important;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .cta-nav:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            background: #e55a4a !important;
+        }
+
+        .cta-nav::after {
+            display: none !important;
+        }
+
+        /* Main Content */
+        .page-content {
+            margin-top: 88px;
+            padding: 80px 0;
+            background: var(--primary-navy);
+            color: white;
+            min-height: calc(100vh - 88px);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-badge {
+            display: inline-block;
+            background: var(--accent-coral);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Integration Tabs */
+        .integration-tabs {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .tab-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-coral);
+            color: white;
+            border-color: var(--accent-coral);
+        }
+
+        .tab-content {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .tab-panel h3 {
+            font-size: 28px;
+            margin-bottom: 16px;
+            color: white;
+        }
+
+        .integration-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .file-location {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-container {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-header {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .code-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .dot-red { background: #FF5F57; }
+        .dot-yellow { background: #FFBD2E; }
+        .dot-green { background: #28CA42; }
+
+        .code-block {
+            background: transparent;
+            color: #E2E8F0;
+            padding: 24px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .code-block .key {
+            color: #F472B6;
+        }
+
+        .code-block .string {
+            color: #34D399;
+        }
+
+        .code-block .bracket {
+            color: #60A5FA;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-navy);
+            color: white;
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .footer-section h4 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--accent-coral);
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 12px;
+            font-size: 14px;
+            transition: color 0.2s ease;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--accent-coral);
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: var(--accent-coral);
+            color: white;
+            padding: 16px 32px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px rgba(255, 107, 90, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .integration-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo-container">
+                <div class="logo">
+                    <div class="logo-text">
+                        <div class="logo-gtm">GTM</div>
+                        <div class="logo-alpha">α</div>
+                    </div>
+                </div>
+                <div class="brand-text">
+                    <div class="brand-name">GTM Alpha</div>
+                    <div class="brand-tagline">MCP Server</div>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+                <li><a href="/consultation">Consultation</a></li>
+                <li><a href="/integration" class="active">Integration</a></li>
+                <li><a href="https://gtmexpert.com/" class="cta-nav">GTMExpert.com</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="page-content">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">Multi-LLM Integration</div>
+                <h1 class="section-title">Connect to Any AI Platform</h1>
+                <p class="section-subtitle">
+                    Choose your preferred AI platform and follow the integration guide to access GTM Alpha's professional consulting tools.
+                </p>
+            </div>
+            
+            <div class="integration-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="claude">Claude Desktop</button>
+                    <button class="tab-btn" data-tab="apify">Apify MCP</button>
+                    <button class="tab-btn" data-tab="openai">OpenAI GPT</button>
+                    <button class="tab-btn" data-tab="gemini">Google Gemini</button>
+                    <button class="tab-btn" data-tab="copilot">MS Copilot</button>
+                    <button class="tab-btn" data-tab="api">Direct API</button>
+                </div>
+                
+                <div class="tab-content">
+                    <!-- Claude Desktop Tab -->
+                    <div class="tab-panel active" id="claude">
+                        <div class="integration-content">
+                            <div class="integration-text">
+                                <h3>Claude Desktop Integration</h3>
+                                <p>Connect GTM Alpha to Claude Desktop for instant access to professional go-to-market consulting tools.</p>
+                                
+                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Configuration File Location:</h4>
+                                <div class="file-location">
+                                    ~/Library/Application Support/Claude/claude_desktop_config.json
+                                </div>
+                                
+                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Setup Instructions:</h4>
+                                <ol style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
+                                    <li>Open the configuration file in your text editor</li>
+                                    <li>Add the GTM Alpha server configuration</li>
+                                    <li>Save the file and restart Claude Desktop</li>
+                                    <li>Test with: "Analyze my GTM strategy using EPIC framework"</li>
+                                </ol>
+                            </div>
+                            
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <div class="code-dots">
+                                        <div class="code-dot dot-red"></div>
+                                        <div class="code-dot dot-yellow"></div>
+                                        <div class="code-dot dot-green"></div>
+                                    </div>
+                                    <span>claude_desktop_config.json</span>
+                                </div>
+                                <div class="code-block">
+<span class="bracket">{</span>
+  <span class="key">"mcpServers"</span>: <span class="bracket">{</span>
+    <span class="key">"gtm-alpha-server"</span>: <span class="bracket">{</span>
+      <span class="key">"command"</span>: <span class="string">"npx"</span>,
+      <span class="key">"args"</span>: <span class="bracket">[</span>
+        <span class="string">"mcp-remote@next"</span>,
+        <span class="string">"https://gtmalpha.netlify.app/mcp"</span>
+      <span class="bracket">]</span>
+    <span class="bracket">}</span>
+  <span class="bracket">}</span>
+<span class="bracket">}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Apify MCP Tab -->
+                    <div class="tab-panel" id="apify">
+                        <div class="integration-content">
+                            <div class="integration-text">
+                                <h3>Apify MCP Server (Official Implementation)</h3>
+                                <p>Connect to the official GTM Alpha Consultant via Apify's MCP server for the complete digital twin experience.</p>
+                                
+                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Real GTM Analysis:</h4>
+                                <ul style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
+                                    <li>Authentic EPIC framework analysis based on real content</li>
+                                    <li>Comprehensive HTML reports with actionable insights</li>
+                                    <li>Mental velocity optimization strategies</li>
+                                    <li>Industry-specific recommendations (fintech, logistics, SaaS)</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="code-container">
+                                <div class="code-header">
+                                    <div class="code-dots">
+                                        <div class="code-dot dot-red"></div>
+                                        <div class="code-dot dot-yellow"></div>
+                                        <div class="code-dot dot-green"></div>
+                                    </div>
+                                    <span>Apify MCP Configuration</span>
+                                </div>
+                                <div class="code-block">
+<span class="bracket">{</span>
+  <span class="key">"mcpServers"</span>: <span class="bracket">{</span>
+    <span class="key">"apify-gtm-alpha"</span>: <span class="bracket">{</span>
+      <span class="key">"command"</span>: <span class="string">"npx"</span>,
+      <span class="key">"args"</span>: <span class="bracket">[</span>
+        <span class="string">"mcp-remote"</span>,
+        <span class="string">"https://mcp.apify.com/sse?actors=shashghosh/gtm-alpha-consultant"</span>,
+        <span class="string">"--header"</span>,
+        <span class="string">"Authorization: Bearer YOUR_API_TOKEN"</span>
+      <span class="bracket">]</span>
+    <span class="bracket">}</span>
+  <span class="bracket">}</span>
+<span class="bracket">}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- OpenAI Tab -->
+                    <div class="tab-panel" id="openai">
+                        <h3>OpenAI GPT Integration</h3>
+                        <p>Access GTM Alpha tools through OpenAI's GPT models using custom actions or API integration.</p>
+                        <div class="file-location">
+                            API Endpoint: https://gtmalpha.netlify.app/api/gtm
+                        </div>
+                        <p style="margin-top: 20px; color: rgba(255,255,255,0.8);">
+                            Configure your GPT with our API endpoint to enable GTM Alpha capabilities in your custom GPT or application.
+                        </p>
+                    </div>
+                    
+                    <!-- Google Gemini Tab -->
+                    <div class="tab-panel" id="gemini">
+                        <h3>Google Gemini Integration</h3>
+                        <p>Connect GTM Alpha to Google Gemini through function calling and extensions.</p>
+                        <div class="file-location">
+                            Base URL: https://gtmalpha.netlify.app/api/gtm
+                        </div>
+                        <p style="margin-top: 20px; color: rgba(255,255,255,0.8);">
+                            Use our API endpoint with Gemini's function calling feature to integrate GTM Alpha consulting tools.
+                        </p>
+                    </div>
+                    
+                    <!-- MS Copilot Tab -->
+                    <div class="tab-panel" id="copilot">
+                        <h3>Microsoft Copilot Integration</h3>
+                        <p>Integrate GTM Alpha with Microsoft Copilot through plugins and API connections.</p>
+                        <div class="file-location">
+                            Plugin Manifest: https://gtmalpha.netlify.app/.well-known/ai-plugin.json
+                        </div>
+                        <p style="margin-top: 20px; color: rgba(255,255,255,0.8);">
+                            Add GTM Alpha as a plugin to Microsoft Copilot using our plugin manifest.
+                        </p>
+                    </div>
+                    
+                    <!-- Direct API Tab -->
+                    <div class="tab-panel" id="api">
+                        <h3>Direct API Access</h3>
+                        <p>Direct REST API access for custom integrations and applications.</p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
+                            <a href="/api-docs" style="color: var(--accent-coral); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">📋 API Documentation</a>
+                            <a href="/openapi.yaml" style="color: var(--accent-coral); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">⬇️ OpenAPI Spec</a>
+                        </div>
+                        <p style="margin-top: 20px; color: rgba(255,255,255,0.8);">
+                            Build custom integrations using our comprehensive REST API. Full documentation and OpenAPI specification available.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 40px;">
+                <a href="/consultation" class="btn-primary">
+                    📅 Book GTM Consultation
+                    <span>→</span>
+                </a>
+                <div style="margin-top: 16px; color: rgba(255,255,255,0.8); font-size: 14px;">
+                    Or email: <a href="mailto:shashwat@hyperplays.in" style="color: var(--accent-coral); text-decoration: none;">shashwat@hyperplays.in</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>GTM Alpha MCP Server</h3>
+                    <p>
+                        Best AI GTM and Fractional CMO in India, APAC and US region. Professional go-to-market strategy consulting powered by Shashwat Ghosh's 
+                        expertise and advanced AI integration for modern B2B tech and ITES businesses.
+                    </p>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/shashwatghosh/" aria-label="LinkedIn">in</a>
+                        <a href="https://x.com/Shashwat_Ghosh" aria-label="Twitter">tw</a>
+                        <a href="https://gtmexpert.com/" aria-label="Website">🌐</a>
+                        <a href="https://medium.com/@shashwatghosh" aria-label="Medium">M</a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Platform</h4>
+                    <a href="/">Home</a>
+                    <a href="/#features">Features</a>
+                    <a href="/#epic">EPIC Framework</a>
+                    <a href="/integration">Integration</a>
+                    <a href="/pricing">Pricing</a>
+                    <a href="/consultation">Consultation</a>
+                    <a href="/#about">About Shashwat</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <a href="https://gtmexpert.com/">GTM Consulting</a>
+                    <a href="https://gtmexpert.com/">Fractional CMO</a>
+                    <a href="https://gtmexpert.com/">AI Marketing</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <a href="/consultation">📅 Book Consultation</a>
+                    <a href="mailto:shashwat@hyperplays.in">Email Support</a>
+                    <a href="https://www.linkedin.com/in/shashwatghosh/">LinkedIn</a>
+                    <a href="https://gtmexpert.com/">GTMExpert.com</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div>&copy; 2025 GTM Alpha by Shashwat Ghosh. <a href="https://www.linkedin.com/company/helixgtmconsulting/?viewAsMember=true" style="color: var(--accent-coral); text-decoration: none;">Helix Consulting</a>.</div>
+                <div>Best AI GTM & Fractional CMO | #10 India | #52 Worldwide</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanels = document.querySelectorAll('.tab-panel');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const targetTab = button.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and panels
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabPanels.forEach(panel => panel.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding panel
+                    button.classList.add('active');
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

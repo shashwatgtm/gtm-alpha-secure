@@ -2,7 +2,7 @@
 // PayPal payment integration with FREE BETA initial consultation only
 // All other services paid from day 1 with PayPal fees passed to customer
 
-const paypal = require('@paypal/checkout-server-sdk');
+import paypal from '@paypal/checkout-server-sdk';
 
 // PayPal environment setup
 const Environment = process.env.NODE_ENV === 'production' 
@@ -16,7 +16,7 @@ const paypalClient = new paypal.core.PayPalHttpClient(
   )
 );
 
-// Beta offer configuration - FREE initial consultation only until July 15, 2025
+// Beta offer configuration - FREE initial consultation only until Nov 01, 2025
 const BETA_END_DATE = new Date('2025-07-15T23:59:59Z');
 
 function isBetaPeriod() {
@@ -45,7 +45,7 @@ function calculateDiscounts(basePrice) {
   };
 }
 
-exports.handler = async (event, context) => {
+export default async (req, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -53,20 +53,19 @@ exports.handler = async (event, context) => {
     'Content-Type': 'application/json'
   };
 
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers };
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 200, headers });
   }
 
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers,
-      body: JSON.stringify({ error: 'Method not allowed' })
-    };
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers
+    });
   }
 
   try {
-    const { consultation_data, tier = 'premium', payment_frequency = 'one-time' } = JSON.parse(event.body);
+    const { consultation_data, tier = 'premium', payment_frequency = 'one-time' } = await req.json();
     
     // Check if we're in beta period
     const betaActive = isBetaPeriod();
@@ -100,41 +99,37 @@ exports.handler = async (event, context) => {
     
     // BETA LOGIC: Only initial consultation (premium) is free during beta
     if (betaActive && tier === 'premium') {
-      console.log(`🎉 FREE BETA INITIAL CONSULTATION for ${consultation_data.company_name} - ${daysRemaining} days remaining!`);
+      console.log(`FREE BETA INITIAL CONSULTATION for ${consultation_data.company_name} - ${daysRemaining} days remaining!`);
       
       try {
-        const analyzeFunction = require('./analyze');
-        const consultationResult = await analyzeFunction.handler({
-          httpMethod: 'POST',
-          body: JSON.stringify(consultation_data)
-        }, context);
+        // Import the analyze function
+        const { default: analyzeFunction } = await import('./analyze.js');
+        const consultationResult = await analyzeFunction(req, context);
 
-        return {
-          statusCode: 200,
-          headers,
-          body: JSON.stringify({
-            success: true,
-            beta_offer: true,
-            amount: '0.00',
-            tier: tier,
-            beta_end_date: BETA_END_DATE.toISOString(),
-            days_remaining: daysRemaining,
-            message: `🎉 FREE BETA - Initial Consultation Only! ${daysRemaining} days remaining`,
-            note: 'Other services (Strategic, Fractional, Enterprise) are paid from day 1',
-            consultation: JSON.parse(consultationResult.body)
-          })
-        };
+        return new Response(JSON.stringify({
+          success: true,
+          beta_offer: true,
+          amount: '0.00',
+          tier: tier,
+          beta_end_date: BETA_END_DATE.toISOString(),
+          days_remaining: daysRemaining,
+          message: `FREE BETA - Initial Consultation Only! ${daysRemaining} days remaining`,
+          note: 'Other services (Strategic, Fractional, Enterprise) are paid from day 1',
+          consultation: await consultationResult.json()
+        }), {
+          status: 200,
+          headers
+        });
       } catch (analyzeError) {
         console.error('Error calling analyze function:', analyzeError);
-        return {
-          statusCode: 500,
-          headers,
-          body: JSON.stringify({
-            success: false,
-            error: 'Consultation generation failed',
-            message: analyzeError.message
-          })
-        };
+        return new Response(JSON.stringify({
+          success: false,
+          error: 'Consultation generation failed',
+          message: analyzeError.message
+        }), {
+          status: 500,
+          headers
+        });
       }
     }
 
@@ -213,37 +208,39 @@ exports.handler = async (event, context) => {
     const order = await paypalClient.execute(request);
     const approvalUrl = order.result.links.find(link => link.rel === 'approve').href;
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        success: true,
-        order_id: order.result.id,
-        approval_url: approvalUrl,
-        amount: finalAmount.toFixed(2),
-        service_name: finalName,
-        tier: tier,
-        payment_frequency: payment_frequency,
-        discount_info: discountInfo,
-        beta_active: betaActive,
-        fee_structure: {
-          base_price: selectedService.base,
-          paypal_fee_included: true,
-          final_amount: finalAmount
-        }
-      })
-    };
+    return new Response(JSON.stringify({
+      success: true,
+      order_id: order.result.id,
+      approval_url: approvalUrl,
+      amount: finalAmount.toFixed(2),
+      service_name: finalName,
+      tier: tier,
+      payment_frequency: payment_frequency,
+      discount_info: discountInfo,
+      beta_active: betaActive,
+      fee_structure: {
+        base_price: selectedService.base,
+        paypal_fee_included: true,
+        final_amount: finalAmount
+      }
+    }), {
+      status: 200,
+      headers
+    });
 
   } catch (error) {
     console.error('PayPal payment creation error:', error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({
-        success: false,
-        error: 'Payment processing failed',
-        message: error.message
-      })
-    };
+    return new Response(JSON.stringify({
+      success: false,
+      error: 'Payment processing failed',
+      message: error.message
+    }), {
+      status: 500,
+      headers
+    });
   }
+};
+
+export const config = {
+  path: "/api/create-payment"
 };

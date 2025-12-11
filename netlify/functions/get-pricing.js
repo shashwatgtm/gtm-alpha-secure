@@ -1,7 +1,7 @@
 // netlify/functions/get-pricing.js
 // Complete pricing endpoint with MCP/API usage tiers
 
-exports.handler = async (event, context) => {
+export default async (req, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -9,8 +9,8 @@ exports.handler = async (event, context) => {
     'Content-Type': 'application/json'
   };
 
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers };
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 200, headers });
   }
 
   const BETA_END_DATE = new Date('2025-07-15T23:59:59Z');
@@ -194,54 +194,57 @@ exports.handler = async (event, context) => {
     billing: 'Pay-per-use, charged monthly'
   };
 
-  return {
-    statusCode: 200,
-    headers,
-    body: JSON.stringify({
-      beta_status: {
-        active: betaActive,
-        days_remaining: daysRemaining,
-        end_date: BETA_END_DATE.toISOString(),
-        free_tier: betaActive ? 'premium' : null,
-        message: betaActive 
-          ? `🎉 FREE Premium Analysis for ${daysRemaining} more days!`
-          : 'Beta period ended - Premium Analysis now $30'
+  return new Response(JSON.stringify({
+    beta_status: {
+      active: betaActive,
+      days_remaining: daysRemaining,
+      end_date: BETA_END_DATE.toISOString(),
+      free_tier: betaActive ? 'premium' : null,
+      message: betaActive 
+        ? `FREE Premium Analysis for ${daysRemaining} more days!`
+        : 'Beta period ended - Premium Analysis now $30'
+    },
+    
+    consultation_pricing: pricing,
+    
+    mcp_api_pricing: mcp_api_pricing,
+    
+    pricing_summary: {
+      premium: `$${pricing.premium.final_price} (${betaActive ? 'FREE during beta' : 'one-time'})`,
+      strategic: `$${pricing.strategic.final_price}/hour (volume discounts available)`,
+      fractional: `$${pricing.fractional.pricing_options.monthly}/month (save with quarterly/annual)`,
+      enterprise: `$${pricing.enterprise.license_tiers.starter.monthly}/month (3 licenses) to $${pricing.enterprise.license_tiers.scale.monthly}/month (10 licenses)`
+    },
+    
+    fee_structure: {
+      paypal_fees_included: true,
+      markup_percentage: 2.5,
+      note: 'All prices include payment processing fees'
+    },
+    
+    discounts: {
+      strategic_volume: {
+        '3_hours': '5% discount',
+        '5_hours': '8% discount'
       },
-      
-      consultation_pricing: pricing,
-      
-      mcp_api_pricing: mcp_api_pricing,
-      
-      pricing_summary: {
-        premium: `$${pricing.premium.final_price} (${betaActive ? 'FREE during beta' : 'one-time'})`,
-        strategic: `$${pricing.strategic.final_price}/hour (volume discounts available)`,
-        fractional: `$${pricing.fractional.pricing_options.monthly}/month (save with quarterly/annual)`,
-        enterprise: `$${pricing.enterprise.license_tiers.starter.monthly}/month (3 licenses) to $${pricing.enterprise.license_tiers.scale.monthly}/month (10 licenses)`
+      recurring_services: {
+        quarterly: '8% discount on quarterly payments',
+        annual: '12% discount on annual payments'
       },
-      
-      fee_structure: {
-        paypal_fees_included: true,
-        markup_percentage: 2.5,
-        note: 'All prices include payment processing fees'
-      },
-      
-      discounts: {
-        strategic_volume: {
-          '3_hours': '5% discount',
-          '5_hours': '8% discount'
-        },
-        recurring_services: {
-          quarterly: '8% discount on quarterly payments',
-          annual: '12% discount on annual payments'
-        },
-        enterprise_mcp: '50% discount on MCP overage rates'
-      },
-      
-      value_comparison: {
-        individual_fractional: `$${pricing.fractional.pricing_options.monthly}/month`,
-        enterprise_3_licenses: `$${pricing.enterprise.license_tiers.starter.monthly}/month = $${pricing.enterprise.license_tiers.starter.price_per_license}/license`,
-        enterprise_savings: `${Math.round((pricing.fractional.pricing_options.monthly / pricing.enterprise.license_tiers.starter.price_per_license) * 100)}% cheaper per license with Enterprise`
-      }
-    })
-  };
+      enterprise_mcp: '50% discount on MCP overage rates'
+    },
+    
+    value_comparison: {
+      individual_fractional: `$${pricing.fractional.pricing_options.monthly}/month`,
+      enterprise_3_licenses: `$${pricing.enterprise.license_tiers.starter.monthly}/month = $${pricing.enterprise.license_tiers.starter.price_per_license}/license`,
+      enterprise_savings: `${Math.round((pricing.fractional.pricing_options.monthly / pricing.enterprise.license_tiers.starter.price_per_license) * 100)}% cheaper per license with Enterprise`
+    }
+  }), {
+    status: 200,
+    headers
+  });
+};
+
+export const config = {
+  path: "/api/pricing"
 };

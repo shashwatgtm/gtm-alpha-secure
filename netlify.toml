@@ -5,8 +5,61 @@
 [dev]
   publish = "."
 
+[functions]
+  node_bundler = "esbuild"
+  directory = "netlify/functions"
+
+# API Redirects
+[[redirects]]
+  from = "/api/epic-scores"
+  to = "/.netlify/functions/epic-scores"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/health"
+  to = "/.netlify/functions/health"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/pricing"
+  to = "/.netlify/functions/get-pricing"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/create-payment"
+  to = "/.netlify/functions/create-payment-beta"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/payment-success"
+  to = "/.netlify/functions/payment-success-beta"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/analyze"
+  to = "/.netlify/functions/analyze"
+  status = 200
+  force = true
+
+# Catch-all API redirect
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
+
+# MCP redirect
 [[redirects]]
   force = true
   from = "/mcp"
   status = 200
   to = "/.netlify/functions/express-mcp-server"
+
+[[redirects]]
+  from = "/api-docs"
+  to = "/api-docs.html"
+  status = 200

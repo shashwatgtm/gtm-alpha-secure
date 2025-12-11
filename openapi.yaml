@@ -1,0 +1,99 @@
+openapi: 3.0.0
+info:
+  title: GTM Alpha MCP Server API
+  description: Professional GTM Strategy API using EPIC Framework
+  version: 1.0.0
+  contact:
+    name: Shashwat Ghosh
+    email: shashwat@hyperplays.in
+    url: https://gtmexpert.com
+
+servers:
+  - url: https://gtmalpha.netlify.app/api
+    description: Production API
+
+paths:
+  /gtm:
+    post:
+      summary: GTM Strategy Analysis
+      description: Analyze go-to-market strategy using EPIC framework
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: GTM query or consultation request
+      responses:
+        200:
+          description: Successful GTM analysis
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  analysis:
+                    type: string
+                  epicScores:
+                    type: object
+                  recommendations:
+                    type: array
+  
+  /submit-consultation:
+    post:
+      summary: Submit GTM Consultation
+      description: Submit consultation form for EPIC framework analysis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - client_name
+                - company_name
+                - industry
+                - business_stage
+              properties:
+                client_name:
+                  type: string
+                company_name:
+                  type: string
+                industry:
+                  type: string
+                business_stage:
+                  type: string
+                team_size:
+                  type: number
+                monthly_budget:
+                  type: number
+      responses:
+        200:
+          description: Successful consultation submission
+
+components:
+  schemas:
+    EPICFramework:
+      type: object
+      properties:
+        ecosystem:
+          type: number
+          minimum: 0
+          maximum: 100
+        productLed:
+          type: number
+          minimum: 0
+          maximum: 100
+        inboundOutbound:
+          type: number
+          minimum: 0
+          maximum: 100
+        communityLed:
+          type: number
+          minimum: 0
+          maximum: 100

@@ -1,0 +1,240 @@
+// GTM Alpha MCP Server - Minimal Working Version
+// Save this as mcp.js in netlify/functions/
+
+exports.handler = async (event, context) => {
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Content-Type': 'application/json'
+    };
+
+    // Handle preflight
+    if (event.httpMethod === 'OPTIONS') {
+        return { statusCode: 200, headers, body: '' };
+    }
+
+    const path = event.path.replace('/.netlify/functions/mcp', '');
+    
+    // Handle different endpoints
+    if (event.httpMethod === 'GET') {
+        // OpenAI Schema endpoint
+        if (path === '/openai-schema') {
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    openapi: "3.0.0",
+                    info: {
+                        title: "GTM Alpha Consultant API",
+                        version: "2.0.0",
+                        description: "Professional GTM consultation using EPIC framework"
+                    },
+                    servers: [
+                        {
+                            url: "https://gtmalpha.netlify.app/.netlify/functions/mcp"
+                        }
+                    ],
+                    paths: {
+                        "/consultation": {
+                            post: {
+                                summary: "Get GTM consultation",
+                                operationId: "getConsultation",
+                                requestBody: {
+                                    required: true,
+                                    content: {
+                                        "application/json": {
+                                            schema: {
+                                                type: "object",
+                                                properties: {
+                                                    company: { type: "string" },
+                                                    industry: { type: "string" },
+                                                    stage: { type: "string" }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                responses: {
+                                    "200": {
+                                        description: "Successful consultation",
+                                        content: {
+                                            "application/json": {
+                                                schema: {
+                                                    type: "object"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                })
+            };
+        }
+        
+        // Gemini Functions endpoint
+        if (path === '/gemini-functions') {
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    functions: [
+                        {
+                            name: "gtm_consultation",
+                            description: "Get expert GTM strategy analysis using EPIC framework",
+                            parameters: {
+                                type: "object",
+                                properties: {
+                                    company: {
+                                        type: "string",
+                                        description: "Company name"
+                                    },
+                                    industry: {
+                                        type: "string",
+                                        description: "Industry vertical"
+                                    },
+                                    stage: {
+                                        type: "string",
+                                        description: "Company stage"
+                                    }
+                                },
+                                required: ["company", "industry"]
+                            }
+                        }
+                    ]
+                })
+            };
+        }
+        
+        // Health check
+        if (path === '/health') {
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    status: "operational",
+                    version: "2.0.0",
+                    timestamp: new Date().toISOString()
+                })
+            };
+        }
+    }
+    
+    // Handle MCP protocol (POST requests)
+    if (event.httpMethod === 'POST') {
+        try {
+            const body = JSON.parse(event.body);
+            
+            // MCP JSON-RPC handler
+            if (body.jsonrpc === "2.0") {
+                const response = {
+                    jsonrpc: "2.0",
+                    id: body.id
+                };
+                
+                switch (body.method) {
+                    case 'initialize':
+                        response.result = {
+                            protocolVersion: "2024-11-05",
+                            capabilities: {
+                                tools: {},
+                                resources: {}
+                            },
+                            serverInfo: {
+                                name: "gtm-alpha-consultant",
+                                version: "2.0.0"
+                            }
+                        };
+                        break;
+                        
+                    case 'tools/list':
+                        response.result = {
+                            tools: [
+                                {
+                                    name: "gtm_consultation",
+                                    description: "Get expert GTM strategy analysis",
+                                    inputSchema: {
+                                        type: "object",
+                                        properties: {
+                                            company: { type: "string" },
+                                            industry: { type: "string" }
+                                        }
+                                    }
+                                }
+                            ]
+                        };
+                        break;
+                        
+                    case 'tools/call':
+                        // Simple response for now
+                        response.result = {
+                            content: [
+                                {
+                                    type: "text",
+                                    text: `GTM Analysis for ${body.params?.arguments?.company || 'your company'}:\n\n` +
+                                          `✅ EPIC Framework Analysis\n` +
+                                          `📊 Strategic Recommendations\n` +
+                                          `🎯 Action Items\n\n` +
+                                          `For detailed analysis, visit: https://gtmalpha.netlify.app`
+                                }
+                            ]
+                        };
+                        break;
+                        
+                    default:
+                        response.error = {
+                            code: -32601,
+                            message: "Method not found"
+                        };
+                }
+                
+                return {
+                    statusCode: 200,
+                    headers,
+                    body: JSON.stringify(response)
+                };
+            }
+            
+            // Regular API call
+            return {
+                statusCode: 200,
+                headers,
+                body: JSON.stringify({
+                    success: true,
+                    message: "GTM Alpha Consultant API",
+                    data: {
+                        company: body.company,
+                        recommendation: "Visit https://gtmalpha.netlify.app for full analysis"
+                    }
+                })
+            };
+            
+        } catch (error) {
+            return {
+                statusCode: 400,
+                headers,
+                body: JSON.stringify({
+                    error: "Invalid request",
+                    message: error.message
+                })
+            };
+        }
+    }
+    
+    // Default response
+    return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+            name: "GTM Alpha Consultant MCP Server",
+            version: "2.0.0",
+            endpoints: {
+                mcp: "POST /",
+                openai: "GET /openai-schema",
+                gemini: "GET /gemini-functions",
+                health: "GET /health"
+            }
+        })
+    };
+};

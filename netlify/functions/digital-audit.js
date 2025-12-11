@@ -439,8 +439,8 @@ const DIGITAL_AUDIT_ENGINE = {
   }
 };
 
-// Main Netlify function
-exports.handler = async (event, context) => {
+// Main Netlify function (ES6 export)
+export default async (req, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -448,71 +448,72 @@ exports.handler = async (event, context) => {
     'Content-Type': 'application/json'
   };
 
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers };
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 200, headers });
   }
 
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers,
-      body: JSON.stringify({ error: 'Method not allowed' })
-    };
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers
+    });
   }
 
   try {
-    const inputData = JSON.parse(event.body);
+    const inputData = await req.json();
     
     // Validate that at least one digital asset is provided
     if (!inputData.company_website && !inputData.linkedin_url && !inputData.twitter_url) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({
-          error: 'At least one digital asset URL is required (website, LinkedIn, or Twitter)'
-        })
-      };
+      return new Response(JSON.stringify({
+        error: 'At least one digital asset URL is required (website, LinkedIn, or Twitter)'
+      }), {
+        status: 400,
+        headers
+      });
     }
 
     // Perform digital presence analysis
     const digitalAnalysis = await DIGITAL_AUDIT_ENGINE.analyzeDigitalPresence(inputData);
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        status: 'success',
-        digital_analysis: digitalAnalysis,
-        consultation_id: `DIGITAL-AUDIT-${Date.now()}`,
-        timestamp: new Date().toISOString(),
-        methodology: 'GTM Alpha Digital Presence Analysis',
-        generated_by: 'GTM Alpha Engine - Shashwat Ghosh',
-        summary: {
-          digital_maturity_score: digitalAnalysis.digital_maturity_score,
-          primary_recommendations: digitalAnalysis.recommendations.slice(0, 3),
-          epic_strengths: Object.entries(digitalAnalysis.epic_alignment)
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 2)
-            .map(([component, score]) => ({ component, score })),
-          next_actions: [
-            'Review digital presence analysis and prioritize recommendations',
-            'Implement high-priority website and social media improvements',
-            'Align digital strategy with overall EPIC framework approach',
-            'Schedule follow-up digital audit in 90 days'
-          ]
-        }
-      })
-    };
+    return new Response(JSON.stringify({
+      status: 'success',
+      digital_analysis: digitalAnalysis,
+      consultation_id: `DIGITAL-AUDIT-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      methodology: 'GTM Alpha Digital Presence Analysis',
+      generated_by: 'GTM Alpha Engine - Shashwat Ghosh',
+      summary: {
+        digital_maturity_score: digitalAnalysis.digital_maturity_score,
+        primary_recommendations: digitalAnalysis.recommendations.slice(0, 3),
+        epic_strengths: Object.entries(digitalAnalysis.epic_alignment)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 2)
+          .map(([component, score]) => ({ component, score })),
+        next_actions: [
+          'Review digital presence analysis and prioritize recommendations',
+          'Implement high-priority website and social media improvements',
+          'Align digital strategy with overall EPIC framework approach',
+          'Schedule follow-up digital audit in 90 days'
+        ]
+      }
+    }), {
+      status: 200,
+      headers
+    });
 
   } catch (error) {
     console.error('Error in digital presence analysis:', error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({
-        error: 'Internal server error',
-        message: error.message
-      })
-    };
+    return new Response(JSON.stringify({
+      error: 'Internal server error',
+      message: error.message
+    }), {
+      status: 500,
+      headers
+    });
   }
+};
+
+// Export configuration for Netlify
+export const config = {
+  path: "/api/digital-audit"
 };

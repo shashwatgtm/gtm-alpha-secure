@@ -470,8 +470,8 @@ const ROADMAP_ENGINE = {
   }
 };
 
-// Main Netlify function
-exports.handler = async (event, context) => {
+// Main Netlify function (ES6 export)
+export default async (req, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -479,68 +479,69 @@ exports.handler = async (event, context) => {
     'Content-Type': 'application/json'
   };
 
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers };
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { status: 200, headers });
   }
 
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers,
-      body: JSON.stringify({ error: 'Method not allowed' })
-    };
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers
+    });
   }
 
   try {
-    const inputData = JSON.parse(event.body);
+    const inputData = await req.json();
     
     // Validate required fields
     if (!inputData.company || !inputData.priorities) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({
-          error: 'Missing required fields: company and priorities are required'
-        })
-      };
+      return new Response(JSON.stringify({
+        error: 'Missing required fields: company and priorities are required'
+      }), {
+        status: 400,
+        headers
+      });
     }
 
     // Generate implementation roadmap
     const roadmapResults = ROADMAP_ENGINE.generateImplementationRoadmap(inputData);
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        status: 'success',
-        roadmap: roadmapResults.roadmap,
-        success_metrics: roadmapResults.success_metrics,
-        resource_requirements: roadmapResults.resource_requirements,
-        risks_and_mitigations: roadmapResults.risks_and_mitigations,
-        consultation_id: `ROADMAP-${Date.now()}`,
-        timestamp: new Date().toISOString(),
-        timeline: inputData.timeline || '6 months',
-        methodology: 'GTM Alpha Implementation Planning',
-        generated_by: 'GTM Alpha Engine - Shashwat Ghosh',
-        next_steps: [
-          'Review and approve the implementation roadmap',
-          'Assign ownership for each initiative to team members',
-          'Set up tracking and measurement systems',
-          'Begin execution with weekly progress reviews',
-          'Schedule quarterly checkpoints for progress assessment and strategy adjustments'
-        ]
-      })
-    };
+    return new Response(JSON.stringify({
+      status: 'success',
+      roadmap: roadmapResults.roadmap,
+      success_metrics: roadmapResults.success_metrics,
+      resource_requirements: roadmapResults.resource_requirements,
+      risks_and_mitigations: roadmapResults.risks_and_mitigations,
+      consultation_id: `ROADMAP-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      timeline: inputData.timeline || '6 months',
+      methodology: 'GTM Alpha Implementation Planning',
+      generated_by: 'GTM Alpha Engine - Shashwat Ghosh',
+      next_steps: [
+        'Review and approve the implementation roadmap',
+        'Assign ownership for each initiative to team members',
+        'Set up tracking and measurement systems',
+        'Begin execution with weekly progress reviews',
+        'Schedule quarterly checkpoints for progress assessment and strategy adjustments'
+      ]
+    }), {
+      status: 200,
+      headers
+    });
 
   } catch (error) {
     console.error('Error in roadmap generation:', error);
-    return {
-      statusCode: 500,
-      headers,
-      body: JSON.stringify({
-        error: 'Internal server error',
-        message: error.message
-      })
-    };
+    return new Response(JSON.stringify({
+      error: 'Internal server error',
+      message: error.message
+    }), {
+      status: 500,
+      headers
+    });
   }
+};
+
+// Export configuration for Netlify
+export const config = {
+  path: "/api/roadmap"
 };
