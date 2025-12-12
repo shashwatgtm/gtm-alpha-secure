@@ -1,2 +1,6 @@
 # Local Netlify folder
 .netlify
+try_github_token
+try_github_token
+.mcpregistry_github_token 
+node_modules/ 
