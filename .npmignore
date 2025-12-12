@@ -1,7 +1,20 @@
-node_modules/
-.env
-.netlify/state.json
+# Sensitive files
+.mcpregistry_*
+*.token
+.env*
+try_github_token*
+
+# Netlify build artifacts
+.netlify/
+
+# Dev files
+*.txt
 *.log
+notepad*
+
+# HTML pages (not needed for npm package)
+*.html
+
+# Other
+node_modules/
 .git/
-tests/
-docs/

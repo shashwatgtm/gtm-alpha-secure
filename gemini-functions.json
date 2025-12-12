@@ -1,0 +1,87 @@
+{
+  "function_declarations": [
+    {
+      "name": "gtm_consultation",
+      "description": "Get professional GTM strategy consultation using Shashwat Ghosh's EPIC framework. Analyzes go-to-market challenges and provides strategic recommendations.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "client_name": {
+            "type": "string",
+            "description": "Your name"
+          },
+          "company_name": {
+            "type": "string",
+            "description": "Your company name"
+          },
+          "company_description": {
+            "type": "string",
+            "description": "Brief description of your company and what it does"
+          },
+          "gtm_challenge": {
+            "type": "string",
+            "description": "Your go-to-market challenge, question, or situation you need help with"
+          },
+          "business_stage": {
+            "type": "string",
+            "enum": ["pre-seed", "seed", "series-a", "series-b", "growth", "enterprise"],
+            "description": "Current stage of your business"
+          },
+          "industry": {
+            "type": "string",
+            "description": "Your industry or market sector"
+          }
+        },
+        "required": ["gtm_challenge"]
+      }
+    },
+    {
+      "name": "epic_framework_audit",
+      "description": "Analyze your GTM strategy using the EPIC framework. Returns scores for Ecosystem (E), Product-Led (P), Inbound/Outbound (I), and Community (C) components.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "current_challenges": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "List of your current GTM challenges"
+          },
+          "company_context": {
+            "type": "string",
+            "description": "Background context about your company"
+          },
+          "industry": {
+            "type": "string",
+            "description": "Your industry"
+          },
+          "business_stage": {
+            "type": "string",
+            "description": "Current business stage"
+          }
+        },
+        "required": ["current_challenges"]
+      }
+    },
+    {
+      "name": "generate_roadmap",
+      "description": "Generate a 30-60-90 day implementation roadmap based on EPIC framework analysis",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "primary_focus": {
+            "type": "string",
+            "enum": ["E", "P", "I", "C"],
+            "description": "Primary EPIC component to focus on"
+          },
+          "timeframe": {
+            "type": "string",
+            "enum": ["30-day", "60-day", "90-day"],
+            "description": "Roadmap timeframe"
+          }
+        },
+        "required": ["primary_focus"]
+      }
+    }
+  ],
+  "api_endpoint": "https://gtmalpha.netlify.app/.netlify/functions/express-mcp-server"
+}

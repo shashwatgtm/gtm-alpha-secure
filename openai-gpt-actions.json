@@ -1,0 +1,151 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "GTM Alpha Consultant API",
+    "description": "Professional Go-To-Market strategy consultation using Shashwat Ghosh's EPIC framework",
+    "version": "1.0.3"
+  },
+  "servers": [
+    {
+      "url": "https://gtmalpha.netlify.app/.netlify/functions"
+    }
+  ],
+  "paths": {
+    "/express-mcp-server/consultation": {
+      "post": {
+        "operationId": "getGTMConsultation",
+        "summary": "Get GTM Strategy Consultation",
+        "description": "Analyze your go-to-market challenges using the EPIC framework and receive strategic recommendations",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "client_name": {
+                    "type": "string",
+                    "description": "Your name"
+                  },
+                  "company_name": {
+                    "type": "string",
+                    "description": "Your company name"
+                  },
+                  "company_description": {
+                    "type": "string",
+                    "description": "Brief description of your company"
+                  },
+                  "gtm_challenge": {
+                    "type": "string",
+                    "description": "Your GTM challenge or question"
+                  },
+                  "business_stage": {
+                    "type": "string",
+                    "enum": ["pre-seed", "seed", "series-a", "series-b", "growth", "enterprise"],
+                    "description": "Current business stage"
+                  },
+                  "industry": {
+                    "type": "string",
+                    "description": "Your industry"
+                  }
+                },
+                "required": ["gtm_challenge"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Consultation response with EPIC analysis"
+          }
+        }
+      }
+    },
+    "/express-mcp-server/audit": {
+      "post": {
+        "operationId": "getEPICAudit",
+        "summary": "Get EPIC Framework Audit",
+        "description": "Analyze your GTM strategy using the EPIC framework scores",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "current_challenges": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "description": "List of current GTM challenges"
+                  },
+                  "company_context": {
+                    "type": "string",
+                    "description": "Company context and background"
+                  },
+                  "industry": {
+                    "type": "string",
+                    "description": "Your industry"
+                  },
+                  "business_stage": {
+                    "type": "string",
+                    "description": "Current business stage"
+                  }
+                },
+                "required": ["current_challenges"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "EPIC scores and recommendations"
+          }
+        }
+      }
+    },
+    "/express-mcp-server/roadmap": {
+      "post": {
+        "operationId": "getImplementationRoadmap",
+        "summary": "Get Implementation Roadmap",
+        "description": "Generate a 30-60-90 day implementation roadmap",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "analysis": {
+                    "type": "object",
+                    "properties": {
+                      "primary_epic_focus": {"type": "string"},
+                      "epic_scores": {
+                        "type": "object",
+                        "properties": {
+                          "E": {"type": "integer"},
+                          "P": {"type": "integer"},
+                          "I": {"type": "integer"},
+                          "C": {"type": "integer"}
+                        }
+                      }
+                    }
+                  },
+                  "timeframe": {
+                    "type": "string",
+                    "enum": ["30-day", "60-day", "90-day"],
+                    "description": "Roadmap timeframe"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Implementation roadmap"
+          }
+        }
+      }
+    }
+  }
+}
