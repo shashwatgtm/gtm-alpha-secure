@@ -46,21 +46,51 @@ const GTM_CONSULTANT = {
       epic_scores: epicAnalysis.scores,
       primary_focus: primaryComponent.name
     };
+  },
+
+  generateRoadmap(primaryFocus, timeframe = "90-day") {
+    const focusComponent = this.expertiseContent.epicFramework[primaryFocus] || this.expertiseContent.epicFramework.P;
+    return {
+      timeframe,
+      primary_focus: focusComponent.name,
+      action_plan: {
+        immediate: [
+          "Conduct mental velocity audit of current buyer journey",
+          "Map decision dead zones in your GTM process",
+          "Align sales and marketing on EPIC framework priorities"
+        ],
+        short_term: [
+          `Implement ${focusComponent.name} optimization initiatives`,
+          "Establish success metrics for mental velocity tracking",
+          "Create feedback loops for continuous GTM optimization"
+        ],
+        medium_term: [
+          "Scale successful experiments across EPIC components",
+          "Build systematic approach to GTM operating system",
+          "Measure and optimize competitive advantage sustainability"
+        ]
+      },
+      success_metrics: [
+        "Mental velocity improvement (2-3x target)",
+        "GTM efficiency increase (30%+ target)",
+        "Customer acquisition cost reduction (15-25%)"
+      ]
+    };
   }
 };
 
 // Create MCP Server
 const server = new Server(
-  { name: 'gtm-alpha-mcp-server', version: '1.0.3' },
+  { name: 'gtm-alpha-mcp-server', version: '1.0.4' },
   { capabilities: { tools: {} } }
 );
 
-// List available tools
+// List available tools with annotations for ChatGPT Apps SDK
 server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: [
     {
       name: 'gtm_consultation',
-      description: 'Get GTM strategy consultation using Shashwat Ghosh EPIC framework',
+      description: 'Get GTM strategy consultation using Shashwat Ghosh EPIC framework. Returns strategic analysis and recommendations.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -72,11 +102,16 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           industry: { type: 'string', description: 'Your industry' }
         },
         required: ['gtm_challenge']
+      },
+      annotations: {
+        readOnlyHint: true,
+        openWorldHint: false,
+        destructiveHint: false
       }
     },
     {
       name: 'epic_audit',
-      description: 'Get EPIC framework scores for your GTM strategy',
+      description: 'Get EPIC framework scores for your GTM strategy. Analyzes Ecosystem, Product-Led, Inbound/Outbound, and Community dimensions.',
       inputSchema: {
         type: 'object',
         properties: {
@@ -85,6 +120,28 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
           business_stage: { type: 'string', description: 'Business stage' }
         },
         required: ['challenge']
+      },
+      annotations: {
+        readOnlyHint: true,
+        openWorldHint: false,
+        destructiveHint: false
+      }
+    },
+    {
+      name: 'generate_roadmap',
+      description: 'Generate a 30-60-90 day GTM implementation roadmap based on EPIC framework analysis.',
+      inputSchema: {
+        type: 'object',
+        properties: {
+          primary_focus: { type: 'string', enum: ['E', 'P', 'I', 'C'], description: 'Primary EPIC component: E (Ecosystem), P (Product-Led), I (Inbound/Outbound), C (Community)' },
+          timeframe: { type: 'string', enum: ['30-day', '60-day', '90-day'], description: 'Roadmap timeframe' }
+        },
+        required: ['primary_focus']
+      },
+      annotations: {
+        readOnlyHint: true,
+        openWorldHint: false,
+        destructiveHint: false
       }
     }
   ]
@@ -93,12 +150,12 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
 // Handle tool calls
 server.setRequestHandler(CallToolRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
-  
+
   if (name === 'gtm_consultation') {
     const result = GTM_CONSULTANT.generateConsultation(args);
     return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
   }
-  
+
   if (name === 'epic_audit') {
     const result = GTM_CONSULTANT.analyzeEPICScores(args.challenge || '', '', args.industry || '', args.business_stage || '');
     const output = {
@@ -108,7 +165,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     };
     return { content: [{ type: 'text', text: JSON.stringify(output, null, 2) }] };
   }
-  
+
+  if (name === 'generate_roadmap') {
+    const result = GTM_CONSULTANT.generateRoadmap(args.primary_focus || 'P', args.timeframe || '90-day');
+    return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
+  }
+
   throw new Error(`Unknown tool: ${name}`);
 });
 
@@ -116,7 +178,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error('GTM Alpha MCP Server running on stdio');
+  console.error('GTM Alpha MCP Server v1.0.4 running on stdio');
 }
 
 main().catch(console.error);
