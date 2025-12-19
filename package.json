@@ -1,6 +1,6 @@
 {
   "name": "@shashwatgtmalpha/gtm-alpha-mcp-server",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "GTM Alpha Consultant MCP Server - Professional GTM strategy consultation using Shashwat Ghosh's EPIC framework",
   "main": "bin/cli.js",
   "type": "module",

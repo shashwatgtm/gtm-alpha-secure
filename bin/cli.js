@@ -81,7 +81,7 @@ const GTM_CONSULTANT = {
 
 // Create MCP Server
 const server = new Server(
-  { name: 'gtm-alpha-mcp-server', version: '1.0.4' },
+  { name: 'gtm-alpha-mcp-server', version: '1.0.5' },
   { capabilities: { tools: {} } }
 );
 
