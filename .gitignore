@@ -1,6 +1,23 @@
+# Token files - NEVER commit these
+*token*
+*.token
+.mcpregistry*
+*github_token*
+
 # Local Netlify folder
-.netlify
-try_github_token
-try_github_token
-.mcpregistry_github_token 
-node_modules/ 
+.netlify/
+
+# Dependencies
+node_modules/
+
+# Environment files
+.env
+.env.*
+
+# Build artifacts
+*.log
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db
