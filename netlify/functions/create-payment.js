@@ -1,6 +1,6 @@
-// netlify/functions/create-payment-beta.js
-// PayPal payment integration with FREE BETA initial consultation only
-// All other services paid from day 1 with PayPal fees passed to customer
+// netlify/functions/create-payment.js
+// PayPal payment integration for GTM Alpha Launch Offer
+// All services with PayPal fees passed to customer
 
 import paypal from '@paypal/checkout-server-sdk';
 

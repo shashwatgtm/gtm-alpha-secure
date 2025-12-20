@@ -30,13 +30,13 @@
 
 [[redirects]]
   from = "/api/create-payment"
-  to = "/.netlify/functions/create-payment-beta"
+  to = "/.netlify/functions/create-payment"
   status = 200
   force = true
 
 [[redirects]]
   from = "/api/payment-success"
-  to = "/.netlify/functions/payment-success-beta"
+  to = "/.netlify/functions/payment-success"
   status = 200
   force = true
 

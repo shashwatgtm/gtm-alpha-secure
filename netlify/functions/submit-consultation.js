@@ -16,8 +16,9 @@ export default async (req, context) => {
   try {
     const formData = await req.json();
     
-    // Call the epic-scores function internally
-    const epicResponse = await fetch('https://gtmalpha.netlify.app/api/epic-scores', {
+    // Call the epic-scores function internally using relative URL
+    const baseUrl = process.env.URL || 'https://gtm-alpha.netlify.app';
+    const epicResponse = await fetch(`${baseUrl}/api/epic-scores`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData)
