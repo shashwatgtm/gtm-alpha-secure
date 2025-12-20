@@ -1,10 +1,4 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
-  <defs>
-    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#F5A089;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#E8927A;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  <circle cx="100" cy="100" r="95" fill="url(#logoGradient)"/>
+  <circle cx="100" cy="100" r="95" fill="#F5A89A"/>
   <text x="100" y="130" font-family="Georgia, serif" font-size="120" font-weight="400" fill="white" text-anchor="middle">α</text>
 </svg>
