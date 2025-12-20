@@ -17,7 +17,7 @@ const paypalClient = new paypal.core.PayPalHttpClient(
 );
 
 // Beta offer configuration - FREE initial consultation only until Nov 01, 2025
-const BETA_END_DATE = new Date('2025-07-15T23:59:59Z');
+// Beta period ended - now using launch pricing
 
 function isBetaPeriod() {
   return new Date() <= BETA_END_DATE;
@@ -74,7 +74,7 @@ export default async (req, context) => {
     // Base pricing structure
     const basePricing = {
       premium: {
-        base: 29,
+        base: 1,
         name: 'GTM Alpha Premium Analysis',
         type: 'one-time'
       },

@@ -1,0 +1,246 @@
+================================================================================
+GTM ALPHA MCP SERVER - COMPLETE PROJECT HISTORY AND GUIDE
+================================================================================
+
+Last Updated: December 20, 2025
+Version: 1.0.5
+Author: Shashwat GTM + Claude Code
+
+================================================================================
+QUICK REFERENCE
+================================================================================
+
+npm Package:        @shashwatgtmalpha/gtm-alpha-mcp-server
+MCP Registry Name:  io.github.shashwatgtm/gtm-alpha-consultant
+GitHub Repo:        https://github.com/shashwatgtm/gtm-expert-schema
+Netlify Site:       https://gtmalpha.netlify.app
+MCP-SSE Endpoint:   https://gtmalpha.netlify.app/mcp-sse
+CLI Command:        gtm-alpha-mcp
+
+================================================================================
+PROJECT TIMELINE
+================================================================================
+
+Early Dec 2025:  Claude Desktop and Claude Normal experiments
+Dec 11, 2025:    Started MCP development with Claude Code
+Dec 11-15:       npm package versions 1.0.0 to 1.0.5 published
+Dec 15-18:       MCP Registry submission, token leak incident, history cleaning
+Dec 20, 2025:    ChatGPT prep, MCP-SSE endpoint, registry update to v1.0.5
+
+================================================================================
+CRITICAL RULE - mcpName MATCHING
+================================================================================
+
+The mcpName in package.json MUST EXACTLY MATCH the name in server.json
+
+In package.json:
+  "mcpName": "io.github.shashwatgtm/gtm-alpha-consultant"
+
+In server.json:
+  "name": "io.github.shashwatgtm/gtm-alpha-consultant"
+
+If these do not match, registry publish will fail with error:
+  "Expected mcpName X, got Y"
+
+================================================================================
+PROJECT STRUCTURE
+================================================================================
+
+C:\Projects\gtm-alpha-clean\
+  bin\cli.js                         - npm CLI entry point (STDIO)
+  netlify\functions\mcp-sse.js       - SSE endpoint for ChatGPT
+  netlify\functions\express-mcp-server.js - REST API
+  package.json                       - npm config (has mcpName!)
+  server.json                        - MCP Registry config
+  index.html                         - Landing page
+  _redirects                         - Netlify routing (PRIORITY over netlify.toml)
+  netlify.toml                       - Netlify config
+  PRIVACY.md                         - Privacy policy
+  TESTING.md                         - Testing docs
+  openai-gpt-actions.json            - OpenAI schema
+  gemini-functions.json              - Gemini functions
+
+================================================================================
+MCP REGISTRY PUBLISHING (WSL REQUIRED)
+================================================================================
+
+Step 1: Open WSL
+  wsl
+
+Step 2: Navigate to project
+  cd /mnt/c/Projects/gtm-alpha-clean
+
+Step 3: Login to GitHub (if needed)
+  ~/mcp-publisher login github
+  (Follow device flow at github.com/login/device)
+
+Step 4: Publish
+  ~/mcp-publisher publish
+
+Expected output:
+  Publishing to https://registry.modelcontextprotocol.io...
+  Successfully published
+  Server io.github.shashwatgtm/gtm-alpha-consultant version 1.0.5
+
+================================================================================
+NPM PUBLISHING
+================================================================================
+
+Step 1: Update version in package.json
+Step 2: Login to npm
+  npm login
+Step 3: Publish
+  npm publish --access public
+Step 4: Update version in server.json to match
+Step 5: Publish to registry (see above)
+
+================================================================================
+NETLIFY DEPLOYMENT
+================================================================================
+
+Command:
+  netlify deploy --prod
+
+Important: _redirects file takes PRIORITY over netlify.toml for routing
+
+================================================================================
+ALL ERRORS AND SOLUTIONS
+================================================================================
+
+ERROR: expected length <= 100
+CAUSE: Description too long
+FIX: Shorten description to under 100 characters
+
+ERROR: unsupported transport type for remotes
+CAUSE: Wrong remote format in server.json
+FIX: Remove remotes section
+
+ERROR: Expected mcpName X got Y
+CAUSE: Mismatch between package.json and server.json
+FIX: Make mcpName and name match exactly
+
+ERROR: version already exists
+CAUSE: Same version already published
+FIX: Increment version number
+
+ERROR: Invalid or expired JWT token
+CAUSE: GitHub auth expired
+FIX: Run ~/mcp-publisher login github
+
+ERROR: 404 on Windows mcp-publisher download
+CAUSE: No Windows binary available
+FIX: Use WSL with Linux binary
+
+ERROR: npx - No executable found
+CAUSE: No bin entry in package.json
+FIX: Add bin field pointing to cli.js
+
+ERROR: npm 403 Forbidden
+CAUSE: Not logged in
+FIX: Run npm login
+
+ERROR: /mcp returning HTML page
+CAUSE: _redirects pointing to wrong destination
+FIX: Update _redirects file
+
+ERROR: GitHub token exposed
+CAUSE: Token file committed to repo
+FIX: Revoke token, use git filter-repo
+
+================================================================================
+SECURITY - TOKEN LEAK INCIDENT
+================================================================================
+
+What happened:
+  GitHub OAuth token was committed in .mcpregistry_github_token file
+
+How to fix if it happens again:
+  1. Revoke token on GitHub immediately
+  2. Create file replacements.txt with content:
+     LEAKED_TOKEN==>REDACTED
+  3. Run: git filter-repo --replace-text replacements.txt --force
+  4. Run: git push --force --all
+  5. Update .gitignore
+
+Required .gitignore patterns:
+  *token*
+  *.token
+  .mcpregistry*
+  *github_token*
+  node_modules/
+  .env
+  .env.*
+  .netlify/
+
+================================================================================
+KEY LESSONS LEARNED
+================================================================================
+
+1. mcpName in package.json MUST match name in server.json
+2. _redirects takes priority over netlify.toml for redirects
+3. Use wildcard patterns in .gitignore for tokens
+4. Claude Desktop = STDIO, ChatGPT = SSE transport
+5. mcp-publisher has no Windows binary - use WSL
+6. npm CLI needs bin entry and shebang in cli.js
+7. Keep versions in sync across all config files
+8. MCP Registry description max 100 characters
+9. PRs to MCP servers README no longer accepted
+10. Use git filter-repo for cleaning history
+
+================================================================================
+VERSION HISTORY
+================================================================================
+
+1.0.0-1.0.2: Initial releases, no CLI entry point
+1.0.3: Added bin/cli.js CLI entry point
+1.0.4: Fixed shebang and module issues
+1.0.5: Tool annotations, MCP-SSE endpoint, ChatGPT prep, removed Apify
+
+================================================================================
+USEFUL COMMANDS
+================================================================================
+
+Check npm package:
+  npm view @shashwatgtmalpha/gtm-alpha-mcp-server
+
+Check MCP Registry:
+  curl "https://registry.modelcontextprotocol.io/v0.1/servers?search=gtm-alpha-consultant"
+
+Deploy to Netlify:
+  netlify deploy --prod
+
+Test SSE endpoint:
+  curl https://gtmalpha.netlify.app/mcp-sse
+
+================================================================================
+NEW VERSION WORKFLOW
+================================================================================
+
+1. Update version in package.json
+2. Make code changes
+3. git add . && git commit -m "message" && git push
+4. npm login (if needed)
+5. npm publish --access public
+6. Update version in server.json
+7. wsl
+8. cd /mnt/c/Projects/gtm-alpha-clean
+9. ~/mcp-publisher login github (if needed)
+10. ~/mcp-publisher publish
+11. netlify deploy --prod
+12. Verify endpoints
+
+================================================================================
+RESOURCES
+================================================================================
+
+MCP Registry:    https://registry.modelcontextprotocol.io
+MCP Docs:        https://modelcontextprotocol.io/docs
+mcp-publisher:   https://github.com/modelcontextprotocol/registry/releases
+npm Package:     https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server
+GitHub:          https://github.com/shashwatgtm/gtm-expert-schema
+Netlify:         https://app.netlify.com
+GTM Alpha:       https://gtmalpha.netlify.app
+
+================================================================================
+END OF DOCUMENT
+================================================================================

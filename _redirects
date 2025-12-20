@@ -1,5 +1,10 @@
-# Redirect old URLs to new ones
-/mcp              /integration
-/api/gtm          /api-docs
+# API Redirects
+/api/gtm          /.netlify/functions/express-mcp-server    200
+/api-docs         /api-docs.html
+
+# MCP Protocol Endpoint (SSE)
+/mcp-sse          /.netlify/functions/mcp-sse    200
+
+# Page Redirects
 /#consultation    /consultation
 /#access          /integration

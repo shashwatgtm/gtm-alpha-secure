@@ -55,9 +55,9 @@
 # MCP redirect
 [[redirects]]
   force = true
-  from = "/mcp"
+  from = "/mcp-sse"
   status = 200
-  to = "/.netlify/functions/express-mcp-server"
+  to = "/.netlify/functions/mcp-sse"
 
 [[redirects]]
   from = "/api-docs"

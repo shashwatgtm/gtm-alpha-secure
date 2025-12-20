@@ -1,5 +1,5 @@
 // netlify/functions/analyze.js
-// Real GTM Alpha Analysis implementing the exact same logic as the Apify actor
+// Real GTM Alpha Analysis implementing EPIC framework GTM analysis
 // Enhanced with digital presence analysis and 6-month roadmap structure
 
 const GTM_ALPHA_ENGINE = {
@@ -627,7 +627,7 @@ export default async (req, context) => {
     // Generate strategic analysis with digital integration
     const analysis = GTM_ALPHA_ENGINE.generateStrategicAnalysis(enhancedInputData, epicScores, digitalAnalysis);
 
-    // Generate complete HTML report matching Apify actor output
+    // Generate complete HTML report for comprehensive GTM report
     const htmlReport = GTM_ALPHA_ENGINE.generateHTMLReport(enhancedInputData, analysis, epicScores);
 
     const consultationId = `GTM-${Date.now()}`;
