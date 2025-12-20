@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTM Alpha API Documentation | MCP Server Integration</title>
+    <meta name="description" content="GTM Alpha API and MCP Server documentation. Learn how to integrate GTM Alpha's analysis tools via Model Context Protocol.">
+    <meta name="keywords" content="GTM Alpha API, MCP Server, Model Context Protocol, GTM integration, API documentation">
+    <meta name="author" content="Shashwat Ghosh - GTM Alpha Consulting">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-navy: #0B1426;
+            --primary-blue: #1B365D;
+            --accent-coral: #FF6B5A;
+            --accent-gold: #F4B942;
+            --accent-green: #10B981;
+            --text-primary: #0B1426;
+            --text-secondary: #64748B;
+            --text-light: #94A3B8;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F8FAFC;
+            --bg-accent: #F1F5F9;
+            --bg-code: #1E293B;
+            --border-light: #E2E8F0;
+            --gradient-primary: linear-gradient(135deg, #1B365D 0%, #0B1426 100%);
+            --gradient-accent: linear-gradient(135deg, #FF6B5A 0%, #F4B942 100%);
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-light);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 56px;
+            height: 56px;
+            background: var(--gradient-accent);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1;
+        }
+
+        .logo-gtm {
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        .logo-alpha {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .brand-tagline {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-primary);
+        }
+
+        .cta-nav {
+            background: var(--accent-coral) !important;
+            color: white !important;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        /* Hero */
+        .hero {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 120px 0 60px;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            padding: 60px 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: sticky;
+            top: 120px;
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            margin-bottom: 16px;
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-nav a {
+            display: block;
+            padding: 8px 12px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .sidebar-nav a:hover, .sidebar-nav a.active {
+            background: var(--bg-accent);
+            color: var(--text-primary);
+        }
+
+        /* Documentation Content */
+        .docs-content {
+            max-width: 800px;
+        }
+
+        .docs-section {
+            margin-bottom: 60px;
+        }
+
+        .docs-section h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .docs-section h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 30px 0 16px;
+        }
+
+        .docs-section p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        /* Code Blocks */
+        .code-block {
+            background: var(--bg-code);
+            border-radius: 12px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .code-lang {
+            font-size: 12px;
+            color: var(--accent-coral);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .copy-btn {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        pre {
+            padding: 20px;
+            overflow-x: auto;
+            margin: 0;
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #E2E8F0;
+            line-height: 1.6;
+        }
+
+        .inline-code {
+            background: var(--bg-accent);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--accent-coral);
+        }
+
+        /* Endpoint Cards */
+        .endpoint-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+
+        .endpoint-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .method-badge {
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .method-get {
+            background: #10B981;
+            color: white;
+        }
+
+        .method-post {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .endpoint-path {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .endpoint-desc {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Tool List */
+        .tool-list {
+            display: grid;
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .tool-item {
+            background: white;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .tool-item:hover {
+            border-color: var(--accent-coral);
+            box-shadow: var(--shadow-md);
+        }
+
+        .tool-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tool-name .free-badge {
+            background: var(--accent-green);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .tool-desc {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Alert Boxes */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .alert-success {
+            background: #ECFDF5;
+            border: 1px solid #10B981;
+            color: #065F46;
+        }
+
+        .alert-info {
+            background: #EFF6FF;
+            border: 1px solid #3B82F6;
+            color: #1E40AF;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-navy);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        footer a {
+            color: var(--accent-coral);
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo-container">
+                <a href="/" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                    <div class="logo">
+                        <div class="logo-text">
+                            <div class="logo-gtm">GTM</div>
+                            <div class="logo-alpha">α</div>
+                        </div>
+                    </div>
+                    <div class="brand-text">
+                        <div class="brand-name">GTM Alpha</div>
+                        <div class="brand-tagline">API Docs</div>
+                    </div>
+                </a>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="/#features">Features</a></li>
+                <li><a href="/integration">Integration</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+                <li><a href="/api-docs" class="active">API Docs</a></li>
+                <li><a href="/consultation">Consultation</a></li>
+                <li><a href="https://gtmexpert.com/" class="cta-nav">GTMExpert.com</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>📚</span>
+                    <span>API & MCP Documentation</span>
+                </div>
+                <h1>GTM Alpha API Documentation</h1>
+                <p class="hero-subtitle">
+                    Integrate GTM Alpha's powerful analysis tools into your workflow via MCP (Model Context Protocol)
+                    or REST API. FREE access as part of our Launch Offer.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>Documentation</h3>
+                <ul class="sidebar-nav">
+                    <li><a href="#overview" class="active">Overview</a></li>
+                    <li><a href="#mcp-setup">MCP Setup</a></li>
+                    <li><a href="#available-tools">Available Tools</a></li>
+                    <li><a href="#endpoints">API Endpoints</a></li>
+                    <li><a href="#authentication">Authentication</a></li>
+                    <li><a href="#examples">Examples</a></li>
+                </ul>
+            </aside>
+
+            <main class="docs-content">
+                <section id="overview" class="docs-section">
+                    <h2>Overview</h2>
+                    <p>
+                        GTM Alpha provides access to professional go-to-market analysis tools via the Model Context Protocol (MCP).
+                        These tools integrate seamlessly with AI assistants like Claude, Cursor, and other MCP-compatible clients.
+                    </p>
+
+                    <div class="alert alert-success">
+                        <span class="alert-icon">🎉</span>
+                        <div>
+                            <strong>Launch Offer: FREE Access!</strong><br>
+                            All MCP tools and API endpoints are FREE during our launch period. No payment required.
+                        </div>
+                    </div>
+
+                    <h3>What You Can Do</h3>
+                    <ul style="margin-left: 20px; color: var(--text-secondary);">
+                        <li>Analyze company GTM strategies using the EPIC framework</li>
+                        <li>Audit digital presence and market positioning</li>
+                        <li>Generate implementation roadmaps</li>
+                        <li>Access market intelligence and competitive analysis</li>
+                    </ul>
+                </section>
+
+                <section id="mcp-setup" class="docs-section">
+                    <h2>MCP Setup</h2>
+                    <p>
+                        Add GTM Alpha to your MCP-compatible client by configuring the server endpoint.
+                    </p>
+
+                    <h3>Claude Desktop Configuration</h3>
+                    <p>Add the following to your Claude Desktop configuration file:</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">JSON</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code>{
+  "mcpServers": {
+    "gtm-alpha": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/remote-mcp-server",
+               "https://gtm-alpha.netlify.app/mcp-sse"]
+    }
+  }
+}</code></pre>
+                    </div>
+
+                    <h3>Cursor / VS Code</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">JSON</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code>{
+  "mcp": {
+    "servers": {
+      "gtm-alpha": {
+        "url": "https://gtm-alpha.netlify.app/mcp-sse",
+        "transport": "sse"
+      }
+    }
+  }
+}</code></pre>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <span class="alert-icon">💡</span>
+                        <div>
+                            <strong>Tip:</strong> After configuration, restart your client to load the GTM Alpha tools.
+                        </div>
+                    </div>
+                </section>
+
+                <section id="available-tools" class="docs-section">
+                    <h2>Available Tools</h2>
+                    <p>
+                        GTM Alpha provides the following MCP tools, all FREE as part of our Launch Offer:
+                    </p>
+
+                    <div class="tool-list">
+                        <div class="tool-item">
+                            <div class="tool-name">
+                                gtm_epic_analysis
+                                <span class="free-badge">FREE</span>
+                            </div>
+                            <div class="tool-desc">
+                                Comprehensive EPIC Framework analysis for any company. Evaluates Education, Problem-Solution,
+                                Implementation, and Community aspects of GTM strategy.
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="tool-name">
+                                gtm_digital_audit
+                                <span class="free-badge">FREE</span>
+                            </div>
+                            <div class="tool-desc">
+                                Audit digital presence including website, social media, content strategy, and SEO positioning.
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="tool-name">
+                                gtm_market_intelligence
+                                <span class="free-badge">FREE</span>
+                            </div>
+                            <div class="tool-desc">
+                                Market research and competitive analysis. Identify market opportunities and positioning gaps.
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="tool-name">
+                                gtm_roadmap_generator
+                                <span class="free-badge">FREE</span>
+                            </div>
+                            <div class="tool-desc">
+                                Generate 6-month implementation roadmaps with actionable steps and milestones.
+                            </div>
+                        </div>
+
+                        <div class="tool-item">
+                            <div class="tool-name">
+                                gtm_community_analyzer
+                                <span class="free-badge">FREE</span>
+                            </div>
+                            <div class="tool-desc">
+                                Analyze community building opportunities and engagement strategies.
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="endpoints" class="docs-section">
+                    <h2>API Endpoints</h2>
+
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method-badge method-get">GET</span>
+                            <span class="endpoint-path">/mcp-sse</span>
+                        </div>
+                        <div class="endpoint-desc">
+                            Server-Sent Events endpoint for MCP protocol communication. Use this for real-time tool invocation.
+                        </div>
+                    </div>
+
+                    <div class="endpoint-card">
+                        <div class="endpoint-header">
+                            <span class="method-badge method-post">POST</span>
+                            <span class="endpoint-path">/api/gtm</span>
+                        </div>
+                        <div class="endpoint-desc">
+                            REST API endpoint for direct GTM analysis requests. Returns JSON response.
+                        </div>
+                    </div>
+                </section>
+
+                <section id="authentication" class="docs-section">
+                    <h2>Authentication</h2>
+                    <p>
+                        During the Launch Offer period, no authentication is required. All tools are freely accessible.
+                    </p>
+
+                    <div class="alert alert-success">
+                        <span class="alert-icon">🔓</span>
+                        <div>
+                            <strong>No API Key Required</strong><br>
+                            Simply connect to the MCP endpoint and start using the tools immediately.
+                        </div>
+                    </div>
+                </section>
+
+                <section id="examples" class="docs-section">
+                    <h2>Usage Examples</h2>
+
+                    <h3>Using with Claude</h3>
+                    <p>Once configured, simply ask Claude to use GTM Alpha tools:</p>
+
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">Prompt</span>
+                        </div>
+                        <pre><code>Use the gtm_epic_analysis tool to analyze the GTM strategy
+for a B2B SaaS company in the HR tech space.
+
+Company: "TalentFlow"
+Website: talentflow.example.com
+Target: Mid-market companies (100-1000 employees)
+Product: AI-powered recruitment platform</code></pre>
+                    </div>
+
+                    <h3>REST API Example</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">cURL</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code>curl -X POST https://gtm-alpha.netlify.app/api/gtm \
+  -H "Content-Type: application/json" \
+  -d '{
+    "tool": "gtm_epic_analysis",
+    "params": {
+      "company_name": "TalentFlow",
+      "website": "talentflow.example.com",
+      "industry": "HR Tech",
+      "target_market": "Mid-market B2B"
+    }
+  }'</code></pre>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>
+                &copy; 2025 GTM Alpha by <a href="https://www.linkedin.com/in/shashwatghosh/">Shashwat Ghosh</a>.
+                <a href="https://www.linkedin.com/company/helixgtmconsulting/">Helix Consulting</a>.
+            </p>
+            <p style="margin-top: 12px;">
+                <a href="/pricing">Pricing</a> &bull;
+                <a href="/integration">Integration</a> &bull;
+                <a href="/consultation">Consultation</a>
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        function copyCode(btn) {
+            const codeBlock = btn.closest('.code-block').querySelector('code');
+            navigator.clipboard.writeText(codeBlock.textContent);
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = 'Copy', 2000);
+        }
+
+        // Highlight active sidebar link on scroll
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('.docs-section');
+            const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                if (scrollY >= sectionTop) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

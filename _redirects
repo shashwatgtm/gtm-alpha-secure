@@ -1,9 +1,9 @@
 # API Redirects
 /api/gtm          /.netlify/functions/express-mcp-server    200
-/api-docs         /api-docs.html
+/api-docs         /api-docs.html                            200
 
 # MCP Protocol Endpoint (SSE)
-/mcp-sse          /.netlify/functions/mcp-sse    200
+/mcp-sse          /.netlify/functions/mcp-sse               200
 
 # Page Redirects
 /#consultation    /consultation
