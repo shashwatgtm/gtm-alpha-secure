@@ -2,18 +2,18 @@
 <html lang="en">
 <meta property="og:title" content="GTM Alpha - AI-Powered GTM Consulting">
 <meta property="og:description" content="EPIC framework GTM consultation. MCP server for LLMs.">
-<meta property="og:url" content="https://gtmalpha.netlify.app">
+<meta property="og:url" content="https://gtm-alpha.netlify.app">
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:creator" content="@Shashwat_Ghosh">
-<link rel="canonical" href="https://gtmalpha.netlify.app">
+<link rel="canonical" href="https://gtm-alpha.netlify.app">
 <meta name="robots" content="index, follow">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
   "name": "GTM Alpha Consulting",
-  "url": "https://gtmalpha.netlify.app",
+  "url": "https://gtm-alpha.netlify.app",
   "sameAs": [
     "https://gtmexpert.com",
     "https://github.com/shashwatgtm/gtm-alpha-secure",
@@ -540,7 +540,8 @@
 <span class="bracket">{</span>
   <span class="key">"mcpServers"</span>: <span class="bracket">{</span>
     <span class="key">"gtm-alpha"</span>: <span class="bracket">{</span>
-      <span class="key">"command"</span>: <span class="string">"gtm-alpha-mcp"</span>
+      <span class="key">"command"</span>: <span class="string">"npx"</span>,
+      <span class="key">"args"</span>: [<span class="string">"-y"</span>, <span class="string">"@shashwatgtmalpha/gtm-alpha-mcp-server"</span>]
     <span class="bracket">}</span>
   <span class="bracket">}</span>
 <span class="bracket">}</span>
@@ -551,26 +552,26 @@
                     <div class="tab-panel" id="openai">
                         <h3>OpenAI ChatGPT Integration</h3>
                         <p>Access GTM Alpha tools through OpenAI's ChatGPT using the MCP protocol or Custom GPT actions.</p>
-                        <div class="file-location">MCP Endpoint: https://gtmalpha.netlify.app/mcp-sse</div>
+                        <div class="file-location">MCP Endpoint: https://gtm-alpha.netlify.app/mcp-sse</div>
                         <p style="color: rgba(255,255,255,0.7); margin-top: 16px;">Use the OpenAPI schema from our GitHub repository to create Custom GPT actions.</p>
                         <div class="file-location">npm install -g @shashwatgtmalpha/gtm-alpha-mcp-server</div>
                     </div>
                     <div class="tab-panel" id="gemini">
                         <h3>Google Gemini Integration</h3>
                         <p>Connect GTM Alpha to Google Gemini through function calling and extensions.</p>
-                        <div class="file-location">API Endpoint: https://gtmalpha.netlify.app/mcp-sse</div>
+                        <div class="file-location">API Endpoint: https://gtm-alpha.netlify.app/mcp-sse</div>
                         <p style="color: rgba(255,255,255,0.7); margin-top: 16px;">Use the gemini-functions.json from our GitHub repository for function declarations.</p>
                     </div>
                     <div class="tab-panel" id="copilot">
                         <h3>Microsoft Copilot Integration</h3>
                         <p>Integrate GTM Alpha with Microsoft Copilot through API connections.</p>
-                        <div class="file-location">API Endpoint: https://gtmalpha.netlify.app/mcp-sse</div>
+                        <div class="file-location">API Endpoint: https://gtm-alpha.netlify.app/mcp-sse</div>
                         <p style="color: rgba(255,255,255,0.7); margin-top: 16px;">Coming soon: Native Copilot plugin support.</p>
                     </div>
                     <div class="tab-panel" id="api">
                         <h3>Direct API Access</h3>
                         <p>Direct MCP protocol access for custom integrations and applications.</p>
-                        <div class="file-location">MCP Endpoint: https://gtmalpha.netlify.app/mcp-sse</div>
+                        <div class="file-location">MCP Endpoint: https://gtm-alpha.netlify.app/mcp-sse</div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
                             <a href="https://github.com/shashwatgtm/gtm-alpha-secure" style="color: var(--accent-coral); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">GitHub Docs</a>
                             <a href="/openapi.yaml" style="color: var(--accent-coral); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">OpenAPI Spec</a>
