@@ -5,6 +5,11 @@
 # MCP Protocol Endpoint (SSE)
 /mcp-sse          /.netlify/functions/mcp-sse               200
 
+# Legal Pages (clean URLs)
+/privacy          /privacy.html                             200
+/terms            /terms.html                               200
+/faq              /faq.html                                 200
+
 # Page Redirects
 /#consultation    /consultation
 /#access          /integration

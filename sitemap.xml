@@ -31,6 +31,24 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://gtm-alpha.netlify.app/privacy</loc>
+    <lastmod>2025-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://gtm-alpha.netlify.app/terms</loc>
+    <lastmod>2025-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://gtm-alpha.netlify.app/faq</loc>
+    <lastmod>2025-12-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://gtm-alpha.netlify.app/openapi.yaml</loc>
     <lastmod>2025-12-20</lastmod>
     <changefreq>monthly</changefreq>
