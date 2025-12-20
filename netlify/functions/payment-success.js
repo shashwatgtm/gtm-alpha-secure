@@ -1,4 +1,4 @@
-// netlify/functions/payment-success-beta.js
+// netlify/functions/payment-success.js
 // Handle successful PayPal payments and trigger consultation generation
 
 import paypal from '@paypal/checkout-server-sdk';

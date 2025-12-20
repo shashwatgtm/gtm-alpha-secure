@@ -5,6 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Integration Guide | GTM Alpha MCP Server</title>
     <meta name="description" content="Complete integration guide for GTM Alpha MCP Server. Connect with Claude, OpenAI, Google Gemini, MS Copilot, and more.">
+
+    <!-- Longtail Keywords -->
+    <meta name="keywords" content="MCP server integration guide, Claude Desktop MCP setup, Cursor MCP configuration, ChatGPT custom GPT integration, Gemini function calling setup, Microsoft Copilot API integration, Model Context Protocol tutorial, AI assistant GTM tools, npx MCP server install, SSE endpoint configuration">
+
+    <!-- Author & Metadata -->
+    <meta name="author" content="Shashwat Ghosh">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="GTM Alpha MCP Server Integration Guide">
+    <meta property="og:description" content="Connect GTM Alpha with Claude, ChatGPT, Gemini, Copilot. Complete MCP integration documentation.">
+    <meta property="og:url" content="https://gtm-alpha.netlify.app/integration">
+    <meta property="og:type" content="article">
+    <meta property="og:image" content="https://gtm-alpha.netlify.app/logo.svg">
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://gtm-alpha.netlify.app/integration">
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "GTM Alpha MCP Server Integration Guide",
+        "description": "Complete integration guide for connecting GTM Alpha MCP Server with Claude, OpenAI, Gemini, and Copilot",
+        "author": {
+            "@type": "Person",
+            "name": "Shashwat Ghosh",
+            "url": "https://www.linkedin.com/in/shashwatghosh/"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "GTM Alpha",
+            "url": "https://gtm-alpha.netlify.app"
+        },
+        "mainEntityOfPage": "https://gtm-alpha.netlify.app/integration",
+        "about": {
+            "@type": "SoftwareApplication",
+            "name": "GTM Alpha MCP Server",
+            "applicationCategory": "BusinessApplication"
+        }
+    }
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -12,6 +58,8 @@
         :root {
             --primary-navy: #0B1426;
             --primary-blue: #1B365D;
+            --primary-green: #027E6F;
+            --primary-green-hover: #016A5E;
             --accent-coral: #FF6B5A;
             --accent-gold: #F4B942;
             --text-primary: #0B1426;
@@ -104,7 +152,7 @@
                 <div class="logo">
                     <div class="logo-text">
                         <div class="logo-gtm">GTM</div>
-                        <div class="logo-alpha">a</div>
+                        <div class="logo-alpha">α</div>
                     </div>
                 </div>
                 <div class="brand-text">
@@ -113,10 +161,12 @@
                 </div>
             </div>
             <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/pricing">Pricing</a></li>
-                <li><a href="/consultation">Consultation</a></li>
+                <li><a href="/#features">Features</a></li>
+                <li><a href="/#epic">EPIC Framework</a></li>
                 <li><a href="/integration" class="active">Integration</a></li>
+                <li><a href="/pricing">Pricing</a></li>
+                <li><a href="/api-docs">API Docs</a></li>
+                <li><a href="/consultation">Consultation</a></li>
                 <li><a href="https://gtmexpert.com/" class="cta-nav">GTMExpert.com</a></li>
             </ul>
         </nav>
@@ -164,7 +214,8 @@
                                 <div class="code-block">{
   "mcpServers": {
     "gtm-alpha": {
-      "command": "gtm-alpha-mcp"
+      "command": "npx",
+      "args": ["-y", "@shashwatgtmalpha/gtm-alpha-mcp-server"]
     }
   }
 }</div>
@@ -191,7 +242,7 @@
   "mcpServers": {
     "gtm-alpha": {
       "command": "npx",
-      "args": ["@shashwatgtmalpha/gtm-alpha-mcp-server"]
+      "args": ["-y", "@shashwatgtmalpha/gtm-alpha-mcp-server"]
     }
   }
 }</div>
@@ -205,7 +256,7 @@
                                 <h3>ChatGPT / OpenAI Integration</h3>
                                 <p>Access GTM Alpha tools through ChatGPT Custom GPTs or OpenAI API using our MCP-SSE endpoint.</p>
                                 <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">MCP-SSE Endpoint:</h4>
-                                <div class="file-location">https://gtmalpha.netlify.app/mcp-sse</div>
+                                <div class="file-location">https://gtm-alpha.netlify.app/mcp-sse</div>
                                 <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Features:</h4>
                                 <ul style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>JSON-RPC 2.0 protocol</li>
@@ -218,7 +269,7 @@
                                     <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
                                     <span>API Request Example</span>
                                 </div>
-                                <div class="code-block">curl -X POST https://gtmalpha.netlify.app/mcp-sse \
+                                <div class="code-block">curl -X POST https://gtm-alpha.netlify.app/mcp-sse \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -241,7 +292,7 @@
                                 <h3>Google Gemini Integration</h3>
                                 <p>Connect GTM Alpha to Google Gemini through function calling using our MCP-SSE endpoint.</p>
                                 <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">MCP-SSE Endpoint:</h4>
-                                <div class="file-location">https://gtmalpha.netlify.app/mcp-sse</div>
+                                <div class="file-location">https://gtm-alpha.netlify.app/mcp-sse</div>
                                 <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Available Tools:</h4>
                                 <ul style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>gtm_consultation - Get GTM strategy advice</li>
@@ -254,7 +305,7 @@
                                     <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
                                     <span>Get Tools List</span>
                                 </div>
-                                <div class="code-block">curl -X POST https://gtmalpha.netlify.app/mcp-sse \
+                                <div class="code-block">curl -X POST https://gtm-alpha.netlify.app/mcp-sse \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -271,7 +322,7 @@
                                 <h3>Microsoft Copilot Integration</h3>
                                 <p>Integrate GTM Alpha with Microsoft Copilot using our MCP-SSE endpoint.</p>
                                 <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">MCP-SSE Endpoint:</h4>
-                                <div class="file-location">https://gtmalpha.netlify.app/mcp-sse</div>
+                                <div class="file-location">https://gtm-alpha.netlify.app/mcp-sse</div>
                                 <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Protocol:</h4>
                                 <ul style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>JSON-RPC 2.0 over HTTP POST</li>
@@ -284,7 +335,7 @@
                                     <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
                                     <span>Initialize Connection</span>
                                 </div>
-                                <div class="code-block">curl -X POST https://gtmalpha.netlify.app/mcp-sse \
+                                <div class="code-block">curl -X POST https://gtm-alpha.netlify.app/mcp-sse \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -301,7 +352,7 @@
                                 <h3>Direct API Access</h3>
                                 <p>Direct REST API and MCP access for custom integrations and applications.</p>
                                 <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Endpoints:</h4>
-                                <div class="file-location">MCP-SSE: https://gtmalpha.netlify.app/mcp-sse<br>REST API: https://gtmalpha.netlify.app/api/gtm</div>
+                                <div class="file-location">MCP-SSE: https://gtm-alpha.netlify.app/mcp-sse<br>REST API: https://gtm-alpha.netlify.app/api/gtm</div>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
                                     <a href="/api-docs" style="color: var(--accent-coral); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">API Documentation</a>
                                     <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-coral); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">npm Package</a>
@@ -339,8 +390,8 @@ npx @shashwatgtmalpha/gtm-alpha-mcp-server</div>
                     <p>Best AI GTM and Fractional CMO in India, APAC and US region. Professional go-to-market strategy consulting powered by Shashwat Ghosh expertise and advanced AI integration.</p>
                     <div class="social-links">
                         <a href="https://www.linkedin.com/in/shashwatghosh/" aria-label="LinkedIn">in</a>
-                        <a href="https://x.com/Shashwat_Ghosh" aria-label="Twitter">X</a>
-                        <a href="https://gtmexpert.com/" aria-label="Website">W</a>
+                        <a href="https://x.com/Shashwat_Ghosh" aria-label="Twitter">𝕏</a>
+                        <a href="https://gtmexpert.com/" aria-label="Website">🌐</a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -364,8 +415,8 @@ npx @shashwatgtmalpha/gtm-alpha-mcp-server</div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <div>2025 GTM Alpha by Shashwat Ghosh. Helix Consulting.</div>
-                <div>Best AI GTM and Fractional CMO | #10 India | #52 Worldwide</div>
+                <div>2025 GTM Alpha by Shashwat Ghosh. Helix Consulting. | <a href="/privacy" style="color: rgba(255,255,255,0.6);">Privacy</a> &bull; <a href="/terms" style="color: rgba(255,255,255,0.6);">Terms</a> &bull; <a href="/faq" style="color: rgba(255,255,255,0.6);">FAQ</a></div>
+                <div>Best AI GTM & Fractional CMO | Top 30 PLG Creator Worldwide</div>
             </div>
         </div>
     </footer>

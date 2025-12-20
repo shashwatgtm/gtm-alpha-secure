@@ -124,7 +124,7 @@ export default async function handler(req, context) {
       version: "1.0.5",
       description: "GTM Alpha Consultant - Professional GTM strategy using EPIC framework",
       tools: TOOLS.map(function(t) { return t.name; }),
-      endpoint: "https://gtmalpha.netlify.app/mcp-sse"
+      endpoint: "https://gtm-alpha.netlify.app/mcp-sse"
     };
     headers["Content-Type"] = "application/json";
     return new Response(JSON.stringify(info), { status: 200, headers: headers });

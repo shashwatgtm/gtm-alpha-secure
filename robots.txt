@@ -1,12 +1,62 @@
+# GTM Alpha - robots.txt
+# Allow all crawlers and LLM agents
+
 User-agent: *
 Allow: /
-Sitemap: https://gtmalpha.netlify.app/sitemap.xml
+Sitemap: https://gtm-alpha.netlify.app/sitemap.xml
 
+# OpenAI Crawlers
 User-agent: GPTBot
 Allow: /
 
 User-agent: ChatGPT-User
 Allow: /
 
+# Anthropic Claude
 User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+# Google/Gemini
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+# Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# Cohere
+User-agent: cohere-ai
+Allow: /
+
+# Amazon/Alexa
+User-agent: Amazonbot
+Allow: /
+
+# Microsoft/Bing/Copilot
+User-agent: Bingbot
+Allow: /
+
+# Meta
+User-agent: FacebookBot
+Allow: /
+
+# Common Crawl (used by many AI training)
+User-agent: CCBot
+Allow: /
+
+# Apple
+User-agent: Applebot
+Allow: /
+
+# Grok/xAI
+User-agent: Grok
 Allow: /
