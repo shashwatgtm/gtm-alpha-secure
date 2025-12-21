@@ -28,7 +28,3 @@ export default async (req, context) => {
     headers
   });
 };
-
-export const config = {
-  path: "/api/check-config"
-};
