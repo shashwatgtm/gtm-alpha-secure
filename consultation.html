@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTM Alpha Professional Consultation | Shashwat Ghosh</title>
-    <meta name="description" content="Get professional GTM strategy consultation using EPIC framework. Launch Offer: $1 Premium Audit. Expert analysis by Shashwat Ghosh.">
+    <meta name="description" content="Get professional GTM strategy consultation using EPIC framework. Launch Offer: $8 Premium Audit. Expert analysis by Shashwat Ghosh.">
 
     <!-- Longtail Keywords -->
     <meta name="keywords" content="GTM consultation booking, EPIC framework analysis online, go-to-market strategy audit, B2B marketing consultation India, fractional CMO consultation, startup GTM strategy session, SaaS marketing audit, product-led growth consultation, market positioning analysis, demand generation strategy, ABM consulting India APAC">
@@ -15,7 +15,7 @@
 
     <!-- Open Graph -->
     <meta property="og:title" content="GTM Alpha Professional Consultation | Book Your EPIC Analysis">
-    <meta property="og:description" content="Launch Offer: $1 Premium Audit. Get professional GTM strategy consultation using EPIC framework.">
+    <meta property="og:description" content="Launch Offer: $8 Premium Audit. Get professional GTM strategy consultation using EPIC framework.">
     <meta property="og:url" content="https://gtm-alpha.netlify.app/consultation">
     <meta property="og:type" content="website">
     <meta property="og:image" content="https://gtm-alpha.netlify.app/logo.svg">
@@ -44,7 +44,7 @@
         "offers": {
             "@type": "Offer",
             "name": "Premium Audit - Launch Offer",
-            "price": "1.00",
+            "price": "8.00",
             "priceCurrency": "USD",
             "availability": "https://schema.org/InStock"
         },
@@ -577,7 +577,7 @@
 
     <div class="status-banner">
         <div class="status-icon"></div>
-        <span>🚀 Launch Offer: $1 Premium Audit + FREE MCP Tool Calling</span>
+        <span>🚀 Launch Offer: $8 Premium Audit + FREE MCP Tool Calling</span>
     </div>
 
     <section class="hero">
@@ -787,42 +787,52 @@
     <script>
         document.getElementById('gtmForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            
+
             const submitBtn = document.querySelector('.submit-btn');
             submitBtn.disabled = true;
-            submitBtn.textContent = '⏳ Generating Analysis...';
-            
+            submitBtn.textContent = '⏳ Redirecting to PayPal...';
+
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData);
-            
+
             try {
-                const response = await fetch('/api/submit-consultation', {
+                // Call create-payment to get PayPal approval URL
+                const response = await fetch('/api/create-payment', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(data)
+                    body: JSON.stringify({
+                        consultation_data: {
+                            client_name: data.client_name,
+                            company_name: data.company_name,
+                            email: data.email || '',
+                            role: data.role,
+                            industry: data.industry,
+                            company_description: data.company_description,
+                            gtm_challenge: data.gtm_challenge,
+                            business_stage: data.business_stage,
+                            team_size: data.team_size,
+                            monthly_budget: data.monthly_budget,
+                            focus_area: data.focus_area,
+                            company_website: data.company_website,
+                            linkedin_url: data.linkedin_url
+                        },
+                        tier: 'premium',
+                        payment_frequency: 'one-time'
+                    })
                 });
-                
-                if (response.headers.get('content-type')?.includes('text/html')) {
-                    const html = await response.text();
-                    document.open();
-                    document.write(html);
-                    document.close();
+
+                const result = await response.json();
+
+                if (result.success && result.approval_url) {
+                    // Redirect to PayPal for payment
+                    window.location.href = result.approval_url;
                 } else {
-                    const result = await response.json();
-                    document.getElementById('result').innerHTML = `
-                        <div style="background: #d4edda; padding: 20px; border-radius: 8px; color: #155724;">
-                            <h3>✅ Analysis Complete!</h3>
-                            <p>Consultation ID: ${result.consultation_id}</p>
-                            ${result.recommendations || ''}
-                        </div>
-                    `;
-                    document.getElementById('result').style.display = 'block';
+                    throw new Error(result.error || 'Payment initialization failed');
                 }
             } catch (error) {
                 alert('Error: ' + error.message);
-            } finally {
                 submitBtn.disabled = false;
                 submitBtn.textContent = '🚀 Generate Professional GTM Analysis';
             }

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Processing | GTM Alpha</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-navy: #151617;
+            --accent-coral: #FAA1A1;
+            --text-primary: #151617;
+            --text-secondary: #646B81;
+            --bg-primary: #FFFFFF;
+            --bg-secondary: #F6F5F8;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-secondary); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .container { max-width: 800px; margin: 40px auto; padding: 40px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .loading { text-align: center; padding: 60px 20px; }
+        .spinner { width: 60px; height: 60px; border: 4px solid var(--bg-secondary); border-top: 4px solid var(--accent-coral); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 24px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        h1 { font-size: 28px; color: var(--text-primary); margin-bottom: 16px; }
+        p { color: var(--text-secondary); font-size: 16px; }
+        .success { background: #d4edda; color: #155724; padding: 24px; border-radius: 12px; margin-bottom: 24px; }
+        .error { background: #f8d7da; color: #721c24; padding: 24px; border-radius: 12px; }
+        .result-section { margin-top: 32px; padding: 24px; background: var(--bg-secondary); border-radius: 12px; }
+        .result-section h2 { font-size: 20px; margin-bottom: 16px; color: var(--text-primary); }
+        .epic-scores { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
+        .epic-score { text-align: center; padding: 20px; background: white; border-radius: 12px; }
+        .epic-letter { font-size: 32px; font-weight: 700; color: var(--accent-coral); }
+        .epic-value { font-size: 24px; font-weight: 600; color: var(--text-primary); }
+        .epic-label { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+        .recommendations { margin-top: 24px; }
+        .recommendation { padding: 16px; background: white; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid var(--accent-coral); }
+        .btn { display: inline-block; padding: 14px 28px; background: var(--accent-coral); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; margin-top: 24px; }
+        .btn:hover { opacity: 0.9; }
+        @media (max-width: 600px) { .epic-scores { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loading" class="loading">
+            <div class="spinner"></div>
+            <h1>Processing Your Payment...</h1>
+            <p>Please wait while we complete your transaction and generate your GTM analysis.</p>
+        </div>
+        <div id="result" style="display: none;"></div>
+    </div>
+
+    <script>
+        async function processPayment() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token'); // PayPal order ID
+            const payerId = urlParams.get('PayerID');
+
+            if (!token) {
+                showError('No payment token found. Please try again from the consultation page.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/payment-success', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ order_id: token })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showSuccess(result);
+                } else {
+                    showError(result.error || result.message || 'Payment processing failed');
+                }
+            } catch (error) {
+                showError('Network error: ' + error.message);
+            }
+        }
+
+        function showSuccess(result) {
+            document.getElementById('loading').style.display = 'none';
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+
+            const consultation = result.consultation || {};
+            const epicScores = consultation.epic_scores || {};
+            const recommendations = consultation.recommendations || [];
+
+            resultDiv.innerHTML = `
+                <div class="success">
+                    <h1>Payment Successful!</h1>
+                    <p>Transaction ID: ${result.transaction_id}</p>
+                    <p>Amount: $${result.payment_details?.amount_paid || '8.00'}</p>
+                </div>
+
+                <div class="result-section">
+                    <h2>Your EPIC Framework Analysis</h2>
+                    <div class="epic-scores">
+                        <div class="epic-score">
+                            <div class="epic-letter">E</div>
+                            <div class="epic-value">${epicScores.E || 0}</div>
+                            <div class="epic-label">Ecosystem</div>
+                        </div>
+                        <div class="epic-score">
+                            <div class="epic-letter">P</div>
+                            <div class="epic-value">${epicScores.P || 0}</div>
+                            <div class="epic-label">Product-Led</div>
+                        </div>
+                        <div class="epic-score">
+                            <div class="epic-letter">I</div>
+                            <div class="epic-value">${epicScores.I || 0}</div>
+                            <div class="epic-label">Inbound</div>
+                        </div>
+                        <div class="epic-score">
+                            <div class="epic-letter">C</div>
+                            <div class="epic-value">${epicScores.C || 0}</div>
+                            <div class="epic-label">Community</div>
+                        </div>
+                    </div>
+
+                    ${consultation.primary_strategy ? `<p><strong>Primary Strategy:</strong> ${consultation.primary_strategy}</p>` : ''}
+
+                    ${recommendations.length > 0 ? `
+                        <div class="recommendations">
+                            <h3>Key Recommendations</h3>
+                            ${recommendations.map(rec => `
+                                <div class="recommendation">
+                                    <strong>${rec.title || rec.category || 'Recommendation'}</strong>
+                                    <p>${rec.description || rec.action || rec}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+
+                <a href="/consultation" class="btn">Run Another Analysis</a>
+                <a href="/pricing" class="btn" style="margin-left: 12px; background: var(--primary-navy);">View More Services</a>
+            `;
+        }
+
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <div class="error">
+                    <h1>Payment Issue</h1>
+                    <p>${message}</p>
+                    <p style="margin-top: 12px;">If you were charged, please contact <a href="mailto:shashwat@hyperplays.in">shashwat@hyperplays.in</a> with your transaction details.</p>
+                </div>
+                <a href="/consultation" class="btn">Try Again</a>
+            `;
+        }
+
+        // Start processing on page load
+        processPayment();
+    </script>
+</body>
+</html>

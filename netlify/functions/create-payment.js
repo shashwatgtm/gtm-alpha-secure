@@ -57,7 +57,7 @@ export default async (req, context) => {
     // Base pricing structure
     const basePricing = {
       premium: {
-        base: 1,
+        base: 8,
         name: 'GTM Alpha Premium Analysis',
         type: 'one-time'
       },
