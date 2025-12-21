@@ -3,17 +3,21 @@
 
 import paypal from '@paypal/checkout-server-sdk';
 
-// Same PayPal client setup
-const Environment = process.env.NODE_ENV === 'production' 
-  ? paypal.core.LiveEnvironment 
-  : paypal.core.SandboxEnvironment;
+// Check for PayPal credentials
+const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
+const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
 
-const paypalClient = new paypal.core.PayPalHttpClient(
-  new Environment(
-    process.env.PAYPAL_CLIENT_ID,
-    process.env.PAYPAL_CLIENT_SECRET
-  )
-);
+// PayPal environment setup - only if credentials exist
+let paypalClient = null;
+if (PAYPAL_CLIENT_ID && PAYPAL_CLIENT_SECRET) {
+  const Environment = process.env.NODE_ENV === 'production'
+    ? paypal.core.LiveEnvironment
+    : paypal.core.SandboxEnvironment;
+
+  paypalClient = new paypal.core.PayPalHttpClient(
+    new Environment(PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET)
+  );
+}
 
 export default async (req, context) => {
   const headers = {
@@ -35,6 +39,19 @@ export default async (req, context) => {
   }
 
   try {
+    // Check for PayPal credentials first
+    if (!paypalClient) {
+      console.error('PayPal credentials missing');
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Payment system not configured',
+        message: 'PayPal credentials are missing. Please contact support.'
+      }), {
+        status: 500,
+        headers
+      });
+    }
+
     const { order_id } = await req.json();
     
     // Capture the payment
