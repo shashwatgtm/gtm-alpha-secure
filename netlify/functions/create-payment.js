@@ -18,6 +18,7 @@ const paypalClient = new paypal.core.PayPalHttpClient(
 
 // Beta offer configuration - FREE initial consultation only until Nov 01, 2025
 // Beta period ended - now using launch pricing
+const BETA_END_DATE = new Date('2025-11-01T00:00:00Z'); // Beta ended Nov 1, 2025
 
 function isBetaPeriod() {
   return new Date() <= BETA_END_DATE;
