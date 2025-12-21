@@ -26,16 +26,19 @@ export default async (req, context) => {
     
     const epicData = await epicResponse.json();
     
-    // Store the consultation for future reference
-    const store = getStore("consultations");
+    // Store the consultation for future reference (non-blocking)
     const consultationId = epicData.consultation_id || `CONSULT-${Date.now()}`;
-    
-    await store.setJSON(consultationId, {
-      ...formData,
-      ...epicData,
-      submitted_at: new Date().toISOString(),
-      form_source: 'netlify_direct'
-    });
+    try {
+      const store = getStore("consultations");
+      await store.setJSON(consultationId, {
+        ...formData,
+        ...epicData,
+        submitted_at: new Date().toISOString(),
+        form_source: 'netlify_direct'
+      });
+    } catch (storageError) {
+      console.warn('Blob storage failed (non-critical):', storageError.message);
+    }
     
     // Generate response HTML for the form
     const responseHtml = `
