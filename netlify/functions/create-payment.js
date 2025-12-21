@@ -5,8 +5,8 @@
 import paypal from '@paypal/checkout-server-sdk';
 
 // PayPal environment setup
-const Environment = process.env.NODE_ENV === 'production' 
-  ? paypal.core.LiveEnvironment 
+const Environment = process.env.NODE_ENV === 'production'
+  ? paypal.core.LiveEnvironment
   : paypal.core.SandboxEnvironment;
 
 const paypalClient = new paypal.core.PayPalHttpClient(
@@ -15,20 +15,6 @@ const paypalClient = new paypal.core.PayPalHttpClient(
     process.env.PAYPAL_CLIENT_SECRET
   )
 );
-
-// Beta offer configuration - FREE initial consultation only until Nov 01, 2025
-// Beta period ended - now using launch pricing
-const BETA_END_DATE = new Date('2025-11-01T00:00:00Z'); // Beta ended Nov 1, 2025
-
-function isBetaPeriod() {
-  return new Date() <= BETA_END_DATE;
-}
-
-function getDaysRemaining() {
-  const now = new Date();
-  const msRemaining = BETA_END_DATE - now;
-  return Math.ceil(msRemaining / (1000 * 60 * 60 * 24));
-}
 
 // Calculate price with PayPal fees (2.9% + $0.30) passed to customer
 function calculatePriceWithFees(basePrice) {
@@ -67,15 +53,11 @@ export default async (req, context) => {
 
   try {
     const { consultation_data, tier = 'premium', payment_frequency = 'one-time' } = await req.json();
-    
-    // Check if we're in beta period
-    const betaActive = isBetaPeriod();
-    const daysRemaining = getDaysRemaining();
-    
+
     // Base pricing structure
     const basePricing = {
       premium: {
-        base: 1,
+        base: 8,
         name: 'GTM Alpha Premium Analysis',
         type: 'one-time'
       },
@@ -97,42 +79,6 @@ export default async (req, context) => {
     };
 
     const selectedService = basePricing[tier] || basePricing.premium;
-    
-    // BETA LOGIC: Only initial consultation (premium) is free during beta
-    if (betaActive && tier === 'premium') {
-      console.log(`FREE BETA INITIAL CONSULTATION for ${consultation_data.company_name} - ${daysRemaining} days remaining!`);
-      
-      try {
-        // Import the analyze function
-        const { default: analyzeFunction } = await import('./analyze.js');
-        const consultationResult = await analyzeFunction(req, context);
-
-        return new Response(JSON.stringify({
-          success: true,
-          beta_offer: true,
-          amount: '0.00',
-          tier: tier,
-          beta_end_date: BETA_END_DATE.toISOString(),
-          days_remaining: daysRemaining,
-          message: `FREE BETA - Initial Consultation Only! ${daysRemaining} days remaining`,
-          note: 'Other services (Strategic, Fractional, Enterprise) are paid from day 1',
-          consultation: await consultationResult.json()
-        }), {
-          status: 200,
-          headers
-        });
-      } catch (analyzeError) {
-        console.error('Error calling analyze function:', analyzeError);
-        return new Response(JSON.stringify({
-          success: false,
-          error: 'Consultation generation failed',
-          message: analyzeError.message
-        }), {
-          status: 500,
-          headers
-        });
-      }
-    }
 
     // PAID SERVICES LOGIC
     let finalAmount, finalName, discountInfo = null;
@@ -192,7 +138,6 @@ export default async (req, context) => {
           consultation_data: consultation_data,
           tier: tier,
           payment_frequency: payment_frequency,
-          beta_period: betaActive,
           base_price: selectedService.base,
           final_amount: finalAmount
         })
@@ -218,7 +163,6 @@ export default async (req, context) => {
       tier: tier,
       payment_frequency: payment_frequency,
       discount_info: discountInfo,
-      beta_active: betaActive,
       fee_structure: {
         base_price: selectedService.base,
         paypal_fee_included: true,

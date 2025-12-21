@@ -29,8 +29,8 @@ export default async (req, context) => {
     premium: {
       name: 'GTM Alpha Premium Analysis (Audit)',
       description: 'Comprehensive GTM consultation with EPIC framework',
-      base_price: 1,
-      final_price: 1,
+      base_price: 8,
+      final_price: 8,
       type: 'one-time',
       features: [
         'EPIC Framework Analysis',
@@ -87,16 +87,16 @@ export default async (req, context) => {
 
   const mcp_api_pricing = {
     mcp_tool_calling: { price_per_call: 0, description: 'FREE MCP tool calling for all users', tools_available: ['gtm_consultation', 'epic_audit', 'generate_roadmap'] },
-    premium_audit: { price: 1, description: 'Full GTM Alpha Premium Analysis report' },
+    premium_audit: { price: 8, description: 'Full GTM Alpha Premium Analysis report' },
     setup_cost: 0,
-    billing: 'Pay only for Premium Audit ($1)'
+    billing: 'Pay only for Premium Audit ($8)'
   };
 
   return new Response(JSON.stringify({
-    launch_offer: { message: 'MCP Tool Calling is FREE! Premium Audit only $1', mcp_free: true, audit_price: 1 },
+    launch_offer: { message: 'MCP Tool Calling is FREE! Premium Audit only $8', mcp_free: true, audit_price: 8 },
     consultation_pricing: pricing,
     mcp_api_pricing: mcp_api_pricing,
-    pricing_summary: { mcp_tools: 'FREE', premium_audit: '$1 (one-time)', strategic: '$' + pricing.strategic.final_price + '/hour', fractional: '$' + pricing.fractional.pricing_options.monthly + '/month', enterprise: '$' + pricing.enterprise.license_tiers.starter.monthly + '/month (3 licenses)' },
+    pricing_summary: { mcp_tools: 'FREE', premium_audit: '$8 (one-time)', strategic: '$' + pricing.strategic.final_price + '/hour', fractional: '$' + pricing.fractional.pricing_options.monthly + '/month', enterprise: '$' + pricing.enterprise.license_tiers.starter.monthly + '/month (3 licenses)' },
     fee_structure: { paypal_fees_included: true, markup_percentage: 2.5, note: 'All prices include payment processing fees' },
     discounts: { strategic_volume: { '3_hours': '5% discount', '5_hours': '8% discount' }, recurring_services: { quarterly: '8% discount', annual: '12% discount' } }
   }), { status: 200, headers });
