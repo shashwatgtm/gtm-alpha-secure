@@ -4,17 +4,21 @@
 
 import paypal from '@paypal/checkout-server-sdk';
 
-// PayPal environment setup
-const Environment = process.env.NODE_ENV === 'production'
-  ? paypal.core.LiveEnvironment
-  : paypal.core.SandboxEnvironment;
+// Check for PayPal credentials
+const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
+const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
 
-const paypalClient = new paypal.core.PayPalHttpClient(
-  new Environment(
-    process.env.PAYPAL_CLIENT_ID,
-    process.env.PAYPAL_CLIENT_SECRET
-  )
-);
+// PayPal environment setup - only if credentials exist
+let paypalClient = null;
+if (PAYPAL_CLIENT_ID && PAYPAL_CLIENT_SECRET) {
+  const Environment = process.env.NODE_ENV === 'production'
+    ? paypal.core.LiveEnvironment
+    : paypal.core.SandboxEnvironment;
+
+  paypalClient = new paypal.core.PayPalHttpClient(
+    new Environment(PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET)
+  );
+}
 
 // Calculate price with PayPal fees (2.9% + $0.30) passed to customer
 function calculatePriceWithFees(basePrice) {
@@ -52,6 +56,19 @@ export default async (req, context) => {
   }
 
   try {
+    // Check for PayPal credentials first
+    if (!paypalClient) {
+      console.error('PayPal credentials missing: PAYPAL_CLIENT_ID or PAYPAL_CLIENT_SECRET not set');
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Payment system not configured',
+        message: 'PayPal credentials are missing. Please contact support.'
+      }), {
+        status: 500,
+        headers
+      });
+    }
+
     const { consultation_data, tier = 'premium', payment_frequency = 'one-time' } = await req.json();
 
     // Base pricing structure
@@ -143,8 +160,8 @@ export default async (req, context) => {
         })
       }],
       application_context: {
-        return_url: `${process.env.URL}/payment-success`,
-        cancel_url: `${process.env.URL}/payment-cancel`,
+        return_url: `${process.env.URL || 'https://gtmalpha.netlify.app'}/payment-success`,
+        cancel_url: `${process.env.URL || 'https://gtmalpha.netlify.app'}/payment-cancel`,
         brand_name: 'GTM Alpha Consulting',
         landing_page: 'BILLING',
         user_action: 'PAY_NOW'
@@ -175,10 +192,26 @@ export default async (req, context) => {
 
   } catch (error) {
     console.error('PayPal payment creation error:', error);
+    console.error('Error stack:', error.stack);
+
+    // Check for specific PayPal errors
+    let errorMessage = error.message;
+    let errorDetails = null;
+
+    if (error.statusCode) {
+      errorDetails = `PayPal API error (${error.statusCode})`;
+    }
+
+    if (error.message && error.message.includes('INVALID_RESOURCE_ID')) {
+      errorMessage = 'Invalid PayPal configuration. Please check credentials.';
+    }
+
     return new Response(JSON.stringify({
       success: false,
       error: 'Payment processing failed',
-      message: error.message
+      message: errorMessage,
+      details: errorDetails,
+      debug: process.env.NODE_ENV !== 'production' ? error.stack : undefined
     }), {
       status: 500,
       headers
