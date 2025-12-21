@@ -71,10 +71,14 @@ export default async (req, context) => {
       quarterly_milestones: generateQuarterlyMilestones(epicScores, data)
     };
     
-    // Store in Netlify Blobs (using correct method)
-    const storageKey = consultationId;
-    await store.set(storageKey, JSON.stringify(consultationData));
-    
+    // Store in Netlify Blobs (non-blocking - don't fail if storage fails)
+    try {
+      const storageKey = consultationId;
+      await store.set(storageKey, JSON.stringify(consultationData));
+    } catch (storageError) {
+      console.warn('Blob storage failed (non-critical):', storageError.message);
+    }
+
     // Return response
     return new Response(JSON.stringify({
       success: true,
