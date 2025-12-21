@@ -41,6 +41,12 @@
   force = true
 
 [[redirects]]
+  from = "/api/check-config"
+  to = "/.netlify/functions/check-config"
+  status = 200
+  force = true
+
+[[redirects]]
   from = "/api/analyze"
   to = "/.netlify/functions/analyze"
   status = 200
