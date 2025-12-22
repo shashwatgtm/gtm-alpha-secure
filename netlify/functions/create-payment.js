@@ -8,16 +8,23 @@ import paypal from '@paypal/checkout-server-sdk';
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
 
-// PayPal environment setup - only if credentials exist
+// PayPal environment setup - wrapped in try-catch for safety
 let paypalClient = null;
-if (PAYPAL_CLIENT_ID && PAYPAL_CLIENT_SECRET) {
-  const Environment = process.env.NODE_ENV === 'production'
-    ? paypal.core.LiveEnvironment
-    : paypal.core.SandboxEnvironment;
+let initError = null;
 
-  paypalClient = new paypal.core.PayPalHttpClient(
-    new Environment(PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET)
-  );
+try {
+  if (PAYPAL_CLIENT_ID && PAYPAL_CLIENT_SECRET) {
+    const Environment = process.env.NODE_ENV === 'production'
+      ? paypal.core.LiveEnvironment
+      : paypal.core.SandboxEnvironment;
+
+    paypalClient = new paypal.core.PayPalHttpClient(
+      new Environment(PAYPAL_CLIENT_ID, PAYPAL_CLIENT_SECRET)
+    );
+  }
+} catch (err) {
+  initError = err.message;
+  console.error('PayPal SDK initialization error:', err);
 }
 
 // Calculate price with PayPal fees (2.9% + $0.30) passed to customer
@@ -56,6 +63,19 @@ export default async (req, context) => {
   }
 
   try {
+    // Check for PayPal initialization errors
+    if (initError) {
+      console.error('PayPal SDK init error:', initError);
+      return new Response(JSON.stringify({
+        success: false,
+        error: 'Payment system initialization failed',
+        message: initError
+      }), {
+        status: 500,
+        headers
+      });
+    }
+
     // Check for PayPal credentials first
     if (!paypalClient) {
       console.error('PayPal credentials missing: PAYPAL_CLIENT_ID or PAYPAL_CLIENT_SECRET not set');
