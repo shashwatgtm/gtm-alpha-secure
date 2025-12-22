@@ -2,6 +2,7 @@
 // Handle successful PayPal payments and trigger consultation generation
 
 import paypal from '@paypal/checkout-server-sdk';
+import { getStore } from "@netlify/blobs";
 
 // Check for PayPal credentials
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
@@ -59,17 +60,40 @@ export default async (req, context) => {
     const capture = await paypalClient.execute(request);
     
     if (capture.result.status === 'COMPLETED') {
-      const customData = JSON.parse(capture.result.purchase_units[0].custom_id);
+      // Get consultation ID from custom_id
+      const consultationId = capture.result.purchase_units[0].custom_id;
+
+      // Retrieve full consultation data from Netlify Blobs
+      let customData;
+      try {
+        const store = getStore("pending-payments");
+        customData = await store.get(consultationId, { type: 'json' });
+      } catch (storageError) {
+        console.error('Failed to retrieve consultation data:', storageError);
+      }
+
+      if (!customData) {
+        return new Response(JSON.stringify({
+          success: false,
+          error: 'Consultation data not found',
+          consultation_id: consultationId,
+          message: 'Payment successful but consultation data was not found. Contact support.'
+        }), {
+          status: 500,
+          headers
+        });
+      }
+
       const consultationData = customData.consultation_data;
       const tier = customData.tier;
       const paymentFrequency = customData.payment_frequency;
       const basePrice = customData.base_price;
-      
+
       const amountPaid = parseFloat(capture.result.purchase_units[0].payments.captures[0].amount.value);
       const paypalFee = amountPaid * 0.029 + 0.30;
       const yourNetRevenue = basePrice; // Your actual revenue after our markup
-      
-      console.log(`Payment completed for ${customData.company_name}`);
+
+      console.log(`Payment completed for ${consultationData.company_name}`);
       console.log(`Amount paid: $${amountPaid}`);
       console.log(`Tier: ${tier} (${paymentFrequency})`);
       console.log(`Your net revenue: $${yourNetRevenue}`);

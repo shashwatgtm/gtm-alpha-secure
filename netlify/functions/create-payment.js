@@ -3,6 +3,7 @@
 // All services with PayPal fees passed to customer
 
 import paypal from '@paypal/checkout-server-sdk';
+import { getStore } from "@netlify/blobs";
 
 // Check for PayPal credentials
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
@@ -156,9 +157,27 @@ export default async (req, context) => {
       }
     }
 
+    // Generate short consultation ID and store full data in Blobs
+    const consultationId = `GTM-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+
+    // Store full consultation data in Netlify Blobs
+    try {
+      const store = getStore("pending-payments");
+      await store.setJSON(consultationId, {
+        consultation_data: consultation_data,
+        tier: tier,
+        payment_frequency: payment_frequency,
+        base_price: selectedService.base,
+        final_amount: finalAmount,
+        created_at: new Date().toISOString()
+      });
+    } catch (storageError) {
+      console.warn('Blob storage failed:', storageError.message);
+    }
+
     // Create PayPal payment
     console.log(`Creating PayPal payment for ${consultation_data.company_name}: $${finalAmount} (${finalName})`);
-    
+
     const request = new paypal.orders.OrdersCreateRequest();
     request.prefer("return=representation");
     request.requestBody({
@@ -169,15 +188,7 @@ export default async (req, context) => {
           value: finalAmount.toFixed(2)
         },
         description: `${finalName} for ${consultation_data.company_name}`,
-        custom_id: JSON.stringify({
-          client_name: consultation_data.client_name,
-          company_name: consultation_data.company_name,
-          consultation_data: consultation_data,
-          tier: tier,
-          payment_frequency: payment_frequency,
-          base_price: selectedService.base,
-          final_amount: finalAmount
-        })
+        custom_id: consultationId  // Short ID only (under 127 chars)
       }],
       application_context: {
         return_url: `${process.env.URL || 'https://gtmalpha.netlify.app'}/payment-success`,
