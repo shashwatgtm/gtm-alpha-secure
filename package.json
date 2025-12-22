@@ -23,7 +23,9 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^0.4.0",
-    "@netlify/functions": "^2.0.0"
+    "@netlify/blobs": "^8.1.0",
+    "@netlify/functions": "^2.0.0",
+    "@paypal/checkout-server-sdk": "^1.0.3"
   },
   "devDependencies": {
     "@modelcontextprotocol/inspector": "^0.5.0",
