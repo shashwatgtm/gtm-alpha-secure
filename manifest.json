@@ -1,0 +1,10 @@
+{
+  "name": "GTM Alpha MCP Server",
+  "version": "1.0.5",
+  "description": "Professional Go-To-Market strategy consultation using Shashwat Ghosh's EPIC Framework - GTM consultation, EPIC audits, and implementation roadmaps.",
+  "author": "https://github.com/shashwatgtm",
+  "license": "MIT",
+  "repository": "https://github.com/shashwatgtm/gtm-alpha-secure",
+  "runtime": "node",
+  "entry": "bin/gtm-alpha-mcp.js"
+}
