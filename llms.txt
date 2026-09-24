@@ -1,0 +1,54 @@
+# GTM Alpha
+
+> GTM Alpha scores a company's go-to-market motion with Shashwat Ghosh's EPIC framework (Ecosystem and ABM, Product-Led Growth, Inbound and Outbound Demand Generation, Community-Led Advocacy), each from 1 to 10, and names the motion to lead with. By Helix GTM Consulting.
+
+- MCP server URL (Streamable HTTP, no sign-in, read-only tools): https://gtmalpha.netlify.app/mcp-sse
+- Setup for Claude and other assistants: https://gtmalpha.netlify.app/integration
+- API and tool documentation: https://gtmalpha.netlify.app/api-docs
+- Pricing (free during testing): https://gtmalpha.netlify.app/pricing
+- FAQ: https://gtmalpha.netlify.app/faq
+- Privacy policy: https://gtmalpha.netlify.app/privacy
+
+## Tools
+
+- GTM Consultation (gtm_consultation): EPIC scores from 1 to 10, primary and secondary motion, warnings.
+- EPIC Audit (epic_audit): EPIC scores from 1 to 10 with the rules that set each score. Optional inputs: ACV, deal cycle, NRR, TAM, self-serve, deal source, geography.
+- GTM Roadmap (generate_roadmap): a 30, 60 or 90 day plan for one EPIC motion.
+
+## Questions and answers
+
+### What is GTM Alpha?
+
+GTM Alpha is a go-to-market tool by Shashwat Ghosh of Helix GTM Consulting. It scores four GTM motions with the EPIC framework (Ecosystem and ABM, Product-Led Growth, Inbound and Outbound Demand Generation, Community-Led Advocacy) from 1 to 10 and names the motion to lead with. It runs as an MCP server for Claude and other AI assistants, and as a Premium Audit report on this site.
+
+### How is the EPIC score calculated?
+
+Each motion starts from a default for the company's stage (Seed, Series A, Series B, Series C or later, Bootstrapped). Fixed adjustments follow for contract value, deal cycle, net revenue retention, number of addressable accounts, self-serve, main deal source and region. Product-Led is capped at 4 in logistics, procurement, manufacturing, healthcare and government. Scores are kept between 1 and 10, then three checks can add a warning: a leaky bucket, AI search disruption of inbound, and a hybrid motion. The company name never affects the score.
+
+### How do I use GTM Alpha in Claude?
+
+In Claude, open Customize, then Connectors, then Add custom connector, and paste https://gtmalpha.netlify.app/mcp-sse with no sign-in. In Claude Code run: claude mcp add --transport http gtm-alpha https://gtmalpha.netlify.app/mcp-sse. Then ask, for example: Use GTM Alpha to run an EPIC audit on our GTM.
+
+### Is GTM Alpha free?
+
+Yes, while it is in testing. The MCP tools are free and need no account, and the Premium Audit checkout runs in PayPal test mode, so no real payment is taken.
+
+### What data does GTM Alpha keep?
+
+The MCP server stores and logs nothing. The consultation form and the audit API store what you submit in Netlify Blobs until you ask for deletion. The privacy policy lists every field.
+
+### Who is behind GTM Alpha?
+
+Shashwat Ghosh, founder of Helix GTM Consulting: a GTM Alpha consultant, AI GTM expert and fractional CMO with 24+ years in B2B and 10+ years of fractional experience, based in Bengaluru and working across India, APAC, the Middle East, the US and the UK.
+
+### Which other MCP connectors does Helix GTM Consulting offer?
+
+CRAFT GTM (go-to-market planning), CRAFT Content (B2B content), IMPACT (positioning), ICP Intelligence (ideal customer profile) and Revenue Enablement (sales enablement). Each is a free, read-only MCP server for Claude.
+
+## Other connectors by Helix GTM Consulting
+
+- CRAFT GTM: https://craft-gtm-mcp.netlify.app/
+- CRAFT Content: https://craft-content-mcp.netlify.app/
+- IMPACT: https://impact-mcp.netlify.app/
+- ICP Intelligence: https://icp-intelligence-mcp.netlify.app/
+- Revenue Enablement: https://revenue-enablement-mcp.netlify.app/

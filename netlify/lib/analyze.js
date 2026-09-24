@@ -1,110 +1,35 @@
+import { scoreEpic } from './epic-advanced.js';
+
 // netlify/lib/analyze.js (internal module: imported by payment-success.js, not a public function)
 // Real GTM Alpha Analysis implementing EPIC framework GTM analysis
 // Enhanced with digital presence analysis and 6-month roadmap structure
 
 const GTM_ALPHA_ENGINE = {
-  // Real EPIC Framework Analysis Logic (extracted from actual implementation)
+  // EPIC scoring: the documented advanced rubric (epic-advanced.js), 1 to 10 per motion.
   analyzeEPICFramework(inputData) {
-    const { business_stage, industry, gtm_challenge, budget_range, current_team_size } = inputData;
-    
-    // Business stage scoring weights
-    const stageWeights = {
-      'bootstrapped-idea': { E: 0.2, P: 0.3, I: 0.3, C: 0.2 },
-      'bootstrapped-pmf': { E: 0.25, P: 0.35, I: 0.25, C: 0.15 },
-      'bootstrapped-seed-equivalent': { E: 0.3, P: 0.3, I: 0.25, C: 0.15 },
-      'bootstrapped-series-equivalent': { E: 0.35, P: 0.25, I: 0.25, C: 0.15 },
-      'venture-seed': { E: 0.3, P: 0.35, I: 0.2, C: 0.15 },
-      'venture-series-a': { E: 0.4, P: 0.25, I: 0.2, C: 0.15 },
-      'venture-series-b': { E: 0.45, P: 0.2, I: 0.2, C: 0.15 },
-      'growth': { E: 0.4, P: 0.3, I: 0.2, C: 0.1 },
-      'scale': { E: 0.5, P: 0.2, I: 0.2, C: 0.1 },
-      'enterprise': { E: 0.6, P: 0.15, I: 0.15, C: 0.1 }
-    };
-
-    // Industry modifiers
-    const industryModifiers = {
-      'Technology': { E: 1.2, P: 1.3, I: 1.1, C: 1.0 },
-      'SaaS': { E: 1.1, P: 1.4, I: 1.2, C: 1.1 },
-      'E-commerce': { E: 1.0, P: 1.2, I: 1.3, C: 1.2 },
-      'Healthcare': { E: 1.3, P: 1.0, I: 1.1, C: 0.9 },
-      'Finance': { E: 1.4, P: 1.0, I: 1.0, C: 0.8 },
-      'Education': { E: 1.1, P: 1.1, I: 1.2, C: 1.3 },
-      'Manufacturing': { E: 1.3, P: 0.9, I: 1.0, C: 0.8 },
-      'Consulting': { E: 1.2, P: 0.8, I: 1.3, C: 1.4 }
-    };
-
-    // Challenge-based adjustments
-    const challengeKeywords = {
-      'lead generation': { E: 0, P: 5, I: 15, C: 5 },
-      'customer acquisition': { E: 5, P: 10, I: 10, C: 0 },
-      'enterprise sales': { E: 20, P: 0, I: 5, C: 0 },
-      'market positioning': { E: 10, P: 5, I: 10, C: 10 },
-      'product-led growth': { E: 0, P: 20, I: 0, C: 5 },
-      'sales cycle': { E: 15, P: 5, I: 5, C: 0 },
-      'competitive': { E: 10, P: 5, I: 10, C: 5 },
-      'pricing': { E: 5, P: 15, I: 5, C: 0 },
-      'messaging': { E: 5, P: 0, I: 15, C: 5 },
-      'brand awareness': { E: 5, P: 0, I: 15, C: 10 },
-      'partnership': { E: 20, P: 0, I: 0, C: 5 },
-      'community': { E: 0, P: 0, I: 5, C: 20 },
-      'retention': { E: 0, P: 15, I: 5, C: 10 },
-      'expansion': { E: 10, P: 10, I: 5, C: 0 }
-    };
-
-    // Calculate base scores
-    const baseWeights = stageWeights[business_stage] || stageWeights['bootstrapped-pmf'];
-    const industryMod = industryModifiers[industry] || { E: 1.0, P: 1.0, I: 1.0, C: 1.0 };
-
-    let scores = {
-      E: Math.round(baseWeights.E * 100 * industryMod.E),
-      P: Math.round(baseWeights.P * 100 * industryMod.P),
-      I: Math.round(baseWeights.I * 100 * industryMod.I),
-      C: Math.round(baseWeights.C * 100 * industryMod.C)
-    };
-
-    // Apply challenge-based adjustments
-    const challengeText = (gtm_challenge || '').toLowerCase();
-    Object.keys(challengeKeywords).forEach(keyword => {
-      if (challengeText.includes(keyword)) {
-        const adjustment = challengeKeywords[keyword];
-        scores.E = Math.min(100, scores.E + adjustment.E);
-        scores.P = Math.min(100, scores.P + adjustment.P);
-        scores.I = Math.min(100, scores.I + adjustment.I);
-        scores.C = Math.min(100, scores.C + adjustment.C);
-      }
-    });
-
-    return scores;
+    return scoreEpic(inputData);
   },
 
   // Enhanced strategic analysis with digital presence integration
-  generateStrategicAnalysis(inputData, epicScores, digitalAnalysis = null) {
+  generateStrategicAnalysis(inputData, epic, digitalAnalysis = null) {
     const { company_name, business_stage, industry, gtm_challenge } = inputData;
-    
-    // Determine primary focus based on highest EPIC score
-    const maxScore = Math.max(epicScores.E, epicScores.P, epicScores.I, epicScores.C);
-    let primaryFocus = '';
-    let secondaryFocus = '';
-    
-    if (epicScores.E === maxScore) primaryFocus = 'Ecosystem & ABM-led Sales Motion';
-    else if (epicScores.P === maxScore) primaryFocus = 'Product-Led Growth Acceleration';
-    else if (epicScores.I === maxScore) primaryFocus = 'Inbound & Outbound Demand Generation';
-    else primaryFocus = 'Community-Led Growth Strategy';
+    const epicScores = epic.scores;
 
-    // Find secondary focus (second highest score)
-    const sortedScores = Object.entries(epicScores).sort((a, b) => b[1] - a[1]);
-    const secondaryLetter = sortedScores[1][0];
-    const secondaryMap = {
+    // Primary and secondary focus come from the EPIC result (highest scores; ties go E, P, C, I).
+    const focusMap = {
       'E': 'Ecosystem & ABM-led Sales Motion',
-      'P': 'Product-Led Growth Acceleration', 
+      'P': 'Product-Led Growth Acceleration',
       'I': 'Inbound & Outbound Demand Generation',
       'C': 'Community-Led Growth Strategy'
     };
-    secondaryFocus = secondaryMap[secondaryLetter];
+    const primaryFocus = focusMap[epic.primary.letter];
+    const secondaryFocus = focusMap[epic.secondary.letter];
 
     // Generate consultation insights based on actual GTM Alpha methodology
     const insights = this.generateConsultationInsights(inputData, primaryFocus);
-    const recommendations = this.generateActionableRecommendations(inputData, epicScores, digitalAnalysis);
+    // The recommendation rules were written for a 0 to 100 scale (gates at 70); a 1 to 10 score times 10 keeps their meaning.
+    const hundredScale = { E: epicScores.E * 10, P: epicScores.P * 10, I: epicScores.I * 10, C: epicScores.C * 10 };
+    const recommendations = this.generateActionableRecommendations(inputData, hundredScale, digitalAnalysis);
     const roadmap = this.generateGTMRoadmap(inputData, primaryFocus, secondaryFocus);
     const digitalInsights = digitalAnalysis ? this.generateDigitalInsights(digitalAnalysis) : null;
 
@@ -372,7 +297,19 @@ const GTM_ALPHA_ENGINE = {
   },
 
   // Generate complete HTML report with PDF download functionality
-  generateHTMLReport(inputData, analysis, epicScores) {
+  generateHTMLReport(inputData, analysis, epic) {
+    const epicScores = epic.scores;
+    const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const epicLines = [...epic.warnings.map((w) => 'Warning: ' + w), ...epic.notes, ...(epic.preliminary_note ? [epic.preliminary_note] : [])];
+    const epicNotesSection = `
+        <div class="section">
+            <h2>How your EPIC scores were set</h2>
+            <p>Scale: 1 to 10 per motion. Starting point: ${esc(epic.stage_used)}.</p>
+            <ul>
+                ${epic.adjustments_applied.slice(1).map((a) => `<li>${esc(a.rule)}</li>`).join('') || '<li>No adjustment applied beyond the stage starting point.</li>'}
+            </ul>
+            ${epicLines.length ? `<ul>${epicLines.map((l) => `<li>${esc(l)}</li>`).join('')}</ul>` : ''}
+        </div>`;
     const timestamp = new Date().toISOString();
     const consultationId = `GTM-${Date.now()}`;
     
@@ -402,23 +339,24 @@ const GTM_ALPHA_ENGINE = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTM Alpha Consultation Report - ${inputData.client_name || inputData.company_name}</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background: #f8f9fa; }
-        .report-container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); position: relative; }
-        .pdf-download { position: absolute; top: 20px; right: 20px; background: #FF6B5A; color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
-        .pdf-download:hover { background: #E55A4A; }
-        .header { text-align: center; background: linear-gradient(135deg, #1B365D 0%, #0B1426 100%); color: white; padding: 40px; border-radius: 12px; margin-bottom: 40px; }
+        body { font-family: 'Archivo', Arial, sans-serif; line-height: 1.6; color: #1A0E10; max-width: 800px; margin: 0 auto; padding: 20px; background: #FAF8F6; }
+        .report-container { background: #FAF8F6; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(26, 14, 16, 0.1); position: relative; }
+        .pdf-download { position: absolute; top: 20px; right: 20px; background: #C1121F; color: #FAF8F6; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .pdf-download:hover { background: #641220; }
+        .header { text-align: left; background: #FAF8F6; color: #1A0E10; border-bottom: 1.5px solid #EAD9D5; padding: 40px; border-radius: 12px; margin-bottom: 40px; }
         .epic-scores { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 30px 0; }
-        .epic-item { text-align: center; padding: 20px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #FF6B5A; transition: transform 0.2s; }
+        .epic-item { text-align: center; padding: 20px; background: #FAF8F6; border-radius: 8px; border-left: 4px solid #C1121F; transition: transform 0.2s; }
         .epic-item:hover { transform: translateY(-2px); }
-        .epic-letter { font-size: 36px; font-weight: bold; color: #1B365D; }
-        .epic-score { font-size: 24px; font-weight: bold; color: #FF6B5A; }
-        .section { margin: 30px 0; padding: 20px; border-radius: 8px; background: #fff; border: 1px solid #e9ecef; }
-        .primary-focus { background: linear-gradient(135deg, #FF6B5A 0%, #F4B942 100%); color: white; padding: 20px; border-radius: 8px; }
+        .epic-letter { font-size: 36px; font-weight: bold; color: #641220; }
+        .epic-score { font-size: 24px; font-weight: bold; color: #C1121F; }
+        .section { margin: 30px 0; padding: 20px; border-radius: 8px; background: #FAF8F6; border: 1px solid #EAD9D5; }
+        .primary-focus { background: linear-gradient(135deg, #C1121F 0%, #641220 100%); color: #FAF8F6; padding: 20px; border-radius: 8px; }
         .recommendations li { margin: 10px 0; }
         .roadmap { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .roadmap-item { padding: 20px; background: #f8f9fa; border-radius: 8px; }
-        .consultation-id { color: #666; font-size: 14px; }
+        .roadmap-item { padding: 20px; background: #FAF8F6; border-radius: 8px; }
+        .consultation-id { color: rgba(26, 14, 16, 0.72); font-size: 14px; }
         @media (max-width: 768px) { 
             .epic-scores { grid-template-columns: repeat(2, 1fr); }
             .roadmap { grid-template-columns: 1fr; }
@@ -426,7 +364,7 @@ const GTM_ALPHA_ENGINE = {
         }
         @media print {
             .pdf-download { display: none; }
-            body { background: white; }
+            body { background: #FAF8F6; }
             .report-container { box-shadow: none; }
         }
     </style>
@@ -455,26 +393,28 @@ const GTM_ALPHA_ENGINE = {
             <div class="epic-scores">
                 <div class="epic-item">
                     <div class="epic-letter">E</div>
-                    <div class="epic-score">${epicScores.E}</div>
+                    <div class="epic-score">${epicScores.E} / 10</div>
                     <div>Ecosystem & ABM</div>
                 </div>
                 <div class="epic-item">
                     <div class="epic-letter">P</div>
-                    <div class="epic-score">${epicScores.P}</div>
+                    <div class="epic-score">${epicScores.P} / 10</div>
                     <div>Product-Led Growth</div>
                 </div>
                 <div class="epic-item">
                     <div class="epic-letter">I</div>
-                    <div class="epic-score">${epicScores.I}</div>
+                    <div class="epic-score">${epicScores.I} / 10</div>
                     <div>Inbound & Outbound</div>
                 </div>
                 <div class="epic-item">
                     <div class="epic-letter">C</div>
-                    <div class="epic-score">${epicScores.C}</div>
+                    <div class="epic-score">${epicScores.C} / 10</div>
                     <div>Community-Led</div>
                 </div>
             </div>
         </div>
+
+        ${epicNotesSection}
 
         <div class="section">
             <h2>GTM Alpha Insights</h2>
@@ -534,10 +474,10 @@ const GTM_ALPHA_ENGINE = {
             </ul>
         </div>
 
-        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #FAF8F6; border-radius: 8px;">
             <p><strong>Generated by GTM Alpha Consultant</strong></p>
             <p>Powered by Shashwat Ghosh's EPIC Framework</p>
-            <p><em>Best AI GTM and Fractional CMO in India, APAC and US region</em></p>
+            <p><em>AI GTM Expert and Fractional CMO in India, APAC and US region</em></p>
         </div>
     </div>
 
@@ -611,11 +551,21 @@ export default async (req, context) => {
       specific_focus: inputData.specific_focus || inputData.target_audience || '',
       website_url: inputData.website_url || inputData.company_website,
       linkedin_url: inputData.linkedin_url,
-      twitter_url: inputData.twitter_url
+      twitter_url: inputData.twitter_url,
+      // Optional EPIC inputs from the consultation form (bands) or API callers (numbers)
+      acv: inputData.acv_usd || inputData.acv_band || '',
+      deal_cycle: inputData.deal_cycle_days || inputData.deal_cycle_band || '',
+      nrr: inputData.nrr_percent || inputData.nrr_band || '',
+      tam: inputData.tam_accounts || inputData.tam_band || '',
+      self_serve: inputData.self_serve,
+      deal_source: inputData.deal_source || '',
+      geography: inputData.geography || inputData.region || '',
+      current_channels: inputData.current_channels || ''
     };
 
     // Generate EPIC scores using real algorithm from Railway backend
-    const epicScores = GTM_ALPHA_ENGINE.analyzeEPICFramework(enhancedInputData);
+    const epic = GTM_ALPHA_ENGINE.analyzeEPICFramework(enhancedInputData);
+    const epicScores = epic.scores;
 
     // Enhanced digital presence analysis if URLs provided
     let digitalAnalysis = null;
@@ -624,10 +574,10 @@ export default async (req, context) => {
     }
 
     // Generate strategic analysis with digital integration
-    const analysis = GTM_ALPHA_ENGINE.generateStrategicAnalysis(enhancedInputData, epicScores, digitalAnalysis);
+    const analysis = GTM_ALPHA_ENGINE.generateStrategicAnalysis(enhancedInputData, epic, digitalAnalysis);
 
     // Generate complete HTML report for comprehensive GTM report
-    const htmlReport = GTM_ALPHA_ENGINE.generateHTMLReport(enhancedInputData, analysis, epicScores);
+    const htmlReport = GTM_ALPHA_ENGINE.generateHTMLReport(enhancedInputData, analysis, epic);
 
     const consultationId = `GTM-${Date.now()}`;
     const timestamp = new Date().toISOString();
@@ -642,16 +592,17 @@ export default async (req, context) => {
         report_url: `data:text/html;base64,${Buffer.from(htmlReport).toString('base64')}`,
         primary_focus: analysis.primaryFocus,
         epic_scores: epicScores,
+        epic_detail: epic,
         consultation_output: analysis.insights,
         timestamp: timestamp,
         digital_insights: digitalAnalysis ? analysis.digitalInsights : null
       },
       analysis: {
         epic_framework: {
-          ecosystem: `Ecosystem & ABM Score: ${epicScores.E}/100 - ${analysis.primaryFocus.includes('Ecosystem') ? 'Primary Focus' : 'Secondary opportunity'}`,
-          product_led: `Product-Led Score: ${epicScores.P}/100 - ${analysis.primaryFocus.includes('Product') ? 'Primary Focus' : 'Growth optimization needed'}`,
-          inbound: `Inbound & Outbound Score: ${epicScores.I}/100 - ${analysis.primaryFocus.includes('Inbound') ? 'Primary Focus' : 'Demand generation strategy required'}`,
-          community: `Community-Led Score: ${epicScores.C}/100 - ${analysis.primaryFocus.includes('Community') ? 'Primary Focus' : 'Community-driven growth opportunity'}`
+          ecosystem: `Ecosystem & ABM Score: ${epicScores.E}/10 - ${analysis.primaryFocus.includes('Ecosystem') ? 'Primary Focus' : 'Secondary opportunity'}`,
+          product_led: `Product-Led Score: ${epicScores.P}/10 - ${analysis.primaryFocus.includes('Product') ? 'Primary Focus' : 'Growth optimization needed'}`,
+          inbound: `Inbound & Outbound Score: ${epicScores.I}/10 - ${analysis.primaryFocus.includes('Inbound') ? 'Primary Focus' : 'Demand generation strategy required'}`,
+          community: `Community-Led Score: ${epicScores.C}/10 - ${analysis.primaryFocus.includes('Community') ? 'Primary Focus' : 'Community-driven growth opportunity'}`
         },
         recommendations: analysis.recommendations,
         market_insights: {

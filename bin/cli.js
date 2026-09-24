@@ -2,6 +2,7 @@
 
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { scoreEpic } from '../netlify/lib/epic-advanced.js';
 import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
@@ -21,28 +22,18 @@ const GTM_CONSULTANT = {
     }
   },
 
-  analyzeEPICScores(challenge, companyDescription, industry, businessStage) {
-    const text = `${challenge} ${companyDescription} ${industry}`.toLowerCase();
-    const scores = { E: 0, P: 0, I: 0, C: 0 };
-    Object.keys(this.expertiseContent.epicFramework).forEach(component => {
-      this.expertiseContent.epicFramework[component].keywords.forEach(keyword => {
-        if (text.includes(keyword)) scores[component] += 1;
-      });
-    });
-    if (businessStage?.includes('seed')) scores.P += 1;
-    if (businessStage?.includes('series')) scores.E += 1;
-    if (text.includes('enterprise') || text.includes('b2b')) scores.E += 1;
-    if (text.includes('consumer') || text.includes('b2c')) scores.P += 1;
-    const maxScore = Math.max(...Object.values(scores));
-    return { scores, primaryFocus: Object.keys(scores).find(key => scores[key] === maxScore) || 'P' };
+  // EPIC scoring: the documented advanced rubric shared with the hosted server (netlify/lib/epic-advanced.js).
+  analyzeEPICScores(input) {
+    const r = scoreEpic(input);
+    return Object.assign({ scores: r.scores, primaryFocus: r.primary.letter }, r);
   },
 
   generateConsultation(input) {
-    const { client_name = "Valued Client", company_name = "Your Company", company_description = "", gtm_challenge = "", business_stage = "growth", industry = "Technology" } = input;
-    const epicAnalysis = this.analyzeEPICScores(gtm_challenge, company_description, industry, business_stage);
+    const { client_name = "Valued Client" } = input;
+    const epicAnalysis = this.analyzeEPICScores(input);
     const primaryComponent = this.expertiseContent.epicFramework[epicAnalysis.primaryFocus];
     return {
-      consultation_output: `Thank you ${client_name} for the GTM Alpha consultation.\n\nPrimary Focus: ${primaryComponent.name}\nEPIC Scores: E:${epicAnalysis.scores.E}, P:${epicAnalysis.scores.P}, I:${epicAnalysis.scores.I}, C:${epicAnalysis.scores.C}\n\nCore Insight: ${this.expertiseContent.corePhilosophy}\n\nMethodology: ${this.expertiseContent.gtmAlphaMethodology}`,
+      consultation_output: `Thank you ${client_name} for the GTM Alpha consultation.\n\nPrimary Focus: ${primaryComponent.name}\nSecondary Focus: ${epicAnalysis.secondary.motion}\nEPIC Scores (1 to 10): E:${epicAnalysis.scores.E}, P:${epicAnalysis.scores.P}, I:${epicAnalysis.scores.I}, C:${epicAnalysis.scores.C}${epicAnalysis.preliminary_note ? '\n' + epicAnalysis.preliminary_note : ''}\n\nCore Insight: ${this.expertiseContent.corePhilosophy}\n\nMethodology: ${this.expertiseContent.gtmAlphaMethodology}`,
       epic_scores: epicAnalysis.scores,
       primary_focus: primaryComponent.name
     };
@@ -81,7 +72,7 @@ const GTM_CONSULTANT = {
 
 // Create MCP Server
 const server = new Server(
-  { name: 'gtm-alpha-mcp-server', version: '1.1.0' },
+  { name: 'gtm-alpha-mcp-server', version: '1.2.0' },
   { capabilities: { tools: {} } }
 );
 
@@ -163,12 +154,12 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 
   if (name === 'epic_audit') {
-    const result = GTM_CONSULTANT.analyzeEPICScores(args.challenge || '', '', args.industry || '', args.business_stage || '');
-    const output = {
+    const result = GTM_CONSULTANT.analyzeEPICScores(Object.assign({}, args, { gtm_challenge: args.challenge || '' }));
+    const output = Object.assign({
       epic_scores: result.scores,
       primary_focus: result.primaryFocus,
       recommendation: GTM_CONSULTANT.expertiseContent.epicFramework[result.primaryFocus].name
-    };
+    }, result);
     return { content: [{ type: 'text', text: JSON.stringify(output, null, 2) }] };
   }
 
@@ -184,7 +175,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error('GTM Alpha MCP Server v1.1.0 running on stdio');
+  console.error('GTM Alpha MCP Server v1.2.0 running on stdio');
 }
 
 main().catch(console.error);

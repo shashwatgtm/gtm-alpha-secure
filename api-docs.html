@@ -3,57 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTM Alpha API Documentation | MCP Server Integration</title>
-    <meta name="description" content="GTM Alpha API and MCP Server documentation. Learn how to integrate GTM Alpha's analysis tools via Model Context Protocol.">
+    <title>GTM Alpha API and MCP Documentation | Helix GTM Consulting</title>
+    <meta name="description" content="Documentation for the GTM Alpha MCP server and REST API: tools, inputs, EPIC scores from 1 to 10, endpoints, examples and authentication.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="author" content="Shashwat Ghosh, Helix GTM Consulting">
+    <link rel="canonical" href="https://gtmalpha.netlify.app/api-docs">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GTM Alpha">
+    <meta property="og:title" content="GTM Alpha API and MCP Documentation | Helix GTM Consulting">
+    <meta property="og:description" content="Documentation for the GTM Alpha MCP server and REST API: tools, inputs, EPIC scores from 1 to 10, endpoints, examples and authentication.">
+    <meta property="og:url" content="https://gtmalpha.netlify.app/api-docs">
+    <meta property="og:image" content="https://gtmalpha.netlify.app/assets/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="GTM Alpha by Helix GTM Consulting">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GTM Alpha API and MCP Documentation | Helix GTM Consulting">
+    <meta name="twitter:description" content="Documentation for the GTM Alpha MCP server and REST API: tools, inputs, EPIC scores from 1 to 10, endpoints, examples and authentication.">
+    <meta name="twitter:image" content="https://gtmalpha.netlify.app/assets/og.png">
+    <meta name="twitter:creator" content="@Shashwat_Ghosh">
+    <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://www.gtmexpert.com/#org",
+   "name": "Helix GTM Consulting",
+   "alternateName": [
+    "GTMExpert",
+    "Helix GTM"
+   ],
+   "url": "https://www.gtmexpert.com",
+   "foundingDate": "2016",
+   "founder": {
+    "@id": "https://www.gtmexpert.com/#shashwat"
+   },
+   "email": "shashwat@hyperplays.in",
+   "sameAs": [
+    "https://github.com/shashwatgtm"
+   ]
+  },
+  {
+   "@type": "Person",
+   "@id": "https://www.gtmexpert.com/#shashwat",
+   "name": "Shashwat Ghosh",
+   "jobTitle": "GTM Alpha Consultant, AI GTM Expert and Fractional CMO",
+   "description": "Founder of Helix GTM Consulting, with 24+ years in B2B and 10+ years of fractional experience. Creator of the EPIC, IMPACT and CRAFT frameworks.",
+   "worksFor": {
+    "@id": "https://www.gtmexpert.com/#org"
+   },
+   "url": "https://www.gtmexpert.com",
+   "award": [
+    "B2B Marketer of the Year 2020, Fintech (CMO Asia)",
+    "LinkedIn Top Product Marketing Voice, #10 India and #52 Worldwide (2024)"
+   ],
+   "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bengaluru",
+    "addressRegion": "Karnataka",
+    "addressCountry": "IN"
+   },
+   "sameAs": [
+    "https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/",
+    "https://x.com/Shashwat_Ghosh",
+    "https://github.com/shashwatgtm"
+   ]
+  },
+  {
+   "@type": "WebSite",
+   "@id": "https://gtmalpha.netlify.app/#site",
+   "url": "https://gtmalpha.netlify.app/",
+   "name": "GTM Alpha",
+   "publisher": {
+    "@id": "https://www.gtmexpert.com/#org"
+   },
+   "inLanguage": "en"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://gtmalpha.netlify.app/api-docs#page",
+   "url": "https://gtmalpha.netlify.app/api-docs",
+   "name": "GTM Alpha API and MCP Documentation | Helix GTM Consulting",
+   "description": "Documentation for the GTM Alpha MCP server and REST API: tools, inputs, EPIC scores from 1 to 10, endpoints, examples and authentication.",
+   "isPartOf": {
+    "@id": "https://gtmalpha.netlify.app/#site"
+   },
+   "about": {
+    "@id": "https://gtmalpha.netlify.app/#app"
+   },
+   "dateModified": "2026-09-24",
+   "inLanguage": "en",
+   "primaryImageOfPage": "https://gtmalpha.netlify.app/assets/og.png"
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://gtmalpha.netlify.app/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "GTM Alpha API and MCP Documentation",
+     "item": "https://gtmalpha.netlify.app/api-docs"
+    }
+   ]
+  },
+  {
+   "@type": "SoftwareApplication",
+   "@id": "https://gtmalpha.netlify.app/#app",
+   "name": "GTM Alpha MCP Server",
+   "description": "MCP server with three read-only tools: GTM Consultation, EPIC Audit (Ecosystem, Product-Led, Inbound and Outbound, Community, each scored 1 to 10) and GTM Roadmap.",
+   "applicationCategory": "BusinessApplication",
+   "applicationSubCategory": "MCP server (Model Context Protocol connector)",
+   "operatingSystem": "Any (remote MCP server over Streamable HTTP)",
+   "url": "https://gtmalpha.netlify.app/integration",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   },
+   "isAccessibleForFree": true,
+   "author": {
+    "@id": "https://www.gtmexpert.com/#shashwat"
+   },
+   "publisher": {
+    "@id": "https://www.gtmexpert.com/#org"
+   },
+   "featureList": [
+    "GTM Consultation",
+    "EPIC Audit",
+    "GTM Roadmap"
+   ],
+   "downloadUrl": "https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server",
+   "sameAs": [
+    "https://github.com/shashwatgtm/gtm-alpha-secure",
+    "https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server"
+   ]
+  }
+ ]
+}
+    </script>
 
     <!-- Longtail Keywords -->
-    <meta name="keywords" content="GTM Alpha API documentation, MCP server API reference, Model Context Protocol API, GTM analysis API endpoints, EPIC framework API, gtm_consultation tool, epic_audit tool, Streamable HTTP MCP endpoint, JSON-RPC 2.0 MCP, AI assistant tool calling, REST API GTM tools">
 
     <!-- Author & Metadata -->
-    <meta name="author" content="Shashwat Ghosh">
-    <meta name="robots" content="index, follow">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="GTM Alpha API Documentation | MCP Tools Reference">
-    <meta property="og:description" content="Complete API documentation for GTM Alpha MCP Server. FREE access to all tools during Launch Offer.">
-    <meta property="og:url" content="https://gtmalpha.netlify.app/api-docs">
-    <meta property="og:type" content="article">
-    <meta property="og:image" content="https://gtmalpha.netlify.app/logo.svg">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://gtmalpha.netlify.app/api-docs">
 
     <!-- Schema.org -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "TechArticle",
-        "headline": "GTM Alpha API Documentation",
-        "description": "Complete API and MCP Server documentation for GTM Alpha analysis tools",
-        "author": {
-            "@type": "Person",
-            "name": "Shashwat Ghosh",
-            "url": "https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "GTM Alpha",
-            "url": "https://gtmalpha.netlify.app"
-        },
-        "mainEntityOfPage": "https://gtmalpha.netlify.app/api-docs",
-        "about": {
-            "@type": "WebAPI",
-            "name": "GTM Alpha MCP API",
-            "documentation": "https://gtmalpha.netlify.app/api-docs"
-        }
-    }
-    </script>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -61,22 +171,22 @@
             --primary-dark: #1A0E10;
             --primary-slate: #1A0E10;
             --accent-coral: #C1121F;
-            --accent-rose: #E5A8AC;
+            --accent-rose: #EAD9D5;
             --accent-gold: #641220;
-            --accent-green: #10B981;
+            --accent-green: #641220;
             --text-primary: #1A0E10;
-            --text-secondary: #646B81;
-            --text-light: #94A3B8;
+            --text-secondary: rgba(26, 14, 16, 0.72);
+            --text-light: rgba(26, 14, 16, 0.55);
             --bg-primary: #FAF8F6;
-            --bg-secondary: #F6ECE9;
-            --bg-accent: #F6ECE9;
+            --bg-secondary: #FAF8F6;
+            --bg-accent: #FAF8F6;
             --bg-code: #1A0E10;
             --border-light: #EAD9D5;
-            --gradient-primary: linear-gradient(135deg, #641220 0%, #4A0D17 100%);
+            --gradient-primary: linear-gradient(135deg, #641220 0%, #1A0E10 100%);
             --gradient-accent: linear-gradient(135deg, #C1121F 0%, #C1121F 100%);
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-sm: 0 1px 2px 0 rgba(26, 14, 16, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(26, 14, 16, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(26, 14, 16, 0.1);
         }
 
         * {
@@ -86,7 +196,7 @@
         }
 
         body {
-            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
             background: var(--bg-primary);
@@ -100,7 +210,7 @@
 
         /* Header */
         header {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(250, 248, 246, 0.95);
             backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border-light);
             position: fixed;
@@ -133,7 +243,7 @@
             font-family: Georgia, serif; font-style: italic;
             font-size: 32px;
             font-weight: 400;
-            color: white;
+            color: #FAF8F6;
         }
 
         .brand-text {
@@ -175,7 +285,7 @@
 
         .cta-nav {
             background: var(--accent-coral) !important;
-            color: white !important;
+            color: #FAF8F6 !important;
             padding: 12px 20px;
             border-radius: 8px;
             font-weight: 600;
@@ -184,7 +294,7 @@
         /* Hero */
         .hero {
             background: var(--gradient-primary);
-            color: white;
+            color: #FAF8F6;
             padding: 120px 0 60px;
         }
 
@@ -198,8 +308,8 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(250, 248, 246, 0.1);
+            border: 1px solid rgba(250, 248, 246, 0.2);
             padding: 8px 16px;
             border-radius: 50px;
             font-size: 14px;
@@ -214,7 +324,7 @@
 
         .hero-subtitle {
             font-size: 18px;
-            color: rgba(255, 255, 255, 0.8);
+            color: rgba(250, 248, 246, 0.8);
             margin-bottom: 30px;
         }
 
@@ -308,8 +418,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 12px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(250, 248, 246, 0.05);
+            border-bottom: 1px solid rgba(250, 248, 246, 0.1);
         }
 
         .code-lang {
@@ -321,8 +431,8 @@
 
         .copy-btn {
             background: none;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
+            border: 1px solid rgba(250, 248, 246, 0.2);
+            color: #FAF8F6;
             padding: 4px 12px;
             border-radius: 4px;
             font-size: 12px;
@@ -331,7 +441,7 @@
         }
 
         .copy-btn:hover {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(250, 248, 246, 0.1);
         }
 
         pre {
@@ -343,7 +453,7 @@
         code {
             font-family: 'IBM Plex Mono', monospace;
             font-size: 14px;
-            color: #E2E8F0;
+            color: #EAD9D5;
             line-height: 1.6;
         }
 
@@ -381,13 +491,13 @@
         }
 
         .method-get {
-            background: #10B981;
-            color: white;
+            background: #641220;
+            color: #FAF8F6;
         }
 
         .method-post {
-            background: #3B82F6;
-            color: white;
+            background: #641220;
+            color: #FAF8F6;
         }
 
         .endpoint-path {
@@ -409,7 +519,7 @@
         }
 
         .tool-item {
-            background: white;
+            background: #FAF8F6;
             border: 1px solid var(--border-light);
             border-radius: 8px;
             padding: 20px;
@@ -432,7 +542,7 @@
 
         .tool-name .free-badge {
             background: var(--accent-green);
-            color: white;
+            color: #FAF8F6;
             padding: 2px 8px;
             border-radius: 4px;
             font-size: 10px;
@@ -454,15 +564,15 @@
         }
 
         .alert-success {
-            background: #ECFDF5;
-            border: 1px solid #10B981;
-            color: #065F46;
+            background: #EAD9D5;
+            border: 1px solid #641220;
+            color: #641220;
         }
 
         .alert-info {
-            background: #EFF6FF;
-            border: 1px solid #3B82F6;
-            color: #1E40AF;
+            background: #EAD9D5;
+            border: 1px solid #641220;
+            color: #641220;
         }
 
         .alert-icon {
@@ -472,13 +582,13 @@
         /* Footer */
         footer {
             background: var(--primary-navy);
-            color: white;
+            color: #FAF8F6;
             padding: 40px 0;
             text-align: center;
         }
 
         footer p {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(250, 248, 246, 0.7);
         }
 
         footer a {
@@ -506,37 +616,30 @@
         }
     
         /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
-        h1, h2 { font-family: 'Archivo', 'IBM Plex Sans', sans-serif; }
+        h1, h2 { font-family: 'Archivo', 'Archivo', sans-serif; }
         .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
     </style>
+    <link rel="stylesheet" href="/assets/brand.css">
 </head>
 <body>
-    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken and the prices shown are not charged.</div>
-    <header>
-        <nav class="container">
-            <div class="logo-container">
-                <a href="/" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-                    <div class="logo">α</div>
-                    <div class="brand-text">
-                        <div class="brand-name">GTM Alpha</div>
-                        <div class="brand-tagline">API Docs</div>
-                    </div>
-                </a>
-            </div>
-
-            <ul class="nav-links">
-                <li><a href="/#features">Features</a></li>
-                <li><a href="/#epic">EPIC Framework</a></li>
-                <li><a href="/integration">Integration</a></li>
-                <li><a href="/pricing">Pricing</a></li>
-                <li><a href="/api-docs" class="active">API Docs</a></li>
-                <li><a href="/consultation">Consultation</a></li>
-                <li><a href="https://gtmexpert.com/" class="cta-nav">GTMExpert.com</a></li>
-            </ul>
-        </nav>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken and the prices shown are not charged.</div>
+    <header class="hx-header">
+        <div class="hx-wrap hx-header-row">
+            <a class="hx-lockup" href="/" aria-label="GTM Alpha home"><span class="hx-alpha" aria-hidden="true">&#945;</span><span class="hx-wordmark">GTM Alpha</span></a>
+            <nav class="hx-nav" aria-label="Main">
+                <a href="/#features">Features</a>
+                <a href="/#epic">EPIC Framework</a>
+                <a href="/integration">Integration</a>
+                <a href="/pricing">Pricing</a>
+                <a href="/api-docs" class="is-active" aria-current="page">API Docs</a>
+                <a href="/consultation">Consultation</a>
+                <a href="/#about">About Shashwat</a>
+                <a href="https://gtmexpert.com/" class="hx-cta">GTMExpert.com</a>
+            </nav>
+        </div>
     </header>
 
-    <section class="hero">
+    <section class="hero hx-hero">
         <div class="container">
             <div class="hero-content">
                 <div class="hero-badge">
@@ -664,8 +767,8 @@
                                 <span class="free-badge">FREE</span>
                             </div>
                             <div class="tool-desc">
-                                A GTM consultation summary using the EPIC framework (Ecosystem, Product-Led, Inbound/Outbound, Community).
-                                Required input: gtm_challenge. Optional: company_name, business_stage, industry. Read-only.
+                                A GTM consultation summary using the EPIC framework (Ecosystem, Product-Led, Inbound/Outbound, Community): scores from 1 to 10 per motion, the primary and secondary motion, and any warnings.
+                                Required input: gtm_challenge. Optional: company_name, business_stage, industry. Optional EPIC inputs: acv_usd, deal_cycle_days, nrr_percent, tam_accounts, self_serve, deal_source, geography, current_channels. Without them the result is marked preliminary. Read-only.
                             </div>
                         </div>
 
@@ -675,8 +778,8 @@
                                 <span class="free-badge">FREE</span>
                             </div>
                             <div class="tool-desc">
-                                EPIC framework scores for your GTM situation and the primary focus area.
-                                Required input: challenge. Optional: industry, business_stage. Read-only.
+                                EPIC framework scores from 1 to 10 for each motion, the primary and secondary motion, warnings, notes, and the list of rules that set each score.
+                                Required input: challenge. Optional: industry, business_stage. Optional EPIC inputs: acv_usd, deal_cycle_days, nrr_percent, tam_accounts, self_serve, deal_source, geography, current_channels. Without them the result is marked preliminary. Read-only.
                             </div>
                         </div>
 
@@ -763,7 +866,14 @@ platform to mid-market companies (100-1000 employees).</code></pre>
       "name": "epic_audit",
       "arguments": {
         "challenge": "B2B SaaS in HR tech selling to mid-market companies",
-        "industry": "HR Tech"
+        "industry": "HR Tech",
+        "business_stage": "series-a",
+        "acv_usd": 24000,
+        "deal_cycle_days": 60,
+        "nrr_percent": 105,
+        "tam_accounts": 8000,
+        "deal_source": "outbound",
+        "geography": "india"
       }
     }
   }'</code></pre>
@@ -773,20 +883,46 @@ platform to mid-market companies (100-1000 employees).</code></pre>
         </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <p>
-                &copy; 2025 GTM Alpha by <a href="https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/">Shashwat Ghosh</a>.
-                <a href="https://www.linkedin.com/company/helixgtmconsulting/">Helix Consulting</a>.
-            </p>
-            <p style="margin-top: 12px;">
-                <a href="/pricing">Pricing</a> &bull;
-                <a href="/integration">Integration</a> &bull;
-                <a href="/consultation">Consultation</a> &bull;
-                <a href="/privacy">Privacy</a> &bull;
-                <a href="/terms">Terms</a> &bull;
-                <a href="/faq">FAQ</a>
-            </p>
+    <footer class="hx-footer">
+        <div class="hx-wrap">
+            <div class="hx-footer-grid">
+                <div>
+                    <a class="hx-lockup" href="/" aria-label="GTM Alpha home"><span class="hx-alpha" aria-hidden="true">&#945;</span><span class="hx-wordmark">GTM Alpha</span></a>
+                    <p>Professional go-to-market strategy consulting powered by Shashwat Ghosh's expertise and advanced AI integration.</p>
+                    <a href="https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/">LinkedIn</a>
+                    <a href="https://x.com/Shashwat_Ghosh">X (Twitter)</a>
+                </div>
+                <div>
+                    <h4>Platform</h4>
+                    <a href="/#features">Features</a>
+                    <a href="/#epic">EPIC Framework</a>
+                    <a href="/integration">Integration</a>
+                    <a href="/pricing">Pricing</a>
+                    <a href="/api-docs">API Docs</a>
+                    <a href="/faq">FAQ</a>
+                </div>
+                <div>
+                    <h4>Connectors</h4>
+                    <a href="https://gtmalpha.netlify.app/integration">GTM Alpha</a>
+                    <a href="https://craft-gtm-mcp.netlify.app/">CRAFT GTM</a>
+                    <a href="https://craft-content-mcp.netlify.app/">CRAFT Content</a>
+                    <a href="https://impact-mcp.netlify.app/">IMPACT</a>
+                    <a href="https://icp-intelligence-mcp.netlify.app/">ICP Intelligence</a>
+                    <a href="https://revenue-enablement-mcp.netlify.app/">Revenue Enablement</a>
+                </div>
+                <div>
+                    <h4>Connect</h4>
+                    <a href="/consultation">Book Consultation</a>
+                    <a href="mailto:shashwat@hyperplays.in">Email Support</a>
+                    <a href="https://gtmexpert.com/">GTMExpert.com</a>
+                    <a href="/privacy">Privacy</a>
+                    <a href="/terms">Terms</a>
+                </div>
+            </div>
+            <div class="hx-footer-bottom">
+                <span>&copy; 2026 Helix GTM Consulting. GTM Alpha by Shashwat Ghosh.</span>
+                <span><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/faq">FAQ</a></span>
+            </div>
         </div>
     </footer>
 

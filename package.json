@@ -1,6 +1,6 @@
 {
   "name": "@shashwatgtmalpha/gtm-alpha-mcp-server",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "GTM Alpha Consultant MCP Server - Professional GTM strategy consultation using Shashwat Ghosh's EPIC framework",
   "main": "bin/cli.js",
   "type": "module",
@@ -11,7 +11,8 @@
   "scripts": {
     "start": "node bin/cli.js",
     "dev": "netlify dev",
-    "deploy": "netlify deploy --prod"
+    "deploy": "netlify deploy --prod",
+    "test": "node --test tests/epic-advanced.test.mjs"
   },
   "repository": {
     "type": "git",

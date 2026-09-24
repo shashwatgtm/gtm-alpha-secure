@@ -1,3 +1,4 @@
+import { scoreEpic } from '../lib/epic-advanced.js';
 // netlify/functions/mcp.js
 // GTM Alpha MCP Server Implementation for Netlify
 
@@ -33,40 +34,10 @@ const GTM_CONSULTANT = {
     }
   },
 
-  analyzeEPICScores(challenge, companyDescription, industry, businessStage) {
-    const text = `${challenge} ${companyDescription} ${industry}`.toLowerCase();
-    const scores = { E: 0, P: 0, I: 0, C: 0 };
-    
-    // Keyword-based scoring
-    Object.keys(this.expertiseContent.epicFramework).forEach(component => {
-      const keywords = this.expertiseContent.epicFramework[component].keywords;
-      keywords.forEach(keyword => {
-        if (text.includes(keyword)) {
-          scores[component] += 1;
-        }
-      });
-    });
-
-    // Business stage adjustments
-    if (businessStage && (businessStage.includes('pre-seed') || businessStage.includes('seed'))) {
-      scores.P += 1;
-    }
-    if (businessStage && businessStage.includes('series')) {
-      scores.E += 1;
-    }
-
-    // Industry adjustments
-    if (text.includes('enterprise') || text.includes('b2b')) {
-      scores.E += 1;
-    }
-    if (text.includes('consumer') || text.includes('b2c')) {
-      scores.P += 1;
-    }
-
-    const maxScore = Math.max(...Object.values(scores));
-    const primaryFocus = Object.keys(scores).find(key => scores[key] === maxScore) || 'P';
-    
-    return { scores, primaryFocus };
+  // EPIC scoring: the documented advanced rubric shared with /mcp-sse (netlify/lib/epic-advanced.js), 1 to 10.
+  analyzeEPICScores(challenge, companyDescription, industry, businessStage, extra) {
+    const r = scoreEpic(Object.assign({}, extra || {}, { gtm_challenge: challenge, company_description: companyDescription, industry, business_stage: businessStage }));
+    return Object.assign({ scores: r.scores, primaryFocus: r.primary.letter }, r);
   },
 
   generateConsultationReport(input) {
@@ -79,7 +50,7 @@ const GTM_CONSULTANT = {
       industry = "Technology" 
     } = input;
     
-    const epicAnalysis = this.analyzeEPICScores(gtm_challenge, company_description, industry, business_stage);
+    const epicAnalysis = this.analyzeEPICScores(gtm_challenge, company_description, industry, business_stage, input);
     const primaryEpicComponent = this.expertiseContent.epicFramework[epicAnalysis.primaryFocus];
     
     const insights = this.generateStrategicInsights(gtm_challenge, business_stage, epicAnalysis);
@@ -89,7 +60,7 @@ const GTM_CONSULTANT = {
 ✅ Your Enhanced Professional GTM Alpha Analysis has been Generated Successfully!
 
 📋 Primary Focus Identified: ${primaryEpicComponent.name}
-📊 EPIC Analysis: E:${epicAnalysis.scores.E}, P:${epicAnalysis.scores.P}, I:${epicAnalysis.scores.I}, C:${epicAnalysis.scores.C}
+📊 EPIC Analysis (1 to 10): E:${epicAnalysis.scores.E}, P:${epicAnalysis.scores.P}, I:${epicAnalysis.scores.I}, C:${epicAnalysis.scores.C}
 
 🧠 **Core Insight**: ${this.expertiseContent.corePhilosophy}
 
@@ -105,7 +76,7 @@ const GTM_CONSULTANT = {
 
 Cheers,
 Shashwat Ghosh
-Cofounder and Fractional CMO`;
+Founder and Fractional CMO`;
 
     return {
       consultation_output: consultationOutput,
@@ -273,12 +244,15 @@ export default async (req, context) => {
           inputData.current_challenges?.join(' ') || '',
           inputData.company_context || '',
           inputData.industry || '',
-          inputData.business_stage || 'growth'
+          inputData.business_stage || 'growth',
+          inputData
         );
         
         return new Response(JSON.stringify({
           status: 'success',
           epic_scores: epicAudit.scores,
+          epic_scale: '1 to 10',
+          epic_detail: epicAudit,
           primary_focus: epicAudit.primaryFocus,
           framework_component: GTM_CONSULTANT.expertiseContent.epicFramework[epicAudit.primaryFocus],
           timestamp: new Date().toISOString()

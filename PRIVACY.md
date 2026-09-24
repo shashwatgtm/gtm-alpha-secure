@@ -6,7 +6,7 @@ Contact: Shashwat Ghosh, shashwat@hyperplays.in
 
 ## What we collect
 
-- **Consultation form (website):** your name, company name, company description, GTM challenge, industry, business stage, team size, monthly budget, company website and LinkedIn URL. Saved in our Netlify Blobs database (store "pending-payments") when you submit the form. The company name is also sent to PayPal in the order description. The form does not ask for your email address.
+- **Consultation form (website):** your name, company name, company description, GTM challenge, industry, business stage, team size, monthly budget, company website and LinkedIn URL, and, if you choose to give them, your contract value band, deal cycle band, net revenue retention band, number of addressable accounts, main deal source, primary market and whether you offer self-serve sign-up. Saved in our Netlify Blobs database (store "pending-payments") when you submit the form. The company name is also sent to PayPal in the order description. The form does not ask for your email address.
 - **EPIC audit API:** inputs sent to `/api/epic-audit` are saved with the result (store "epic-audits").
 - **MCP server (`/mcp-sse`, and the npm package):** receives the tool name and inputs of each call and uses them only to build the reply. Our code does not store or log them. The npm package runs on your computer and sends nothing to us.
 - **Automatically:** our pages include no analytics or tracking scripts and set no cookies. Netlify processes each request (including IP address) and keeps its own logs. Pages load fonts from Google Fonts, one image from gamma.app, and the generated report loads a PDF library from cdnjs.

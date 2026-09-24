@@ -99,20 +99,19 @@ The GTM Alpha methodology is built on the EPIC Framework:
 
 ## About Shashwat Ghosh
 
-AI GTM Alpha Consultant and Fractional CMO
+GTM Alpha Consultant, AI GTM Expert and Fractional CMO
 
 - Most Admired Marketing Leaders 2025 - CMO Asia
 - Award Winner: B2B Marketer of the Year 2020 - CMO Asia (Fintech Category)
-- Favicon Ranking: #10 India, #52 Worldwide - Product Marketing Creators on LinkedIn
-- Favicon Ranking: #2 India, #28 Worldwide - Product Led Growth(PLG) Creators on LinkedIn
-- Experience: 24+ years B2B with verified quantifiable achievements
+- LinkedIn Top Product Marketing Voice, #10 India and #52 Worldwide (2024)
+- Experience: 24+ years in B2B with verified quantifiable achievements
 - Education: NIT Rourkela, Ecole des Ponts ParisTech, XLRI Jamshedpur
 
 ### Proven Results
 
 | Achievement | Company |
 |-------------|---------|
-| 4X Business Growth | Airtel Data Centers |
+| 4X Business Growth | Airtel Business |
 | 161% ARR Growth | Happay |
 | 178% Deal Size Increase | Happay Enterprise |
 | $4.2Mn Pipeline | Locus |

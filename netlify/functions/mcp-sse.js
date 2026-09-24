@@ -1,3 +1,5 @@
+import { scoreEpic } from "../lib/epic-advanced.js";
+
 const GTM_CONSULTANT = {
   epicFramework: {
     E: { name: "Ecosystem and ABM-led Sales Motion", keywords: ["partners", "ecosystem", "abm", "enterprise", "integration", "channel", "alliances", "b2b"] },
@@ -6,32 +8,36 @@ const GTM_CONSULTANT = {
     C: { name: "Community-Led Advocacy and Engagement", keywords: ["community", "advocacy", "engagement", "loyalty", "referrals", "events", "network", "social"] }
   },
 
-  analyzeEPIC(challenge, industry, stage) {
-    const text = (challenge + " " + industry).toLowerCase();
-    const scores = { E: 0, P: 0, I: 0, C: 0 };
-    Object.keys(this.epicFramework).forEach(function(key) {
-      this.epicFramework[key].keywords.forEach(function(kw) {
-        if (text.includes(kw)) scores[key]++;
-      }, this);
-    }, this);
-    if (stage && stage.includes("seed")) scores.P++;
-    if (stage && stage.includes("series")) scores.E++;
-    if (text.includes("enterprise") || text.includes("b2b")) scores.E++;
-    var maxScore = Math.max(scores.E, scores.P, scores.I, scores.C);
-    var primaryFocus = Object.keys(scores).find(function(k) { return scores[k] === maxScore; }) || "P";
-    return { scores: scores, primaryFocus: primaryFocus, recommendation: this.epicFramework[primaryFocus].name };
+  // EPIC scoring: the documented advanced rubric (netlify/lib/epic-advanced.js), 1 to 10 per motion.
+  analyzeEPIC(args) {
+    var r = scoreEpic(args);
+    return Object.assign({ scores: r.scores, primaryFocus: r.primary.letter, recommendation: r.primary.motion }, r);
   },
 
   generateConsultation(args) {
     var client_name = args.client_name || "Valued Client";
-    var gtm_challenge = args.gtm_challenge || "";
-    var business_stage = args.business_stage || "growth";
-    var industry = args.industry || "Technology";
-    var analysis = this.analyzeEPIC(gtm_challenge, industry, business_stage);
+    var input = Object.assign({}, args, {
+      gtm_challenge: args.gtm_challenge || "",
+      business_stage: args.business_stage,
+      industry: args.industry || ""
+    });
+    var analysis = this.analyzeEPIC(input);
+    var lines = [
+      "Thank you " + client_name + " for the GTM Alpha consultation.",
+      "",
+      "Primary Focus: " + analysis.primary.motion,
+      "Secondary Focus: " + analysis.secondary.motion,
+      "EPIC Scores (1 to 10): E:" + analysis.scores.E + ", P:" + analysis.scores.P + ", I:" + analysis.scores.I + ", C:" + analysis.scores.C
+    ];
+    analysis.warnings.forEach(function(w) { lines.push("Warning: " + w); });
+    analysis.notes.forEach(function(n) { lines.push("Note: " + n); });
+    if (analysis.preliminary_note) lines.push(analysis.preliminary_note);
     return {
-      consultation_output: "Thank you " + client_name + " for the GTM Alpha consultation.\n\nPrimary Focus: " + analysis.recommendation + "\nEPIC Scores: E:" + analysis.scores.E + ", P:" + analysis.scores.P + ", I:" + analysis.scores.I + ", C:" + analysis.scores.C,
+      consultation_output: lines.join("\n"),
       epic_scores: analysis.scores,
-      primary_focus: analysis.recommendation
+      primary_focus: analysis.primary.motion,
+      secondary_focus: analysis.secondary.motion,
+      epic_detail: analysis
     };
   },
 
@@ -53,14 +59,22 @@ var TOOLS = [
   {
     name: "gtm_consultation",
     title: "GTM Consultation",
-    description: "Get GTM strategy consultation using Shashwat Ghosh EPIC framework",
+    description: "Get GTM strategy consultation using Shashwat Ghosh EPIC framework. Scores the four motions from 1 to 10 with the documented rubric and names the primary and secondary motion. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary.",
     inputSchema: {
       type: "object",
       properties: {
         company_name: { type: "string", description: "Company name" },
         gtm_challenge: { type: "string", description: "Your GTM challenge" },
-        business_stage: { type: "string", description: "Stage: seed, series-a, growth, enterprise" },
-        industry: { type: "string", description: "Your industry" }
+        business_stage: { type: "string", description: "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B)" },
+        industry: { type: "string", description: "Your industry" },
+        acv_usd: { type: "number", description: "Optional. Average contract value per year in US dollars (for example 42000)" },
+        deal_cycle_days: { type: "number", description: "Optional. Days from first touch to closed-won (for example 120)" },
+        nrr_percent: { type: "number", description: "Optional. Net revenue retention in percent (for example 108)" },
+        tam_accounts: { type: "number", description: "Optional. Number of addressable accounts (for example 2500)" },
+        self_serve: { type: "boolean", description: "Optional. true if customers can sign up and get value without talking to sales" },
+        deal_source: { type: "string", enum: ["referrals", "outbound", "partnerships", "inbound", "mixed"], description: "Optional. Where the majority of deals come from" },
+        geography: { type: "string", enum: ["india", "us_eu", "middle_east", "apac", "global"], description: "Optional. Primary market" },
+        current_channels: { type: "string", description: "Optional. What you do today (content, outbound, events, partnerships, PLG, community)" }
       },
       required: ["gtm_challenge"]
     },
@@ -69,13 +83,21 @@ var TOOLS = [
   {
     name: "epic_audit",
     title: "EPIC Audit",
-    description: "Get EPIC framework scores for your GTM strategy",
+    description: "Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes. Add the optional inputs for a full score; without them the result is marked preliminary.",
     inputSchema: {
       type: "object",
       properties: {
         challenge: { type: "string", description: "Describe your GTM situation" },
         industry: { type: "string", description: "Your industry" },
-        business_stage: { type: "string", description: "Business stage" }
+        business_stage: { type: "string", description: "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B)" },
+        acv_usd: { type: "number", description: "Optional. Average contract value per year in US dollars (for example 42000)" },
+        deal_cycle_days: { type: "number", description: "Optional. Days from first touch to closed-won (for example 120)" },
+        nrr_percent: { type: "number", description: "Optional. Net revenue retention in percent (for example 108)" },
+        tam_accounts: { type: "number", description: "Optional. Number of addressable accounts (for example 2500)" },
+        self_serve: { type: "boolean", description: "Optional. true if customers can sign up and get value without talking to sales" },
+        deal_source: { type: "string", enum: ["referrals", "outbound", "partnerships", "inbound", "mixed"], description: "Optional. Where the majority of deals come from" },
+        geography: { type: "string", enum: ["india", "us_eu", "middle_east", "apac", "global"], description: "Optional. Primary market" },
+        current_channels: { type: "string", description: "Optional. What you do today (content, outbound, events, partnerships, PLG, community)" }
       },
       required: ["challenge"]
     },
@@ -101,7 +123,7 @@ function handleToolCall(name, args) {
   if (name === "gtm_consultation") {
     return GTM_CONSULTANT.generateConsultation(args);
   } else if (name === "epic_audit") {
-    return GTM_CONSULTANT.analyzeEPIC(args.challenge || "", args.industry || "", args.business_stage || "");
+    return GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
   } else if (name === "generate_roadmap") {
     return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe || "90-day");
   } else {
@@ -111,7 +133,7 @@ function handleToolCall(name, args) {
 
 // ---------------------------------------------------------------------------
 // MCP transport: Streamable HTTP, stateless, JSON responses (POST only).
-// Transport layer only; the tool logic above is unchanged.
+// Transport layer only. EPIC scoring comes from netlify/lib/epic-advanced.js.
 // ---------------------------------------------------------------------------
 
 var SUPPORTED_PROTOCOL_VERSIONS = ["2025-06-18", "2025-03-26", "2024-11-05"];
@@ -181,7 +203,7 @@ export default async function handler(req, context) {
         id: id,
         result: {
           protocolVersion: version,
-          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.1.0" },
+          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.2.0" },
           capabilities: { tools: {} }
         }
       });

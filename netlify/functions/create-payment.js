@@ -204,7 +204,7 @@ export default async (req, context) => {
       application_context: {
         return_url: `${process.env.URL || 'https://gtmalpha.netlify.app'}/payment-success`,
         cancel_url: `${process.env.URL || 'https://gtmalpha.netlify.app'}/payment-cancel`,
-        brand_name: 'GTM Alpha Consulting',
+        brand_name: 'Helix GTM Consulting',
         landing_page: 'BILLING',
         user_action: 'PAY_NOW'
       }

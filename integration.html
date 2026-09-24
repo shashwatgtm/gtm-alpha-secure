@@ -3,86 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Integration Guide | GTM Alpha MCP Server</title>
-    <meta name="description" content="Complete integration guide for GTM Alpha MCP Server. Connect with Claude, OpenAI, Google Gemini, MS Copilot, and more.">
+    <title>Connect GTM Alpha to Claude and AI Assistants | GTM Alpha</title>
+    <meta name="description" content="Add the GTM Alpha MCP server to Claude, Claude Code, Cursor and other AI assistants, plus the other Helix GTM Consulting connectors.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="author" content="Shashwat Ghosh, Helix GTM Consulting">
+    <link rel="canonical" href="https://gtmalpha.netlify.app/integration">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GTM Alpha">
+    <meta property="og:title" content="Connect GTM Alpha to Claude and AI Assistants | GTM Alpha">
+    <meta property="og:description" content="Add the GTM Alpha MCP server to Claude, Claude Code, Cursor and other AI assistants, plus the other Helix GTM Consulting connectors.">
+    <meta property="og:url" content="https://gtmalpha.netlify.app/integration">
+    <meta property="og:image" content="https://gtmalpha.netlify.app/assets/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="GTM Alpha by Helix GTM Consulting">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Connect GTM Alpha to Claude and AI Assistants | GTM Alpha">
+    <meta name="twitter:description" content="Add the GTM Alpha MCP server to Claude, Claude Code, Cursor and other AI assistants, plus the other Helix GTM Consulting connectors.">
+    <meta name="twitter:image" content="https://gtmalpha.netlify.app/assets/og.png">
+    <meta name="twitter:creator" content="@Shashwat_Ghosh">
+    <script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@graph": [
+  {
+   "@type": "Organization",
+   "@id": "https://www.gtmexpert.com/#org",
+   "name": "Helix GTM Consulting",
+   "alternateName": [
+    "GTMExpert",
+    "Helix GTM"
+   ],
+   "url": "https://www.gtmexpert.com",
+   "foundingDate": "2016",
+   "founder": {
+    "@id": "https://www.gtmexpert.com/#shashwat"
+   },
+   "email": "shashwat@hyperplays.in",
+   "sameAs": [
+    "https://github.com/shashwatgtm"
+   ]
+  },
+  {
+   "@type": "Person",
+   "@id": "https://www.gtmexpert.com/#shashwat",
+   "name": "Shashwat Ghosh",
+   "jobTitle": "GTM Alpha Consultant, AI GTM Expert and Fractional CMO",
+   "description": "Founder of Helix GTM Consulting, with 24+ years in B2B and 10+ years of fractional experience. Creator of the EPIC, IMPACT and CRAFT frameworks.",
+   "worksFor": {
+    "@id": "https://www.gtmexpert.com/#org"
+   },
+   "url": "https://www.gtmexpert.com",
+   "award": [
+    "B2B Marketer of the Year 2020, Fintech (CMO Asia)",
+    "LinkedIn Top Product Marketing Voice, #10 India and #52 Worldwide (2024)"
+   ],
+   "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bengaluru",
+    "addressRegion": "Karnataka",
+    "addressCountry": "IN"
+   },
+   "sameAs": [
+    "https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/",
+    "https://x.com/Shashwat_Ghosh",
+    "https://github.com/shashwatgtm"
+   ]
+  },
+  {
+   "@type": "WebSite",
+   "@id": "https://gtmalpha.netlify.app/#site",
+   "url": "https://gtmalpha.netlify.app/",
+   "name": "GTM Alpha",
+   "publisher": {
+    "@id": "https://www.gtmexpert.com/#org"
+   },
+   "inLanguage": "en"
+  },
+  {
+   "@type": "WebPage",
+   "@id": "https://gtmalpha.netlify.app/integration#page",
+   "url": "https://gtmalpha.netlify.app/integration",
+   "name": "Connect GTM Alpha to Claude and AI Assistants | GTM Alpha",
+   "description": "Add the GTM Alpha MCP server to Claude, Claude Code, Cursor and other AI assistants, plus the other Helix GTM Consulting connectors.",
+   "isPartOf": {
+    "@id": "https://gtmalpha.netlify.app/#site"
+   },
+   "about": {
+    "@id": "https://gtmalpha.netlify.app/#app"
+   },
+   "dateModified": "2026-09-24",
+   "inLanguage": "en",
+   "primaryImageOfPage": "https://gtmalpha.netlify.app/assets/og.png"
+  },
+  {
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+    {
+     "@type": "ListItem",
+     "position": 1,
+     "name": "Home",
+     "item": "https://gtmalpha.netlify.app/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 2,
+     "name": "Connect GTM Alpha to Claude and AI Assistants",
+     "item": "https://gtmalpha.netlify.app/integration"
+    }
+   ]
+  },
+  {
+   "@type": "SoftwareApplication",
+   "@id": "https://gtmalpha.netlify.app/#app",
+   "name": "GTM Alpha MCP Server",
+   "description": "MCP server with three read-only tools: GTM Consultation, EPIC Audit (Ecosystem, Product-Led, Inbound and Outbound, Community, each scored 1 to 10) and GTM Roadmap.",
+   "applicationCategory": "BusinessApplication",
+   "applicationSubCategory": "MCP server (Model Context Protocol connector)",
+   "operatingSystem": "Any (remote MCP server over Streamable HTTP)",
+   "url": "https://gtmalpha.netlify.app/integration",
+   "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+   },
+   "isAccessibleForFree": true,
+   "author": {
+    "@id": "https://www.gtmexpert.com/#shashwat"
+   },
+   "publisher": {
+    "@id": "https://www.gtmexpert.com/#org"
+   },
+   "featureList": [
+    "GTM Consultation",
+    "EPIC Audit",
+    "GTM Roadmap"
+   ],
+   "downloadUrl": "https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server",
+   "sameAs": [
+    "https://github.com/shashwatgtm/gtm-alpha-secure",
+    "https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server"
+   ]
+  }
+ ]
+}
+    </script>
 
     <!-- Longtail Keywords -->
-    <meta name="keywords" content="MCP server integration guide, Claude Desktop MCP setup, Cursor MCP configuration, ChatGPT custom GPT integration, Gemini function calling setup, Microsoft Copilot API integration, Model Context Protocol tutorial, AI assistant GTM tools, npx MCP server install, Streamable HTTP endpoint configuration">
 
     <!-- Author & Metadata -->
-    <meta name="author" content="Shashwat Ghosh">
-    <meta name="robots" content="index, follow">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="GTM Alpha MCP Server Integration Guide">
-    <meta property="og:description" content="Connect GTM Alpha with Claude, ChatGPT, Gemini, Copilot. Complete MCP integration documentation.">
-    <meta property="og:url" content="https://gtmalpha.netlify.app/integration">
-    <meta property="og:type" content="article">
-    <meta property="og:image" content="https://gtmalpha.netlify.app/logo.svg">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://gtmalpha.netlify.app/integration">
 
     <!-- Schema.org -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "TechArticle",
-        "headline": "GTM Alpha MCP Server Integration Guide",
-        "description": "Complete integration guide for connecting GTM Alpha MCP Server with Claude, OpenAI, Gemini, and Copilot",
-        "author": {
-            "@type": "Person",
-            "name": "Shashwat Ghosh",
-            "url": "https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/"
-        },
-        "publisher": {
-            "@type": "Organization",
-            "name": "GTM Alpha",
-            "url": "https://gtmalpha.netlify.app"
-        },
-        "mainEntityOfPage": "https://gtmalpha.netlify.app/integration",
-        "about": {
-            "@type": "SoftwareApplication",
-            "name": "GTM Alpha MCP Server",
-            "applicationCategory": "BusinessApplication"
-        }
-    }
-    </script>
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-navy: #1A0E10;
             --primary-dark: #1A0E10;
             --primary-slate: #1A0E10;
             --accent-coral: #C1121F;
-            --accent-rose: #E5A8AC;
+            --accent-rose: #EAD9D5;
             --accent-gold: #641220;
             --text-primary: #1A0E10;
-            --text-secondary: #646B81;
-            --text-light: #94A3B8;
+            --text-secondary: rgba(26, 14, 16, 0.72);
+            --text-light: rgba(26, 14, 16, 0.55);
             --bg-primary: #FAF8F6;
-            --bg-secondary: #F6ECE9;
-            --bg-accent: #F6ECE9;
+            --bg-secondary: #FAF8F6;
+            --bg-accent: #FAF8F6;
             --border-light: #EAD9D5;
-            --gradient-primary: linear-gradient(135deg, #641220 0%, #4A0D17 100%);
+            --gradient-primary: linear-gradient(135deg, #641220 0%, #1A0E10 100%);
             --gradient-accent: linear-gradient(135deg, #C1121F 0%, #C1121F 100%);
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-sm: 0 1px 2px 0 rgba(26, 14, 16, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(26, 14, 16, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(26, 14, 16, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(26, 14, 16, 0.1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: var(--text-primary); background: var(--bg-primary); }
+        body { font-family: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: var(--text-primary); background: var(--bg-primary); }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-        header { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border-light); position: fixed; width: 100%; top: 0; z-index: 1000; }
+        header { background: rgba(250, 248, 246, 0.95); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border-light); position: fixed; width: 100%; top: 0; z-index: 1000; }
         nav { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
         .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo { width: 56px; height: 56px; background: var(--accent-coral); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: Georgia, serif; font-style: italic; font-size: 32px; font-weight: 400; color: white; }
+        .logo { width: 56px; height: 56px; background: var(--accent-coral); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: Georgia, serif; font-style: italic; font-size: 32px; font-weight: 400; color: #FAF8F6; }
         .brand-text { display: flex; flex-direction: column; }
         .brand-name { font-size: 20px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.2; }
         .brand-tagline { font-size: 12px; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
@@ -91,48 +201,48 @@
         .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
         .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent-coral); transition: width 0.2s ease; }
         .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-        .cta-nav { background: var(--accent-coral) !important; color: white !important; padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; transition: all 0.2s ease; text-decoration: none; }
+        .cta-nav { background: var(--accent-coral) !important; color: #FAF8F6 !important; padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; transition: all 0.2s ease; text-decoration: none; }
         .cta-nav:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); background: #641220 !important; }
         .cta-nav::after { display: none !important; }
-        .page-content { margin-top: 88px; padding: 80px 0; background: var(--primary-navy); color: white; min-height: calc(100vh - 88px); }
+        .page-content { margin-top: 88px; padding: 80px 0; background: var(--primary-navy); color: #FAF8F6; min-height: calc(100vh - 88px); }
         .section-header { text-align: center; margin-bottom: 60px; }
-        .section-badge { display: inline-block; background: var(--accent-coral); color: white; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
-        .section-title { font-size: 48px; font-weight: 800; color: white; margin-bottom: 16px; letter-spacing: -1px; line-height: 1.2; }
-        .section-subtitle { font-size: 20px; color: rgba(255, 255, 255, 0.8); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+        .section-badge { display: inline-block; background: var(--accent-coral); color: #FAF8F6; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
+        .section-title { font-size: 48px; font-weight: 800; color: #FAF8F6; margin-bottom: 16px; letter-spacing: -1px; line-height: 1.2; }
+        .section-subtitle { font-size: 20px; color: rgba(250, 248, 246, 0.8); max-width: 600px; margin: 0 auto; line-height: 1.6; }
         .integration-tabs { max-width: 1000px; margin: 0 auto; }
         .tab-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px; justify-content: center; }
-        .tab-btn { background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.7); border: 1px solid rgba(255, 255, 255, 0.2); padding: 12px 20px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; font-size: 14px; font-weight: 500; }
-        .tab-btn:hover { background: rgba(255, 255, 255, 0.2); color: white; }
-        .tab-btn.active { background: var(--accent-coral); color: white; border-color: var(--accent-coral); }
-        .tab-content { background: rgba(0, 0, 0, 0.2); border-radius: 16px; padding: 40px; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .tab-btn { background: rgba(250, 248, 246, 0.1); color: rgba(250, 248, 246, 0.7); border: 1px solid rgba(250, 248, 246, 0.2); padding: 12px 20px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; font-size: 14px; font-weight: 500; }
+        .tab-btn:hover { background: rgba(250, 248, 246, 0.2); color: #FAF8F6; }
+        .tab-btn.active { background: var(--accent-coral); color: #FAF8F6; border-color: var(--accent-coral); }
+        .tab-content { background: rgba(26, 14, 16, 0.2); border-radius: 16px; padding: 40px; border: 1px solid rgba(250, 248, 246, 0.1); }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
-        .tab-panel h3 { font-size: 28px; margin-bottom: 16px; color: white; }
+        .tab-panel h3 { font-size: 28px; margin-bottom: 16px; color: #FAF8F6; }
         .integration-content { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
-        .file-location { background: rgba(255, 255, 255, 0.05); padding: 16px; border-radius: 8px; margin: 16px 0; font-family: 'IBM Plex Mono', monospace; font-size: 14px; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .code-container { background: rgba(0, 0, 0, 0.3); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .code-header { background: rgba(255, 255, 255, 0.05); padding: 16px 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
+        .file-location { background: rgba(250, 248, 246, 0.05); padding: 16px; border-radius: 8px; margin: 16px 0; font-family: 'IBM Plex Mono', monospace; font-size: 14px; border: 1px solid rgba(250, 248, 246, 0.1); }
+        .code-container { background: rgba(26, 14, 16, 0.3); border-radius: 12px; overflow: hidden; border: 1px solid rgba(250, 248, 246, 0.1); }
+        .code-header { background: rgba(250, 248, 246, 0.05); padding: 16px 24px; border-bottom: 1px solid rgba(250, 248, 246, 0.1); display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
         .code-dots { display: flex; gap: 6px; }
         .code-dot { width: 8px; height: 8px; border-radius: 50%; }
-        .dot-red { background: #FF5F57; }
-        .dot-yellow { background: #FFBD2E; }
-        .dot-green { background: #28CA42; }
-        .code-block { background: transparent; color: #E2E8F0; padding: 24px; font-family: 'IBM Plex Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace; font-size: 14px; line-height: 1.6; overflow-x: auto; white-space: pre; }
-        .code-block .key { color: #F472B6; }
-        .code-block .string { color: #34D399; }
-        .code-block .bracket { color: #60A5FA; }
-        footer { background: var(--primary-navy); color: white; padding: 60px 0 30px; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .dot-red { background: #C1121F; }
+        .dot-yellow { background: #EAD9D5; }
+        .dot-green { background: #641220; }
+        .code-block { background: transparent; color: #EAD9D5; padding: 24px; font-family: 'IBM Plex Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace; font-size: 14px; line-height: 1.6; overflow-x: auto; white-space: pre; }
+        .code-block .key { color: #EAD9D5; }
+        .code-block .string { color: #EAD9D5; }
+        .code-block .bracket { color: #EAD9D5; }
+        footer { background: var(--primary-navy); color: #FAF8F6; padding: 60px 0 30px; border-top: 1px solid rgba(250, 248, 246, 0.1); }
         .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 40px; }
         .footer-brand h3 { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
-        .footer-brand p { color: rgba(255, 255, 255, 0.7); line-height: 1.6; margin-bottom: 24px; }
+        .footer-brand p { color: rgba(250, 248, 246, 0.7); line-height: 1.6; margin-bottom: 24px; }
         .footer-section h4 { font-size: 16px; font-weight: 600; margin-bottom: 20px; color: var(--accent-rose); }
-        .footer-section a { color: rgba(255, 255, 255, 0.7); text-decoration: none; display: block; margin-bottom: 12px; font-size: 14px; transition: color 0.2s ease; }
-        .footer-section a:hover { color: white; }
-        .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 30px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: rgba(255, 255, 255, 0.6); }
+        .footer-section a { color: rgba(250, 248, 246, 0.7); text-decoration: none; display: block; margin-bottom: 12px; font-size: 14px; transition: color 0.2s ease; }
+        .footer-section a:hover { color: #FAF8F6; }
+        .footer-bottom { border-top: 1px solid rgba(250, 248, 246, 0.1); padding-top: 30px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: rgba(250, 248, 246, 0.6); }
         .social-links { display: flex; gap: 16px; }
-        .social-links a { width: 40px; height: 40px; background: rgba(255, 255, 255, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: all 0.2s ease; }
+        .social-links a { width: 40px; height: 40px; background: rgba(250, 248, 246, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #FAF8F6; text-decoration: none; transition: all 0.2s ease; }
         .social-links a:hover { background: var(--accent-coral); transform: translateY(-2px); }
-        .btn-primary { background: var(--accent-coral); color: white; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; transition: all 0.2s ease; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary { background: var(--accent-coral); color: #FAF8F6; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; transition: all 0.2s ease; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
         .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(193, 18, 31, 0.3); }
         @media (max-width: 768px) {
             .nav-links { display: none; }
@@ -142,41 +252,41 @@
         }
     
         /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
-        h1, h2 { font-family: 'Archivo', 'IBM Plex Sans', sans-serif; }
+        h1, h2 { font-family: 'Archivo', 'Archivo', sans-serif; }
         .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
     </style>
+    <link rel="stylesheet" href="/assets/brand.css">
 </head>
 <body>
-    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken and the prices shown are not charged.</div>
-    <header>
-        <nav class="container">
-            <div class="logo-container">
-                <div class="logo">α</div>
-                <div class="brand-text">
-                    <div class="brand-name">GTM Alpha</div>
-                    <div class="brand-tagline">MCP Server</div>
-                </div>
-            </div>
-            <ul class="nav-links">
-                <li><a href="/#features">Features</a></li>
-                <li><a href="/#epic">EPIC Framework</a></li>
-                <li><a href="/integration" class="active">Integration</a></li>
-                <li><a href="/pricing">Pricing</a></li>
-                <li><a href="/api-docs">API Docs</a></li>
-                <li><a href="/consultation">Consultation</a></li>
-                <li><a href="https://gtmexpert.com/" class="cta-nav">GTMExpert.com</a></li>
-            </ul>
-        </nav>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken and the prices shown are not charged.</div>
+    <header class="hx-header">
+        <div class="hx-wrap hx-header-row">
+            <a class="hx-lockup" href="/" aria-label="GTM Alpha home"><span class="hx-alpha" aria-hidden="true">&#945;</span><span class="hx-wordmark">GTM Alpha</span></a>
+            <nav class="hx-nav" aria-label="Main">
+                <a href="/#features">Features</a>
+                <a href="/#epic">EPIC Framework</a>
+                <a href="/integration" class="is-active" aria-current="page">Integration</a>
+                <a href="/pricing">Pricing</a>
+                <a href="/api-docs">API Docs</a>
+                <a href="/consultation">Consultation</a>
+                <a href="/#about">About Shashwat</a>
+                <a href="https://gtmexpert.com/" class="hx-cta">GTMExpert.com</a>
+            </nav>
+        </div>
     </header>
 
-    <section class="page-content">
+    <section class="hx-hero">
         <div class="container">
             <div class="section-header">
                 <div class="section-badge">Multi-LLM Integration</div>
                 <h1 class="section-title">Connect to Any AI Platform</h1>
                 <p class="section-subtitle">Choose your preferred AI platform and follow the integration guide to access GTM Alpha professional consulting tools.</p>
             </div>
+        </div>
+    </section>
 
+    <section class="page-content">
+        <div class="container">
             <div class="integration-tabs">
                 <div class="tab-buttons">
                     <button class="tab-btn active" data-tab="claude">Claude Desktop</button>
@@ -193,25 +303,25 @@
                             <div class="integration-text">
                                 <h3>Claude Desktop Integration</h3>
                                 <p>Connect GTM Alpha to Claude Desktop using the npm package for instant access to professional GTM consulting.</p>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Claude on the web, desktop or mobile (no install):</h4>
-                                <ol style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Claude on the web, desktop or mobile (no install):</h4>
+                                <ol style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>Open Customize, then Connectors, then Add custom connector</li>
                                     <li>MCP server URL: https://gtmalpha.netlify.app/mcp-sse</li>
                                     <li>Choose no sign-in, then Add</li>
                                 </ol>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Or run it locally with the npm package:</h4>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Configuration File Location:</h4>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Or run it locally with the npm package:</h4>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Configuration File Location:</h4>
                                 <div class="file-location">Windows: %APPDATA%\Claude\claude_desktop_config.json<br>macOS: ~/Library/Application Support/Claude/claude_desktop_config.json</div>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Setup Instructions:</h4>
-                                <ol style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Setup Instructions:</h4>
+                                <ol style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>Open the configuration file in your text editor</li>
                                     <li>Add the GTM Alpha server configuration</li>
                                     <li>Save the file and restart Claude Desktop</li>
                                     <li>Test with: "Analyze my GTM strategy using EPIC framework"</li>
                                 </ol>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                                    <a href="https://registry.modelcontextprotocol.io/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
-                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">npm Package</a>
+                                    <a href="https://registry.modelcontextprotocol.io/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
+                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
                                 </div>
                             </div>
                             <div class="code-container">
@@ -236,9 +346,9 @@
                             <div class="integration-text">
                                 <h3>Cursor / Windsurf Integration</h3>
                                 <p>Connect GTM Alpha to Cursor IDE or Windsurf using npx for seamless GTM consulting within your development environment.</p>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Configuration File:</h4>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Configuration File:</h4>
                                 <div class="file-location">.cursor/mcp.json (in project root)</div>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">npm Package:</h4>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">npm Package:</h4>
                                 <div class="file-location">@shashwatgtmalpha/gtm-alpha-mcp-server</div>
                             </div>
                             <div class="code-container">
@@ -263,10 +373,10 @@
                             <div class="integration-text">
                                 <h3>ChatGPT / OpenAI Integration</h3>
                                 <p>Access GTM Alpha tools through ChatGPT Custom GPTs or OpenAI API using our MCP endpoint.</p>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
                                 <div class="file-location">https://gtmalpha.netlify.app/mcp-sse</div>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Features:</h4>
-                                <ul style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Features:</h4>
+                                <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>JSON-RPC 2.0 protocol</li>
                                     <li>Streamable HTTP transport (POST requests, JSON responses)</li>
                                     <li>Tool annotations for safety</li>
@@ -299,17 +409,17 @@
                             <div class="integration-text">
                                 <h3>Google Gemini Integration</h3>
                                 <p>Connect GTM Alpha to Google Gemini through function calling using our MCP endpoint.</p>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
                                 <div class="file-location">https://gtmalpha.netlify.app/mcp-sse</div>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Available Tools:</h4>
-                                <ul style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Available Tools:</h4>
+                                <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>gtm_consultation - Get GTM strategy advice</li>
                                     <li>epic_audit - Get EPIC framework scores</li>
                                     <li>generate_roadmap - Create implementation roadmap</li>
                                 </ul>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                                    <a href="https://registry.modelcontextprotocol.io/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
-                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">npm Package</a>
+                                    <a href="https://registry.modelcontextprotocol.io/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
+                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
                                 </div>
                             </div>
                             <div class="code-container">
@@ -333,17 +443,17 @@
                             <div class="integration-text">
                                 <h3>Microsoft Copilot Integration</h3>
                                 <p>Integrate GTM Alpha with Microsoft Copilot using our MCP endpoint.</p>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
                                 <div class="file-location">https://gtmalpha.netlify.app/mcp-sse</div>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Protocol:</h4>
-                                <ul style="color: rgba(255,255,255,0.8); margin: 16px 0; padding-left: 20px;">
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Protocol:</h4>
+                                <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>JSON-RPC 2.0 over HTTP POST</li>
                                     <li>MCP Protocol Versions: 2025-06-18, 2025-03-26, 2024-11-05</li>
                                     <li>Server Version: 1.1.0</li>
                                 </ul>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                                    <a href="https://registry.modelcontextprotocol.io/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
-                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">npm Package</a>
+                                    <a href="https://registry.modelcontextprotocol.io/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
+                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
                                 </div>
                             </div>
                             <div class="code-container">
@@ -367,11 +477,11 @@
                             <div class="integration-text">
                                 <h3>Direct API Access</h3>
                                 <p>Direct REST API and MCP access for custom integrations and applications.</p>
-                                <h4 style="color: rgba(255,255,255,0.9); margin: 20px 0 8px;">Endpoints:</h4>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Endpoints:</h4>
                                 <div class="file-location">MCP: https://gtmalpha.netlify.app/mcp-sse<br>REST API: see the API documentation</div>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                                    <a href="/api-docs" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">API Documentation</a>
-                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(255,255,255,0.1); border-radius: 8px; text-align: center;">npm Package</a>
+                                    <a href="/api-docs" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">API Documentation</a>
+                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
                                 </div>
                             </div>
                             <div class="code-container">
@@ -391,48 +501,65 @@ npx @shashwatgtmalpha/gtm-alpha-mcp-server</div>
 
             <div style="text-align: center; margin-top: 40px;">
                 <a href="/consultation" class="btn-primary">Book GTM Consultation <span>-></span></a>
-                <div style="margin-top: 16px; color: rgba(255,255,255,0.8); font-size: 14px;">
+                <div style="margin-top: 16px; color: rgba(250, 248, 246,0.8); font-size: 14px;">
                     Or email: <a href="mailto:shashwat@hyperplays.in" style="color: var(--accent-rose); text-decoration: none;">shashwat@hyperplays.in</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h3>GTM Alpha MCP Server</h3>
-                    <p>Best AI GTM and Fractional CMO in India, APAC and US region. Professional go-to-market strategy consulting powered by Shashwat Ghosh expertise and advanced AI integration.</p>
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/" aria-label="LinkedIn">in</a>
-                        <a href="https://x.com/Shashwat_Ghosh" aria-label="Twitter">𝕏</a>
-                        <a href="https://gtmexpert.com/" aria-label="Website">🌐</a>
-                    </div>
+    
+    <section class="hx-qa" id="connectors">
+        <h2>All MCP connectors by Helix GTM Consulting</h2>
+        <p style="color:rgba(26,14,16,0.72);max-width:80ch">GTM Alpha is one of six free, read-only MCP servers for Claude. The others:</p>
+        <ul>
+            <li><a href="https://craft-gtm-mcp.netlify.app/">CRAFT GTM</a></li>
+            <li><a href="https://craft-content-mcp.netlify.app/">CRAFT Content</a></li>
+            <li><a href="https://impact-mcp.netlify.app/">IMPACT</a></li>
+            <li><a href="https://icp-intelligence-mcp.netlify.app/">ICP Intelligence</a></li>
+            <li><a href="https://revenue-enablement-mcp.netlify.app/">Revenue Enablement</a></li>
+        </ul>
+    </section>
+
+    <footer class="hx-footer">
+        <div class="hx-wrap">
+            <div class="hx-footer-grid">
+                <div>
+                    <a class="hx-lockup" href="/" aria-label="GTM Alpha home"><span class="hx-alpha" aria-hidden="true">&#945;</span><span class="hx-wordmark">GTM Alpha</span></a>
+                    <p>Professional go-to-market strategy consulting powered by Shashwat Ghosh's expertise and advanced AI integration.</p>
+                    <a href="https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/">LinkedIn</a>
+                    <a href="https://x.com/Shashwat_Ghosh">X (Twitter)</a>
                 </div>
-                <div class="footer-section">
+                <div>
                     <h4>Platform</h4>
-                    <a href="/">Home</a>
+                    <a href="/#features">Features</a>
+                    <a href="/#epic">EPIC Framework</a>
                     <a href="/integration">Integration</a>
                     <a href="/pricing">Pricing</a>
-                    <a href="/consultation">Consultation</a>
-                </div>
-                <div class="footer-section">
-                    <h4>Resources</h4>
                     <a href="/api-docs">API Docs</a>
-                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server">npm Package</a>
-                    <a href="https://registry.modelcontextprotocol.io">MCP Registry</a>
+                    <a href="/faq">FAQ</a>
                 </div>
-                <div class="footer-section">
+                <div>
+                    <h4>Connectors</h4>
+                    <a href="https://gtmalpha.netlify.app/integration">GTM Alpha</a>
+                    <a href="https://craft-gtm-mcp.netlify.app/">CRAFT GTM</a>
+                    <a href="https://craft-content-mcp.netlify.app/">CRAFT Content</a>
+                    <a href="https://impact-mcp.netlify.app/">IMPACT</a>
+                    <a href="https://icp-intelligence-mcp.netlify.app/">ICP Intelligence</a>
+                    <a href="https://revenue-enablement-mcp.netlify.app/">Revenue Enablement</a>
+                </div>
+                <div>
                     <h4>Connect</h4>
                     <a href="/consultation">Book Consultation</a>
                     <a href="mailto:shashwat@hyperplays.in">Email Support</a>
                     <a href="https://gtmexpert.com/">GTMExpert.com</a>
+                    <a href="/privacy">Privacy</a>
+                    <a href="/terms">Terms</a>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <div>2025 GTM Alpha by Shashwat Ghosh. Helix Consulting. | <a href="/privacy" style="color: rgba(255,255,255,0.6);">Privacy</a> &bull; <a href="/terms" style="color: rgba(255,255,255,0.6);">Terms</a> &bull; <a href="/faq" style="color: rgba(255,255,255,0.6);">FAQ</a></div>
-                <div>Best AI GTM & Fractional CMO | Top 30 PLG Creator Worldwide</div>
+            <div class="hx-footer-bottom">
+                <span>&copy; 2026 Helix GTM Consulting. GTM Alpha by Shashwat Ghosh.</span>
+                <span><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a> &middot; <a href="/faq">FAQ</a></span>
             </div>
         </div>
     </footer>
