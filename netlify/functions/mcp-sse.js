@@ -106,12 +106,12 @@ var TOOLS = [
   {
     name: "generate_roadmap",
     title: "GTM Roadmap",
-    description: "Generate a GTM implementation roadmap",
+    description: "Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps. Builds text from the inputs only.",
     inputSchema: {
       type: "object",
       properties: {
-        primary_focus: { type: "string", enum: ["E", "P", "I", "C"], description: "EPIC component" },
-        timeframe: { type: "string", enum: ["30-day", "60-day", "90-day"], description: "Timeframe" }
+        primary_focus: { type: "string", enum: ["E", "P", "I", "C"], description: "EPIC motion to plan for: E, P, I or C" },
+        timeframe: { type: "string", enum: ["30-day", "60-day", "90-day"], description: "30-day, 60-day or 90-day (default 90-day)" }
       },
       required: ["primary_focus"]
     },
