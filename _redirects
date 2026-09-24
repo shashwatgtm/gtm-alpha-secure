@@ -1,3 +1,29 @@
+# BEGIN old-address page redirects (domain_switch.py) (moved to _redirects: Netlify applies _redirects before netlify.toml)
+# Pages only. MCP and API paths on the old address keep answering directly.
+https://gtmalpha.netlify.app/                      https://gtmalpha.gtmhelix.com/  301!
+https://gtmalpha.netlify.app/index.html            https://gtmalpha.gtmhelix.com/index.html  301!
+https://gtmalpha.netlify.app/pricing               https://gtmalpha.gtmhelix.com/pricing  301!
+https://gtmalpha.netlify.app/pricing.html          https://gtmalpha.gtmhelix.com/pricing.html  301!
+https://gtmalpha.netlify.app/consultation          https://gtmalpha.gtmhelix.com/consultation  301!
+https://gtmalpha.netlify.app/consultation.html     https://gtmalpha.gtmhelix.com/consultation.html  301!
+https://gtmalpha.netlify.app/integration           https://gtmalpha.gtmhelix.com/integration  301!
+https://gtmalpha.netlify.app/integration.html      https://gtmalpha.gtmhelix.com/integration.html  301!
+https://gtmalpha.netlify.app/faq                   https://gtmalpha.gtmhelix.com/faq  301!
+https://gtmalpha.netlify.app/faq.html              https://gtmalpha.gtmhelix.com/faq.html  301!
+https://gtmalpha.netlify.app/api-docs              https://gtmalpha.gtmhelix.com/api-docs  301!
+https://gtmalpha.netlify.app/api-docs.html         https://gtmalpha.gtmhelix.com/api-docs.html  301!
+https://gtmalpha.netlify.app/privacy               https://gtmalpha.gtmhelix.com/privacy  301!
+https://gtmalpha.netlify.app/privacy.html          https://gtmalpha.gtmhelix.com/privacy.html  301!
+https://gtmalpha.netlify.app/terms                 https://gtmalpha.gtmhelix.com/terms  301!
+https://gtmalpha.netlify.app/terms.html            https://gtmalpha.gtmhelix.com/terms.html  301!
+https://gtmalpha.netlify.app/payment-success       https://gtmalpha.gtmhelix.com/payment-success  301!
+https://gtmalpha.netlify.app/payment-success.html  https://gtmalpha.gtmhelix.com/payment-success.html  301!
+https://gtmalpha.netlify.app/payment-cancel        https://gtmalpha.gtmhelix.com/payment-cancel  301!
+https://gtmalpha.netlify.app/payment-cancel.html   https://gtmalpha.gtmhelix.com/payment-cancel.html  301!
+https://gtmalpha.netlify.app/sitemap.xml           https://gtmalpha.gtmhelix.com/sitemap.xml  301!
+https://gtmalpha.netlify.app/llms.txt              https://gtmalpha.gtmhelix.com/llms.txt  301!
+# END old-address page redirects
+
 # API Redirects
 /api/gtm          /.netlify/functions/express-mcp-server    200
 /api-docs         /api-docs.html                            200
