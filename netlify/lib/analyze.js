@@ -339,7 +339,7 @@ const GTM_ALPHA_ENGINE = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GTM Alpha Consultation Report - ${inputData.client_name || inputData.company_name}</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://gtmalpha.gtmhelix.com/assets/fonts.css" rel="stylesheet">
     <style>
         body { font-family: 'Archivo', Arial, sans-serif; line-height: 1.6; color: #1A0E10; max-width: 800px; margin: 0 auto; padding: 20px; background: #FAF8F6; }
         .report-container { background: #FAF8F6; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(26, 14, 16, 0.1); position: relative; }

@@ -118,9 +118,8 @@
     </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/logo.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="preload" href="/assets/fonts/Archivo-latin-1.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="/assets/fonts.css">
 
     <style>
         :root {
@@ -221,7 +220,7 @@
         <ul>
             <li>Our pages include no analytics or tracking scripts and set no cookies.</li>
             <li>Netlify, which hosts this site, processes each request (including your IP address and browser details) to deliver it and keeps its own logs: <a href="https://www.netlify.com/privacy/">netlify.com/privacy</a>.</li>
-            <li>Our pages load fonts from Google Fonts, the home page loads one image from gamma.app, and the generated report loads a PDF library from cdnjs. These providers receive your IP address when your browser loads those files.</li>
+            <li>Our pages load their fonts from this site. The home page loads one image from gamma.app, and the generated report loads a PDF library from cdnjs. These providers receive your IP address when your browser loads those files.</li>
         </ul>
 
         <h3>2.5 Older records</h3>
@@ -240,7 +239,7 @@
         <ul>
             <li><strong>Netlify:</strong> hosting, our Blobs database and request logs (as a data processor)</li>
             <li><strong>PayPal:</strong> payment processing; receives your company name in the order description (as a data processor)</li>
-            <li><strong>Google Fonts, gamma.app, cdnjs:</strong> receive your IP address when your browser loads fonts, an image or a library from them</li>
+            <li><strong>gamma.app, cdnjs:</strong> receive your IP address when your browser loads an image or a library from them</li>
             <li><strong>Legal authorities:</strong> when required by law</li>
         </ul>
 
@@ -322,7 +321,7 @@
                     <a href="https://x.com/Shashwat_Ghosh">X (Twitter)</a>
                 </div>
                 <div>
-                    <h4>Platform</h4>
+                    <p class="hx-foot-h">Platform</p>
                     <a href="/#features">Features</a>
                     <a href="/#epic">EPIC Framework</a>
                     <a href="/integration">Integration</a>
@@ -331,7 +330,7 @@
                     <a href="/faq">FAQ</a>
                 </div>
                 <div>
-                    <h4>Connectors</h4>
+                    <p class="hx-foot-h">Connectors</p>
                     <a href="https://gtmalpha.gtmhelix.com/integration">GTM Alpha</a>
                     <a href="https://craft-gtm.gtmhelix.com/">CRAFT GTM</a>
                     <a href="https://craft-content.gtmhelix.com/">CRAFT Content</a>
@@ -341,7 +340,7 @@
                     <a href="https://tools.gtmhelix.com/">All tools and plugins</a>
                 </div>
                 <div>
-                    <h4>Connect</h4>
+                    <p class="hx-foot-h">Connect</p>
                     <a href="/consultation">Book Consultation</a>
                     <a href="mailto:shashwat@hyperplays.in">Email Support</a>
                     <a href="https://gtmexpert.com/">GTMExpert.com</a>
