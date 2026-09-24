@@ -138,4 +138,4 @@ footer.hx-footer {
 
 /* Byline and last-updated date under each hero */
 .hx-hero .hx-byline { font-size: 14px !important; color: var(--hx-ink-72) !important; margin-top: 10px; }
-.hx-hero .hx-byline a { color: var(--hx-ink) !important; }
+.hx-hero .hx-byline a { color: var(--hx-ink) !important; text-decoration: underline !important; }
