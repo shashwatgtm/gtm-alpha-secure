@@ -1,3 +1,73 @@
+User-agent: Googlebot
+Allow: /
+Disallow: /api/
+Disallow: /mcp-sse
+Disallow: /payment-success.html
+Disallow: /payment-cancel.html
+
+User-agent: Bingbot
+Allow: /
+Disallow: /api/
+Disallow: /mcp-sse
+Disallow: /payment-success.html
+Disallow: /payment-cancel.html
+
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+Disallow: /mcp-sse
+Disallow: /payment-success.html
+Disallow: /payment-cancel.html
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+Disallow: /mcp-sse
+Disallow: /payment-success.html
+Disallow: /payment-cancel.html
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /api/
+Disallow: /mcp-sse
+Disallow: /payment-success.html
+Disallow: /payment-cancel.html
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /api/
+Disallow: /mcp-sse
+Disallow: /payment-success.html
+Disallow: /payment-cancel.html
+
+User-agent: Claude-User
+Allow: /
+Disallow: /api/
+Disallow: /mcp-sse
+Disallow: /payment-success.html
+Disallow: /payment-cancel.html
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /api/
+Disallow: /mcp-sse
+Disallow: /payment-success.html
+Disallow: /payment-cancel.html
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+Disallow: /mcp-sse
+Disallow: /payment-success.html
+Disallow: /payment-cancel.html
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /api/
+Disallow: /mcp-sse
+Disallow: /payment-success.html
+Disallow: /payment-cancel.html
+
 User-agent: *
 Allow: /
 Disallow: /api/
