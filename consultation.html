@@ -16,16 +16,16 @@
     <!-- Open Graph -->
     <meta property="og:title" content="GTM Alpha Professional Consultation | Book Your EPIC Analysis">
     <meta property="og:description" content="Launch Offer: $8 Premium Audit. Get professional GTM strategy consultation using EPIC framework.">
-    <meta property="og:url" content="https://gtm-alpha.netlify.app/consultation">
+    <meta property="og:url" content="https://gtmalpha.netlify.app/consultation">
     <meta property="og:type" content="website">
-    <meta property="og:image" content="https://gtm-alpha.netlify.app/logo.svg">
+    <meta property="og:image" content="https://gtmalpha.netlify.app/logo.svg">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:creator" content="@Shashwat_Ghosh">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://gtm-alpha.netlify.app/consultation">
+    <link rel="canonical" href="https://gtmalpha.netlify.app/consultation">
 
     <!-- Schema.org -->
     <script type="application/ld+json">
@@ -57,24 +57,25 @@
     <link rel="apple-touch-icon" href="/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary-navy: #151617;
-            --primary-dark: #0B0B10;
-            --primary-slate: #1A1A24;
-            --accent-coral: #FAA1A1;
-            --accent-gold: #FFBF47;
-            --text-primary: #151617;
+            --primary-navy: #1A0E10;
+            --primary-dark: #1A0E10;
+            --primary-slate: #1A0E10;
+            --accent-coral: #C1121F;
+            --accent-rose: #E5A8AC;
+            --accent-gold: #641220;
+            --text-primary: #1A0E10;
             --text-secondary: #646B81;
             --text-light: #94A3B8;
-            --bg-primary: #FFFFFF;
-            --bg-secondary: #F6F5F8;
-            --bg-accent: #F6F1FF;
-            --border-light: #D3D3D3;
-            --gradient-primary: linear-gradient(135deg, #15151B 0%, #0B0B10 100%);
-            --gradient-accent: linear-gradient(135deg, #FAA1A1 0%, #FAA1A1 100%);
+            --bg-primary: #FAF8F6;
+            --bg-secondary: #F6ECE9;
+            --bg-accent: #F6ECE9;
+            --border-light: #EAD9D5;
+            --gradient-primary: linear-gradient(135deg, #641220 0%, #4A0D17 100%);
+            --gradient-accent: linear-gradient(135deg, #C1121F 0%, #C1121F 100%);
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -88,7 +89,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
             background: var(--bg-primary);
@@ -133,7 +134,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: Georgia, serif;
+            font-family: Georgia, serif; font-style: italic;
             font-size: 32px;
             font-weight: 400;
             color: white;
@@ -211,7 +212,7 @@
         .cta-nav:hover {
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
-            background: #e55a4a !important;
+            background: #641220 !important;
         }
 
         .cta-nav::after {
@@ -373,7 +374,7 @@
             font-size: 15px;
             transition: all 0.3s ease;
             background: white;
-            font-family: 'Inter', sans-serif;
+            font-family: 'IBM Plex Sans', sans-serif;
         }
 
         .form-group input:focus,
@@ -381,7 +382,7 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--accent-coral);
-            box-shadow: 0 0 0 3px rgba(255, 107, 90, 0.1);
+            box-shadow: 0 0 0 3px rgba(193, 18, 31, 0.1);
         }
 
         .form-group select {
@@ -433,7 +434,7 @@
 
         .submit-btn:hover:not(:disabled) {
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 107, 90, 0.3);
+            box-shadow: 0 8px 20px rgba(193, 18, 31, 0.3);
         }
 
         .submit-btn:disabled {
@@ -481,7 +482,7 @@
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 20px;
-            color: var(--accent-coral);
+            color: var(--accent-rose);
         }
 
         .footer-section a {
@@ -550,9 +551,14 @@
                 gap: 20px;
             }
         }
+    
+        /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
+        h1, h2 { font-family: 'Archivo', 'IBM Plex Sans', sans-serif; }
+        .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
     </style>
 </head>
 <body>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken and the prices shown are not charged.</div>
     <header>
         <nav class="container">
             <div class="logo-container">
@@ -778,7 +784,7 @@
             </div>
             
             <div class="footer-bottom">
-                <div>&copy; 2025 GTM Alpha by Shashwat Ghosh. <a href="https://www.linkedin.com/company/helixgtmconsulting/?viewAsMember=true" style="color: var(--accent-coral); text-decoration: none;">Helix Consulting</a>. | <a href="/privacy" style="color: rgba(255,255,255,0.6);">Privacy</a> &bull; <a href="/terms" style="color: rgba(255,255,255,0.6);">Terms</a> &bull; <a href="/faq" style="color: rgba(255,255,255,0.6);">FAQ</a></div>
+                <div>&copy; 2025 GTM Alpha by Shashwat Ghosh. <a href="https://www.linkedin.com/company/helixgtmconsulting/?viewAsMember=true" style="color: var(--accent-rose); text-decoration: none;">Helix Consulting</a>. | <a href="/privacy" style="color: rgba(255,255,255,0.6);">Privacy</a> &bull; <a href="/terms" style="color: rgba(255,255,255,0.6);">Terms</a> &bull; <a href="/faq" style="color: rgba(255,255,255,0.6);">FAQ</a></div>
                 <div>Best AI GTM & Fractional CMO | Top 30 PLG Creator Worldwide</div>
             </div>
         </div>

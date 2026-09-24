@@ -29,7 +29,7 @@ const GTM_CONSULTANT = {
     var industry = args.industry || "Technology";
     var analysis = this.analyzeEPIC(gtm_challenge, industry, business_stage);
     return {
-      consultation_output: "Thank you " + client_name + " for the GTM Alpha consultation.\n\nPrimary Focus: " + analysis.recommendation + "\nEPIC Scores: E:" + analysis.scores.E + ", P:" + analysis.scores.P + ", I:" + analysis.scores.I + ", C:" + analysis.scores.C + "\n\nFor deeper consultation: https://calendly.com/shashwat-gtmhelix/45min",
+      consultation_output: "Thank you " + client_name + " for the GTM Alpha consultation.\n\nPrimary Focus: " + analysis.recommendation + "\nEPIC Scores: E:" + analysis.scores.E + ", P:" + analysis.scores.P + ", I:" + analysis.scores.I + ", C:" + analysis.scores.C,
       epic_scores: analysis.scores,
       primary_focus: analysis.recommendation
     };
@@ -52,11 +52,11 @@ const GTM_CONSULTANT = {
 var TOOLS = [
   {
     name: "gtm_consultation",
+    title: "GTM Consultation",
     description: "Get GTM strategy consultation using Shashwat Ghosh EPIC framework",
     inputSchema: {
       type: "object",
       properties: {
-        client_name: { type: "string", description: "Your name" },
         company_name: { type: "string", description: "Company name" },
         gtm_challenge: { type: "string", description: "Your GTM challenge" },
         business_stage: { type: "string", description: "Stage: seed, series-a, growth, enterprise" },
@@ -64,10 +64,11 @@ var TOOLS = [
       },
       required: ["gtm_challenge"]
     },
-    annotations: { readOnlyHint: true, openWorldHint: false, destructiveHint: false }
+    annotations: { title: "GTM Consultation", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
   },
   {
     name: "epic_audit",
+    title: "EPIC Audit",
     description: "Get EPIC framework scores for your GTM strategy",
     inputSchema: {
       type: "object",
@@ -78,10 +79,11 @@ var TOOLS = [
       },
       required: ["challenge"]
     },
-    annotations: { readOnlyHint: true, openWorldHint: false, destructiveHint: false }
+    annotations: { title: "EPIC Audit", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
   },
   {
     name: "generate_roadmap",
+    title: "GTM Roadmap",
     description: "Generate a GTM implementation roadmap",
     inputSchema: {
       type: "object",
@@ -91,7 +93,7 @@ var TOOLS = [
       },
       required: ["primary_focus"]
     },
-    annotations: { readOnlyHint: true, openWorldHint: false, destructiveHint: false }
+    annotations: { title: "GTM Roadmap", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
   }
 ];
 
@@ -107,85 +109,117 @@ function handleToolCall(name, args) {
   }
 }
 
-export default async function handler(req, context) {
-  var headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Access-Control-Allow-Methods": "GET, POST, OPTIONS"
-  };
+// ---------------------------------------------------------------------------
+// MCP transport: Streamable HTTP, stateless, JSON responses (POST only).
+// Transport layer only; the tool logic above is unchanged.
+// ---------------------------------------------------------------------------
 
-  if (req.method === "OPTIONS") {
-    return new Response(null, { status: 200, headers: headers });
-  }
+var SUPPORTED_PROTOCOL_VERSIONS = ["2025-06-18", "2025-03-26", "2024-11-05"];
 
-  if (req.method === "GET") {
-    var info = {
-      name: "gtm-alpha-mcp-server",
-      version: "1.0.5",
-      description: "GTM Alpha Consultant - Professional GTM strategy using EPIC framework",
-      tools: TOOLS.map(function(t) { return t.name; }),
-      endpoint: "https://gtm-alpha.netlify.app/mcp-sse"
-    };
-    headers["Content-Type"] = "application/json";
-    return new Response(JSON.stringify(info), { status: 200, headers: headers });
-  }
+var CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "Content-Type, Accept, Mcp-Protocol-Version",
+  "Access-Control-Allow-Methods": "POST, OPTIONS"
+};
 
-  if (req.method === "POST") {
-    try {
-      var body = await req.json();
-      var id = body.id;
-      var method = body.method;
-      var params = body.params || {};
-      var response;
-
-      if (method === "initialize") {
-        response = {
-          jsonrpc: "2.0",
-          id: id,
-          result: {
-            protocolVersion: "2024-11-05",
-            serverInfo: { name: "gtm-alpha-mcp-server", version: "1.0.5" },
-            capabilities: { tools: {} }
-          }
-        };
-      } else if (method === "tools/list") {
-        response = {
-          jsonrpc: "2.0",
-          id: id,
-          result: { tools: TOOLS }
-        };
-      } else if (method === "tools/call") {
-        var toolName = params.name;
-        var toolArgs = params.arguments || {};
-        var result = handleToolCall(toolName, toolArgs);
-        response = {
-          jsonrpc: "2.0",
-          id: id,
-          result: {
-            content: [{ type: "text", text: JSON.stringify(result, null, 2) }]
-          }
-        };
-      } else {
-        response = {
-          jsonrpc: "2.0",
-          id: id,
-          error: { code: -32601, message: "Method not found: " + method }
-        };
-      }
-
-      headers["Content-Type"] = "application/json";
-      return new Response(JSON.stringify(response), { status: 200, headers: headers });
-
-    } catch (error) {
-      headers["Content-Type"] = "application/json";
-      return new Response(JSON.stringify({
-        jsonrpc: "2.0",
-        id: null,
-        error: { code: -32700, message: error.message }
-      }), { status: 500, headers: headers });
-    }
-  }
-
-  headers["Content-Type"] = "application/json";
-  return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405, headers: headers });
+function reply(status, body, extraHeaders) {
+  var headers = Object.assign({ "Content-Type": "application/json" }, CORS_HEADERS, extraHeaders || {});
+  return new Response(body === null ? null : JSON.stringify(body), { status: status, headers: headers });
 }
+
+function rpcError(id, code, message, status, extraHeaders) {
+  return reply(status || 200, { jsonrpc: "2.0", id: id === undefined ? null : id, error: { code: code, message: message } }, extraHeaders);
+}
+
+function toolError(id, text) {
+  return reply(200, { jsonrpc: "2.0", id: id, result: { content: [{ type: "text", text: text }], isError: true } });
+}
+
+function missingRequired(tool, args) {
+  var required = (tool.inputSchema && tool.inputSchema.required) || [];
+  return required.filter(function(key) { return args[key] === undefined || args[key] === null; });
+}
+
+export default async function handler(req, context) {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
+  }
+
+  if (req.method !== "POST") {
+    return rpcError(null, -32000, "Method not allowed. This MCP endpoint accepts POST requests only (Streamable HTTP, stateless). Setup: https://gtmalpha.netlify.app/integration", 405, { "Allow": "POST, OPTIONS" });
+  }
+
+  var body;
+  try {
+    body = await req.json();
+  } catch (parseError) {
+    return rpcError(null, -32700, "Parse error: the request body is not valid JSON.", 400);
+  }
+
+  if (Array.isArray(body)) {
+    return rpcError(null, -32600, "Invalid request: batch requests are not supported. Send one JSON-RPC message per request.", 400);
+  }
+  if (!body || body.jsonrpc !== "2.0" || typeof body.method !== "string") {
+    return rpcError(body && body.id, -32600, "Invalid request: expected a JSON-RPC 2.0 message with a method.", 400);
+  }
+
+  var id = body.id;
+  var method = body.method;
+  var params = body.params || {};
+
+  // Notifications (no id) need no reply body.
+  if (id === undefined) {
+    return new Response(null, { status: 202, headers: CORS_HEADERS });
+  }
+
+  try {
+    if (method === "initialize") {
+      var requested = params.protocolVersion;
+      var version = SUPPORTED_PROTOCOL_VERSIONS.indexOf(requested) >= 0 ? requested : SUPPORTED_PROTOCOL_VERSIONS[0];
+      return reply(200, {
+        jsonrpc: "2.0",
+        id: id,
+        result: {
+          protocolVersion: version,
+          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.1.0" },
+          capabilities: { tools: {} }
+        }
+      });
+    }
+
+    if (method === "ping") {
+      return reply(200, { jsonrpc: "2.0", id: id, result: {} });
+    }
+
+    if (method === "tools/list") {
+      return reply(200, { jsonrpc: "2.0", id: id, result: { tools: TOOLS } });
+    }
+
+    if (method === "tools/call") {
+      var toolName = params.name;
+      var toolArgs = params.arguments || {};
+      var tool = TOOLS.find(function(t) { return t.name === toolName; });
+      if (!tool) {
+        return toolError(id, "Unknown tool: " + toolName + ". Available tools: " + TOOLS.map(function(t) { return t.name; }).join(", ") + ".");
+      }
+      var missing = missingRequired(tool, toolArgs);
+      if (missing.length > 0) {
+        return toolError(id, "Missing required input for " + toolName + ": " + missing.join(", ") + ". Provide " + (missing.length === 1 ? "it" : "them") + " and call the tool again.");
+      }
+      var result = handleToolCall(toolName, toolArgs);
+      return reply(200, {
+        jsonrpc: "2.0",
+        id: id,
+        result: {
+          content: [{ type: "text", text: JSON.stringify(result, null, 2) }]
+        }
+      });
+    }
+
+    return rpcError(id, -32601, "Method not found: " + method);
+  } catch (error) {
+    console.error("mcp-sse error:", error && error.message);
+    return rpcError(id, -32603, "Internal error while handling " + method + ". Please try again.", 500);
+  }
+}
+

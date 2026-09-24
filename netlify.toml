@@ -11,12 +11,6 @@
 
 # API Redirects
 [[redirects]]
-  from = "/api/epic-scores"
-  to = "/.netlify/functions/epic-scores"
-  status = 200
-  force = true
-
-[[redirects]]
   from = "/api/health"
   to = "/.netlify/functions/health"
   status = 200
@@ -29,12 +23,6 @@
   force = true
 
 [[redirects]]
-  from = "/api/create-payment"
-  to = "/.netlify/functions/create-payment"
-  status = 200
-  force = true
-
-[[redirects]]
   from = "/api/payment-success"
   to = "/.netlify/functions/payment-success"
   status = 200
@@ -43,12 +31,6 @@
 [[redirects]]
   from = "/api/check-config"
   to = "/.netlify/functions/check-config"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/analyze"
-  to = "/.netlify/functions/analyze"
   status = 200
   force = true
 

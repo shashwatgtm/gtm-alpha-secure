@@ -892,7 +892,10 @@ export default async (req, context) => {
     const auditResults = EPIC_AUDIT_ENGINE.assessEPICMaturity(inputData);
 
     // Retrieve previous audits for progress tracking
-    const previousAudits = await EPIC_AUDIT_ENGINE.getPreviousAudits(companyId);
+    // SECURITY FIX (2026-09-24): lookup of stored audits disabled. The caller controls company_id,
+    // which is used as a list prefix, so a crafted value (for example "EPIC-AUDIT-") loaded every
+    // stored audit. Stored audits are NOT touched; the response treats every audit as a first audit.
+    const previousAudits = [];
     
     // Calculate progress from previous audits
     const progressAnalysis = EPIC_AUDIT_ENGINE.calculateProgress(auditResults, previousAudits);
@@ -953,7 +956,7 @@ export default async (req, context) => {
     console.error('Error in EPIC audit:', error);
     return new Response(JSON.stringify({
       error: 'Internal server error',
-      message: error.message
+      message: 'The audit could not be completed. Please check your input and try again.'
     }), {
       status: 500,
       headers
@@ -963,5 +966,10 @@ export default async (req, context) => {
 
 // Export configuration for Netlify
 export const config = {
-  path: "/api/epic-audit"
+  path: "/api/epic-audit",
+  rateLimit: {
+    windowSize: 60,
+    windowLimit: 30,
+    aggregateBy: ["ip", "domain"]
+  }
 };

@@ -5,6 +5,9 @@
 import paypal from '@paypal/checkout-server-sdk';
 import { getStore } from "@netlify/blobs";
 
+// Payment endpoints are only called by this site's own pages.
+const ALLOWED_ORIGIN = process.env.URL || 'https://gtmalpha.netlify.app';
+
 // Check for PayPal credentials
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
@@ -46,7 +49,7 @@ function calculateDiscounts(basePrice) {
 
 export default async (req, context) => {
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Content-Type': 'application/json'
@@ -70,7 +73,7 @@ export default async (req, context) => {
       return new Response(JSON.stringify({
         success: false,
         error: 'Payment system initialization failed',
-        message: initError
+        message: 'The payment system is temporarily unavailable. Please try again later.'
       }), {
         status: 500,
         headers
@@ -91,6 +94,14 @@ export default async (req, context) => {
     }
 
     const { consultation_data, tier = 'premium', payment_frequency = 'one-time' } = await req.json();
+
+    // Input check before anything is stored or sent to PayPal
+    if (!consultation_data || typeof consultation_data !== 'object' || typeof consultation_data.company_name !== 'string' || !consultation_data.company_name.trim()) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid request', message: 'consultation_data.company_name is required.' }), { status: 400, headers });
+    }
+    if (consultation_data.company_name.length > 200) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid request', message: 'company_name must be 200 characters or fewer.' }), { status: 400, headers });
+    }
 
     // Base pricing structure
     const basePricing = {
@@ -176,7 +187,7 @@ export default async (req, context) => {
     }
 
     // Create PayPal payment
-    console.log(`Creating PayPal payment for ${consultation_data.company_name}: $${finalAmount} (${finalName})`);
+    console.log(`Creating PayPal payment ${consultationId}: $${finalAmount} (${finalName})`);
 
     const request = new paypal.orders.OrdersCreateRequest();
     request.prefer("return=representation");
@@ -226,7 +237,7 @@ export default async (req, context) => {
     console.error('Error stack:', error.stack);
 
     // Check for specific PayPal errors
-    let errorMessage = error.message;
+    let errorMessage = 'The payment could not be created. Please try again later.';
     let errorDetails = null;
 
     if (error.statusCode) {
@@ -241,11 +252,19 @@ export default async (req, context) => {
       success: false,
       error: 'Payment processing failed',
       message: errorMessage,
-      details: errorDetails,
-      debug: process.env.NODE_ENV !== 'production' ? error.stack : undefined
+      details: errorDetails
     }), {
       status: 500,
       headers
     });
+  }
+};
+
+export const config = {
+  path: "/api/create-payment",
+  rateLimit: {
+    windowSize: 60,
+    windowLimit: 10,
+    aggregateBy: ["ip", "domain"]
   }
 };

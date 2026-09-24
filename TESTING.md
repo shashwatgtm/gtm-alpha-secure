@@ -74,7 +74,6 @@ Validation:
 
 \- EPIC scores should show E greater than 0
 
-\- Output should include Calendly link for follow-up
 
 
 

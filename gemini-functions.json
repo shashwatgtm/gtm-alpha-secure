@@ -2,53 +2,41 @@
   "function_declarations": [
     {
       "name": "gtm_consultation",
-      "description": "Get professional GTM strategy consultation using Shashwat Ghosh's EPIC framework. Analyzes go-to-market challenges and provides strategic recommendations.",
+      "description": "Get GTM strategy consultation using Shashwat Ghosh EPIC framework",
       "parameters": {
         "type": "object",
         "properties": {
-          "client_name": {
-            "type": "string",
-            "description": "Your name"
-          },
           "company_name": {
             "type": "string",
-            "description": "Your company name"
-          },
-          "company_description": {
-            "type": "string",
-            "description": "Brief description of your company and what it does"
+            "description": "Company name"
           },
           "gtm_challenge": {
             "type": "string",
-            "description": "Your go-to-market challenge, question, or situation you need help with"
+            "description": "Your GTM challenge"
           },
           "business_stage": {
             "type": "string",
-            "enum": ["pre-seed", "seed", "series-a", "series-b", "growth", "enterprise"],
-            "description": "Current stage of your business"
+            "description": "Stage: seed, series-a, growth, enterprise"
           },
           "industry": {
             "type": "string",
-            "description": "Your industry or market sector"
+            "description": "Your industry"
           }
         },
-        "required": ["gtm_challenge"]
+        "required": [
+          "gtm_challenge"
+        ]
       }
     },
     {
-      "name": "epic_framework_audit",
-      "description": "Analyze your GTM strategy using the EPIC framework. Returns scores for Ecosystem (E), Product-Led (P), Inbound/Outbound (I), and Community (C) components.",
+      "name": "epic_audit",
+      "description": "Get EPIC framework scores for your GTM strategy",
       "parameters": {
         "type": "object",
         "properties": {
-          "current_challenges": {
-            "type": "array",
-            "items": {"type": "string"},
-            "description": "List of your current GTM challenges"
-          },
-          "company_context": {
+          "challenge": {
             "type": "string",
-            "description": "Background context about your company"
+            "description": "Describe your GTM situation"
           },
           "industry": {
             "type": "string",
@@ -56,32 +44,46 @@
           },
           "business_stage": {
             "type": "string",
-            "description": "Current business stage"
+            "description": "Business stage"
           }
         },
-        "required": ["current_challenges"]
+        "required": [
+          "challenge"
+        ]
       }
     },
     {
       "name": "generate_roadmap",
-      "description": "Generate a 30-60-90 day implementation roadmap based on EPIC framework analysis",
+      "description": "Generate a GTM implementation roadmap",
       "parameters": {
         "type": "object",
         "properties": {
           "primary_focus": {
             "type": "string",
-            "enum": ["E", "P", "I", "C"],
-            "description": "Primary EPIC component to focus on"
+            "enum": [
+              "E",
+              "P",
+              "I",
+              "C"
+            ],
+            "description": "EPIC component"
           },
           "timeframe": {
             "type": "string",
-            "enum": ["30-day", "60-day", "90-day"],
-            "description": "Roadmap timeframe"
+            "enum": [
+              "30-day",
+              "60-day",
+              "90-day"
+            ],
+            "description": "Timeframe"
           }
         },
-        "required": ["primary_focus"]
+        "required": [
+          "primary_focus"
+        ]
       }
     }
   ],
-  "api_endpoint": "https://gtmalpha.netlify.app/.netlify/functions/express-mcp-server"
+  "api_endpoint": "https://gtmalpha.netlify.app/mcp-sse",
+  "protocol": "MCP Streamable HTTP: POST JSON-RPC 2.0 requests (initialize, tools/list, tools/call) to api_endpoint"
 }

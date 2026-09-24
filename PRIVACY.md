@@ -1,122 +1,31 @@
-\# Privacy Policy - GTM Alpha MCP Server
+# GTM Alpha Privacy Policy
 
+Last updated: September 24, 2026. The same policy is published at https://gtmalpha.netlify.app/privacy.
 
+Contact: Shashwat Ghosh, shashwat@hyperplays.in
 
-\*\*Last Updated:\*\* December 19, 2025
+## What we collect
 
+- **Consultation form (website):** your name, company name, company description, GTM challenge, industry, business stage, team size, monthly budget, company website and LinkedIn URL. Saved in our Netlify Blobs database (store "pending-payments") when you submit the form. The company name is also sent to PayPal in the order description. The form does not ask for your email address.
+- **EPIC audit API:** inputs sent to `/api/epic-audit` are saved with the result (store "epic-audits").
+- **MCP server (`/mcp-sse`, and the npm package):** receives the tool name and inputs of each call and uses them only to build the reply. Our code does not store or log them. The npm package runs on your computer and sends nothing to us.
+- **Automatically:** our pages include no analytics or tracking scripts and set no cookies. Netlify processes each request (including IP address) and keeps its own logs. Pages load fonts from Google Fonts, one image from gamma.app, and the generated report loads a PDF library from cdnjs.
+- **Payments:** handled on PayPal's pages; we never see card or bank details.
 
+## Retention
 
-\## Overview
+- Stored records (stores "pending-payments", "epic-audits", and older "gtm-consultations" and "consultations"): kept until you ask us to delete them. There is no automatic deletion.
+- MCP tool inputs and results: not stored.
+- Netlify request logs and PayPal payment records: kept by Netlify and PayPal under their own policies.
 
+## Sharing
 
+Netlify (hosting, database, logs), PayPal (payments; receives your company name), Google Fonts, gamma.app and cdnjs (receive your IP address when files load), and legal authorities when required by law. We do not sell your data, share it with competitors or use it to train AI models.
 
-GTM Alpha MCP Server ("the Service") is a Go-To-Market consultation tool created by Shashwat Ghosh / Helix GTM Consulting.
+## Your rights
 
+Email shashwat@hyperplays.in with subject "Data Rights Request" to access, correct or delete your data. Include your company name and roughly when you used the site; records are stored by company name and time, and we find and delete them by hand within 30 days.
 
+## Security
 
-\## Data Collection
-
-
-
-\### What We Collect
-
-When you use the GTM Alpha MCP Server, the following information may be processed:
-
-\- Company name and description (if provided)
-
-\- GTM challenges and questions you submit
-
-\- Industry and business stage information
-
-
-
-\### What We Do NOT Collect
-
-\- Personal identification information
-
-\- Email addresses or contact details
-
-\- Payment information
-
-\- Cookies or tracking data
-
-
-
-\## Data Usage
-
-
-
-All data submitted to the GTM Alpha tools is:
-
-\- Processed in real-time to generate consultation responses
-
-\- NOT stored permanently on our servers
-
-\- NOT shared with third parties
-
-\- NOT used for marketing purposes
-
-
-
-\## Data Retention
-
-
-
-\- Tool inputs are processed in memory only
-
-\- No persistent storage of user queries
-
-\- Session data is cleared after each request
-
-
-
-\## Third-Party Services
-
-
-
-The MCP Server is hosted on Netlify. Please review:
-
-\- \[Netlify Privacy Policy](https://www.netlify.com/privacy/)
-
-
-
-\## Your Rights
-
-
-
-You have the right to:
-
-\- Know what data is collected
-
-\- Request deletion of any stored data
-
-\- Opt out of using the service at any time
-
-
-
-\## Contact
-
-
-
-For privacy questions or concerns:
-
-\- Email: shashwat@hyperplays.in
-
-\- Website: https://gtmexpert.com
-
-
-
-\## Changes
-
-
-
-We may update this policy periodically. Changes will be posted on this page with an updated date.
-
-
-
----
-
-
-
-Helix GTM Consulting | Bengaluru, India
-
+HTTPS for all traffic, payments on PayPal's pages, no user accounts or passwords held by us, rate limits on the forms, APIs and MCP server, and no public endpoint that reads stored records back.

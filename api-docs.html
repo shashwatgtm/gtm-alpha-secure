@@ -7,7 +7,7 @@
     <meta name="description" content="GTM Alpha API and MCP Server documentation. Learn how to integrate GTM Alpha's analysis tools via Model Context Protocol.">
 
     <!-- Longtail Keywords -->
-    <meta name="keywords" content="GTM Alpha API documentation, MCP server API reference, Model Context Protocol API, GTM analysis API endpoints, EPIC framework API, gtm_epic_analysis tool, gtm_digital_audit API, SSE endpoint documentation, JSON-RPC 2.0 MCP, AI assistant tool calling, REST API GTM tools">
+    <meta name="keywords" content="GTM Alpha API documentation, MCP server API reference, Model Context Protocol API, GTM analysis API endpoints, EPIC framework API, gtm_consultation tool, epic_audit tool, Streamable HTTP MCP endpoint, JSON-RPC 2.0 MCP, AI assistant tool calling, REST API GTM tools">
 
     <!-- Author & Metadata -->
     <meta name="author" content="Shashwat Ghosh">
@@ -16,12 +16,12 @@
     <!-- Open Graph -->
     <meta property="og:title" content="GTM Alpha API Documentation | MCP Tools Reference">
     <meta property="og:description" content="Complete API documentation for GTM Alpha MCP Server. FREE access to all tools during Launch Offer.">
-    <meta property="og:url" content="https://gtm-alpha.netlify.app/api-docs">
+    <meta property="og:url" content="https://gtmalpha.netlify.app/api-docs">
     <meta property="og:type" content="article">
-    <meta property="og:image" content="https://gtm-alpha.netlify.app/logo.svg">
+    <meta property="og:image" content="https://gtmalpha.netlify.app/logo.svg">
 
     <!-- Canonical -->
-    <link rel="canonical" href="https://gtm-alpha.netlify.app/api-docs">
+    <link rel="canonical" href="https://gtmalpha.netlify.app/api-docs">
 
     <!-- Schema.org -->
     <script type="application/ld+json">
@@ -38,13 +38,13 @@
         "publisher": {
             "@type": "Organization",
             "name": "GTM Alpha",
-            "url": "https://gtm-alpha.netlify.app"
+            "url": "https://gtmalpha.netlify.app"
         },
-        "mainEntityOfPage": "https://gtm-alpha.netlify.app/api-docs",
+        "mainEntityOfPage": "https://gtmalpha.netlify.app/api-docs",
         "about": {
             "@type": "WebAPI",
             "name": "GTM Alpha MCP API",
-            "documentation": "https://gtm-alpha.netlify.app/api-docs"
+            "documentation": "https://gtmalpha.netlify.app/api-docs"
         }
     }
     </script>
@@ -53,26 +53,27 @@
     <link rel="apple-touch-icon" href="/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --primary-navy: #151617;
-            --primary-dark: #0B0B10;
-            --primary-slate: #1A1A24;
-            --accent-coral: #FAA1A1;
-            --accent-gold: #FFBF47;
+            --primary-navy: #1A0E10;
+            --primary-dark: #1A0E10;
+            --primary-slate: #1A0E10;
+            --accent-coral: #C1121F;
+            --accent-rose: #E5A8AC;
+            --accent-gold: #641220;
             --accent-green: #10B981;
-            --text-primary: #151617;
+            --text-primary: #1A0E10;
             --text-secondary: #646B81;
             --text-light: #94A3B8;
-            --bg-primary: #FFFFFF;
-            --bg-secondary: #F6F5F8;
-            --bg-accent: #F6F1FF;
-            --bg-code: #1A1A24;
-            --border-light: #D3D3D3;
-            --gradient-primary: linear-gradient(135deg, #15151B 0%, #0B0B10 100%);
-            --gradient-accent: linear-gradient(135deg, #FAA1A1 0%, #FAA1A1 100%);
+            --bg-primary: #FAF8F6;
+            --bg-secondary: #F6ECE9;
+            --bg-accent: #F6ECE9;
+            --bg-code: #1A0E10;
+            --border-light: #EAD9D5;
+            --gradient-primary: linear-gradient(135deg, #641220 0%, #4A0D17 100%);
+            --gradient-accent: linear-gradient(135deg, #C1121F 0%, #C1121F 100%);
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -85,7 +86,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
             background: var(--bg-primary);
@@ -129,7 +130,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: Georgia, serif;
+            font-family: Georgia, serif; font-style: italic;
             font-size: 32px;
             font-weight: 400;
             color: white;
@@ -313,7 +314,7 @@
 
         .code-lang {
             font-size: 12px;
-            color: var(--accent-coral);
+            color: var(--accent-rose);
             font-weight: 600;
             text-transform: uppercase;
         }
@@ -340,7 +341,7 @@
         }
 
         code {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'IBM Plex Mono', monospace;
             font-size: 14px;
             color: #E2E8F0;
             line-height: 1.6;
@@ -350,7 +351,7 @@
             background: var(--bg-accent);
             padding: 2px 8px;
             border-radius: 4px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'IBM Plex Mono', monospace;
             font-size: 13px;
             color: var(--accent-coral);
         }
@@ -390,7 +391,7 @@
         }
 
         .endpoint-path {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'IBM Plex Mono', monospace;
             font-size: 14px;
             color: var(--text-primary);
         }
@@ -481,7 +482,7 @@
         }
 
         footer a {
-            color: var(--accent-coral);
+            color: var(--accent-rose);
             text-decoration: none;
         }
 
@@ -503,9 +504,14 @@
                 font-size: 32px;
             }
         }
+    
+        /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
+        h1, h2 { font-family: 'Archivo', 'IBM Plex Sans', sans-serif; }
+        .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
     </style>
 </head>
 <body>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken and the prices shown are not charged.</div>
     <header>
         <nav class="container">
             <div class="logo-container">
@@ -578,10 +584,9 @@
 
                     <h3>What You Can Do</h3>
                     <ul style="margin-left: 20px; color: var(--text-secondary);">
-                        <li>Analyze company GTM strategies using the EPIC framework</li>
-                        <li>Audit digital presence and market positioning</li>
-                        <li>Generate implementation roadmaps</li>
-                        <li>Access market intelligence and competitive analysis</li>
+                        <li>Get a GTM consultation summary using the EPIC framework</li>
+                        <li>Get EPIC framework scores for a GTM situation</li>
+                        <li>Generate a GTM implementation roadmap</li>
                     </ul>
                 </section>
 
@@ -591,9 +596,21 @@
                         Add GTM Alpha to your MCP-compatible client by configuring the server endpoint.
                     </p>
 
-                    <h3>Claude Desktop Configuration</h3>
-                    <p>Add the following to your Claude Desktop configuration file:</p>
+                    <p>Server URL: <code>https://gtmalpha.netlify.app/mcp-sse</code>. Transport: Streamable HTTP (POST requests, JSON responses). Authentication: none.</p>
 
+                    <h3>Claude (web, desktop and mobile)</h3>
+                    <p>Open Customize, then Connectors, then Add custom connector. Enter the server URL above, choose no sign-in, then Add.</p>
+
+                    <h3>Claude Code</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">Shell</span>
+                            <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                        </div>
+                        <pre><code>claude mcp add --transport http gtm-alpha https://gtmalpha.netlify.app/mcp-sse</code></pre>
+                    </div>
+
+                    <h3>Run locally (npm, stdio)</h3>
                     <div class="code-block">
                         <div class="code-header">
                             <span class="code-lang">JSON</span>
@@ -603,8 +620,7 @@
   "mcpServers": {
     "gtm-alpha": {
       "command": "npx",
-      "args": ["-y", "@anthropic/remote-mcp-server",
-               "https://gtm-alpha.netlify.app/mcp-sse"]
+      "args": ["-y", "@shashwatgtmalpha/gtm-alpha-mcp-server"]
     }
   }
 }</code></pre>
@@ -620,8 +636,7 @@
   "mcp": {
     "servers": {
       "gtm-alpha": {
-        "url": "https://gtm-alpha.netlify.app/mcp-sse",
-        "transport": "sse"
+        "url": "https://gtmalpha.netlify.app/mcp-sse"
       }
     }
   }
@@ -645,52 +660,34 @@
                     <div class="tool-list">
                         <div class="tool-item">
                             <div class="tool-name">
-                                gtm_epic_analysis
+                                gtm_consultation (GTM Consultation)
                                 <span class="free-badge">FREE</span>
                             </div>
                             <div class="tool-desc">
-                                Comprehensive EPIC Framework analysis for any company. Evaluates Education, Problem-Solution,
-                                Implementation, and Community aspects of GTM strategy.
+                                A GTM consultation summary using the EPIC framework (Ecosystem, Product-Led, Inbound/Outbound, Community).
+                                Required input: gtm_challenge. Optional: company_name, business_stage, industry. Read-only.
                             </div>
                         </div>
 
                         <div class="tool-item">
                             <div class="tool-name">
-                                gtm_digital_audit
+                                epic_audit (EPIC Audit)
                                 <span class="free-badge">FREE</span>
                             </div>
                             <div class="tool-desc">
-                                Audit digital presence including website, social media, content strategy, and SEO positioning.
+                                EPIC framework scores for your GTM situation and the primary focus area.
+                                Required input: challenge. Optional: industry, business_stage. Read-only.
                             </div>
                         </div>
 
                         <div class="tool-item">
                             <div class="tool-name">
-                                gtm_market_intelligence
+                                generate_roadmap (GTM Roadmap)
                                 <span class="free-badge">FREE</span>
                             </div>
                             <div class="tool-desc">
-                                Market research and competitive analysis. Identify market opportunities and positioning gaps.
-                            </div>
-                        </div>
-
-                        <div class="tool-item">
-                            <div class="tool-name">
-                                gtm_roadmap_generator
-                                <span class="free-badge">FREE</span>
-                            </div>
-                            <div class="tool-desc">
-                                Generate 6-month implementation roadmaps with actionable steps and milestones.
-                            </div>
-                        </div>
-
-                        <div class="tool-item">
-                            <div class="tool-name">
-                                gtm_community_analyzer
-                                <span class="free-badge">FREE</span>
-                            </div>
-                            <div class="tool-desc">
-                                Analyze community building opportunities and engagement strategies.
+                                A GTM implementation roadmap for one EPIC component.
+                                Required input: primary_focus (E, P, I or C). Optional: timeframe (30-day, 60-day or 90-day). Read-only.
                             </div>
                         </div>
                     </div>
@@ -701,21 +698,21 @@
 
                     <div class="endpoint-card">
                         <div class="endpoint-header">
-                            <span class="method-badge method-get">GET</span>
+                            <span class="method-badge method-post">POST</span>
                             <span class="endpoint-path">/mcp-sse</span>
                         </div>
                         <div class="endpoint-desc">
-                            Server-Sent Events endpoint for MCP protocol communication. Use this for real-time tool invocation.
+                            MCP endpoint (Streamable HTTP, stateless). Send JSON-RPC 2.0 messages with POST; each reply is a single JSON response. Other methods return 405.
                         </div>
                     </div>
 
                     <div class="endpoint-card">
                         <div class="endpoint-header">
                             <span class="method-badge method-post">POST</span>
-                            <span class="endpoint-path">/api/gtm</span>
+                            <span class="endpoint-path">/api/epic-audit</span>
                         </div>
                         <div class="endpoint-desc">
-                            REST API endpoint for direct GTM analysis requests. Returns JSON response.
+                            REST endpoint for an EPIC maturity audit. Returns JSON. The inputs you send are stored with the result; see the <a href="/privacy">privacy policy</a>.
                         </div>
                     </div>
                 </section>
@@ -745,30 +742,29 @@
                         <div class="code-header">
                             <span class="code-lang">Prompt</span>
                         </div>
-                        <pre><code>Use the gtm_epic_analysis tool to analyze the GTM strategy
-for a B2B SaaS company in the HR tech space.
-
-Company: "TalentFlow"
-Website: talentflow.example.com
-Target: Mid-market companies (100-1000 employees)
-Product: AI-powered recruitment platform</code></pre>
+                        <pre><code>Use the GTM Alpha epic_audit tool to score the GTM situation of
+a B2B SaaS company in the HR tech space selling an AI recruitment
+platform to mid-market companies (100-1000 employees).</code></pre>
                     </div>
 
-                    <h3>REST API Example</h3>
+                    <h3>MCP request example (cURL)</h3>
                     <div class="code-block">
                         <div class="code-header">
                             <span class="code-lang">cURL</span>
                             <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                         </div>
-                        <pre><code>curl -X POST https://gtm-alpha.netlify.app/api/gtm \
+                        <pre><code>curl -X POST https://gtmalpha.netlify.app/mcp-sse \
   -H "Content-Type: application/json" \
   -d '{
-    "tool": "gtm_epic_analysis",
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "tools/call",
     "params": {
-      "company_name": "TalentFlow",
-      "website": "talentflow.example.com",
-      "industry": "HR Tech",
-      "target_market": "Mid-market B2B"
+      "name": "epic_audit",
+      "arguments": {
+        "challenge": "B2B SaaS in HR tech selling to mid-market companies",
+        "industry": "HR Tech"
+      }
     }
   }'</code></pre>
                     </div>

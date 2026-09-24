@@ -1,139 +1,61 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "GTM Alpha Consultant API",
-    "description": "Professional Go-To-Market strategy consultation using Shashwat Ghosh's EPIC framework",
-    "version": "1.0.3"
+    "title": "GTM Alpha API",
+    "description": "EPIC framework audit endpoint of GTM Alpha",
+    "version": "1.1.0"
   },
   "servers": [
     {
-      "url": "https://gtmalpha.netlify.app/.netlify/functions"
+      "url": "https://gtmalpha.netlify.app/api"
     }
   ],
   "paths": {
-    "/express-mcp-server/consultation": {
+    "/epic-audit": {
       "post": {
-        "operationId": "getGTMConsultation",
-        "summary": "Get GTM Strategy Consultation",
-        "description": "Analyze your go-to-market challenges using the EPIC framework and receive strategic recommendations",
+        "operationId": "runEPICAudit",
+        "summary": "EPIC framework maturity audit",
+        "description": "Scores Ecosystem, Product-Led, Inbound and Outbound, and Community maturity and returns a 6-month roadmap. The inputs are saved with the result in GTM Alpha's database (Netlify Blobs store epic-audits); see https://gtmalpha.netlify.app/privacy. Limited to 30 requests per minute per IP address.",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
+                "required": [
+                  "company"
+                ],
                 "properties": {
-                  "client_name": {
+                  "company": {
                     "type": "string",
-                    "description": "Your name"
+                    "description": "Company name"
                   },
-                  "company_name": {
+                  "company_id": {
                     "type": "string",
-                    "description": "Your company name"
-                  },
-                  "company_description": {
-                    "type": "string",
-                    "description": "Brief description of your company"
-                  },
-                  "gtm_challenge": {
-                    "type": "string",
-                    "description": "Your GTM challenge or question"
-                  },
-                  "business_stage": {
-                    "type": "string",
-                    "enum": ["pre-seed", "seed", "series-a", "series-b", "growth", "enterprise"],
-                    "description": "Current business stage"
+                    "description": "Optional tracking ID; defaults to the company name in lower case with dashes"
                   },
                   "industry": {
                     "type": "string",
-                    "description": "Your industry"
-                  }
-                },
-                "required": ["gtm_challenge"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Consultation response with EPIC analysis"
-          }
-        }
-      }
-    },
-    "/express-mcp-server/audit": {
-      "post": {
-        "operationId": "getEPICAudit",
-        "summary": "Get EPIC Framework Audit",
-        "description": "Analyze your GTM strategy using the EPIC framework scores",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "current_challenges": {
+                    "description": "Industry"
+                  },
+                  "company_stage": {
+                    "type": "string",
+                    "description": "Company stage, for example seed, series-a, growth"
+                  },
+                  "current_gtm": {
+                    "type": "string",
+                    "description": "Description of the current go-to-market approach"
+                  },
+                  "focus_areas": {
                     "type": "array",
-                    "items": {"type": "string"},
-                    "description": "List of current GTM challenges"
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "Areas to focus on"
                   },
-                  "company_context": {
-                    "type": "string",
-                    "description": "Company context and background"
-                  },
-                  "industry": {
-                    "type": "string",
-                    "description": "Your industry"
-                  },
-                  "business_stage": {
-                    "type": "string",
-                    "description": "Current business stage"
-                  }
-                },
-                "required": ["current_challenges"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "EPIC scores and recommendations"
-          }
-        }
-      }
-    },
-    "/express-mcp-server/roadmap": {
-      "post": {
-        "operationId": "getImplementationRoadmap",
-        "summary": "Get Implementation Roadmap",
-        "description": "Generate a 30-60-90 day implementation roadmap",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "analysis": {
+                  "current_metrics": {
                     "type": "object",
-                    "properties": {
-                      "primary_epic_focus": {"type": "string"},
-                      "epic_scores": {
-                        "type": "object",
-                        "properties": {
-                          "E": {"type": "integer"},
-                          "P": {"type": "integer"},
-                          "I": {"type": "integer"},
-                          "C": {"type": "integer"}
-                        }
-                      }
-                    }
-                  },
-                  "timeframe": {
-                    "type": "string",
-                    "enum": ["30-day", "60-day", "90-day"],
-                    "description": "Roadmap timeframe"
+                    "description": "Optional current metrics"
                   }
                 }
               }
@@ -142,7 +64,13 @@
         },
         "responses": {
           "200": {
-            "description": "Implementation roadmap"
+            "description": "Audit results"
+          },
+          "400": {
+            "description": "Missing required field company"
+          },
+          "429": {
+            "description": "Rate limit reached"
           }
         }
       }

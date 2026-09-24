@@ -7,18 +7,19 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-navy: #151617;
-            --accent-coral: #FAA1A1;
-            --text-primary: #151617;
+            --primary-navy: #1A0E10;
+            --accent-coral: #C1121F;
+            --accent-rose: #E5A8AC;
+            --text-primary: #1A0E10;
             --text-secondary: #646B81;
-            --bg-primary: #FFFFFF;
-            --bg-secondary: #F6F5F8;
+            --bg-primary: #FAF8F6;
+            --bg-secondary: #F6ECE9;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-secondary); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        body { font-family: 'IBM Plex Sans', sans-serif; background: var(--bg-secondary); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
         .container { max-width: 600px; margin: 40px auto; padding: 40px; background: white; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); text-align: center; }
         .icon { font-size: 64px; margin-bottom: 24px; }
         h1 { font-size: 28px; color: var(--text-primary); margin-bottom: 16px; }
@@ -27,9 +28,14 @@
         .btn:hover { opacity: 0.9; }
         .btn-secondary { background: var(--primary-navy); margin-left: 12px; }
         .info-box { background: #fff3cd; color: #856404; padding: 16px; border-radius: 8px; margin-top: 24px; text-align: left; }
+    
+        /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
+        h1, h2 { font-family: 'Archivo', 'IBM Plex Sans', sans-serif; }
+        .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
     </style>
 </head>
 <body>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken and the prices shown are not charged.</div>
     <div class="container">
         <div class="icon">😔</div>
         <h1>Payment Cancelled</h1>

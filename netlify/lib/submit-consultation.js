@@ -1,10 +1,13 @@
-// netlify/functions/submit-consultation.js
+// netlify/lib/submit-consultation.js (retired 2026-09-24: not deployed as a function; no page calls it)
 import { getStore } from "@netlify/blobs";
+
+// Payment endpoints are only called by this site's own pages.
+const ALLOWED_ORIGIN = process.env.URL || 'https://gtmalpha.netlify.app';
 
 export default async (req, context) => {
   const headers = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS'
   };
@@ -17,7 +20,7 @@ export default async (req, context) => {
     const formData = await req.json();
     
     // Call the epic-scores function internally using relative URL
-    const baseUrl = process.env.URL || 'https://gtm-alpha.netlify.app';
+    const baseUrl = process.env.URL || 'https://gtmalpha.netlify.app';
     const epicResponse = await fetch(`${baseUrl}/api/epic-scores`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -82,7 +85,7 @@ export default async (req, context) => {
   } catch (error) {
     return new Response(JSON.stringify({
       success: false,
-      error: error.message
+      error: 'The consultation could not be processed. Please try again.'
     }), {
       status: 400,
       headers

@@ -11,15 +11,15 @@
 
     <meta property="og:title" content="Privacy Policy | GTM Alpha">
     <meta property="og:description" content="How GTM Alpha collects, uses, and protects your personal data.">
-    <meta property="og:url" content="https://gtm-alpha.netlify.app/privacy">
+    <meta property="og:url" content="https://gtmalpha.netlify.app/privacy">
     <meta property="og:type" content="article">
 
-    <link rel="canonical" href="https://gtm-alpha.netlify.app/privacy">
+    <link rel="canonical" href="https://gtmalpha.netlify.app/privacy">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <script type="application/ld+json">
     {
@@ -30,26 +30,27 @@
         "publisher": {
             "@type": "Organization",
             "name": "GTM Alpha",
-            "url": "https://gtm-alpha.netlify.app"
+            "url": "https://gtmalpha.netlify.app"
         },
-        "dateModified": "2025-12-20",
+        "dateModified": "2026-09-24",
         "inLanguage": "en"
     }
     </script>
 
     <style>
         :root {
-            --primary-navy: #151617;
-            --primary-dark: #0B0B10;
-            --accent-coral: #FAA1A1;
-            --text-primary: #151617;
+            --primary-navy: #1A0E10;
+            --primary-dark: #1A0E10;
+            --accent-coral: #C1121F;
+            --accent-rose: #E5A8AC;
+            --text-primary: #1A0E10;
             --text-secondary: #646B81;
-            --bg-primary: #FFFFFF;
-            --bg-secondary: #F6F5F8;
-            --border-light: #D3D3D3;
+            --bg-primary: #FAF8F6;
+            --bg-secondary: #F6ECE9;
+            --border-light: #EAD9D5;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.8; color: var(--text-primary); background: var(--bg-primary); }
+        body { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.8; color: var(--text-primary); background: var(--bg-primary); }
         .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
         header { background: var(--primary-navy); color: white; padding: 60px 0 40px; margin-bottom: 40px; }
         header h1 { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
@@ -68,8 +69,12 @@
         th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-light); }
         th { background: var(--bg-secondary); font-weight: 600; color: var(--primary-navy); }
         footer { background: var(--primary-navy); color: white; padding: 40px 0; text-align: center; }
-        footer a { color: var(--accent-coral); }
-        .back-link { display: inline-block; margin-bottom: 20px; color: var(--accent-coral); font-weight: 500; }
+        footer a { color: var(--accent-rose); }
+        .back-link { display: inline-block; margin-bottom: 20px; color: var(--accent-rose); font-weight: 500; }
+    
+        /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
+        h1, h2 { font-family: 'Archivo', 'IBM Plex Sans', sans-serif; }
+        .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
     </style>
 </head>
 <body>
@@ -77,7 +82,7 @@
         <div class="container">
             <a href="/" class="back-link">&larr; Back to Home</a>
             <h1>Privacy Policy</h1>
-            <p>Last updated: December 20, 2025</p>
+            <p>Last updated: September 24, 2026</p>
         </div>
     </header>
 
@@ -92,59 +97,61 @@
         <p><strong>Contact:</strong><br>
         Shashwat Ghosh<br>
         Email: <a href="mailto:shashwat@hyperplays.in">shashwat@hyperplays.in</a><br>
-        Website: <a href="https://gtm-alpha.netlify.app">gtm-alpha.netlify.app</a></p>
+        Website: <a href="https://gtmalpha.netlify.app">gtmalpha.netlify.app</a></p>
 
         <h2>2. Data We Collect</h2>
 
-        <h3>2.1 Information You Provide</h3>
+        <h3>2.1 Consultation form</h3>
         <table>
-            <tr><th>Data Type</th><th>Purpose</th><th>Legal Basis</th></tr>
-            <tr><td>Name, Email</td><td>Consultation requests, service delivery</td><td>Contract performance</td></tr>
-            <tr><td>Company Name, Website</td><td>GTM analysis, EPIC framework audit</td><td>Contract performance</td></tr>
-            <tr><td>Business Challenges</td><td>Provide relevant consulting advice</td><td>Legitimate interest</td></tr>
-            <tr><td>Payment Information</td><td>Process payments (via PayPal)</td><td>Contract performance</td></tr>
+            <tr><th>Data</th><th>Why</th><th>Where it is kept</th></tr>
+            <tr><td>Your name, company name, company description, GTM challenge, industry, business stage, team size, monthly budget, company website and LinkedIn URL</td><td>To prepare your GTM analysis</td><td>Saved in our Netlify Blobs database (store "pending-payments") when you submit the form</td></tr>
+            <tr><td>Company name</td><td>Shown in the PayPal order description</td><td>Sent to PayPal when you start checkout</td></tr>
+            <tr><td>Payment details</td><td>Payment</td><td>Entered on PayPal's own pages. We never see card or bank details</td></tr>
         </table>
+        <p>The form does not ask for your email address.</p>
 
-        <h3>2.2 Automatically Collected Data</h3>
+        <h3>2.2 EPIC audit API</h3>
+        <p>If you or an application send data to <code>/api/epic-audit</code>, the inputs are saved with the audit result in our Netlify Blobs database (store "epic-audits").</p>
+
+        <h3>2.3 MCP server</h3>
+        <p>When an AI assistant calls a GTM Alpha tool through <code>/mcp-sse</code>, the server receives the tool name and the inputs for that call and uses them only to build the reply. Our code does not store or log these inputs or the results, and it never receives your conversation.</p>
+
+        <h3>2.4 Data collected automatically</h3>
         <ul>
-            <li><strong>Usage Data:</strong> Pages visited, time spent, referral source (via Netlify Analytics)</li>
-            <li><strong>Device Data:</strong> Browser type, operating system, screen resolution</li>
-            <li><strong>IP Address:</strong> For security and approximate location (country-level)</li>
+            <li>Our pages include no analytics or tracking scripts and set no cookies.</li>
+            <li>Netlify, which hosts this site, processes each request (including your IP address and browser details) to deliver it and keeps its own logs: <a href="https://www.netlify.com/privacy/">netlify.com/privacy</a>.</li>
+            <li>Our pages load fonts from Google Fonts, the home page loads one image from gamma.app, and the generated report loads a PDF library from cdnjs. These providers receive your IP address when your browser loads those files.</li>
         </ul>
 
-        <h3>2.3 MCP Server Data</h3>
-        <p>When you use GTM Alpha via MCP (Model Context Protocol) integration:</p>
-        <ul>
-            <li>Tool invocation requests and parameters</li>
-            <li>Analysis results generated</li>
-            <li>No conversation content from your AI assistant is stored</li>
-        </ul>
+        <h3>2.5 Older records</h3>
+        <p>Earlier versions of this site also saved consultation records in two other stores ("gtm-consultations" and "consultations"). The endpoints that wrote to them no longer accept new data. Any existing records are kept until you ask us to delete them.</p>
 
         <h2>3. How We Use Your Data</h2>
         <ul>
             <li>Provide GTM consultation and analysis services</li>
             <li>Generate EPIC framework reports and roadmaps</li>
-            <li>Process payments and maintain records</li>
-            <li>Improve our services and user experience</li>
-            <li>Communicate about your consultation or service updates</li>
+            <li>Process payments through PayPal</li>
             <li>Comply with legal obligations</li>
         </ul>
+        <p>We do not sell your data, share it with competitors or use it to train AI models.</p>
 
         <h2>4. Data Sharing</h2>
-        <p>We do not sell your personal data. We may share data with:</p>
         <ul>
-            <li><strong>PayPal:</strong> Payment processing (as a data processor)</li>
-            <li><strong>Netlify:</strong> Website hosting and analytics (as a data processor)</li>
-            <li><strong>Legal Authorities:</strong> When required by law</li>
+            <li><strong>Netlify:</strong> hosting, our Blobs database and request logs (as a data processor)</li>
+            <li><strong>PayPal:</strong> payment processing; receives your company name in the order description (as a data processor)</li>
+            <li><strong>Google Fonts, gamma.app, cdnjs:</strong> receive your IP address when your browser loads fonts, an image or a library from them</li>
+            <li><strong>Legal authorities:</strong> when required by law</li>
         </ul>
 
         <h2>5. Data Retention</h2>
         <table>
-            <tr><th>Data Type</th><th>Retention Period</th></tr>
-            <tr><td>Consultation Records</td><td>3 years from last interaction</td></tr>
-            <tr><td>Payment Records</td><td>7 years (legal requirement)</td></tr>
-            <tr><td>Analytics Data</td><td>26 months (Netlify default)</td></tr>
-            <tr><td>MCP Usage Logs</td><td>30 days</td></tr>
+            <tr><th>Data</th><th>How long it is kept</th></tr>
+            <tr><td>Consultation form data (store "pending-payments")</td><td>Until you ask us to delete it. There is no automatic deletion</td></tr>
+            <tr><td>EPIC audit API inputs and results (store "epic-audits")</td><td>Until you ask us to delete them. There is no automatic deletion</td></tr>
+            <tr><td>Older consultation records (stores "gtm-consultations" and "consultations")</td><td>Until you ask us to delete them</td></tr>
+            <tr><td>MCP tool inputs and results</td><td>Not stored</td></tr>
+            <tr><td>Netlify request logs</td><td>Kept by Netlify under its own policy</td></tr>
+            <tr><td>Payment records</td><td>Kept by PayPal under its own policy</td></tr>
         </table>
 
         <h2>6. Your Rights</h2>
@@ -163,15 +170,10 @@
             <li><strong>Withdraw Consent:</strong> Where processing is based on consent</li>
         </ul>
 
-        <p>To exercise these rights, email us at <a href="mailto:shashwat@hyperplays.in">shashwat@hyperplays.in</a> with subject "Data Rights Request".</p>
+        <p>To exercise these rights, email us at <a href="mailto:shashwat@hyperplays.in">shashwat@hyperplays.in</a> with subject "Data Rights Request". Records are stored by company name and time, so please include your company name and roughly when you used the site. We find and delete records by hand within 30 days.</p>
 
         <h2>7. Cookies</h2>
-        <p>We use minimal cookies:</p>
-        <ul>
-            <li><strong>Essential Cookies:</strong> Required for website functionality</li>
-            <li><strong>Analytics:</strong> Netlify Analytics (privacy-focused, no personal tracking)</li>
-        </ul>
-        <p>We do not use third-party advertising cookies or tracking pixels.</p>
+        <p>Our pages set no cookies and include no analytics, advertising cookies or tracking pixels. PayPal sets its own cookies on its checkout pages.</p>
 
         <h2>8. International Transfers</h2>
         <p>Your data may be processed in:</p>
@@ -182,12 +184,12 @@
         <p>Transfers are protected by Standard Contractual Clauses (SCCs) where required.</p>
 
         <h2>9. Security</h2>
-        <p>We implement appropriate security measures including:</p>
         <ul>
             <li>HTTPS encryption for all data in transit</li>
-            <li>Secure payment processing via PayPal</li>
-            <li>Access controls and authentication</li>
-            <li>Regular security reviews</li>
+            <li>Payments handled on PayPal's pages; we never see card or bank details</li>
+            <li>No user accounts or passwords are held by us</li>
+            <li>Rate limits on the forms, the APIs and the MCP server</li>
+            <li>Stored records cannot be read back through any public endpoint</li>
         </ul>
 
         <h2>10. Children's Privacy</h2>

@@ -1,4 +1,4 @@
-// netlify/functions/analyze.js
+// netlify/lib/analyze.js (internal module: imported by payment-success.js, not a public function)
 // Real GTM Alpha Analysis implementing EPIC framework GTM analysis
 // Enhanced with digital presence analysis and 6-month roadmap structure
 
@@ -529,7 +529,6 @@ const GTM_ALPHA_ENGINE = {
             <h2>Next Steps</h2>
             <p>For personalized implementation support and detailed strategy development:</p>
             <ul>
-                <li><a href="https://calendly.com/shashwat-gtmhelix/45min">Book Premium Consultation</a></li>
                 <li><a href="mailto:shashwat@hyperplays.in">Email Direct Support</a></li>
                 <li><a href="https://gtmexpert.com">Visit GTMExpert.com</a></li>
             </ul>
@@ -670,7 +669,6 @@ export default async (req, context) => {
       },
       consoleUrl: `#consultation-${consultationId}`,
       datasetUrl: `#report-${consultationId}`,
-      consultation_link: 'https://calendly.com/shashwat-gtmhelix/45min',
       generated_by: 'GTM Alpha Engine - Shashwat Ghosh EPIC Framework'
     }), {
       status: 200,
@@ -691,7 +689,3 @@ export default async (req, context) => {
   }
 };
 
-// Export configuration for Netlify
-export const config = {
-  path: "/api/analyze"
-};

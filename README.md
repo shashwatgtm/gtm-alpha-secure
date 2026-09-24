@@ -59,18 +59,18 @@ Endpoints:
 
 ### OpenAI Custom GPT
 
-Use the OpenAPI schema in openai-gpt-actions.json to create a Custom GPT:
+Use the OpenAPI schema in openai-gpt-actions.json to create a Custom GPT action for the EPIC audit endpoint:
 
 1. Go to ChatGPT - Create a GPT
 2. Add Actions - Import from URL or paste schema
-3. Base URL: https://gtmalpha.netlify.app/.netlify/functions
+3. Base URL: https://gtmalpha.netlify.app/api (the audit inputs are stored; see https://gtmalpha.netlify.app/privacy)
 
 ### Google Gemini
 
 Use the function declarations in gemini-functions.json:
 
 1. Import the function definitions into Google AI Studio
-2. Configure the API endpoint: https://gtmalpha.netlify.app/.netlify/functions/express-mcp-server
+2. Send the calls to the MCP endpoint https://gtmalpha.netlify.app/mcp-sse as JSON-RPC 2.0 `tools/call` requests
 
 ---
 
@@ -126,7 +126,6 @@ AI GTM Alpha Consultant and Fractional CMO
 |----------|-----|
 | Website | https://gtmexpert.com |
 | LinkedIn | https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/ |
-| Book Consultation | https://calendly.com/shashwat-gtmhelix/45min |
 | npm Package | https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server |
 | GitHub | https://github.com/shashwatgtm |
 

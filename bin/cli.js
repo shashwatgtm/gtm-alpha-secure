@@ -42,7 +42,7 @@ const GTM_CONSULTANT = {
     const epicAnalysis = this.analyzeEPICScores(gtm_challenge, company_description, industry, business_stage);
     const primaryComponent = this.expertiseContent.epicFramework[epicAnalysis.primaryFocus];
     return {
-      consultation_output: `Thank you ${client_name} for the GTM Alpha consultation.\n\nPrimary Focus: ${primaryComponent.name}\nEPIC Scores: E:${epicAnalysis.scores.E}, P:${epicAnalysis.scores.P}, I:${epicAnalysis.scores.I}, C:${epicAnalysis.scores.C}\n\nCore Insight: ${this.expertiseContent.corePhilosophy}\n\nMethodology: ${this.expertiseContent.gtmAlphaMethodology}\n\nFor deeper consultation: https://calendly.com/shashwat-gtmhelix/45min`,
+      consultation_output: `Thank you ${client_name} for the GTM Alpha consultation.\n\nPrimary Focus: ${primaryComponent.name}\nEPIC Scores: E:${epicAnalysis.scores.E}, P:${epicAnalysis.scores.P}, I:${epicAnalysis.scores.I}, C:${epicAnalysis.scores.C}\n\nCore Insight: ${this.expertiseContent.corePhilosophy}\n\nMethodology: ${this.expertiseContent.gtmAlphaMethodology}`,
       epic_scores: epicAnalysis.scores,
       primary_focus: primaryComponent.name
     };
@@ -81,7 +81,7 @@ const GTM_CONSULTANT = {
 
 // Create MCP Server
 const server = new Server(
-  { name: 'gtm-alpha-mcp-server', version: '1.0.5' },
+  { name: 'gtm-alpha-mcp-server', version: '1.1.0' },
   { capabilities: { tools: {} } }
 );
 
@@ -90,6 +90,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
   tools: [
     {
       name: 'gtm_consultation',
+      title: 'GTM Consultation',
       description: 'Get GTM strategy consultation using Shashwat Ghosh EPIC framework. Returns strategic analysis and recommendations.',
       inputSchema: {
         type: 'object',
@@ -104,6 +105,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         required: ['gtm_challenge']
       },
       annotations: {
+        title: 'GTM Consultation',
         readOnlyHint: true,
         openWorldHint: false,
         destructiveHint: false
@@ -111,6 +113,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     },
     {
       name: 'epic_audit',
+      title: 'EPIC Audit',
       description: 'Get EPIC framework scores for your GTM strategy. Analyzes Ecosystem, Product-Led, Inbound/Outbound, and Community dimensions.',
       inputSchema: {
         type: 'object',
@@ -122,6 +125,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         required: ['challenge']
       },
       annotations: {
+        title: 'EPIC Audit',
         readOnlyHint: true,
         openWorldHint: false,
         destructiveHint: false
@@ -129,6 +133,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
     },
     {
       name: 'generate_roadmap',
+      title: 'GTM Roadmap',
       description: 'Generate a 30-60-90 day GTM implementation roadmap based on EPIC framework analysis.',
       inputSchema: {
         type: 'object',
@@ -139,6 +144,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => ({
         required: ['primary_focus']
       },
       annotations: {
+        title: 'GTM Roadmap',
         readOnlyHint: true,
         openWorldHint: false,
         destructiveHint: false
@@ -178,7 +184,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error('GTM Alpha MCP Server v1.0.4 running on stdio');
+  console.error('GTM Alpha MCP Server v1.1.0 running on stdio');
 }
 
 main().catch(console.error);

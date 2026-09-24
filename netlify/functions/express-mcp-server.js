@@ -101,9 +101,6 @@ const GTM_CONSULTANT = {
 
 💡 **GTM Alpha Philosophy**: ${this.expertiseContent.gtmAlphaMethodology}
 
-📅 For deeper consultation and implementation support, book a personalized session:
-https://calendly.com/shashwat-gtmhelix/45min
-
 🚀 Best wishes for successful GTM implementation!
 
 Cheers,
@@ -220,28 +217,22 @@ export default async (req, context) => {
     <div class="section">
         <h2>🎯 Available Tools</h2>
         <div class="tool">
-            <strong>gtm_alpha_consultation</strong><br>
-            Complete GTM strategy analysis using EPIC framework
+            <strong>gtm_consultation</strong><br>
+            GTM strategy consultation using the EPIC framework
         </div>
         <div class="tool">
-            <strong>epic_framework_audit</strong><br>
-            Detailed EPIC component assessment and prioritization
+            <strong>epic_audit</strong><br>
+            EPIC framework scores for your GTM situation
         </div>
         <div class="tool">
-            <strong>generate_implementation_roadmap</strong><br>
-            30-60-90 day actionable implementation plans
+            <strong>generate_roadmap</strong><br>
+            A GTM implementation roadmap
         </div>
     </div>
     
     <div class="section">
         <h2>📚 API Endpoints</h2>
-        <p>This server provides both MCP protocol and REST API access:</p>
-        <ul>
-            <li><code>POST /api/mcp</code> - MCP protocol endpoint</li>
-            <li><code>POST /api/mcp/consultation</code> - Direct consultation API</li>
-            <li><code>POST /api/mcp/audit</code> - EPIC framework audit API</li>
-            <li><code>POST /api/mcp/roadmap</code> - Implementation roadmap API</li>
-        </ul>
+        <p>The MCP server is at <code>https://gtmalpha.netlify.app/mcp-sse</code> (Streamable HTTP, stateless, POST only, no sign-in). Setup: <a href="/integration">/integration</a>.</p>
     </div>
     
     <div class="section">
@@ -253,7 +244,6 @@ export default async (req, context) => {
             <li>✅ Actionable implementation roadmaps</li>
             <li>✅ Real expertise from Shashwat Ghosh's documented methodology</li>
         </ul>
-        <p><strong>For premium consultation:</strong> <a href="https://calendly.com/shashwat-gtmhelix/45min">Book a session with Shashwat</a></p>
     </div>
 </body>
 </html>

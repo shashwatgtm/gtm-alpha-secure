@@ -4,6 +4,9 @@
 import paypal from '@paypal/checkout-server-sdk';
 import { getStore } from "@netlify/blobs";
 
+// Payment endpoints are only called by this site's own pages.
+const ALLOWED_ORIGIN = process.env.URL || 'https://gtmalpha.netlify.app';
+
 // Check for PayPal credentials
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
@@ -22,7 +25,7 @@ if (PAYPAL_CLIENT_ID && PAYPAL_CLIENT_SECRET) {
 
 export default async (req, context) => {
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Origin': ALLOWED_ORIGIN,
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
     'Content-Type': 'application/json'
@@ -54,6 +57,10 @@ export default async (req, context) => {
     }
 
     const { order_id } = await req.json();
+
+    if (typeof order_id !== 'string' || !/^[A-Za-z0-9-]{5,64}$/.test(order_id)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid request', message: 'A valid PayPal order_id is required.' }), { status: 400, headers });
+    }
     
     // Capture the payment
     const request = new paypal.orders.OrdersCaptureRequest(order_id);
@@ -93,7 +100,7 @@ export default async (req, context) => {
       const paypalFee = amountPaid * 0.029 + 0.30;
       const yourNetRevenue = basePrice; // Your actual revenue after our markup
 
-      console.log(`Payment completed for ${consultationData.company_name}`);
+      console.log(`Payment completed for ${consultationId}`);
       console.log(`Amount paid: $${amountPaid}`);
       console.log(`Tier: ${tier} (${paymentFrequency})`);
       console.log(`Your net revenue: $${yourNetRevenue}`);
@@ -101,7 +108,7 @@ export default async (req, context) => {
       // Generate consultation for all paid services
       let consultationResult;
       try {
-        const { default: analyzeFunction } = await import('./analyze.js');
+        const { default: analyzeFunction } = await import('../lib/analyze.js');
         
         // Create a new request object with the consultation data
         const analyzeReq = {
@@ -195,14 +202,6 @@ export default async (req, context) => {
           service_name: capture.result.purchase_units[0].description
         },
         
-        // Revenue breakdown (for your records)
-        revenue_breakdown: {
-          gross_received: amountPaid,
-          paypal_fee: paypalFee.toFixed(2),
-          your_net_revenue: yourNetRevenue,
-          markup_covered_fees: true
-        },
-        
         // Savings information
         savings_info: savingsInfo,
         
@@ -247,11 +246,11 @@ export default async (req, context) => {
     return new Response(JSON.stringify({
       success: false,
       error: 'Payment verification failed',
-      message: error.message,
-      support: 'Please contact support with your order details.'
+      message: 'We could not verify this payment. Please contact support with your order details.'
     }), {
       status: 500,
       headers
     });
   }
 };
+

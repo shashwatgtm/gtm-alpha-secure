@@ -11,15 +11,15 @@
 
     <meta property="og:title" content="FAQ | GTM Alpha">
     <meta property="og:description" content="Frequently asked questions about GTM Alpha services, data practices, and MCP integration.">
-    <meta property="og:url" content="https://gtm-alpha.netlify.app/faq">
+    <meta property="og:url" content="https://gtmalpha.netlify.app/faq">
     <meta property="og:type" content="website">
 
-    <link rel="canonical" href="https://gtm-alpha.netlify.app/faq">
+    <link rel="canonical" href="https://gtmalpha.netlify.app/faq">
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="apple-touch-icon" href="/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <script type="application/ld+json">
     {
@@ -31,7 +31,7 @@
                 "name": "What data does GTM Alpha collect?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "We collect information you provide (name, email, company details) for consultation purposes, and basic usage analytics. We do not sell your data or use tracking pixels. See our Privacy Policy for details."
+                    "text": "We collect the details you enter in the consultation form (your name and company details) and any inputs you send to our audit API. Our pages include no analytics or tracking scripts. We do not sell your data. See our Privacy Policy for details."
                 }
             },
             {
@@ -39,7 +39,7 @@
                 "name": "Is my business data kept confidential?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes. All business information shared during consultations is treated as confidential. We do not share your data with third parties except service providers (PayPal, Netlify) necessary for service delivery."
+                    "text": "Yes. All business information shared during consultations is treated as confidential. We share it only with the service providers needed to run the site: Netlify for hosting and PayPal for payments (PayPal receives your company name in the order description)."
                 }
             },
             {
@@ -72,18 +72,19 @@
 
     <style>
         :root {
-            --primary-navy: #151617;
-            --primary-dark: #0B0B10;
-            --accent-coral: #FAA1A1;
+            --primary-navy: #1A0E10;
+            --primary-dark: #1A0E10;
+            --accent-coral: #C1121F;
+            --accent-rose: #E5A8AC;
             --accent-green: #10B981;
-            --text-primary: #151617;
+            --text-primary: #1A0E10;
             --text-secondary: #646B81;
-            --bg-primary: #FFFFFF;
-            --bg-secondary: #F6F5F8;
-            --border-light: #D3D3D3;
+            --bg-primary: #FAF8F6;
+            --bg-secondary: #F6ECE9;
+            --border-light: #EAD9D5;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.8; color: var(--text-primary); background: var(--bg-primary); }
+        body { font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.8; color: var(--text-primary); background: var(--bg-primary); }
         .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
         header { background: var(--primary-navy); color: white; padding: 60px 0 40px; margin-bottom: 40px; }
         header h1 { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
@@ -101,15 +102,20 @@
         a { color: var(--accent-coral); text-decoration: none; }
         a:hover { text-decoration: underline; }
         footer { background: var(--primary-navy); color: white; padding: 40px 0; text-align: center; }
-        footer a { color: var(--accent-coral); }
-        .back-link { display: inline-block; margin-bottom: 20px; color: var(--accent-coral); font-weight: 500; }
-        .highlight-box { background: linear-gradient(135deg, var(--accent-coral) 0%, #F4B942 100%); color: white; padding: 24px; border-radius: 12px; margin: 40px 0; text-align: center; }
+        footer a { color: var(--accent-rose); }
+        .back-link { display: inline-block; margin-bottom: 20px; color: var(--accent-rose); font-weight: 500; }
+        .highlight-box { background: linear-gradient(135deg, var(--accent-coral) 0%, #641220 100%); color: white; padding: 24px; border-radius: 12px; margin: 40px 0; text-align: center; }
         .highlight-box h3 { font-size: 20px; margin-bottom: 8px; }
         .highlight-box p { opacity: 0.9; margin-bottom: 16px; }
         .highlight-box a { color: white; background: rgba(0,0,0,0.2); padding: 10px 24px; border-radius: 8px; display: inline-block; font-weight: 600; }
+    
+        /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
+        h1, h2 { font-family: 'Archivo', 'IBM Plex Sans', sans-serif; }
+        .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
     </style>
 </head>
 <body>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken and the prices shown are not charged.</div>
     <header>
         <div class="container">
             <a href="/" class="back-link">&larr; Back to Home</a>
@@ -127,10 +133,10 @@
             <div class="faq-answer">
                 <p>We collect only what's necessary:</p>
                 <ul>
-                    <li><strong>Contact Info:</strong> Name, email for communication</li>
-                    <li><strong>Business Info:</strong> Company name, website, challenges (for consultations)</li>
-                    <li><strong>Usage Data:</strong> Basic analytics (pages visited, not personal tracking)</li>
-                    <li><strong>MCP Logs:</strong> Tool invocations (retained 30 days)</li>
+                    <li><strong>Contact Info:</strong> Your name (the form does not ask for email)</li>
+                    <li><strong>Business Info:</strong> Company name, description, website, LinkedIn URL, challenge, stage, team size and budget (for consultations)</li>
+                    <li><strong>Usage Data:</strong> None collected by our pages; Netlify, our host, keeps standard request logs</li>
+                    <li><strong>MCP:</strong> Nothing is stored or logged by our code</li>
                 </ul>
                 <p>We do NOT collect: passwords, financial details (handled by PayPal), or tracking cookies.</p>
             </div>
@@ -143,7 +149,7 @@
                 <ul>
                     <li>Never share your data with competitors</li>
                     <li>Don't use your data for training AI models</li>
-                    <li>Only share with essential service providers (PayPal, Netlify) under confidentiality agreements</li>
+                    <li>Only share with the service providers needed to run the site (Netlify for hosting, PayPal for payments)</li>
                 </ul>
             </div>
         </div>
@@ -177,11 +183,11 @@
         <div class="faq-item">
             <div class="faq-question">Do you use cookies or tracking?</div>
             <div class="faq-answer">
-                <p>We use minimal, privacy-respecting analytics:</p>
+                <p>No. Our pages set no cookies and include no analytics or tracking scripts:</p>
                 <ul>
-                    <li><strong>Netlify Analytics:</strong> Privacy-focused, no personal tracking, no cookies</li>
                     <li><strong>No third-party trackers:</strong> No Google Analytics, Facebook Pixel, or ad tracking</li>
-                    <li><strong>Essential cookies only:</strong> For basic website functionality</li>
+                    <li><strong>Fonts:</strong> Our pages load fonts from Google Fonts, which receives your IP address</li>
+                    <li><strong>PayPal:</strong> Sets its own cookies on its checkout pages</li>
                 </ul>
             </div>
         </div>
@@ -193,10 +199,9 @@
             <div class="faq-answer">
                 <p><strong>Yes!</strong> During our Launch Offer, all MCP Tool Calling is completely FREE. This includes:</p>
                 <ul>
-                    <li>gtm_epic_analysis - EPIC framework analysis</li>
-                    <li>gtm_digital_audit - Digital presence audit</li>
-                    <li>gtm_market_intelligence - Market research</li>
-                    <li>gtm_roadmap_generator - Implementation roadmaps</li>
+                    <li>gtm_consultation - GTM consultation summary using the EPIC framework</li>
+                    <li>epic_audit - EPIC framework scores</li>
+                    <li>generate_roadmap - GTM implementation roadmap</li>
                 </ul>
                 <p>No API key required. Just connect and use!</p>
             </div>
@@ -207,10 +212,10 @@
             <div class="faq-answer">
                 <p>GTM Alpha works with any MCP-compatible client:</p>
                 <ul>
-                    <li><strong>Claude Desktop</strong> - Native MCP support</li>
+                    <li><strong>Claude (web, desktop and mobile)</strong> - Add https://gtmalpha.netlify.app/mcp-sse as a custom connector</li>
                     <li><strong>Cursor / Windsurf</strong> - Via mcp.json configuration</li>
                     <li><strong>VS Code</strong> - With MCP extension</li>
-                    <li><strong>ChatGPT, Gemini, Copilot</strong> - Via SSE endpoint</li>
+                    <li><strong>ChatGPT, Gemini, Copilot</strong> - Via the MCP endpoint (Streamable HTTP)</li>
                 </ul>
                 <p>See our <a href="/integration">Integration Guide</a> for setup instructions.</p>
             </div>
@@ -219,13 +224,7 @@
         <div class="faq-item">
             <div class="faq-question">Is data from my AI conversations stored?</div>
             <div class="faq-answer">
-                <p>We <strong>do not</strong> store your AI conversation content. We only log:</p>
-                <ul>
-                    <li>Tool invocation requests (which tool was called)</li>
-                    <li>Parameters passed (company name, etc.)</li>
-                    <li>Generated analysis results</li>
-                </ul>
-                <p>These logs are retained for 30 days for debugging, then deleted.</p>
+                <p><strong>No.</strong> The MCP server receives only the tool name and the inputs of each call, uses them to build the reply, and keeps nothing: our code does not store or log tool inputs or results. Netlify, which hosts the site, keeps its own request logs under its policy. See the <a href="/privacy">privacy policy</a>.</p>
             </div>
         </div>
 

@@ -3,7 +3,7 @@
 
 User-agent: *
 Allow: /
-Sitemap: https://gtm-alpha.netlify.app/sitemap.xml
+Sitemap: https://gtmalpha.netlify.app/sitemap.xml
 
 # OpenAI Crawlers
 User-agent: GPTBot

@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" href="/logo.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <!-- Schema.org Structured Data -->
     <script type="application/ld+json">
@@ -24,10 +24,10 @@
         "@graph": [
             {
                 "@type": "Organization",
-                "@id": "https://gtm-alpha.netlify.app/#organization",
+                "@id": "https://gtmalpha.netlify.app/#organization",
                 "name": "GTM Alpha",
-                "url": "https://gtm-alpha.netlify.app",
-                "logo": "https://gtm-alpha.netlify.app/logo.svg",
+                "url": "https://gtmalpha.netlify.app",
+                "logo": "https://gtmalpha.netlify.app/logo.svg",
                 "founder": {
                     "@type": "Person",
                     "name": "Shashwat Ghosh",
@@ -42,7 +42,7 @@
             },
             {
                 "@type": "OfferCatalog",
-                "@id": "https://gtm-alpha.netlify.app/pricing#offers",
+                "@id": "https://gtmalpha.netlify.app/pricing#offers",
                 "name": "GTM Alpha Consulting Services",
                 "description": "Professional go-to-market strategy consulting with transparent pricing",
                 "itemListElement": [
@@ -92,24 +92,24 @@
             },
             {
                 "@type": "Service",
-                "@id": "https://gtm-alpha.netlify.app/pricing#service",
+                "@id": "https://gtmalpha.netlify.app/pricing#service",
                 "name": "GTM Alpha Consulting",
                 "provider": {
-                    "@id": "https://gtm-alpha.netlify.app/#organization"
+                    "@id": "https://gtmalpha.netlify.app/#organization"
                 },
                 "serviceType": "Go-to-Market Strategy Consulting",
                 "areaServed": ["US", "IN", "APAC"],
                 "hasOfferCatalog": {
-                    "@id": "https://gtm-alpha.netlify.app/pricing#offers"
+                    "@id": "https://gtmalpha.netlify.app/pricing#offers"
                 }
             },
             {
                 "@type": "Product",
-                "@id": "https://gtm-alpha.netlify.app/pricing#mcp-server",
+                "@id": "https://gtmalpha.netlify.app/pricing#mcp-server",
                 "name": "GTM Alpha MCP Server",
                 "description": "AI-powered GTM analysis tools accessible via Model Context Protocol",
                 "brand": {
-                    "@id": "https://gtm-alpha.netlify.app/#organization"
+                    "@id": "https://gtmalpha.netlify.app/#organization"
                 },
                 "offers": {
                     "@type": "Offer",
@@ -121,7 +121,7 @@
             },
             {
                 "@type": "FAQPage",
-                "@id": "https://gtm-alpha.netlify.app/pricing#faq",
+                "@id": "https://gtmalpha.netlify.app/pricing#faq",
                 "mainEntity": [
                     {
                         "@type": "Question",
@@ -175,21 +175,22 @@
 
     <style>
         :root {
-            --primary-navy: #151617;
-            --primary-dark: #0B0B10;
-            --primary-slate: #1A1A24;
-            --accent-coral: #FAA1A1;
-            --accent-gold: #FFBF47;
+            --primary-navy: #1A0E10;
+            --primary-dark: #1A0E10;
+            --primary-slate: #1A0E10;
+            --accent-coral: #C1121F;
+            --accent-rose: #E5A8AC;
+            --accent-gold: #641220;
             --accent-green: #10B981;
-            --text-primary: #151617;
+            --text-primary: #1A0E10;
             --text-secondary: #646B81;
             --text-light: #94A3B8;
-            --bg-primary: #FFFFFF;
-            --bg-secondary: #F6F5F8;
-            --bg-accent: #F6F1FF;
-            --border-light: #D3D3D3;
-            --gradient-primary: linear-gradient(135deg, #15151B 0%, #0B0B10 100%);
-            --gradient-accent: linear-gradient(135deg, #FAA1A1 0%, #FAA1A1 100%);
+            --bg-primary: #FAF8F6;
+            --bg-secondary: #F6ECE9;
+            --bg-accent: #F6ECE9;
+            --border-light: #EAD9D5;
+            --gradient-primary: linear-gradient(135deg, #641220 0%, #4A0D17 100%);
+            --gradient-accent: linear-gradient(135deg, #C1121F 0%, #C1121F 100%);
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -203,7 +204,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             line-height: 1.6;
             color: var(--text-primary);
             background: var(--bg-primary);
@@ -251,7 +252,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: Georgia, serif;
+            font-family: Georgia, serif; font-style: italic;
             font-size: 32px;
             font-weight: 400;
             color: white;
@@ -347,7 +348,7 @@
         .cta-nav:hover {
             transform: translateY(-1px);
             box-shadow: var(--shadow-md);
-            background: #e55a4a !important;
+            background: #641220 !important;
         }
 
         .cta-nav::after {
@@ -949,7 +950,7 @@
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 20px;
-            color: var(--accent-coral);
+            color: var(--accent-rose);
         }
 
         .footer-section a {
@@ -1053,9 +1054,14 @@
                 align-items: center;
             }
         }
+    
+        /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
+        h1, h2 { font-family: 'Archivo', 'IBM Plex Sans', sans-serif; }
+        .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
     </style>
 </head>
 <body>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken and the prices shown are not charged.</div>
     <header>
         <nav class="container">
             <div class="logo-container">
@@ -1233,11 +1239,9 @@
                         Access all GTM Alpha analysis components at no cost through Claude, Cursor, or any MCP-compatible client.
                     </p>
                     <div class="mcp-features">
-                        <div class="mcp-feature">✓ EPIC Framework Analyzer</div>
-                        <div class="mcp-feature">✓ Digital Presence Auditor</div>
-                        <div class="mcp-feature">✓ Market Intelligence Scanner</div>
-                        <div class="mcp-feature">✓ Implementation Roadmap Generator</div>
-                        <div class="mcp-feature">✓ Community Growth Analyzer</div>
+                        <div class="mcp-feature">✓ GTM Consultation</div>
+                        <div class="mcp-feature">✓ EPIC Audit</div>
+                        <div class="mcp-feature">✓ GTM Roadmap</div>
                     </div>
                 </div>
             </section>
@@ -1429,7 +1433,7 @@
             </div>
 
             <div class="footer-bottom">
-                <div>&copy; 2025 GTM Alpha by Shashwat Ghosh. <a href="https://www.linkedin.com/company/helixgtmconsulting/?viewAsMember=true" style="color: var(--accent-coral); text-decoration: none;">Helix Consulting</a>. | <a href="/privacy" style="color: rgba(255,255,255,0.6);">Privacy</a> &bull; <a href="/terms" style="color: rgba(255,255,255,0.6);">Terms</a> &bull; <a href="/faq" style="color: rgba(255,255,255,0.6);">FAQ</a></div>
+                <div>&copy; 2025 GTM Alpha by Shashwat Ghosh. <a href="https://www.linkedin.com/company/helixgtmconsulting/?viewAsMember=true" style="color: var(--accent-rose); text-decoration: none;">Helix Consulting</a>. | <a href="/privacy" style="color: rgba(255,255,255,0.6);">Privacy</a> &bull; <a href="/terms" style="color: rgba(255,255,255,0.6);">Terms</a> &bull; <a href="/faq" style="color: rgba(255,255,255,0.6);">FAQ</a></div>
                 <div>Best AI GTM & Fractional CMO | Top 30 PLG Creator Worldwide</div>
             </div>
         </div>

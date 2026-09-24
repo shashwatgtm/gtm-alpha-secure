@@ -1,4 +1,4 @@
-// netlify/functions/epic-scores.js
+// netlify/lib/epic-scores.js (retired 2026-09-24: not deployed as a function; no page calls it)
 // Dynamic EPIC Scoring System with Persistence
 
 import { getStore } from "@netlify/blobs";
@@ -20,18 +20,10 @@ export default async (req, context) => {
     const store = getStore("gtm-consultations");
     
     // Handle GET requests
+    // SECURITY FIX (2026-09-24): public lookup of stored records by consultation_id removed.
+    // IDs are guessable (company prefix + timestamp), so anyone could read other people's records.
+    // Stored records are NOT touched; they simply can no longer be read through this endpoint.
     if (req.method === 'GET') {
-      const url = new URL(req.url);
-      const consultationId = url.searchParams.get('consultation_id');
-      
-      if (consultationId) {
-        const consultation = await store.get(consultationId, { type: 'json' });
-        if (consultation) {
-          return new Response(JSON.stringify(consultation), { status: 200, headers });
-        }
-        return new Response(JSON.stringify({ error: 'Consultation not found' }), { status: 404, headers });
-      }
-      
       // Default GET response for testing
       return new Response(JSON.stringify({
         message: 'EPIC Scores API is working',
@@ -97,8 +89,7 @@ export default async (req, context) => {
     console.error('Function error:', error);
     return new Response(JSON.stringify({
       success: false,
-      error: error.message || 'Internal server error',
-      stack: error.stack
+      error: 'Internal server error'
     }), {
       status: 500,
       headers
