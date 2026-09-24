@@ -8,6 +8,17 @@ import { getStore } from "@netlify/blobs";
 // Payment endpoints are only called by this site's own pages.
 const ALLOWED_ORIGIN = process.env.URL || 'https://gtmalpha.netlify.app';
 
+// PayPal sends the buyer back to the address they paid from, but only to one of this site's own addresses.
+// (process.env.URL is the primary custom domain, which may not resolve yet while its DNS is being set up.)
+const SITE_HOSTS = new Set(['gtmalpha.netlify.app', 'gtmalpha.gtmhelix.com']);
+export function siteBase(req) {
+  try {
+    const host = new URL(req.url).hostname;
+    if (SITE_HOSTS.has(host)) return `https://${host}`;
+  } catch {}
+  return process.env.URL || 'https://gtmalpha.netlify.app';
+}
+
 // Check for PayPal credentials
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID;
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
@@ -202,8 +213,8 @@ export default async (req, context) => {
         custom_id: consultationId  // Short ID only (under 127 chars)
       }],
       application_context: {
-        return_url: `${process.env.URL || 'https://gtmalpha.netlify.app'}/payment-success`,
-        cancel_url: `${process.env.URL || 'https://gtmalpha.netlify.app'}/payment-cancel`,
+        return_url: `${siteBase(req)}/payment-success`,
+        cancel_url: `${siteBase(req)}/payment-cancel`,
         brand_name: 'Helix GTM Consulting',
         landing_page: 'BILLING',
         user_action: 'PAY_NOW'

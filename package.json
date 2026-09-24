@@ -12,7 +12,7 @@
     "start": "node bin/cli.js",
     "dev": "netlify dev",
     "deploy": "netlify deploy --prod",
-    "test": "node --test tests/epic-advanced.test.mjs"
+    "test": "node --test tests/epic-advanced.test.mjs tests/site-base.test.mjs"
   },
   "repository": {
     "type": "git",
