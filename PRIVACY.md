@@ -1,6 +1,6 @@
 # GTM Alpha Privacy Policy
 
-Last updated: September 24, 2026. The same policy is published at https://gtmalpha.netlify.app/privacy.
+Last updated: September 24, 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
 
 Contact: Shashwat Ghosh, shashwat@hyperplays.in
 

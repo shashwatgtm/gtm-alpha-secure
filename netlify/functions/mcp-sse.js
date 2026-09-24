@@ -168,7 +168,7 @@ export default async function handler(req, context) {
   }
 
   if (req.method !== "POST") {
-    return rpcError(null, -32000, "Method not allowed. This MCP endpoint accepts POST requests only (Streamable HTTP, stateless). Setup: https://gtmalpha.netlify.app/integration", 405, { "Allow": "POST, OPTIONS" });
+    return rpcError(null, -32000, "Method not allowed. This MCP endpoint accepts POST requests only (Streamable HTTP, stateless). Setup: https://gtmalpha.gtmhelix.com/integration", 405, { "Allow": "POST, OPTIONS" });
   }
 
   var body;

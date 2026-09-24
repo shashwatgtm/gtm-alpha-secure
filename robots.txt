@@ -5,4 +5,4 @@ Disallow: /mcp-sse
 Disallow: /payment-success.html
 Disallow: /payment-cancel.html
 
-Sitemap: https://gtmalpha.netlify.app/sitemap.xml
+Sitemap: https://gtmalpha.gtmhelix.com/sitemap.xml

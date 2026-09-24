@@ -2,12 +2,12 @@
 
 > GTM Alpha scores a company's go-to-market motion with Shashwat Ghosh's EPIC framework (Ecosystem and ABM, Product-Led Growth, Inbound and Outbound Demand Generation, Community-Led Advocacy), each from 1 to 10, and names the motion to lead with. By Helix GTM Consulting.
 
-- MCP server URL (Streamable HTTP, no sign-in, read-only tools): https://gtmalpha.netlify.app/mcp-sse
-- Setup for Claude and other assistants: https://gtmalpha.netlify.app/integration
-- API and tool documentation: https://gtmalpha.netlify.app/api-docs
-- Pricing (free during testing): https://gtmalpha.netlify.app/pricing
-- FAQ: https://gtmalpha.netlify.app/faq
-- Privacy policy: https://gtmalpha.netlify.app/privacy
+- MCP server URL (Streamable HTTP, no sign-in, read-only tools): https://gtmalpha.gtmhelix.com/mcp-sse
+- Setup for Claude and other assistants: https://gtmalpha.gtmhelix.com/integration
+- API and tool documentation: https://gtmalpha.gtmhelix.com/api-docs
+- Pricing (free during testing): https://gtmalpha.gtmhelix.com/pricing
+- FAQ: https://gtmalpha.gtmhelix.com/faq
+- Privacy policy: https://gtmalpha.gtmhelix.com/privacy
 
 ## Tools
 
@@ -27,7 +27,7 @@ Each motion starts from a default for the company's stage (Seed, Series A, Serie
 
 ### How do I use GTM Alpha in Claude?
 
-In Claude, open Customize, then Connectors, then Add custom connector, and paste https://gtmalpha.netlify.app/mcp-sse with no sign-in. In Claude Code run: claude mcp add --transport http gtm-alpha https://gtmalpha.netlify.app/mcp-sse. Then ask, for example: Use GTM Alpha to run an EPIC audit on our GTM.
+In Claude, open Customize, then Connectors, then Add custom connector, and paste https://gtmalpha.gtmhelix.com/mcp-sse with no sign-in. In Claude Code run: claude mcp add --transport http gtm-alpha https://gtmalpha.gtmhelix.com/mcp-sse. Then ask, for example: Use GTM Alpha to run an EPIC audit on our GTM.
 
 ### Is GTM Alpha free?
 
@@ -47,8 +47,8 @@ CRAFT GTM (go-to-market planning), CRAFT Content (B2B content), IMPACT (position
 
 ## Other connectors by Helix GTM Consulting
 
-- CRAFT GTM: https://craft-gtm-mcp.netlify.app/
-- CRAFT Content: https://craft-content-mcp.netlify.app/
-- IMPACT: https://impact-mcp.netlify.app/
-- ICP Intelligence: https://icp-intelligence-mcp.netlify.app/
-- Revenue Enablement: https://revenue-enablement-mcp.netlify.app/
+- CRAFT GTM: https://craft-gtm.gtmhelix.com/
+- CRAFT Content: https://craft-content.gtmhelix.com/
+- IMPACT: https://impact.gtmhelix.com/
+- ICP Intelligence: https://icp-intelligence.gtmhelix.com/
+- Revenue Enablement: https://revenue-enablement.gtmhelix.com/

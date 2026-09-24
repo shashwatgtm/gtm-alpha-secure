@@ -203,7 +203,7 @@ export default async (req, context) => {
     
     <div class="section">
         <h2>📚 API Endpoints</h2>
-        <p>The MCP server is at <code>https://gtmalpha.netlify.app/mcp-sse</code> (Streamable HTTP, stateless, POST only, no sign-in). Setup: <a href="/integration">/integration</a>.</p>
+        <p>The MCP server is at <code>https://gtmalpha.gtmhelix.com/mcp-sse</code> (Streamable HTTP, stateless, POST only, no sign-in). Setup: <a href="/integration">/integration</a>.</p>
     </div>
     
     <div class="section">

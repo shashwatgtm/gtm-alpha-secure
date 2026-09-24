@@ -191,7 +191,7 @@ gtm-alpha-mcp
 
 
 
-curl -X POST https://gtmalpha.netlify.app/.netlify/functions/express-mcp-server/consultation -H "Content-Type: application/json" -d "{\\"gtm\_challenge\\": \\"Need help with enterprise sales\\"}"
+curl -X POST https://gtmalpha.gtmhelix.com/.netlify/functions/express-mcp-server/consultation -H "Content-Type: application/json" -d "{\\"gtm\_challenge\\": \\"Need help with enterprise sales\\"}"
 
 
 

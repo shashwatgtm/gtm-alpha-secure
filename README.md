@@ -46,7 +46,7 @@ gtm-alpha-mcp
 
 For direct API access without MCP:
 
-https://gtmalpha.netlify.app/.netlify/functions/express-mcp-server
+https://gtmalpha.gtmhelix.com/.netlify/functions/express-mcp-server
 
 Endpoints:
 - POST /consultation - Get GTM consultation
@@ -63,14 +63,14 @@ Use the OpenAPI schema in openai-gpt-actions.json to create a Custom GPT action 
 
 1. Go to ChatGPT - Create a GPT
 2. Add Actions - Import from URL or paste schema
-3. Base URL: https://gtmalpha.netlify.app/api (the audit inputs are stored; see https://gtmalpha.netlify.app/privacy)
+3. Base URL: https://gtmalpha.gtmhelix.com/api (the audit inputs are stored; see https://gtmalpha.gtmhelix.com/privacy)
 
 ### Google Gemini
 
 Use the function declarations in gemini-functions.json:
 
 1. Import the function definitions into Google AI Studio
-2. Send the calls to the MCP endpoint https://gtmalpha.netlify.app/mcp-sse as JSON-RPC 2.0 `tools/call` requests
+2. Send the calls to the MCP endpoint https://gtmalpha.gtmhelix.com/mcp-sse as JSON-RPC 2.0 `tools/call` requests
 
 ---
 
