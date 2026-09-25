@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   title: GTM Alpha API
-  description: EPIC framework audit endpoint of GTM Alpha. The AI assistant tools are served separately over MCP at https://gtmalpha.gtmhelix.com/mcp-sse (see https://gtmalpha.gtmhelix.com/api-docs).
+  description: EPIC framework audit endpoint of GTM Alpha. The AI assistant tools are served separately over MCP at https://gtmalpha.gtmhelix.com/mcp (see https://gtmalpha.gtmhelix.com/api-docs).
   version: 1.1.0
   contact:
     name: Shashwat Ghosh
@@ -16,7 +16,7 @@ paths:
   /epic-audit:
     post:
       summary: EPIC framework maturity audit
-      description: "Scores Ecosystem, Product-Led, Inbound and Outbound, and Community maturity and returns a 6-month roadmap. The inputs are saved with the result in GTM Alpha's database (Netlify Blobs store epic-audits); see https://gtmalpha.gtmhelix.com/privacy. Limited to 30 requests per minute per IP address."
+      description: "Scores Ecosystem, Product-Led, Inbound and Outbound, and Community maturity and returns a 6-month roadmap. The inputs are saved with the result in GTM Alpha's database (Netlify Blobs store epic-audits); see https://gtmalpha.gtmhelix.com/privacy. Limited to 30 requests per minute per IP address, shared with the site's other /api paths."
       requestBody:
         required: true
         content:

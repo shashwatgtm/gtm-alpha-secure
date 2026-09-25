@@ -652,7 +652,7 @@
     <link rel="stylesheet" href="/assets/brand.css">
 </head>
 <body>
-    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken.</div>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit report is shown straight after the form, with no payment step.</div>
     <header class="hx-header">
         <div class="hx-wrap hx-header-row">
             <a class="hx-lockup" href="/" aria-label="GTM Alpha home"><span class="hx-alpha" aria-hidden="true">&#945;</span><span class="hx-wordmark">GTM Alpha</span></a>
@@ -682,7 +682,7 @@
                 </div>
                 <h1>Professional GTM Strategy Consultation</h1>
                 <p class="hero-subtitle">
-                    Get comprehensive go-to-market strategy analysis with actionable quarterly recommendations using Shashwat Ghosh's proven EPIC framework.
+                    Get EPIC motion scores, recommendations for your lead motion and a 30, 60, 90 and 180-day roadmap from Shashwat Ghosh's EPIC framework. The report opens as soon as you send the form.
                 </p>
             <p class="hx-byline">By <a href="https://www.gtmexpert.com/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix GTM Consulting · Last updated <time datetime="2026-09-25">25 September 2026</time></p>
             </div>
@@ -694,14 +694,14 @@
             <div class="form-container">
                 <div class="form-header">
                     <h2>Start Your GTM Analysis</h2>
-                    <p>Complete the form below to receive your personalized GTM strategy with dynamic EPIC scoring</p>
+                    <p>Fill in the form and press the button: your report opens on the next page, and you can download it as a PDF.</p>
                 </div>
                 
                 <div class="security-note">
-                    Your data is processed securely and used only for generating your consultation report
+                    Your answers are used only to build your report, which opens on the next page. Nothing is stored, logged or emailed.
                 </div>
 
-                <form id="gtmForm">
+                <form id="gtmForm" method="post" action="/api/premium-audit">
                     <div class="form-grid">
                         <div class="form-row">
                             <div class="form-group">
@@ -891,14 +891,19 @@
                             </div>
                         </div>
 
+                        <div class="hx-hp" aria-hidden="true">
+                            <label for="leave_this_empty">Leave this field empty</label>
+                            <input type="text" id="leave_this_empty" name="leave_this_empty" tabindex="-1" autocomplete="off">
+                        </div>
+
                         <div class="checkbox-group">
                             <input type="checkbox" id="confirm_consultation" name="confirm_consultation" required>
                             <label for="confirm_consultation">
-                                I want to receive a comprehensive GTM analysis with quarterly recommendations
+                                I want my GTM Alpha report, built from these answers and shown on the next page
                             </label>
                         </div>
 
-                        <button type="submit" class="submit-btn">🚀 Generate Professional GTM Analysis</button>
+                        <button type="submit" class="submit-btn">Get my free Premium Audit report</button>
                     </div>
                 </form>
 
@@ -947,67 +952,6 @@
             </div>
         </div>
     </footer>
-
-    <script>
-        document.getElementById('gtmForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-
-            const submitBtn = document.querySelector('.submit-btn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = '⏳ Redirecting to PayPal...';
-
-            const formData = new FormData(e.target);
-            const data = Object.fromEntries(formData);
-
-            try {
-                // Call create-payment to get PayPal approval URL
-                const response = await fetch('/api/create-payment', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        consultation_data: {
-                            client_name: data.client_name,
-                            company_name: data.company_name,
-                            email: data.email || '',
-                            role: data.role,
-                            industry: data.industry,
-                            company_description: data.company_description,
-                            gtm_challenge: data.gtm_challenge,
-                            business_stage: data.business_stage,
-                            team_size: data.team_size,
-                            monthly_budget: data.monthly_budget,
-                            focus_area: data.focus_area,
-                            company_website: data.company_website,
-                            linkedin_url: data.linkedin_url,
-                            acv_band: data.acv_band || '',
-                            deal_cycle_band: data.deal_cycle_band || '',
-                            nrr_band: data.nrr_band || '',
-                            tam_band: data.tam_band || '',
-                            deal_source: data.deal_source || '',
-                            geography: data.geography || '',
-                            self_serve: data.self_serve || ''
-                        },
-                        tier: 'premium',
-                        payment_frequency: 'one-time'
-                    })
-                });
-
-                const result = await response.json();
-
-                if (result.success && result.approval_url) {
-                    // Redirect to PayPal for payment
-                    window.location.href = result.approval_url;
-                } else {
-                    throw new Error(result.error || 'Payment initialization failed');
-                }
-            } catch (error) {
-                alert('Error: ' + error.message);
-                submitBtn.disabled = false;
-                submitBtn.textContent = '🚀 Generate Professional GTM Analysis';
-            }
-        });
-    </script>
+    <script src="/assets/js/consultation.js"></script>
 </body>
 </html>

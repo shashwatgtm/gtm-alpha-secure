@@ -11,38 +11,8 @@
   node_bundler = "esbuild"
   directory = "netlify/functions"
 
-# API Redirects
-[[redirects]]
-  from = "/api/health"
-  to = "/.netlify/functions/health"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/payment-success"
-  to = "/.netlify/functions/payment-success"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/check-config"
-  to = "/.netlify/functions/check-config"
-  status = 200
-  force = true
-
-# Catch-all API redirect
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
-
-# MCP redirect
-[[redirects]]
-  force = true
-  from = "/mcp-sse"
-  status = 200
-  to = "/.netlify/functions/mcp-sse"
-
+# The API and MCP functions set their own paths (config.path in netlify/functions/api.js and mcp-sse.js),
+# so no redirect rules are needed for them. A forced redirect here would override those paths.
 [[redirects]]
   from = "/api-docs"
   to = "/api-docs.html"

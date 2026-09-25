@@ -63,7 +63,7 @@ Use the OpenAPI schema in openai-gpt-actions.json to create a Custom GPT action 
 Use the function declarations in gemini-functions.json:
 
 1. Import the function definitions into Google AI Studio
-2. Send the calls to the MCP endpoint https://gtmalpha.gtmhelix.com/mcp-sse as JSON-RPC 2.0 `tools/call` requests
+2. Send the calls to the MCP endpoint https://gtmalpha.gtmhelix.com/mcp as JSON-RPC 2.0 `tools/call` requests
 
 ---
 

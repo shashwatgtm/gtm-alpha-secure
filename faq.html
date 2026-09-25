@@ -140,7 +140,7 @@
      "name": "What do I need to run an EPIC audit?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "One required input: a description of your GTM challenge. Add your stage (pre-seed, seed, series A, series B, series C or bootstrapped) and industry. For a full score rather than a preliminary one, also give your average contract value in US dollars, deal cycle in days, net revenue retention in percent, number of target accounts, whether customers can sign up without sales, your main deal source (referrals, outbound, partnerships, inbound or mixed) and your primary market (India, US and EU, Middle East, APAC or global). Add https://gtmalpha.gtmhelix.com/mcp-sse to Claude as a custom connector with no sign-in. Ask for an EPIC audit and give those details. Read the four motion scores from 1 to 10, the motion to lead with, and any warnings."
+      "text": "One required input: a description of your GTM challenge. Add your stage (pre-seed, seed, series A, series B, series C or bootstrapped) and industry. For a full score rather than a preliminary one, also give your average contract value in US dollars, deal cycle in days, net revenue retention in percent, number of target accounts, whether customers can sign up without sales, your main deal source (referrals, outbound, partnerships, inbound or mixed) and your primary market (India, US and EU, Middle East, APAC or global). Add https://gtmalpha.gtmhelix.com/mcp to Claude as a custom connector with no sign-in. Ask for an EPIC audit and give those details. Read the four motion scores from 1 to 10, the motion to lead with, and any warnings."
      }
     },
     {
@@ -156,7 +156,7 @@
      "name": "What data does GTM Alpha collect?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "We collect only what's necessary: Contact Info: Your name (the form does not ask for email). Business Info: Company name, description, website, LinkedIn URL, challenge, stage, team size and budget, plus the optional EPIC inputs you choose to give (for consultations). Usage Data: None collected by our pages; Netlify, our host, keeps standard request logs. MCP: Nothing is stored or logged by our code. We do NOT collect: passwords, financial details (handled by PayPal), or tracking cookies."
+      "text": "Only what you type in, and most of it is not kept: Premium Audit form: Your name and role, company name, description, website, LinkedIn URL, challenge, stage, team size and budget, plus the optional EPIC inputs you choose to give. They build your report in that request and are not stored (the form does not ask for email). EPIC audit API: The inputs you send are stored with the result. Usage Data: None collected by our pages; Netlify, our host, keeps standard request logs. MCP: Nothing is stored or logged by our code. We do NOT collect: passwords, payment details, or tracking cookies."
      }
     },
     {
@@ -164,7 +164,7 @@
      "name": "Is my business data kept confidential?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Absolutely. All business information shared during consultations is treated as strictly confidential. We: Never share your data with competitors. Don't use your data for training AI models. Only share with the service providers needed to run the site (Netlify for hosting, PayPal for payments)."
+      "text": "Yes. The Premium Audit form stores nothing, and the records the EPIC audit API stores cannot be read back through any public endpoint. We: Never share your data with competitors. Don't use your data for training AI models. Use one service provider to run the site: Netlify, for hosting."
      }
     },
     {
@@ -180,7 +180,7 @@
      "name": "What do you do about GDPR, DPDP and CCPA?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "We describe what we do rather than claim compliance: The privacy policy lists every field the site stores and where it is kept. The MCP server stores and logs nothing. Our pages set no cookies and load no analytics. You can ask for a copy, a correction or deletion by email, and we act on it by hand within 30 days. See our Privacy Policy for complete details."
+      "text": "We describe what we do rather than claim compliance: The privacy policy lists every field the site stores and where it is kept. The MCP server and the Premium Audit form store and log nothing. Our pages set no cookies and load no analytics. You can ask for a copy, a correction or deletion by email, and we act on it by hand within 30 days. See our Privacy Policy for complete details."
      }
     },
     {
@@ -188,7 +188,7 @@
      "name": "Do you use cookies or tracking?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "No. Our pages set no cookies and include no analytics or tracking scripts: No third-party trackers: No Google Analytics, Facebook Pixel, or ad tracking. Fonts: Served from this site, so loading a page contacts no one else. PayPal: Sets its own cookies on its checkout pages."
+      "text": "No. Our pages set no cookies and include no analytics or tracking scripts: No third-party trackers: No Google Analytics, Facebook Pixel, or ad tracking. Fonts: Served from this site, so loading a page contacts no one else."
      }
     },
     {
@@ -204,7 +204,7 @@
      "name": "Which AI assistants can use GTM Alpha?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "GTM Alpha works with any MCP-compatible client: Claude (web, desktop and mobile) - Add https://gtmalpha.gtmhelix.com/mcp-sse as a custom connector. Cursor / Windsurf - Via mcp.json configuration. VS Code - With MCP extension. ChatGPT, Gemini, Copilot - Via the MCP endpoint (Streamable HTTP). See our Integration Guide for setup instructions."
+      "text": "GTM Alpha works with any MCP-compatible client: Claude (web, desktop and mobile) - Add https://gtmalpha.gtmhelix.com/mcp as a custom connector. Cursor / Windsurf - Via mcp.json configuration. VS Code - With MCP extension. ChatGPT, Gemini, Copilot - Via the MCP endpoint (Streamable HTTP). See our Integration Guide for setup instructions."
      }
     },
     {
@@ -303,7 +303,7 @@
     <link rel="stylesheet" href="/assets/brand.css">
 </head>
 <body>
-    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken.</div>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit report is shown straight after the form, with no payment step.</div>
     <header class="hx-header">
         <div class="hx-wrap hx-header-row">
             <a class="hx-lockup" href="/" aria-label="GTM Alpha home"><span class="hx-alpha" aria-hidden="true">&#945;</span><span class="hx-wordmark">GTM Alpha</span></a>
@@ -337,7 +337,7 @@
             <div class="faq-answer">
                 <p>One required input: a description of your GTM challenge. Add your stage (pre-seed, seed, series A, series B, series C or bootstrapped) and industry. For a full score rather than a preliminary one, also give your average contract value in US dollars, deal cycle in days, net revenue retention in percent, number of target accounts, whether customers can sign up without sales, your main deal source (referrals, outbound, partnerships, inbound or mixed) and your primary market (India, US and EU, Middle East, APAC or global).</p>
                 <ol>
-                    <li>Add <code>https://gtmalpha.gtmhelix.com/mcp-sse</code> to Claude as a custom connector with no sign-in.</li>
+                    <li>Add <code>https://gtmalpha.gtmhelix.com/mcp</code> to Claude as a custom connector with no sign-in.</li>
                     <li>Ask for an EPIC audit and give those details.</li>
                     <li>Read the four motion scores from 1 to 10, the motion to lead with, and any warnings.</li>
                 </ol>
@@ -356,25 +356,25 @@
         <div class="faq-item open">
             <div class="faq-question">What data does GTM Alpha collect?</div>
             <div class="faq-answer">
-                <p>We collect only what's necessary:</p>
+                <p>Only what you type in, and most of it is not kept:</p>
                 <ul>
-                    <li><strong>Contact Info:</strong> Your name (the form does not ask for email)</li>
-                    <li><strong>Business Info:</strong> Company name, description, website, LinkedIn URL, challenge, stage, team size and budget, plus the optional EPIC inputs you choose to give (for consultations)</li>
+                    <li><strong>Premium Audit form:</strong> Your name and role, company name, description, website, LinkedIn URL, challenge, stage, team size and budget, plus the optional EPIC inputs you choose to give. They build your report in that request and are not stored (the form does not ask for email)</li>
+                    <li><strong>EPIC audit API:</strong> The inputs you send are stored with the result</li>
                     <li><strong>Usage Data:</strong> None collected by our pages; Netlify, our host, keeps standard request logs</li>
                     <li><strong>MCP:</strong> Nothing is stored or logged by our code</li>
                 </ul>
-                <p>We do NOT collect: passwords, financial details (handled by PayPal), or tracking cookies.</p>
+                <p>We do NOT collect: passwords, payment details, or tracking cookies.</p>
             </div>
         </div>
 
         <div class="faq-item">
             <div class="faq-question">Is my business data kept confidential?</div>
             <div class="faq-answer">
-                <p>Absolutely. All business information shared during consultations is treated as strictly confidential. We:</p>
+                <p>Yes. The Premium Audit form stores nothing, and the records the EPIC audit API stores cannot be read back through any public endpoint. We:</p>
                 <ul>
                     <li>Never share your data with competitors</li>
                     <li>Don't use your data for training AI models</li>
-                    <li>Only share with the service providers needed to run the site (Netlify for hosting, PayPal for payments)</li>
+                    <li>Use one service provider to run the site: Netlify, for hosting</li>
                 </ul>
             </div>
         </div>
@@ -398,7 +398,7 @@
                 <p>We describe what we do rather than claim compliance:</p>
                 <ul>
                     <li>The privacy policy lists every field the site stores and where it is kept</li>
-                    <li>The MCP server stores and logs nothing</li>
+                    <li>The MCP server and the Premium Audit form store and log nothing</li>
                     <li>Our pages set no cookies and load no analytics</li>
                     <li>You can ask for a copy, a correction or deletion by email, and we act on it by hand within 30 days</li>
                 </ul>
@@ -413,7 +413,6 @@
                 <ul>
                     <li><strong>No third-party trackers:</strong> No Google Analytics, Facebook Pixel, or ad tracking</li>
                     <li><strong>Fonts:</strong> Served from this site, so loading a page contacts no one else</li>
-                    <li><strong>PayPal:</strong> Sets its own cookies on its checkout pages</li>
                 </ul>
             </div>
         </div>
@@ -438,7 +437,7 @@
             <div class="faq-answer">
                 <p>GTM Alpha works with any MCP-compatible client:</p>
                 <ul>
-                    <li><strong>Claude (web, desktop and mobile)</strong> - Add https://gtmalpha.gtmhelix.com/mcp-sse as a custom connector</li>
+                    <li><strong>Claude (web, desktop and mobile)</strong> - Add https://gtmalpha.gtmhelix.com/mcp as a custom connector</li>
                     <li><strong>Cursor / Windsurf</strong> - Via mcp.json configuration</li>
                     <li><strong>VS Code</strong> - With MCP extension</li>
                     <li><strong>ChatGPT, Gemini, Copilot</strong> - Via the MCP endpoint (Streamable HTTP)</li>
@@ -565,17 +564,6 @@
         </div>
     </footer>
 
-    <script>
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
-                const wasOpen = item.classList.contains('open');
-                // Close all
-                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-                // Open clicked if it was closed
-                if (!wasOpen) item.classList.add('open');
-            });
-        });
-    </script>
+    <script src="/assets/js/faq.js"></script>
 </body>
 </html>

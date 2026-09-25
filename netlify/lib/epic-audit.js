@@ -1,7 +1,8 @@
-// netlify/functions/epic-audit.js
-// Enhanced EPIC Framework Audit with persistent scoring and 6-month roadmap
+// netlify/lib/epic-audit.js (served by netlify/functions/api.js at POST /api/epic-audit)
+// EPIC Framework Audit with stored results and a 6-month roadmap
 
 import { getStore } from '@netlify/blobs';
+import { allowedOrigin } from './site-origin.js';
 
 const EPIC_AUDIT_ENGINE = {
   // Store previous audits for progress tracking
@@ -852,17 +853,21 @@ const EPIC_AUDIT_ENGINE = {
   }
 };
 
-// Main Netlify function (ES6 export)
+// Handler, served by netlify/functions/api.js at POST /api/epic-audit (rate limit: 30 a minute per visitor, shared with the other API paths)
 export default async (req, context) => {
+  // Browsers may call this only from the site's own pages (it stores every audit); servers and scripts are not affected.
+  const origin = allowedOrigin(req);
   const headers = {
-    'Access-Control-Allow-Origin': '*',
+    ...(origin ? { 'Access-Control-Allow-Origin': origin } : {}),
+    'Vary': 'Origin',
     'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Cache-Control': 'no-store'
   };
 
   if (req.method === 'OPTIONS') {
-    return new Response(null, { status: 200, headers });
+    return new Response(null, { status: 204, headers });
   }
 
   if (req.method !== 'POST') {
@@ -964,15 +969,5 @@ export default async (req, context) => {
       status: 500,
       headers
     });
-  }
-};
-
-// Export configuration for Netlify
-export const config = {
-  path: "/api/epic-audit",
-  rateLimit: {
-    windowSize: 60,
-    windowLimit: 30,
-    aggregateBy: ["ip", "domain"]
   }
 };

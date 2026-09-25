@@ -84,6 +84,6 @@
       }
     }
   ],
-  "api_endpoint": "https://gtmalpha.gtmhelix.com/mcp-sse",
+  "api_endpoint": "https://gtmalpha.gtmhelix.com/mcp",
   "protocol": "MCP Streamable HTTP: POST JSON-RPC 2.0 requests (initialize, tools/list, tools/call) to api_endpoint"
 }

@@ -15,7 +15,7 @@
       "post": {
         "operationId": "runEPICAudit",
         "summary": "EPIC framework maturity audit",
-        "description": "Scores Ecosystem, Product-Led, Inbound and Outbound, and Community maturity and returns a 6-month roadmap. The inputs are saved with the result in GTM Alpha's database (Netlify Blobs store epic-audits); see https://gtmalpha.gtmhelix.com/privacy. Limited to 30 requests per minute per IP address.",
+        "description": "Scores Ecosystem, Product-Led, Inbound and Outbound, and Community maturity and returns a 6-month roadmap. The inputs are saved with the result in GTM Alpha's database (Netlify Blobs store epic-audits); see https://gtmalpha.gtmhelix.com/privacy. Limited to 30 requests per minute per IP address, shared with the site's other /api paths.",
         "requestBody": {
           "required": true,
           "content": {

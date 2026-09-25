@@ -150,7 +150,8 @@ var CORS_HEADERS = {
 };
 
 function reply(status, body, extraHeaders) {
-  var headers = Object.assign({ "Content-Type": "application/json" }, CORS_HEADERS, extraHeaders || {});
+  // Answers are never cached, as on the other connectors.
+  var headers = Object.assign({ "Content-Type": "application/json", "Cache-Control": "no-store" }, CORS_HEADERS, extraHeaders || {});
   return new Response(body === null ? null : JSON.stringify(body), { status: status, headers: headers });
 }
 
@@ -250,3 +251,13 @@ export default async function handler(req, context) {
   }
 }
 
+// Served at /mcp and at the older address /mcp-sse. Rate limit: 300 requests a minute per visitor, as on the other
+// connectors, so one script cannot use up the account's shared monthly function invocations.
+export const config = {
+  path: ["/mcp", "/mcp-sse"],
+  rateLimit: {
+    windowSize: 60,
+    windowLimit: 300,
+    aggregateBy: ["ip", "domain"]
+  }
+};

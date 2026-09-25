@@ -1,0 +1,9 @@
+# Security headers for every published page and file (run 5, 25 September 2026), matching the other connectors.
+# The pages load scripts only from this site (assets/js); style-src allows inline styles because the pages use style blocks.
+# The report returned by /api/premium-audit sets its own, stricter policy (netlify/lib/premium-audit.js).
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: camera=(), microphone=(), geolocation=()

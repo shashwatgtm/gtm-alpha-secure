@@ -171,7 +171,7 @@
      "name": "How do I use GTM Alpha in Claude?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "In Claude, open Customize, then Connectors, then Add custom connector, and paste https://gtmalpha.gtmhelix.com/mcp-sse with no sign-in. In Claude Code run: claude mcp add --transport http gtm-alpha https://gtmalpha.gtmhelix.com/mcp-sse. Then ask, for example: Use GTM Alpha to run an EPIC audit on our GTM."
+      "text": "In Claude, open Customize, then Connectors, then Add custom connector, and paste https://gtmalpha.gtmhelix.com/mcp with no sign-in. In Claude Code run: claude mcp add --transport http gtm-alpha https://gtmalpha.gtmhelix.com/mcp. Then ask, for example: Use GTM Alpha to run an EPIC audit on our GTM."
      }
     },
     {
@@ -179,7 +179,7 @@
      "name": "Is GTM Alpha free?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Yes, while it is in testing. The MCP tools are free and need no account, and the Premium Audit checkout runs in PayPal test mode, so no real payment is taken."
+      "text": "Yes, while it is in testing. The MCP tools are free and need no account, and the Premium Audit report is shown straight after the form, with no payment step."
      }
     },
     {
@@ -187,7 +187,7 @@
      "name": "What data does GTM Alpha keep?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "The MCP server stores and logs nothing. The consultation form and the audit API store what you submit in Netlify Blobs until you ask for deletion. The privacy policy lists every field."
+      "text": "The MCP server and the Premium Audit form store and log nothing: the form's answers build your report in that request and are then dropped. The EPIC audit API stores what you send in Netlify Blobs until you ask for deletion. The privacy policy lists every field."
      }
     },
     {
@@ -584,7 +584,7 @@
     <link rel="stylesheet" href="/assets/brand.css">
 </head>
 <body>
-    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken.</div>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit report is shown straight after the form, with no payment step.</div>
     <header class="hx-header">
         <div class="hx-wrap hx-header-row">
             <a class="hx-lockup" href="/" aria-label="GTM Alpha home"><span class="hx-alpha" aria-hidden="true">&#945;</span><span class="hx-wordmark">GTM Alpha</span></a>
@@ -746,26 +746,26 @@
                     <div class="tab-panel" id="openai">
                         <h3>OpenAI ChatGPT Integration</h3>
                         <p>Access GTM Alpha tools through OpenAI's ChatGPT using the MCP protocol or Custom GPT actions.</p>
-                        <div class="file-location">MCP Endpoint: https://gtmalpha.gtmhelix.com/mcp-sse</div>
+                        <div class="file-location">MCP Endpoint: https://gtmalpha.gtmhelix.com/mcp</div>
                         <p style="color: rgba(250, 248, 246,0.7); margin-top: 16px;">Use the OpenAPI schema from our GitHub repository to create Custom GPT actions.</p>
                         <div class="file-location">npm install -g @shashwatgtmalpha/gtm-alpha-mcp-server</div>
                     </div>
                     <div class="tab-panel" id="gemini">
                         <h3>Google Gemini Integration</h3>
                         <p>Connect GTM Alpha to Google Gemini through function calling and extensions.</p>
-                        <div class="file-location">API Endpoint: https://gtmalpha.gtmhelix.com/mcp-sse</div>
+                        <div class="file-location">MCP Endpoint: https://gtmalpha.gtmhelix.com/mcp</div>
                         <p style="color: rgba(250, 248, 246,0.7); margin-top: 16px;">Use the gemini-functions.json from our GitHub repository for function declarations.</p>
                     </div>
                     <div class="tab-panel" id="copilot">
                         <h3>Microsoft Copilot Integration</h3>
                         <p>Integrate GTM Alpha with Microsoft Copilot through API connections.</p>
-                        <div class="file-location">API Endpoint: https://gtmalpha.gtmhelix.com/mcp-sse</div>
+                        <div class="file-location">MCP Endpoint: https://gtmalpha.gtmhelix.com/mcp</div>
                         <p style="color: rgba(250, 248, 246,0.7); margin-top: 16px;">Coming soon: Native Copilot plugin support.</p>
                     </div>
                     <div class="tab-panel" id="api">
                         <h3>Direct API Access</h3>
                         <p>Direct MCP protocol access for custom integrations and applications.</p>
-                        <div class="file-location">MCP Endpoint: https://gtmalpha.gtmhelix.com/mcp-sse</div>
+                        <div class="file-location">MCP Endpoint: https://gtmalpha.gtmhelix.com/mcp</div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
                             <a href="https://github.com/shashwatgtm/gtm-alpha-secure" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">GitHub Docs</a>
                             <a href="/openapi.yaml" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">OpenAPI Spec</a>
@@ -834,9 +834,9 @@
         <h2>Questions and answers</h2>
         <details open><summary>What is GTM Alpha?</summary><p>GTM Alpha is a go-to-market tool by Shashwat Ghosh of Helix GTM Consulting. It scores four GTM motions with the EPIC framework (Ecosystem and ABM, Product-Led Growth, Inbound and Outbound Demand Generation, Community-Led Advocacy) from 1 to 10 and names the motion to lead with. It runs as an MCP server for Claude and other AI assistants, and as a Premium Audit report on this site.</p></details>
         <details open><summary>How is the EPIC score calculated?</summary><p>Each motion starts from a default for the company&#x27;s stage (Seed, Series A, Series B, Series C or later, Bootstrapped). Fixed adjustments follow for contract value, deal cycle, net revenue retention, number of addressable accounts, self-serve, main deal source and region. Product-Led is capped at 4 in logistics, procurement, manufacturing, healthcare and government. Scores are kept between 1 and 10, then three checks can add a warning: a leaky bucket, AI search disruption of inbound, and a hybrid motion. The company name never affects the score.</p></details>
-        <details><summary>How do I use GTM Alpha in Claude?</summary><p>In Claude, open Customize, then Connectors, then Add custom connector, and paste https://gtmalpha.gtmhelix.com/mcp-sse with no sign-in. In Claude Code run: claude mcp add --transport http gtm-alpha https://gtmalpha.gtmhelix.com/mcp-sse. Then ask, for example: Use GTM Alpha to run an EPIC audit on our GTM.</p></details>
-        <details><summary>Is GTM Alpha free?</summary><p>Yes, while it is in testing. The MCP tools are free and need no account, and the Premium Audit checkout runs in PayPal test mode, so no real payment is taken.</p></details>
-        <details><summary>What data does GTM Alpha keep?</summary><p>The MCP server stores and logs nothing. The consultation form and the audit API store what you submit in Netlify Blobs until you ask for deletion. The privacy policy lists every field.</p></details>
+        <details><summary>How do I use GTM Alpha in Claude?</summary><p>In Claude, open Customize, then Connectors, then Add custom connector, and paste https://gtmalpha.gtmhelix.com/mcp with no sign-in. In Claude Code run: claude mcp add --transport http gtm-alpha https://gtmalpha.gtmhelix.com/mcp. Then ask, for example: Use GTM Alpha to run an EPIC audit on our GTM.</p></details>
+        <details><summary>Is GTM Alpha free?</summary><p>Yes, while it is in testing. The MCP tools are free and need no account, and the Premium Audit report is shown straight after the form, with no payment step.</p></details>
+        <details><summary>What data does GTM Alpha keep?</summary><p>The MCP server and the Premium Audit form store and log nothing: the form's answers build your report in that request and are then dropped. The EPIC audit API stores what you send in Netlify Blobs until you ask for deletion. The privacy policy lists every field.</p></details>
         <details><summary>Who is behind GTM Alpha?</summary><p>Shashwat Ghosh, Co-Founder and Fractional CMO of Helix GTM Consulting, a business consulting firm founded in 2022 in Bengaluru. He has 24+ years in B2B and 10+ years of fractional experience, and created the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology. He works across India, APAC, the Middle East, the US and the UK.</p></details>
         <details><summary>Which other MCP connectors does Helix GTM Consulting offer?</summary><p>CRAFT GTM (go-to-market planning), CRAFT Content (B2B content), IMPACT (positioning), ICP Intelligence (ideal customer profile) and Revenue Enablement (sales enablement). Each is a free, read-only MCP server for Claude.</p></details>
         <details><summary>Who is GTM Alpha not ideal for?</summary><p>Teams that want an AI-written strategy: the EPIC scores follow fixed rules from the documented rubric, and no AI model writes them. Companies that cannot share basic numbers: without contract value, deal cycle, net revenue retention and target account count, the result is marked preliminary. Anyone who needs live market data: GTM Alpha looks nothing up and works only from what you enter.</p></details>
@@ -883,20 +883,6 @@
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            const tabPanels = document.querySelectorAll('.tab-panel');
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const targetTab = button.getAttribute('data-tab');
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabPanels.forEach(panel => panel.classList.remove('active'));
-                    button.classList.add('active');
-                    document.getElementById(targetTab).classList.add('active');
-                });
-            });
-        });
-    </script>
+    <script src="/assets/js/tabs.js"></script>
 </body>
 </html>

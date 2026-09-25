@@ -178,7 +178,7 @@
      "@type": "HowToStep",
      "position": 2,
      "name": "Add the server",
-     "text": "Name it GTM Alpha and paste https://gtmalpha.gtmhelix.com/mcp-sse as the remote MCP server URL."
+     "text": "Name it GTM Alpha and paste https://gtmalpha.gtmhelix.com/mcp as the remote MCP server URL."
     },
     {
      "@type": "HowToStep",
@@ -306,7 +306,7 @@
     <link rel="stylesheet" href="/assets/brand.css">
 </head>
 <body>
-    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken.</div>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit report is shown straight after the form, with no payment step.</div>
     <header class="hx-header">
         <div class="hx-wrap hx-header-row">
             <a class="hx-lockup" href="/" aria-label="GTM Alpha home"><span class="hx-alpha" aria-hidden="true">&#945;</span><span class="hx-wordmark">GTM Alpha</span></a>
@@ -356,7 +356,7 @@
                                 <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Claude on the web, desktop or mobile (no install):</h4>
                                 <ol style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>Open Customize, then Connectors, select +, then Add custom connector</li>
-                                    <li>MCP server URL: https://gtmalpha.gtmhelix.com/mcp-sse</li>
+                                    <li>MCP server URL: https://gtmalpha.gtmhelix.com/mcp</li>
                                     <li>Choose no sign-in, then Add</li>
                                 </ol>
                                 <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Or run it locally with the npm package:</h4>
@@ -424,7 +424,7 @@
                                 <h3>ChatGPT / OpenAI Integration</h3>
                                 <p>Access GTM Alpha tools through ChatGPT Custom GPTs or OpenAI API using our MCP endpoint.</p>
                                 <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
-                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp-sse</div>
+                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
                                 <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Features:</h4>
                                 <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>JSON-RPC 2.0 protocol</li>
@@ -437,7 +437,7 @@
                                     <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
                                     <span>API Request Example</span>
                                 </div>
-                                <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp-sse \
+                                <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -460,7 +460,7 @@
                                 <h3>Google Gemini Integration</h3>
                                 <p>Connect GTM Alpha to Google Gemini through function calling using our MCP endpoint.</p>
                                 <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
-                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp-sse</div>
+                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
                                 <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Available Tools:</h4>
                                 <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>gtm_consultation - Get GTM strategy advice</li>
@@ -477,7 +477,7 @@
                                     <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
                                     <span>Get Tools List</span>
                                 </div>
-                                <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp-sse \
+                                <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -494,7 +494,7 @@
                                 <h3>Microsoft Copilot Integration</h3>
                                 <p>Integrate GTM Alpha with Microsoft Copilot using our MCP endpoint.</p>
                                 <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
-                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp-sse</div>
+                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
                                 <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Protocol:</h4>
                                 <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
                                     <li>JSON-RPC 2.0 over HTTP POST</li>
@@ -511,7 +511,7 @@
                                     <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
                                     <span>Initialize Connection</span>
                                 </div>
-                                <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp-sse \
+                                <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -528,7 +528,7 @@
                                 <h3>Direct API Access</h3>
                                 <p>Direct REST API and MCP access for custom integrations and applications.</p>
                                 <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Endpoints:</h4>
-                                <div class="file-location">MCP: https://gtmalpha.gtmhelix.com/mcp-sse<br>REST API: see the API documentation</div>
+                                <div class="file-location">MCP: https://gtmalpha.gtmhelix.com/mcp (the older address /mcp-sse also works)<br>REST API: see the API documentation</div>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
                                     <a href="/api-docs" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">API Documentation</a>
                                     <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
@@ -633,20 +633,6 @@ npx @shashwatgtmalpha/gtm-alpha-mcp-server</div>
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            const tabPanels = document.querySelectorAll('.tab-panel');
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const targetTab = button.getAttribute('data-tab');
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabPanels.forEach(panel => panel.classList.remove('active'));
-                    button.classList.add('active');
-                    document.getElementById(targetTab).classList.add('active');
-                });
-            });
-        });
-    </script>
+    <script src="/assets/js/tabs.js"></script>
 </body>
 </html>
