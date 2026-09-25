@@ -28,18 +28,23 @@
  "@graph": [
   {
    "@type": "Organization",
-   "@id": "https://www.gtmexpert.com/#org",
+   "@id": "https://tools.gtmhelix.com/#org",
    "name": "Helix GTM Consulting",
-   "alternateName": [
-    "GTMExpert",
-    "Helix GTM"
-   ],
-   "url": "https://www.gtmexpert.com",
-   "foundingDate": "2016",
-   "founder": {
-    "@id": "https://www.gtmexpert.com/#shashwat"
+   "alternateName": "Helix GTM",
+   "url": "https://tools.gtmhelix.com",
+   "email": "shashwat@gtmhelix.com",
+   "foundingDate": "2022",
+   "description": "Business consulting and services firm, founded in 2022 in Bengaluru.",
+   "foundingLocation": {
+    "@type": "Place",
+    "name": "Bengaluru, India"
    },
-   "email": "shashwat@hyperplays.in",
+   "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Bengaluru",
+    "addressRegion": "Karnataka",
+    "addressCountry": "IN"
+   },
    "sameAs": [
     "https://github.com/shashwatgtm"
    ]
@@ -48,15 +53,28 @@
    "@type": "Person",
    "@id": "https://www.gtmexpert.com/#shashwat",
    "name": "Shashwat Ghosh",
-   "jobTitle": "GTM Alpha Consultant, AI GTM Expert and Fractional CMO",
-   "description": "Founder of Helix GTM Consulting, with 24+ years in B2B and 10+ years of fractional experience. Creator of the EPIC, IMPACT and CRAFT frameworks.",
+   "jobTitle": "Co-Founder and Fractional CMO",
+   "description": "Co-Founder and Fractional CMO of Helix GTM Consulting since October 2022, with 24+ years in B2B and 10+ years of fractional experience. Creator of the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology. Has led 6+ major corporate rebrands.",
    "worksFor": {
-    "@id": "https://www.gtmexpert.com/#org"
+    "@id": "https://tools.gtmhelix.com/#org"
    },
    "url": "https://www.gtmexpert.com",
+   "email": "shashwat@gtmhelix.com",
    "award": [
-    "B2B Marketer of the Year 2020, Fintech (CMO Asia)",
-    "LinkedIn Top Product Marketing Voice, #10 India and #52 Worldwide (2024)"
+    "LinkedIn Top Product Marketing Voice, ranked #10 India and #52 worldwide (Favikon verified)",
+    "#14 in AI Research and Innovation on LinkedIn India (Favikon verified)",
+    "Top 30 Product-Led Growth (PLG) worldwide",
+    "Most Admired Marketing Leaders 2025 (CMO Asia, World Leadership Congress)",
+    "B2B Marketer of the Year 2020, CMO Asia, Fintech category"
+   ],
+   "knowsAbout": [
+    "Go-to-market strategy",
+    "B2B marketing",
+    "Product marketing",
+    "EPIC framework",
+    "IMPACT framework",
+    "CRAFT framework",
+    "Hub-Spoke Messaging Methodology"
    ],
    "address": {
     "@type": "PostalAddress",
@@ -76,7 +94,7 @@
    "url": "https://gtmalpha.gtmhelix.com/",
    "name": "GTM Alpha",
    "publisher": {
-    "@id": "https://www.gtmexpert.com/#org"
+    "@id": "https://tools.gtmhelix.com/#org"
    },
    "inLanguage": "en"
   },
@@ -90,7 +108,7 @@
     "@id": "https://gtmalpha.gtmhelix.com/#site"
    },
    "about": {
-    "@id": "https://www.gtmexpert.com/#org"
+    "@id": "https://tools.gtmhelix.com/#org"
    },
    "dateModified": "2026-09-24",
    "inLanguage": "en",
@@ -122,7 +140,7 @@
      "name": "What do I need to run an EPIC audit?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "One required input: a description of your GTM challenge. Add your stage (pre-seed, seed, series A, series B, series C or bootstrapped) and industry. For a full score rather than a preliminary one, also give your average contract value in US dollars, deal cycle in days, net revenue retention in percent, number of target accounts, whether customers can sign up without sales, your main deal source (referrals, outbound, partnerships, inbound or mixed) and your primary market (India, US and EU, Middle East, APAC or global). Steps: 1. Add https://gtmalpha.gtmhelix.com/mcp-sse to Claude as a custom connector with no sign-in. 2. Ask for an EPIC audit and give those details. 3. Read the four motion scores from 1 to 10, the motion to lead with, and any warnings."
+      "text": "One required input: a description of your GTM challenge. Add your stage (pre-seed, seed, series A, series B, series C or bootstrapped) and industry. For a full score rather than a preliminary one, also give your average contract value in US dollars, deal cycle in days, net revenue retention in percent, number of target accounts, whether customers can sign up without sales, your main deal source (referrals, outbound, partnerships, inbound or mixed) and your primary market (India, US and EU, Middle East, APAC or global). Add https://gtmalpha.gtmhelix.com/mcp-sse to Claude as a custom connector with no sign-in. Ask for an EPIC audit and give those details. Read the four motion scores from 1 to 10, the motion to lead with, and any warnings."
      }
     },
     {
@@ -138,7 +156,7 @@
      "name": "What data does GTM Alpha collect?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "We collect only what's necessary: Contact Info: Your name (the form does not ask for email) Business Info: Company name, description, website, LinkedIn URL, challenge, stage, team size and budget, plus the optional EPIC inputs you choose to give (for consultations) Usage Data: None collected by our pages; Netlify, our host, keeps standard request logs MCP: Nothing is stored or logged by our code We do NOT collect: passwords, financial details (handled by PayPal), or tracking cookies."
+      "text": "We collect only what's necessary: Contact Info: Your name (the form does not ask for email). Business Info: Company name, description, website, LinkedIn URL, challenge, stage, team size and budget, plus the optional EPIC inputs you choose to give (for consultations). Usage Data: None collected by our pages; Netlify, our host, keeps standard request logs. MCP: Nothing is stored or logged by our code. We do NOT collect: passwords, financial details (handled by PayPal), or tracking cookies."
      }
     },
     {
@@ -146,7 +164,7 @@
      "name": "Is my business data kept confidential?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Absolutely. All business information shared during consultations is treated as strictly confidential. We: Never share your data with competitors Don't use your data for training AI models Only share with the service providers needed to run the site (Netlify for hosting, PayPal for payments)"
+      "text": "Absolutely. All business information shared during consultations is treated as strictly confidential. We: Never share your data with competitors. Don't use your data for training AI models. Only share with the service providers needed to run the site (Netlify for hosting, PayPal for payments)."
      }
     },
     {
@@ -154,7 +172,7 @@
      "name": "How can I access, correct, or delete my data?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "You have full control over your data. Email shashwat@hyperplays.in with: \"Data Access Request\" - to get a copy of your data \"Data Correction Request\" - to fix inaccurate information \"Data Deletion Request\" - to have your data erased We respond within 30 days as required by GDPR, DPDP (India), and CCPA."
+      "text": "You have full control over your data. Email shashwat@gtmhelix.com with: \"Data Access Request\" - to get a copy of your data. \"Data Correction Request\" - to fix inaccurate information. \"Data Deletion Request\" - to have your data erased. We respond within 30 days as required by GDPR, DPDP (India), and CCPA."
      }
     },
     {
@@ -162,7 +180,7 @@
      "name": "Are you GDPR and DPDP compliant?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Yes. We comply with: GDPR (EU General Data Protection Regulation) DPDP Act 2023 (India's Digital Personal Data Protection) CCPA (California Consumer Privacy Act) See our Privacy Policy for complete details."
+      "text": "Yes. We comply with: GDPR (EU General Data Protection Regulation). DPDP Act 2023 (India's Digital Personal Data Protection). CCPA (California Consumer Privacy Act). See our Privacy Policy for complete details."
      }
     },
     {
@@ -170,7 +188,7 @@
      "name": "Do you use cookies or tracking?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "No. Our pages set no cookies and include no analytics or tracking scripts: No third-party trackers: No Google Analytics, Facebook Pixel, or ad tracking Fonts: Our pages load fonts from Google Fonts, which receives your IP address PayPal: Sets its own cookies on its checkout pages"
+      "text": "No. Our pages set no cookies and include no analytics or tracking scripts: No third-party trackers: No Google Analytics, Facebook Pixel, or ad tracking. Fonts: Served from this site, so loading a page contacts no one else. PayPal: Sets its own cookies on its checkout pages."
      }
     },
     {
@@ -178,7 +196,7 @@
      "name": "Is the MCP server free to use?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Yes! During our Launch Offer, all MCP Tool Calling is completely FREE. This includes: gtm_consultation - GTM consultation summary using the EPIC framework epic_audit - EPIC framework scores generate_roadmap - GTM implementation roadmap No API key required. Just connect and use!"
+      "text": "Yes. MCP Tool Calling is free, with no account or sign-in. This includes: gtm_consultation - GTM consultation summary using the EPIC framework. epic_audit - EPIC framework scores. generate_roadmap - GTM implementation roadmap. No API key required. Just connect and use!"
      }
     },
     {
@@ -186,7 +204,7 @@
      "name": "Which AI assistants can use GTM Alpha?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "GTM Alpha works with any MCP-compatible client: Claude (web, desktop and mobile) - Add https://gtmalpha.gtmhelix.com/mcp-sse as a custom connector Cursor / Windsurf - Via mcp.json configuration VS Code - With MCP extension ChatGPT, Gemini, Copilot - Via the MCP endpoint (Streamable HTTP) See our Integration Guide for setup instructions."
+      "text": "GTM Alpha works with any MCP-compatible client: Claude (web, desktop and mobile) - Add https://gtmalpha.gtmhelix.com/mcp-sse as a custom connector. Cursor / Windsurf - Via mcp.json configuration. VS Code - With MCP extension. ChatGPT, Gemini, Copilot - Via the MCP endpoint (Streamable HTTP). See our Integration Guide for setup instructions."
      }
     },
     {
@@ -194,7 +212,7 @@
      "name": "Is data from my AI conversations stored?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "No. The MCP server receives only the tool name and the inputs of each call, uses them to build the reply, and keeps nothing: our code does not store or log tool inputs or results. Netlify, which hosts the site, keeps its own request logs under its policy. See the privacy policy ."
+      "text": "No. The MCP server receives only the tool name and the inputs of each call, uses them to build the reply, and keeps nothing: our code does not store or log tool inputs or results. Netlify, which hosts the site, keeps its own request logs under its policy. See the privacy policy."
      }
     },
     {
@@ -202,15 +220,15 @@
      "name": "What is the EPIC Framework?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "EPIC is Shashwat Ghosh's proprietary GTM methodology: E - Ecosystem & ABM (Account-Based Marketing) P - Product-Led Growth strategies I - Inbound & Outbound demand generation C - Community-Led sustainable growth It's a dynamic operating system approach to go-to-market strategy."
+      "text": "EPIC is Shashwat Ghosh's proprietary GTM methodology: E - Ecosystem & ABM (Account-Based Marketing). P - Product-Led Growth strategies. I - Inbound & Outbound demand generation. C - Community-Led sustainable growth. It's a dynamic operating system approach to go-to-market strategy."
      }
     },
     {
      "@type": "Question",
-     "name": "What's included in the $1 Premium Audit?",
+     "name": "What's included in the Premium Audit?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Our Launch Offer Premium Audit includes: Complete EPIC framework analysis Digital presence audit Market intelligence report 6-month implementation roadmap Professional PDF report This is a comprehensive GTM analysis at an introductory price."
+      "text": "The Premium Audit includes: Complete EPIC framework analysis. Digital presence audit. Market intelligence report. 6-month implementation roadmap. Professional PDF report. It is free while GTM Alpha is in testing, and no payment is taken."
      }
     },
     {
@@ -218,7 +236,7 @@
      "name": "Can I get a refund?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Our refund policy varies by service: Premium Audit: No refunds after report delivery Strategic Partner: Unused hours refundable within 30 days Fractional/Enterprise: Pro-rated refund with 30-day notice See our Terms of Service for complete details."
+      "text": "Our refund policy varies by service: Premium Audit: No refunds after report delivery. Strategic Partner: Unused hours refundable within 30 days. Fractional/Enterprise: Pro-rated refund with 30-day notice. See our Terms of Service for complete details."
      }
     },
     {
@@ -226,7 +244,7 @@
      "name": "Who is behind GTM Alpha?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Shashwat Ghosh - Fractional CMO & GTM Expert LinkedIn Top Product Marketing Voice, #10 India and #52 Worldwide (2024) B2B Marketer of the Year 2020, Fintech (CMO Asia) 24+ years in B2B, 10+ years of fractional experience Expertise: India, APAC, Middle East, US, UK markets Connect: LinkedIn | Twitter/X"
+      "text": "Shashwat Ghosh, Co-Founder and Fractional CMO, Helix GTM Consulting (founded 2022, Bengaluru) LinkedIn Top Product Marketing Voice, #10 India and #52 worldwide (Favikon verified). B2B Marketer of the Year 2020, CMO Asia, Fintech category. Most Admired Marketing Leaders 2025 (CMO Asia, World Leadership Congress). #14 in AI Research and Innovation on LinkedIn India (Favikon verified). Top 30 Product-Led Growth (PLG) worldwide. Creator of the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology. 24+ years in B2B, 10+ years of fractional experience. Expertise: India, APAC, Middle East, US, UK markets. Connect: LinkedIn | Twitter/X"
      }
     },
     {
@@ -234,7 +252,7 @@
      "name": "How can I contact support?",
      "acceptedAnswer": {
       "@type": "Answer",
-      "text": "Reach us at: Email: shashwat@hyperplays.in LinkedIn: @shashwatghosh Website: gtmexpert.com We typically respond within 24-48 hours."
+      "text": "Reach us at: Email: shashwat@gtmhelix.com. LinkedIn: @shashwatghosh. Website: gtmexpert.com. We typically respond within 24-48 hours."
      }
     }
    ]
@@ -293,11 +311,11 @@
     <link rel="stylesheet" href="/assets/brand.css">
 </head>
 <body>
-    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken and the prices shown are not charged.</div>
+    <style>#testing-notice{position:fixed;left:0;right:0;bottom:0;z-index:2000;background:#641220;color:#FAF8F6;font-family:'Archivo',-apple-system,BlinkMacSystemFont,sans-serif;font-size:14px;line-height:1.5;text-align:center;padding:10px 16px;}#testing-notice strong{color:#FAF8F6;}body{padding-bottom:64px;}@media (max-width:640px){#testing-notice{font-size:13px;}body{padding-bottom:96px;}}</style><div id="testing-notice" role="note"><strong>Free during testing:</strong> GTM Alpha is free while we test it. The Premium Audit checkout runs in PayPal test mode, so no real payment is taken.</div>
     <header class="hx-header">
         <div class="hx-wrap hx-header-row">
             <a class="hx-lockup" href="/" aria-label="GTM Alpha home"><span class="hx-alpha" aria-hidden="true">&#945;</span><span class="hx-wordmark">GTM Alpha</span></a>
-            <nav class="hx-nav" aria-label="Main">
+            <nav class="hx-nav" aria-label="GTM Alpha">
                 <a href="/#features">Features</a>
                 <a href="/#epic">EPIC Framework</a>
                 <a href="/integration">Integration</a>
@@ -305,7 +323,7 @@
                 <a href="/api-docs">API Docs</a>
                 <a href="/consultation">Consultation</a>
                 <a href="/#about">About Shashwat</a>
-                <a href="https://gtmexpert.com/" class="hx-cta">GTMExpert.com</a>
+                <a href="https://tools.gtmhelix.com/" class="hx-cta">All tools</a>
             </nav>
         </div>
     </header>
@@ -314,7 +332,7 @@
         <div class="hx-wrap"><div class="hx-hero-inner">
             <h1>Frequently Asked Questions</h1>
             <p>Everything you need to know about GTM Alpha</p>
-            <p class="hx-byline">By <a href="https://www.gtmexpert.com/" rel="author">Shashwat Ghosh</a>, founder of Helix GTM Consulting · Last updated <time datetime="2026-09-25">25 September 2026</time></p>
+            <p class="hx-byline">By <a href="https://www.gtmexpert.com/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix GTM Consulting · Last updated <time datetime="2026-09-25">25 September 2026</time></p>
         </div></div>
     </section>
 
@@ -372,7 +390,7 @@
         <div class="faq-item">
             <div class="faq-question">How can I access, correct, or delete my data?</div>
             <div class="faq-answer">
-                <p>You have full control over your data. Email <a href="mailto:shashwat@hyperplays.in">shashwat@hyperplays.in</a> with:</p>
+                <p>You have full control over your data. Email <a href="mailto:shashwat@gtmhelix.com">shashwat@gtmhelix.com</a> with:</p>
                 <ul>
                     <li><strong>"Data Access Request"</strong> - to get a copy of your data</li>
                     <li><strong>"Data Correction Request"</strong> - to fix inaccurate information</li>
@@ -401,7 +419,7 @@
                 <p>No. Our pages set no cookies and include no analytics or tracking scripts:</p>
                 <ul>
                     <li><strong>No third-party trackers:</strong> No Google Analytics, Facebook Pixel, or ad tracking</li>
-                    <li><strong>Fonts:</strong> Our pages load fonts from Google Fonts, which receives your IP address</li>
+                    <li><strong>Fonts:</strong> Served from this site, so loading a page contacts no one else</li>
                     <li><strong>PayPal:</strong> Sets its own cookies on its checkout pages</li>
                 </ul>
             </div>
@@ -412,7 +430,7 @@
         <div class="faq-item">
             <div class="faq-question">Is the MCP server free to use?</div>
             <div class="faq-answer">
-                <p><strong>Yes!</strong> During our Launch Offer, all MCP Tool Calling is completely FREE. This includes:</p>
+                <p><strong>Yes.</strong> MCP Tool Calling is free, with no account or sign-in. This includes:</p>
                 <ul>
                     <li>gtm_consultation - GTM consultation summary using the EPIC framework</li>
                     <li>epic_audit - EPIC framework scores</li>
@@ -460,9 +478,9 @@
         </div>
 
         <div class="faq-item">
-            <div class="faq-question">What's included in the $1 Premium Audit?</div>
+            <div class="faq-question">What's included in the Premium Audit?</div>
             <div class="faq-answer">
-                <p>Our Launch Offer Premium Audit includes:</p>
+                <p>The Premium Audit includes:</p>
                 <ul>
                     <li>Complete EPIC framework analysis</li>
                     <li>Digital presence audit</li>
@@ -470,7 +488,7 @@
                     <li>6-month implementation roadmap</li>
                     <li>Professional PDF report</li>
                 </ul>
-                <p>This is a comprehensive GTM analysis at an introductory price.</p>
+                <p>It is free while GTM Alpha is in testing, and no payment is taken.</p>
             </div>
         </div>
 
@@ -492,10 +510,14 @@
         <div class="faq-item">
             <div class="faq-question">Who is behind GTM Alpha?</div>
             <div class="faq-answer">
-                <p><strong>Shashwat Ghosh</strong> - Fractional CMO & GTM Expert</p>
+                <p><strong>Shashwat Ghosh</strong>, Co-Founder and Fractional CMO, Helix GTM Consulting (founded 2022, Bengaluru)</p>
                 <ul>
-                    <li>LinkedIn Top Product Marketing Voice, #10 India and #52 Worldwide (2024)</li>
-                    <li>B2B Marketer of the Year 2020, Fintech (CMO Asia)</li>
+                    <li>LinkedIn Top Product Marketing Voice, #10 India and #52 worldwide (Favikon verified)</li>
+                    <li>B2B Marketer of the Year 2020, CMO Asia, Fintech category</li>
+                    <li>Most Admired Marketing Leaders 2025 (CMO Asia, World Leadership Congress)</li>
+                    <li>#14 in AI Research and Innovation on LinkedIn India (Favikon verified)</li>
+                    <li>Top 30 Product-Led Growth (PLG) worldwide</li>
+                    <li>Creator of the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology</li>
                     <li>24+ years in B2B, 10+ years of fractional experience</li>
                     <li>Expertise: India, APAC, Middle East, US, UK markets</li>
                 </ul>
@@ -508,7 +530,7 @@
             <div class="faq-answer">
                 <p>Reach us at:</p>
                 <ul>
-                    <li><strong>Email:</strong> <a href="mailto:shashwat@hyperplays.in">shashwat@hyperplays.in</a></li>
+                    <li><strong>Email:</strong> <a href="mailto:shashwat@gtmhelix.com">shashwat@gtmhelix.com</a></li>
                     <li><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/">@shashwatghosh</a></li>
                     <li><strong>Website:</strong> <a href="https://gtmexpert.com">gtmexpert.com</a></li>
                 </ul>
@@ -528,12 +550,12 @@
             <div class="hx-footer-grid">
                 <div>
                     <a class="hx-lockup" href="/" aria-label="GTM Alpha home"><span class="hx-alpha" aria-hidden="true">&#945;</span><span class="hx-wordmark">GTM Alpha</span></a>
-                    <p>Professional go-to-market strategy consulting powered by Shashwat Ghosh's expertise and advanced AI integration.</p>
+                    <p>Professional go-to-market strategy consulting powered by Shashwat Ghosh&#x27;s expertise and advanced AI integration.</p>
                     <a href="https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/">LinkedIn</a>
                     <a href="https://x.com/Shashwat_Ghosh">X (Twitter)</a>
                 </div>
                 <div>
-                    <p class="hx-foot-h">Platform</p>
+                    <p class="hx-foot-h">GTM Alpha</p>
                     <a href="/#features">Features</a>
                     <a href="/#epic">EPIC Framework</a>
                     <a href="/integration">Integration</a>
@@ -542,8 +564,7 @@
                     <a href="/faq">FAQ</a>
                 </div>
                 <div>
-                    <p class="hx-foot-h">Connectors</p>
-                    <a href="https://gtmalpha.gtmhelix.com/integration">GTM Alpha</a>
+                    <p class="hx-foot-h">Other connectors</p>
                     <a href="https://craft-gtm.gtmhelix.com/">CRAFT GTM</a>
                     <a href="https://craft-content.gtmhelix.com/">CRAFT Content</a>
                     <a href="https://impact.gtmhelix.com/">IMPACT</a>
@@ -552,12 +573,10 @@
                     <a href="https://tools.gtmhelix.com/">All tools and plugins</a>
                 </div>
                 <div>
-                    <p class="hx-foot-h">Connect</p>
+                    <p class="hx-foot-h">Contact</p>
                     <a href="/consultation">Book Consultation</a>
-                    <a href="mailto:shashwat@hyperplays.in">Email Support</a>
-                    <a href="https://gtmexpert.com/">GTMExpert.com</a>
-                    <a href="/privacy">Privacy</a>
-                    <a href="/terms">Terms</a>
+                    <a href="mailto:shashwat@gtmhelix.com">Email Support</a>
+                    <a href="https://www.gtmexpert.com/">GTMExpert.com</a>
                 </div>
             </div>
             <div class="hx-footer-bottom">

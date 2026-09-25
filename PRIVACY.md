@@ -2,7 +2,7 @@
 
 Last updated: September 24, 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
 
-Contact: Shashwat Ghosh, shashwat@hyperplays.in
+Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
 ## What we collect
 
@@ -24,7 +24,7 @@ Netlify (hosting, database, logs), PayPal (payments; receives your company name)
 
 ## Your rights
 
-Email shashwat@hyperplays.in with subject "Data Rights Request" to access, correct or delete your data. Include your company name and roughly when you used the site; records are stored by company name and time, and we find and delete them by hand within 30 days.
+Email shashwat@gtmhelix.com with subject "Data Rights Request" to access, correct or delete your data. Include your company name and roughly when you used the site; records are stored by company name and time, and we find and delete them by hand within 30 days.
 
 ## Security
 

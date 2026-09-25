@@ -39,7 +39,7 @@ The MCP server stores and logs nothing. The consultation form and the audit API 
 
 ### Who is behind GTM Alpha?
 
-Shashwat Ghosh, founder of Helix GTM Consulting: a GTM Alpha consultant, AI GTM expert and fractional CMO with 24+ years in B2B and 10+ years of fractional experience, based in Bengaluru and working across India, APAC, the Middle East, the US and the UK.
+Shashwat Ghosh, Co-Founder and Fractional CMO of Helix GTM Consulting, a business consulting firm founded in 2022 in Bengaluru. He has 24+ years in B2B and 10+ years of fractional experience, and created the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology. He works across India, APAC, the Middle East, the US and the UK.
 
 ### Which other MCP connectors does Helix GTM Consulting offer?
 

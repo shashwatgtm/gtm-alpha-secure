@@ -221,7 +221,7 @@ export default async (req, context) => {
         
         // Contact information
         support: {
-          email: 'shashwat@hyperplays.in',
+          email: 'shashwat@gtmhelix.com',
           message: 'Contact us for any questions about your consultation or service access.'
         }
       }), {

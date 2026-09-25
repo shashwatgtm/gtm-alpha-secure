@@ -225,7 +225,7 @@ For issues or questions:
 
 \- GitHub: https://github.com/shashwatgtm/gtm-alpha-secure
 
-\- Email: shashwat@hyperplays.in
+\- Email: shashwat@gtmhelix.com
 
 
 

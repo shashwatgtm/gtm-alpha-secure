@@ -99,11 +99,11 @@ The GTM Alpha methodology is built on the EPIC Framework:
 
 ## About Shashwat Ghosh
 
-GTM Alpha Consultant, AI GTM Expert and Fractional CMO
+Co-Founder and Fractional CMO, Helix GTM Consulting
 
 - Most Admired Marketing Leaders 2025 - CMO Asia
 - Award Winner: B2B Marketer of the Year 2020 - CMO Asia (Fintech Category)
-- LinkedIn Top Product Marketing Voice, #10 India and #52 Worldwide (2024)
+- LinkedIn Top Product Marketing Voice, #10 India and #52 worldwide (Favikon verified)
 - Experience: 24+ years in B2B with verified quantifiable achievements
 - Education: NIT Rourkela, Ecole des Ponts ParisTech, XLRI Jamshedpur
 
@@ -136,6 +136,6 @@ MIT License
 
 ---
 
-Copyright 2025 Helix GTM Consulting | Shashwat Ghosh - Fractional CMO and AI GTM Expert
+Copyright 2025 Helix GTM Consulting | Shashwat Ghosh, Co-Founder and Fractional CMO
 
-Contact: shashwat@hyperplays.in
+Contact: shashwat@gtmhelix.com

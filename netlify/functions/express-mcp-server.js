@@ -76,7 +76,7 @@ const GTM_CONSULTANT = {
 
 Cheers,
 Shashwat Ghosh
-Founder and Fractional CMO`;
+Co-Founder and Fractional CMO`;
 
     return {
       consultation_output: consultationOutput,
