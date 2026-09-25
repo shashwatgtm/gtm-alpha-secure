@@ -53,7 +53,7 @@
     "ai-assistant",
     "claude"
   ],
-  "author": "Shashwat Ghosh <shashwat@gtmalpha.com>",
+  "author": "Shashwat Ghosh <shashwat@gtmhelix.com>",
   "license": "MIT",
   "overrides": {
     "sharp": "^0.35.4"

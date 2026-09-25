@@ -47,10 +47,18 @@ const GTM_CONSULTANT = {
 
   generateRoadmap(focus, timeframe) {
     var component = this.epicFramework[focus] || this.epicFramework.P;
+    // The chosen timeframe sets the day range of each phase (thirds of 30, 60 or 90 days).
+    var days = { "30-day": 30, "60-day": 60, "90-day": 90 }[timeframe] || 90;
+    var third = days / 3;
     return {
       // A timeframe the user did not choose is shown as the default, not as their choice.
       timeframe: timeframe || "90-day (default, not supplied; Example figure: replace with your own)",
       primary_focus: component.name,
+      schedule: {
+        immediate: "Days 1 to " + third,
+        short_term: "Days " + (third + 1) + " to " + (2 * third),
+        medium_term: "Days " + (2 * third + 1) + " to " + days
+      },
       action_plan: {
         immediate: ["Conduct GTM audit", "Map buyer journey", "Align teams on EPIC priorities"],
         short_term: ["Implement " + component.name + " initiatives", "Establish success metrics", "Create feedback loops"],

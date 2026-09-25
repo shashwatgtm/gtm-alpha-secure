@@ -10,6 +10,8 @@ Professional Go-To-Market strategy consultation using Shashwat Ghosh's EPIC Fram
 
 ## Quick Start
 
+The hosted server at https://gtmalpha.gtmhelix.com/mcp always runs the newest version and needs no install. The npm package below can lag behind it until a new version is published; compare its version with the one the hosted server reports.
+
 ### Option 1: Claude Desktop (Recommended)
 
 Add to your Claude Desktop config file:
@@ -67,13 +69,57 @@ Use the function declarations in gemini-functions.json:
 
 ---
 
-## Available Tools
+## Tools and inputs
 
-| Tool | Description |
-|------|-------------|
-| gtm_consultation | Professional GTM consultation with EPIC framework analysis |
-| epic_audit | Get EPIC framework scores for your GTM strategy |
-| generate_roadmap | 30-60-90 day implementation roadmap |
+Generated on 26 September 2026 from the server's own tool list (`tools/list` of gtm-alpha-mcp-server 1.3.0, the same code as the hosted MCP address), so every tool name, title, description and input below is exactly what the server accepts. Every tool is read-only.
+
+| # | Tool | Title | What it does |
+|---|---|---|---|
+| 1 | `gtm_consultation` | GTM Consultation | Get GTM strategy consultation using Shashwat Ghosh EPIC framework. Scores the four motions from 1 to 10 with the documented rubric and names the primary and secondary motion. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary. |
+| 2 | `epic_audit` | EPIC Audit | Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes. Add the optional inputs for a full score; without them the result is marked preliminary. |
+| 3 | `generate_roadmap` | GTM Roadmap | Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps. Builds text from the inputs only. |
+
+### Inputs of each tool
+
+#### 1. GTM Consultation (`gtm_consultation`)
+
+| Input | Required | Type | Description |
+|---|---|---|---|
+| `gtm_challenge` | Yes | string | Your GTM challenge |
+| `company_name` | No | string | Company name |
+| `business_stage` | No | string | Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B) |
+| `industry` | No | string | Your industry |
+| `acv_usd` | No | number (0 or more) | Optional. Average contract value per year in US dollars (for example 42000) |
+| `deal_cycle_days` | No | number (0 or more) | Optional. Days from first touch to closed-won (for example 120) |
+| `nrr_percent` | No | number | Optional. Net revenue retention in percent (for example 108) |
+| `tam_accounts` | No | number (0 or more) | Optional. Number of addressable accounts (for example 2500) |
+| `self_serve` | No | boolean | Optional. true if customers can sign up and get value without talking to sales |
+| `deal_source` | No | one of: `referrals`, `outbound`, `partnerships`, `inbound`, `mixed` | Optional. Where the majority of deals come from |
+| `geography` | No | one of: `india`, `us_eu`, `middle_east`, `apac`, `global` | Optional. Primary market |
+| `current_channels` | No | string | Optional. What you do today (content, outbound, events, partnerships, PLG, community) |
+
+#### 2. EPIC Audit (`epic_audit`)
+
+| Input | Required | Type | Description |
+|---|---|---|---|
+| `challenge` | Yes | string | Describe your GTM situation |
+| `industry` | No | string | Your industry |
+| `business_stage` | No | string | Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B) |
+| `acv_usd` | No | number (0 or more) | Optional. Average contract value per year in US dollars (for example 42000) |
+| `deal_cycle_days` | No | number (0 or more) | Optional. Days from first touch to closed-won (for example 120) |
+| `nrr_percent` | No | number | Optional. Net revenue retention in percent (for example 108) |
+| `tam_accounts` | No | number (0 or more) | Optional. Number of addressable accounts (for example 2500) |
+| `self_serve` | No | boolean | Optional. true if customers can sign up and get value without talking to sales |
+| `deal_source` | No | one of: `referrals`, `outbound`, `partnerships`, `inbound`, `mixed` | Optional. Where the majority of deals come from |
+| `geography` | No | one of: `india`, `us_eu`, `middle_east`, `apac`, `global` | Optional. Primary market |
+| `current_channels` | No | string | Optional. What you do today (content, outbound, events, partnerships, PLG, community) |
+
+#### 3. GTM Roadmap (`generate_roadmap`)
+
+| Input | Required | Type | Description |
+|---|---|---|---|
+| `primary_focus` | Yes | one of: `E`, `P`, `I`, `C` | EPIC motion to plan for: E, P, I or C |
+| `timeframe` | No | one of: `30-day`, `60-day`, `90-day` | 30-day, 60-day or 90-day (default 90-day) |
 
 ---
 
