@@ -1,181 +1,32 @@
 #!/usr/bin/env node
-
+// GTM Alpha MCP server over stdio (the npm package @shashwatgtmalpha/gtm-alpha-mcp-server).
+// Since version 1.3.0 it answers with the SAME code as the hosted server at https://gtmalpha.gtmhelix.com/mcp:
+// tools/list and tools/call are passed, in this process, to netlify/functions/mcp-sse.js. So the npm package and the
+// hosted address give the same answer for the same input, including the labels on example figures and the input checks.
+// Nothing is sent over the network and nothing is stored.
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { scoreEpic } from '../netlify/lib/epic-advanced.js';
-import {
-  CallToolRequestSchema,
-  ListToolsRequestSchema,
-} from '@modelcontextprotocol/sdk/types.js';
+import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import { createRequire } from 'node:module';
+import handler from '../netlify/functions/mcp-sse.js';
 
-// GTM Alpha Consultant Logic
-const GTM_CONSULTANT = {
-  expertiseContent: {
-    corePhilosophy: `Ask any startup founder if you have a go-to-market (GTM) problem. It's entirely possible that the answer would be no because startup founders and CXOs think that GTM is a top-of-the-funnel (TOFU) problem, marketing problem, product use case problem, or sales team problem. And that's the problem.`,
-    gtmAlphaMethodology: `Think of GTM as an evolving roadmap. Find a customer segment where a product is viable, a sale is repeatable, and an advantage is yours for the taking. If your experiment succeeds, plan to scale with all force, but keep the original variables intact. If your experiment fails, pivot till you get it right.`,
-    mentalVelocityInsight: `From my experience with B2B buyers, I've found that optimizing for mental velocity - the speed of buyer hypothesis-to-resolution progression - is more critical than traditional funnel metrics.`,
-    epicFramework: {
-      E: { name: "Ecosystem & ABM-led Sales Motion", keywords: ["partners", "ecosystem", "abm", "enterprise", "integration", "channel", "alliances", "b2b"] },
-      P: { name: "Product-Led Growth Acceleration", keywords: ["product-led", "plg", "user experience", "onboarding", "activation", "self-serve", "viral", "freemium"] },
-      I: { name: "Inbound & Outbound Demand Generation", keywords: ["content", "demand", "marketing", "channels", "campaigns", "seo", "paid", "outbound", "inbound"] },
-      C: { name: "Community-Led Advocacy & Engagement", keywords: ["community", "advocacy", "engagement", "loyalty", "referrals", "events", "network", "social"] }
-    }
-  },
+const pkg = createRequire(import.meta.url)('../package.json');
+let seq = 0;
 
-  // EPIC scoring: the documented advanced rubric shared with the hosted server (netlify/lib/epic-advanced.js).
-  analyzeEPICScores(input) {
-    const r = scoreEpic(input);
-    return Object.assign({ scores: r.scores, primaryFocus: r.primary.letter }, r);
-  },
-
-  generateConsultation(input) {
-    const client_name = [input.client_name, input.company_name].map((v) => (typeof v === "string" ? v.trim() : "")).filter(Boolean)[0] || "not supplied";
-    const epicAnalysis = this.analyzeEPICScores(input);
-    const primaryComponent = this.expertiseContent.epicFramework[epicAnalysis.primaryFocus];
-    return {
-      consultation_output: `GTM Alpha consultation for: ${client_name}\n\nPrimary Focus: ${primaryComponent.name}\nSecondary Focus: ${epicAnalysis.secondary.motion}\nEPIC Scores (1 to 10): E:${epicAnalysis.scores.E}, P:${epicAnalysis.scores.P}, I:${epicAnalysis.scores.I}, C:${epicAnalysis.scores.C}${epicAnalysis.preliminary_note ? '\n' + epicAnalysis.preliminary_note : ''}\n\nCore Insight: ${this.expertiseContent.corePhilosophy}\n\nMethodology: ${this.expertiseContent.gtmAlphaMethodology}`,
-      epic_scores: epicAnalysis.scores,
-      primary_focus: primaryComponent.name
-    };
-  },
-
-  generateRoadmap(primaryFocus, timeframe = "90-day") {
-    const focusComponent = this.expertiseContent.epicFramework[primaryFocus] || this.expertiseContent.epicFramework.P;
-    return {
-      timeframe,
-      primary_focus: focusComponent.name,
-      action_plan: {
-        immediate: [
-          "Conduct mental velocity audit of current buyer journey",
-          "Map decision dead zones in your GTM process",
-          "Align sales and marketing on EPIC framework priorities"
-        ],
-        short_term: [
-          `Implement ${focusComponent.name} optimization initiatives`,
-          "Establish success metrics for mental velocity tracking",
-          "Create feedback loops for continuous GTM optimization"
-        ],
-        medium_term: [
-          "Scale successful experiments across EPIC components",
-          "Build systematic approach to GTM operating system",
-          "Measure and optimize competitive advantage sustainability"
-        ]
-      },
-      success_metrics: [
-        "Mental velocity improvement (2-3x target)",
-        "GTM efficiency increase (30%+ target)",
-        "Customer acquisition cost reduction (15-25%)"
-      ]
-    };
-  }
-};
-
-// Create MCP Server
-const server = new Server(
-  { name: 'gtm-alpha-mcp-server', version: '1.2.0' },
-  { capabilities: { tools: {} } }
-);
-
-// List available tools with annotations for ChatGPT Apps SDK
-server.setRequestHandler(ListToolsRequestSchema, async () => ({
-  tools: [
-    {
-      name: 'gtm_consultation',
-      title: 'GTM Consultation',
-      description: 'Get GTM strategy consultation using Shashwat Ghosh EPIC framework. Returns strategic analysis and recommendations.',
-      inputSchema: {
-        type: 'object',
-        properties: {
-          client_name: { type: 'string', description: 'Your name' },
-          company_name: { type: 'string', description: 'Company name' },
-          company_description: { type: 'string', description: 'Brief company description' },
-          gtm_challenge: { type: 'string', description: 'Your GTM challenge or question' },
-          business_stage: { type: 'string', description: 'Stage: seed, series-a, growth, enterprise' },
-          industry: { type: 'string', description: 'Your industry' }
-        },
-        required: ['gtm_challenge']
-      },
-      annotations: {
-        title: 'GTM Consultation',
-        readOnlyHint: true,
-        openWorldHint: false,
-        destructiveHint: false
-      }
-    },
-    {
-      name: 'epic_audit',
-      title: 'EPIC Audit',
-      description: 'Get EPIC framework scores for your GTM strategy. Analyzes Ecosystem, Product-Led, Inbound/Outbound, and Community dimensions.',
-      inputSchema: {
-        type: 'object',
-        properties: {
-          challenge: { type: 'string', description: 'Describe your GTM situation' },
-          industry: { type: 'string', description: 'Your industry' },
-          business_stage: { type: 'string', description: 'Business stage' }
-        },
-        required: ['challenge']
-      },
-      annotations: {
-        title: 'EPIC Audit',
-        readOnlyHint: true,
-        openWorldHint: false,
-        destructiveHint: false
-      }
-    },
-    {
-      name: 'generate_roadmap',
-      title: 'GTM Roadmap',
-      description: 'Generate a 30-60-90 day GTM implementation roadmap based on EPIC framework analysis.',
-      inputSchema: {
-        type: 'object',
-        properties: {
-          primary_focus: { type: 'string', enum: ['E', 'P', 'I', 'C'], description: 'Primary EPIC component: E (Ecosystem), P (Product-Led), I (Inbound/Outbound), C (Community)' },
-          timeframe: { type: 'string', enum: ['30-day', '60-day', '90-day'], description: 'Roadmap timeframe' }
-        },
-        required: ['primary_focus']
-      },
-      annotations: {
-        title: 'GTM Roadmap',
-        readOnlyHint: true,
-        openWorldHint: false,
-        destructiveHint: false
-      }
-    }
-  ]
-}));
-
-// Handle tool calls
-server.setRequestHandler(CallToolRequestSchema, async (request) => {
-  const { name, arguments: args } = request.params;
-
-  if (name === 'gtm_consultation') {
-    const result = GTM_CONSULTANT.generateConsultation(args);
-    return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
-  }
-
-  if (name === 'epic_audit') {
-    const result = GTM_CONSULTANT.analyzeEPICScores(Object.assign({}, args, { gtm_challenge: args.challenge || '' }));
-    const output = Object.assign({
-      epic_scores: result.scores,
-      primary_focus: result.primaryFocus,
-      recommendation: GTM_CONSULTANT.expertiseContent.epicFramework[result.primaryFocus].name
-    }, result);
-    return { content: [{ type: 'text', text: JSON.stringify(output, null, 2) }] };
-  }
-
-  if (name === 'generate_roadmap') {
-    const result = GTM_CONSULTANT.generateRoadmap(args.primary_focus || 'P', args.timeframe || '90-day');
-    return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] };
-  }
-
-  throw new Error(`Unknown tool: ${name}`);
-});
-
-// Start server
-async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.error('GTM Alpha MCP Server v1.2.0 running on stdio');
+async function rpc(method, params) {
+  const res = await handler(new Request('http://localhost/mcp', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ jsonrpc: '2.0', id: ++seq, method, params })
+  }));
+  const body = await res.json();
+  if (body.error) throw new Error(body.error.message);
+  return body.result;
 }
 
-main().catch(console.error);
+const server = new Server({ name: 'gtm-alpha-mcp-server', version: pkg.version }, { capabilities: { tools: {} } });
+server.setRequestHandler(ListToolsRequestSchema, async () => rpc('tools/list', {}));
+server.setRequestHandler(CallToolRequestSchema, async (request) =>
+  rpc('tools/call', { name: request.params.name, arguments: request.params.arguments || {} }));
+
+await server.connect(new StdioServerTransport());

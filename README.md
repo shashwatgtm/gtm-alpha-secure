@@ -102,13 +102,10 @@ Co-Founder and Fractional CMO, Helix GTM Consulting
 
 ### Proven Results
 
-| Achievement | Company |
-|-------------|---------|
-| 4X Business Growth | Airtel Business |
-| 161% ARR Growth | Happay |
-| 178% Deal Size Increase | Happay Enterprise |
-| $4.2Mn Pipeline | Locus |
-| 203% Regional Achievement | Locus SEA |
+| Result | Role and company |
+|--------|------------------|
+| 161% ARR growth | VP Marketing, Happay (acquired by CRED) |
+| $4.2M pipeline | VP Performance Marketing, Locus (acquired by IKEA) |
 
 ---
 

@@ -1,6 +1,6 @@
 # GTM Alpha Privacy Policy
 
-Last updated: 25 September 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
+Last updated: 26 September 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
 
 Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
@@ -23,7 +23,7 @@ Netlify (hosting, database, logs), cdnjs (receives your IP address when the repo
 
 ## Your rights
 
-Email shashwat@gtmhelix.com with subject "Data Rights Request" to access, correct or delete your data. Include your company name and roughly when you used the site; records are stored by company name and time, and we find and delete them by hand within 30 days.
+Email shashwat@gtmhelix.com with subject "Data Rights Request" to access, correct or delete your data. Include your company name and roughly when you used the site; each stored record carries the company name you gave and the time it was saved, and we find and delete records by hand within 30 days.
 
 ## Security
 

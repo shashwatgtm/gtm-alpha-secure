@@ -6,12 +6,12 @@
     "url": "https://github.com/shashwatgtm/gtm-expert-schema",
     "source": "github"
   },
-  "version": "1.0.5",
+  "version": "1.3.0",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@shashwatgtmalpha/gtm-alpha-mcp-server",
-      "version": "1.0.5",
+      "version": "1.3.0",
       "transport": {
         "type": "stdio"
       }

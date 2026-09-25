@@ -72,10 +72,10 @@ var TOOLS = [
         gtm_challenge: { type: "string", description: "Your GTM challenge" },
         business_stage: { type: "string", description: "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B)" },
         industry: { type: "string", description: "Your industry" },
-        acv_usd: { type: "number", description: "Optional. Average contract value per year in US dollars (for example 42000)" },
-        deal_cycle_days: { type: "number", description: "Optional. Days from first touch to closed-won (for example 120)" },
+        acv_usd: { type: "number", minimum: 0, description: "Optional. Average contract value per year in US dollars (for example 42000)" },
+        deal_cycle_days: { type: "number", minimum: 0, description: "Optional. Days from first touch to closed-won (for example 120)" },
         nrr_percent: { type: "number", description: "Optional. Net revenue retention in percent (for example 108)" },
-        tam_accounts: { type: "number", description: "Optional. Number of addressable accounts (for example 2500)" },
+        tam_accounts: { type: "number", minimum: 0, description: "Optional. Number of addressable accounts (for example 2500)" },
         self_serve: { type: "boolean", description: "Optional. true if customers can sign up and get value without talking to sales" },
         deal_source: { type: "string", enum: ["referrals", "outbound", "partnerships", "inbound", "mixed"], description: "Optional. Where the majority of deals come from" },
         geography: { type: "string", enum: ["india", "us_eu", "middle_east", "apac", "global"], description: "Optional. Primary market" },
@@ -95,10 +95,10 @@ var TOOLS = [
         challenge: { type: "string", description: "Describe your GTM situation" },
         industry: { type: "string", description: "Your industry" },
         business_stage: { type: "string", description: "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B)" },
-        acv_usd: { type: "number", description: "Optional. Average contract value per year in US dollars (for example 42000)" },
-        deal_cycle_days: { type: "number", description: "Optional. Days from first touch to closed-won (for example 120)" },
+        acv_usd: { type: "number", minimum: 0, description: "Optional. Average contract value per year in US dollars (for example 42000)" },
+        deal_cycle_days: { type: "number", minimum: 0, description: "Optional. Days from first touch to closed-won (for example 120)" },
         nrr_percent: { type: "number", description: "Optional. Net revenue retention in percent (for example 108)" },
-        tam_accounts: { type: "number", description: "Optional. Number of addressable accounts (for example 2500)" },
+        tam_accounts: { type: "number", minimum: 0, description: "Optional. Number of addressable accounts (for example 2500)" },
         self_serve: { type: "boolean", description: "Optional. true if customers can sign up and get value without talking to sales" },
         deal_source: { type: "string", enum: ["referrals", "outbound", "partnerships", "inbound", "mixed"], description: "Optional. Where the majority of deals come from" },
         geography: { type: "string", enum: ["india", "us_eu", "middle_east", "apac", "global"], description: "Optional. Primary market" },
@@ -168,6 +168,16 @@ function missingRequired(tool, args) {
   return required.filter(function(key) { return args[key] === undefined || args[key] === null; });
 }
 
+// Decision N2 (run 6): amounts, counts and durations cannot be negative; the schema says which (minimum).
+function belowMinimum(tool, args) {
+  var props = (tool.inputSchema && tool.inputSchema.properties) || {};
+  return Object.keys(props).filter(function(key) {
+    var min = props[key].minimum;
+    var v = typeof args[key] === "string" && args[key].trim() !== "" ? Number(args[key]) : args[key];
+    return typeof min === "number" && typeof v === "number" && isFinite(v) && v < min;
+  }).map(function(key) { return key + " must be " + props[key].minimum + " or more"; });
+}
+
 export default async function handler(req, context) {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
@@ -209,7 +219,7 @@ export default async function handler(req, context) {
         id: id,
         result: {
           protocolVersion: version,
-          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.2.0" },
+          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.0" },
           capabilities: { tools: {} }
         }
       });
@@ -233,6 +243,10 @@ export default async function handler(req, context) {
       var missing = missingRequired(tool, toolArgs);
       if (missing.length > 0) {
         return toolError(id, "Missing required input for " + toolName + ": " + missing.join(", ") + ". Provide " + (missing.length === 1 ? "it" : "them") + " and call the tool again.");
+      }
+      var below = belowMinimum(tool, toolArgs);
+      if (below.length > 0) {
+        return toolError(id, "Invalid input for " + toolName + ": " + below.join("; ") + ".");
       }
       var result = handleToolCall(toolName, toolArgs);
       return reply(200, {

@@ -5,5 +5,5 @@ export default async (req) => {
   if (req.method !== "GET") {
     return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405, headers: { ...headers, "Allow": "GET" } });
   }
-  return new Response(JSON.stringify({ status: "ok", service: "GTM Alpha", version: "1.2.0", timestamp: new Date().toISOString() }), { status: 200, headers });
+  return new Response(JSON.stringify({ status: "ok", service: "GTM Alpha", version: "1.3.0", timestamp: new Date().toISOString() }), { status: 200, headers });
 };

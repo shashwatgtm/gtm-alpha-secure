@@ -18,3 +18,7 @@ notepad*
 # Other
 node_modules/
 .git/
+
+# Never publish or commit MCP Registry tokens or environment files (run 6)
+.env
+.env.*
