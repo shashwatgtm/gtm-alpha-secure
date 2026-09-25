@@ -1,8 +1,11 @@
 [build]
-  publish = "."
+  # Only public pages and assets are published (scripts/build-site.mjs copies an allowlist into site/).
+  command = "node scripts/build-site.mjs"
+  publish = "site"
 
 [dev]
-  publish = "."
+  command = "node scripts/build-site.mjs"
+  publish = "site"
 
 [functions]
   node_bundler = "esbuild"
@@ -12,12 +15,6 @@
 [[redirects]]
   from = "/api/health"
   to = "/.netlify/functions/health"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/pricing"
-  to = "/.netlify/functions/get-pricing"
   status = 200
   force = true
 

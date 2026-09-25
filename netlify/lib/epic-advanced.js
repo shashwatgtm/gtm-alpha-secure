@@ -206,14 +206,14 @@ export function scoreEpic(input) {
     warnings.push("Inbound SEO is structurally disrupted by AI search. The fix is not more content. It is becoming the source that LLMs cite: G2 reviews, community threads, analyst mentions, peer recommendations.");
   }
   if (sc.P > 6 && sc.E > 6 && UPMARKET.test(text)) {
-    warnings.push("Hybrid motion detected. PLG for land, Ecosystem for expand. Sequence matters: build self-serve conversion infrastructure first, then layer ABM on accounts with 10+ active free users.");
+    warnings.push("Hybrid motion detected. PLG for land, Ecosystem for expand. Sequence matters: build self-serve conversion infrastructure first, then layer ABM on accounts with 10+ active free users (Example figure: replace with your own).");
   }
   for (const k of Object.keys(sc)) sc[k] = clamp(sc[k]);
 
   const ranked = ["E", "P", "I", "C"].sort((a, b) => (sc[b] - sc[a]) || (TIE_ORDER.indexOf(a) - TIE_ORDER.indexOf(b)));
   const vals = Object.values(sc);
   if (Math.max(...vals) - Math.min(...vals) <= 2) {
-    notes.push("Your scores are evenly distributed. This usually means you are early stage and have not yet found the motion that compounds. Pick one motion to test for 90 days with 60% of your GTM effort. Measure pipeline contribution. The scores will separate after one quarter of focused execution.");
+    notes.push("Your scores are evenly distributed. This usually means you are early stage and have not yet found the motion that compounds. Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own). Measure pipeline contribution. The scores will separate after one quarter of focused execution.");
   }
   const reasonFor = (m) => {
     const ups = applied.filter((a) => a.change && typeof a.change[m] === "number" && a.change[m] > 0 && !/^Stage starting point/.test(a.rule)).map((a) => a.rule + " (" + m + " +" + a.change[m] + ")");

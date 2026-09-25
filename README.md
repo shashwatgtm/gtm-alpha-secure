@@ -42,16 +42,9 @@ gtm-alpha-mcp
 
 ---
 
-### Option 4: HTTP Endpoint (REST API)
+### Option 4: REST API
 
-For direct API access without MCP:
-
-https://gtmalpha.gtmhelix.com/.netlify/functions/express-mcp-server
-
-Endpoints:
-- POST /consultation - Get GTM consultation
-- POST /audit - Get EPIC framework audit
-- POST /roadmap - Get implementation roadmap
+For direct API access without MCP, send a JSON POST to https://gtmalpha.gtmhelix.com/api/epic-audit (documented in openapi.yaml and on https://gtmalpha.gtmhelix.com/api-docs). The inputs you send are stored with the result; see https://gtmalpha.gtmhelix.com/privacy.
 
 ---
 

@@ -165,7 +165,8 @@ const EPIC_AUDIT_ENGINE = {
                               scores.inbound_score + scores.community_score) / 4)
         },
         q1_target: this.calculateQuarterlyTargets(scores, 1),
-        q2_target: this.calculateQuarterlyTargets(scores, 2)
+        q2_target: this.calculateQuarterlyTargets(scores, 2),
+        note: 'q1_target and q2_target assume your scores rise by an example growth rate per quarter (20, 15, 10 or 5 percent, by score band). They are not forecasts. Example figure: replace with your own.'
       },
       
       // Key milestones
@@ -182,7 +183,7 @@ const EPIC_AUDIT_ENGINE = {
     const activities = {
       ecosystem: [
         'Complete partner ecosystem audit and gap analysis',
-        'Identify and prioritize top 20 strategic partnership opportunities',
+        'Identify and prioritize top 20 strategic partnership opportunities (Example figure: replace with your own)',
         'Develop partnership value proposition and pitch deck'
       ],
       product_led: [
@@ -214,8 +215,8 @@ const EPIC_AUDIT_ENGINE = {
   generateMonthTwoActivities(primaryFocus, secondaryFocus, inputData) {
     const activities = {
       ecosystem: [
-        'Launch pilot ABM campaigns for top 10 enterprise accounts',
-        'Establish first 3 strategic technology partnerships',
+        'Launch pilot ABM campaigns for top 10 enterprise accounts (Example figure: replace with your own)',
+        'Establish first 3 strategic technology partnerships (Example figure: replace with your own)',
         'Implement partner portal and enablement materials'
       ],
       product_led: [
@@ -244,7 +245,7 @@ const EPIC_AUDIT_ENGINE = {
   generateQuarterOneActivities(primaryFocus, secondaryFocus, improvementArea, inputData) {
     const activities = {
       ecosystem: [
-        'Scale ABM program to 50+ target accounts',
+        'Scale ABM program to 50+ target accounts (Example figure: replace with your own)',
         'Launch partner co-marketing campaigns',
         'Implement channel partner certification program',
         'Measure partnership-driven pipeline contribution'
@@ -256,13 +257,13 @@ const EPIC_AUDIT_ENGINE = {
         'Measure product-led revenue contribution'
       ],
       inbound: [
-        'Scale content production to 4+ pieces per week',
+        'Scale content production to 4+ pieces per week (Example figure: replace with your own)',
         'Launch paid media campaigns for content amplification',
         'Optimize conversion paths and landing pages',
         'Measure content-influenced pipeline'
       ],
       community: [
-        'Scale community to 500+ active members',
+        'Scale community to 500+ active members (Example figure: replace with your own)',
         'Launch user-generated content program',
         'Implement community-driven product feedback loop',
         'Measure community impact on retention'
@@ -344,24 +345,24 @@ const EPIC_AUDIT_ENGINE = {
   generateSuccessMetrics(primaryFocus, secondaryFocus, industry) {
     const metrics = {
       ecosystem: [
-        'Partner-sourced pipeline: Target 30% of total pipeline',
-        'Strategic accounts engaged: 50+ enterprise accounts',
-        'Partner satisfaction score: >8/10'
+        'Partner-sourced pipeline: Target 30% of total pipeline (Example figure: replace with your own)',
+        'Strategic accounts engaged: 50+ enterprise accounts (Example figure: replace with your own)',
+        'Partner satisfaction score: >8/10 (Example figure: replace with your own)'
       ],
       product_led: [
-        'Trial-to-paid conversion: >15%',
-        'Product qualified leads: 100+ monthly',
-        'User activation rate: >40%'
+        'Trial-to-paid conversion: >15% (Example figure: replace with your own)',
+        'Product qualified leads: 100+ monthly (Example figure: replace with your own)',
+        'User activation rate: >40% (Example figure: replace with your own)'
       ],
       inbound: [
-        'Organic traffic growth: 50% QoQ',
-        'Content-influenced pipeline: 40% of total',
-        'Lead-to-customer conversion: >10%'
+        'Organic traffic growth: 50% QoQ (Example figure: replace with your own)',
+        'Content-influenced pipeline: 40% of total (Example figure: replace with your own)',
+        'Lead-to-customer conversion: >10% (Example figure: replace with your own)'
       ],
       community: [
-        'Community engagement rate: >25%',
-        'User-generated content: 20+ pieces monthly',
-        'Community-driven retention: 90%+'
+        'Community engagement rate: >25% (Example figure: replace with your own)',
+        'User-generated content: 20+ pieces monthly (Example figure: replace with your own)',
+        'Community-driven retention: 90%+ (Example figure: replace with your own)'
       ]
     };
 
@@ -638,7 +639,8 @@ const EPIC_AUDIT_ENGINE = {
     const { company_stage, industry, current_gtm } = inputData;
     const avgScore = Math.round(Object.values(scores).reduce((a, b) => a + b, 0) / 4);
     
-    let insight = `Your ${company_stage} ${industry} company shows `;
+    // Never print "undefined": callers usually send business_stage, and any missing value reads "not supplied".
+    let insight = `Your company (stage: ${company_stage || inputData.business_stage || 'not supplied'}; industry: ${industry || 'not supplied'}) shows `;
     
     if (avgScore >= 70) {
       insight += "strong GTM maturity across the EPIC framework. Focus on optimization and scaling successful motions.";
@@ -901,7 +903,7 @@ export default async (req, context) => {
     const progressAnalysis = EPIC_AUDIT_ENGINE.calculateProgress(auditResults, previousAudits);
 
     // Store current audit for future comparison
-    await EPIC_AUDIT_ENGINE.storePreviousAudit(consultationId, {
+    const stored = await EPIC_AUDIT_ENGINE.storePreviousAudit(consultationId, {
       company_id: companyId,
       ...auditResults,
       input_data: inputData
@@ -930,6 +932,7 @@ export default async (req, context) => {
         improvement_focus: auditResults.detailed_assessment.gaps[0]?.area,
         q1_target: auditResults.implementation_roadmap.score_targets.q1_target.overall,
         q2_target: auditResults.implementation_roadmap.score_targets.q2_target.overall,
+        targets_note: 'q1_target and q2_target are example targets computed by assuming your scores rise; they are not forecasts. ' + 'Example figure: replace with your own.',
         progress_trend: progressAnalysis.trend || 'initial baseline',
         priority_actions: auditResults.priority_recommendations.slice(0, 3)
       },
@@ -942,7 +945,7 @@ export default async (req, context) => {
       ],
       
       persistence: {
-        stored: true,
+        stored: stored,
         tracking_enabled: true,
         next_audit_recommended: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
         historical_audits_available: previousAudits.length

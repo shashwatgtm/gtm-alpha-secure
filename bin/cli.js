@@ -29,11 +29,11 @@ const GTM_CONSULTANT = {
   },
 
   generateConsultation(input) {
-    const { client_name = "Valued Client" } = input;
+    const client_name = [input.client_name, input.company_name].map((v) => (typeof v === "string" ? v.trim() : "")).filter(Boolean)[0] || "not supplied";
     const epicAnalysis = this.analyzeEPICScores(input);
     const primaryComponent = this.expertiseContent.epicFramework[epicAnalysis.primaryFocus];
     return {
-      consultation_output: `Thank you ${client_name} for the GTM Alpha consultation.\n\nPrimary Focus: ${primaryComponent.name}\nSecondary Focus: ${epicAnalysis.secondary.motion}\nEPIC Scores (1 to 10): E:${epicAnalysis.scores.E}, P:${epicAnalysis.scores.P}, I:${epicAnalysis.scores.I}, C:${epicAnalysis.scores.C}${epicAnalysis.preliminary_note ? '\n' + epicAnalysis.preliminary_note : ''}\n\nCore Insight: ${this.expertiseContent.corePhilosophy}\n\nMethodology: ${this.expertiseContent.gtmAlphaMethodology}`,
+      consultation_output: `GTM Alpha consultation for: ${client_name}\n\nPrimary Focus: ${primaryComponent.name}\nSecondary Focus: ${epicAnalysis.secondary.motion}\nEPIC Scores (1 to 10): E:${epicAnalysis.scores.E}, P:${epicAnalysis.scores.P}, I:${epicAnalysis.scores.I}, C:${epicAnalysis.scores.C}${epicAnalysis.preliminary_note ? '\n' + epicAnalysis.preliminary_note : ''}\n\nCore Insight: ${this.expertiseContent.corePhilosophy}\n\nMethodology: ${this.expertiseContent.gtmAlphaMethodology}`,
       epic_scores: epicAnalysis.scores,
       primary_focus: primaryComponent.name
     };

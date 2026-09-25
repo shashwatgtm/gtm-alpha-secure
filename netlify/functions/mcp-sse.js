@@ -11,11 +11,14 @@ const GTM_CONSULTANT = {
   // EPIC scoring: the documented advanced rubric (netlify/lib/epic-advanced.js), 1 to 10 per motion.
   analyzeEPIC(args) {
     var r = scoreEpic(args);
-    return Object.assign({ scores: r.scores, primaryFocus: r.primary.letter, recommendation: r.primary.motion }, r);
+    var out = Object.assign({ scores: r.scores, primaryFocus: r.primary.letter, recommendation: r.primary.motion }, r);
+    if (out.preliminary_note === null) delete out.preliminary_note;
+    return out;
   },
 
   generateConsultation(args) {
-    var client_name = args.client_name || "Valued Client";
+    // The user's own name (older clients send client_name) or company, else "not supplied": never an invented name.
+    var who = [args.client_name, args.company_name].map(function(v) { return typeof v === "string" ? v.trim() : ""; }).filter(Boolean)[0] || "not supplied";
     var input = Object.assign({}, args, {
       gtm_challenge: args.gtm_challenge || "",
       business_stage: args.business_stage,
@@ -23,7 +26,8 @@ const GTM_CONSULTANT = {
     });
     var analysis = this.analyzeEPIC(input);
     var lines = [
-      "Thank you " + client_name + " for the GTM Alpha consultation.",
+      "GTM Alpha consultation for: " + who,
+      "Challenge: " + (args.gtm_challenge ? String(args.gtm_challenge) : "not supplied"),
       "",
       "Primary Focus: " + analysis.primary.motion,
       "Secondary Focus: " + analysis.secondary.motion,
@@ -44,7 +48,8 @@ const GTM_CONSULTANT = {
   generateRoadmap(focus, timeframe) {
     var component = this.epicFramework[focus] || this.epicFramework.P;
     return {
-      timeframe: timeframe || "90-day",
+      // A timeframe the user did not choose is shown as the default, not as their choice.
+      timeframe: timeframe || "90-day (default, not supplied; Example figure: replace with your own)",
       primary_focus: component.name,
       action_plan: {
         immediate: ["Conduct GTM audit", "Map buyer journey", "Align teams on EPIC priorities"],
@@ -125,7 +130,7 @@ function handleToolCall(name, args) {
   } else if (name === "epic_audit") {
     return GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
   } else if (name === "generate_roadmap") {
-    return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe || "90-day");
+    return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe);
   } else {
     throw new Error("Unknown tool: " + name);
   }

@@ -25,7 +25,6 @@ https://gtmalpha.netlify.app/llms.txt              https://gtmalpha.gtmhelix.com
 # END old-address page redirects
 
 # API Redirects
-/api/gtm          /.netlify/functions/express-mcp-server    200
 /api-docs         /api-docs.html                            200
 
 # MCP Protocol Endpoint (SSE)
