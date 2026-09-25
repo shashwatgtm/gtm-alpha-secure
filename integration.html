@@ -354,7 +354,7 @@
                                 <p>Connect GTM Alpha to Claude Desktop using the npm package for instant access to professional GTM consulting.</p>
                                 <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Claude on the web, desktop or mobile (no install):</h4>
                                 <ol style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
-                                    <li>Open Customize, then Connectors, then Add custom connector</li>
+                                    <li>Open Customize, then Connectors, select +, then Add custom connector</li>
                                     <li>MCP server URL: https://gtmalpha.gtmhelix.com/mcp-sse</li>
                                     <li>Choose no sign-in, then Add</li>
                                 </ol>
@@ -558,6 +558,27 @@ npx @shashwatgtmalpha/gtm-alpha-mcp-server</div>
     </section>
 
     
+    <section class="hx-qa" id="before-you-connect">
+        <h2>Before you connect GTM Alpha</h2>
+        <ul>
+            <li><strong>Claude plan:</strong> any. Custom connectors work on Claude's Free, Pro, Max, Team and Enterprise plans; the Free plan allows one custom connector.</li>
+            <li><strong>Team or Enterprise:</strong> only an Owner can add a custom connector, under Organization settings, Connectors, Add, Custom, Web. Members then turn it on under Customize, Connectors.</li>
+            <li><strong>Accounts and keys:</strong> none. There is no sign-in and no API key.</li>
+            <li><strong>Local use:</strong> the npm package needs Node.js 18 or later.</li>
+        </ul>
+    </section>
+
+    <section class="hx-qa" id="not-ideal-for">
+        <h2>Who is GTM Alpha not ideal for?</h2>
+        <p style="color:rgba(26,14,16,0.72);max-width:80ch">GTM Alpha is a read-only strategy tool for B2B teams choosing which go-to-market motion to lead with. It is not the right fit for:</p>
+        <ul>
+            <li>Teams that want an AI-written strategy: the EPIC scores follow fixed rules from the documented rubric, and no AI model writes them.</li>
+            <li>Companies that cannot share basic numbers: without contract value, deal cycle, net revenue retention and target account count, the result is marked preliminary.</li>
+            <li>Anyone who needs live market data: GTM Alpha looks nothing up and works only from what you enter.</li>
+            <li>Anyone who needs a tool that writes to a CRM or other systems: all three tools are read-only and return analysis only.</li>
+        </ul>
+    </section>
+
     <section class="hx-qa" id="connectors">
         <h2>All MCP connectors by Helix GTM Consulting</h2>
         <p style="color:rgba(26,14,16,0.72);max-width:80ch">GTM Alpha is one of six free, read-only MCP servers for Claude. The others:</p>

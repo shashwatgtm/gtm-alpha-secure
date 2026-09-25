@@ -683,6 +683,7 @@
                     <li><a href="#available-tools">Available Tools</a></li>
                     <li><a href="#endpoints">API Endpoints</a></li>
                     <li><a href="#authentication">Authentication</a></li>
+                    <li><a href="#limits">Limits</a></li>
                     <li><a href="#examples">Examples</a></li>
                 </ul>
             </aside>
@@ -851,6 +852,17 @@
                             Simply connect to the MCP endpoint and start using the tools immediately.
                         </div>
                     </div>
+                </section>
+
+                <section id="limits" class="docs-section">
+                    <h2>Limits and when not to use GTM Alpha</h2>
+                    <p>All three tools are read-only and return analysis as text. Scores run from 1 to 10; without the optional inputs (contract value, deal cycle, net revenue retention, target accounts, self-serve, deal source, region) the result is marked preliminary. The MCP endpoint answers POST requests only; other methods return 405. GTM Alpha is not the right tool for:</p>
+                    <ul>
+                        <li>Teams that want an AI-written strategy: the EPIC scores follow fixed rules from the documented rubric, and no AI model writes them.</li>
+                        <li>Companies that cannot share basic numbers: without contract value, deal cycle, net revenue retention and target account count, the result is marked preliminary.</li>
+                        <li>Anyone who needs live market data: GTM Alpha looks nothing up and works only from what you enter.</li>
+                        <li>Anyone who needs a tool that writes to a CRM or other systems: all three tools are read-only and return analysis only.</li>
+                    </ul>
                 </section>
 
                 <section id="examples" class="docs-section">
