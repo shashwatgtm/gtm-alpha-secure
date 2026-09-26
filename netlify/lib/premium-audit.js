@@ -56,7 +56,7 @@ function messagePage(status, title, lines) {
 <title>${esc(title)} | GTM Alpha</title><link rel="stylesheet" href="/assets/fonts.css"><link rel="stylesheet" href="/assets/brand.css"></head>
 <body><main class="hx-wrap hx-message"><h1>${esc(title)}</h1>
 <ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>
-<p><a href="/consultation">Back to the Premium Audit form</a> (use your browser's Back button to keep your answers)</p></main></body></html>`;
+<p><a href="/consultation">Back to the free audit form</a> (use your browser's Back button to keep your answers)</p></main></body></html>`;
   return new Response(body, { status, headers: { ...PAGE_HEADERS, "Content-Security-Policy": csp } });
 }
 
@@ -121,7 +121,7 @@ export function reportInput(c) {
 
 export default async (req) => {
   if (req.method !== "POST") {
-    return messagePage(405, "Use the form", ["Open the Premium Audit form and press the button to get your report."]);
+    return messagePage(405, "Use the form", ["Open the free audit form and press the button to get your report."]);
   }
   const got = await readInput(req);
   if (got.error === "too_large") return messagePage(413, "Your answers are too long", ["Please shorten them and try again."]);

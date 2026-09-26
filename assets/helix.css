@@ -234,3 +234,22 @@ main table td, main table th { overflow-wrap: break-word; word-break: normal; }
 main table td, main table th, .hx-table td, .hx-table th { overflow-wrap: normal; }
 main table td a, .hx-table td a { overflow-wrap: anywhere; }
 .free-badge { white-space: nowrap; }
+
+/* ---------- run 8: plain EPIC scorecard (hero) ---------- */
+.hx8-sc { margin: 0; background: #fff; border: 1.5px solid var(--h7-ink-12); border-top: 4px solid var(--h7-ox); padding: 20px 22px; max-width: 560px; }
+.hx8-sc-k { font-family: var(--h7-mono); font-size: 12px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--h7-ox); margin: 0 0 8px; }
+.hx8-sc-in { font-family: var(--h7-display); font-size: 18px; line-height: 1.35; color: var(--h7-ink); margin: 0 0 16px; }
+.hx8-sc-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.hx8-sc-rows li { display: grid; grid-template-columns: minmax(8.5rem, 11rem) 1fr auto; align-items: center; gap: 12px; font-size: 15px; }
+.hx8-sc-l { color: var(--h7-ink); font-weight: 600; }
+.hx8-sc-bar { height: 14px; background: var(--h7-clay); position: relative; overflow: hidden; }
+.hx8-sc-bar i { position: absolute; inset: 0 auto 0 0; width: calc(var(--v) * 10%); background: var(--h7-ink-70); animation: hx8-grow 1.1s cubic-bezier(.2,.7,.2,1) both; }
+.hx8-sc-rows li.is-lead .hx8-sc-bar i { background: var(--h7-signal); }
+.hx8-sc-rows li b { font-family: var(--h7-mono); font-size: 15px; color: var(--h7-ink); white-space: nowrap; }
+.hx8-sc-rows li b small { font-size: 12px; font-weight: 400; color: var(--h7-ink-70); }
+.hx8-sc-v { margin: 18px 0 8px; font-family: var(--h7-display); font-weight: 800; font-size: 22px; color: var(--h7-ox); }
+.hx8-sc figcaption { font-size: 13.5px; line-height: 1.5; color: var(--h7-ink-70); }
+.hx8-sc-cta { display: inline-block; margin-top: 12px; font-weight: 700; color: var(--h7-ink); text-decoration: underline; text-decoration-color: var(--h7-signal); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+@keyframes hx8-grow { from { width: 0; } }
+@media (max-width: 420px) { .hx8-sc { padding: 16px 14px; } .hx8-sc-rows li { grid-template-columns: 1fr auto; } .hx8-sc-bar { grid-column: 1 / -1; grid-row: 2; } }
+@media (prefers-reduced-motion: reduce) { .hx8-sc-bar i { animation: none; } }

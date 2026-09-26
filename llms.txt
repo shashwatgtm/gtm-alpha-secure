@@ -5,6 +5,7 @@
 - MCP server URL (Streamable HTTP, no sign-in, read-only tools): https://gtmalpha.gtmhelix.com/mcp
 - Setup for Claude and other assistants: https://gtmalpha.gtmhelix.com/integration
 - API and tool documentation: https://gtmalpha.gtmhelix.com/api-docs
+- Free EPIC audit (web form, report with a 180 day plan): https://gtmalpha.gtmhelix.com/consultation
 - Pricing (free during testing): https://gtmalpha.gtmhelix.com/pricing
 - FAQ: https://gtmalpha.gtmhelix.com/faq
 - Privacy policy: https://gtmalpha.gtmhelix.com/privacy
@@ -19,7 +20,7 @@
 
 ### What is GTM Alpha?
 
-GTM Alpha is a go-to-market tool by Shashwat Ghosh of Helix GTM Consulting. It scores four GTM motions with the EPIC framework (Ecosystem and ABM, Product-Led Growth, Inbound and Outbound Demand Generation, Community-Led Advocacy) from 1 to 10 and names the motion to lead with. It runs as an MCP server for Claude and other AI assistants, and as a Premium Audit report on this site.
+GTM Alpha is a go-to-market tool by Shashwat Ghosh of Helix GTM Consulting. It scores four GTM motions with the EPIC framework (Ecosystem and ABM, Product-Led Growth, Inbound and Outbound Demand Generation, Community-Led Advocacy) from 1 to 10 and names the motion to lead with. It runs as an MCP server for Claude and other AI assistants, and as a free EPIC audit report on this site with a 180 day plan in four stages.
 
 ### How is the EPIC score calculated?
 
@@ -31,15 +32,15 @@ In Claude, open Customize, then Connectors, then Add custom connector, and paste
 
 ### Is GTM Alpha free?
 
-Yes, while it is in testing. The MCP tools are free and need no account, and the Premium Audit report is shown straight after the form, with no payment step.
+Yes, while it is in testing. The MCP tools are free and need no account, and the free EPIC audit report is shown straight after the form, with no payment step.
 
 ### What data does GTM Alpha keep?
 
-The MCP server and the Premium Audit form store and log nothing: the form's answers build your report in that request and are then dropped. The EPIC audit API stores what you send in Netlify Blobs until you ask for deletion. The privacy policy lists every field.
+The MCP server and the free EPIC audit form store and log nothing: the form's answers build your report in that request and are then dropped. The EPIC audit API stores what you send in Netlify Blobs until you ask for deletion. The privacy policy lists every field.
 
 ### Who is behind GTM Alpha?
 
-Shashwat Ghosh, Co-Founder and Fractional CMO of Helix GTM Consulting, a business consulting firm founded in 2022 in Bengaluru. He has 24+ years in B2B and 10+ years of fractional experience, and created the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology. He works across India, APAC, the Middle East, the US and the UK.
+Shashwat Ghosh, Co-Founder and Fractional CMO of Helix GTM Consulting, a business consulting firm founded in 2022 in Bengaluru. He has 24+ years in B2B and 10+ years of fractional experience, and created the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology.
 
 ### Which other MCP connectors does Helix GTM Consulting offer?
 

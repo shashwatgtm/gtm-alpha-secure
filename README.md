@@ -4,7 +4,9 @@
 [![npm version](https://img.shields.io/npm/v/@shashwatgtmalpha/gtm-alpha-mcp-server)](https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Professional Go-To-Market strategy consultation using Shashwat Ghosh's EPIC Framework
+Professional Go-To-Market strategy consultation using Shashwat Ghosh's EPIC Framework.
+
+On the website, the free EPIC audit (https://gtmalpha.gtmhelix.com/consultation) scores the four motions and returns a 180 day plan in four stages. In Claude, the GTM Roadmap tool returns a 30, 60 or 90 day plan.
 
 ---
 
@@ -138,18 +140,25 @@ The GTM Alpha methodology is built on the EPIC Framework:
 
 ## About Shashwat Ghosh
 
-Co-Founder and Fractional CMO, Helix GTM Consulting
+Co-Founder and Fractional CMO, Helix GTM Consulting (founded 2022, Bengaluru). 24+ years in B2B and 10+ years of fractional experience. Creator of the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology.
 
-- Most Admired Marketing Leaders 2025 - CMO Asia
-- Award Winner: B2B Marketer of the Year 2020 - CMO Asia (Fintech Category)
-- LinkedIn Top Product Marketing Voice, #10 India and #52 worldwide (Favikon verified)
-- Experience: 24+ years in B2B and 10+ years of fractional experience
-- Education: NIT Rourkela, Ecole des Ponts ParisTech, XLRI Jamshedpur
-
-### Proven Results
+### Results
 
 - VP Marketing, Happay: 161% ARR growth. 2x exit: CRED ($180M), then MakeMyTrip.
 - VP Performance Marketing, Locus: $4.2M pipeline. Acquired by IKEA (Ingka Group) in Oct 2025.
+- Fractional CMO, FieldAssist: 2.25x growth in mid-market and enterprise qualified leads.
+- Advisor, QuantumStreet AI: rebranded a $7Bn AUM AI investment fund, with Digitas and IBM.
+- 4x business growth, Airtel Data Centers and Managed Services.
+- Rs 2.35 Cr TCV in 6 months with ABM at Seclore, and 225+ sales meetings across Seclore's target accounts.
+
+### Recognition
+
+- LinkedIn Top Product Marketing Voice: #10 India, #52 worldwide (Favikon verified)
+- #14 in AI Research and Innovation on LinkedIn India
+- Most Admired Marketing Leaders 2025 (CMO Asia)
+- B2B Marketer of the Year 2020, Fintech (CMO Asia)
+
+More: https://tools.gtmhelix.com/about/
 
 ---
 
