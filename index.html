@@ -377,7 +377,11 @@
         }
         .section-title { font-size: 48px; font-weight: 800; color: var(--text-primary); margin-bottom: 16px; }
         .section-subtitle { font-size: 20px; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
-        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 32px; }
+        .features-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+        @media (max-width: 900px) { .features-grid { grid-template-columns: 1fr; } }
+        /* Run 8: the credentials band now has four results (bio.json band_results), so four columns on wide screens */
+        @media (min-width: 1000px) { .hx7-results { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+        @media (min-width: 761px) and (max-width: 999px) { .hx7-results { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hx7-results li:nth-child(3) { border-left: 0; padding-left: 0; } }
         .feature-card {
             background: #FAF8F6;
             padding: 40px;
