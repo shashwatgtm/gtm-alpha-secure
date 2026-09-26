@@ -177,13 +177,25 @@ function missingRequired(tool, args) {
 }
 
 // Decision N2 (run 6): amounts, counts and durations cannot be negative; the schema says which (minimum).
+// Run 6 N2 and run 7 (T2, T6): a number sent as text is read with commas allowed or refused; minimum holds; a choice
+// must be one of the listed values. Numbers read from text replace the text in args before the tool runs.
 function belowMinimum(tool, args) {
   var props = (tool.inputSchema && tool.inputSchema.properties) || {};
-  return Object.keys(props).filter(function(key) {
-    var min = props[key].minimum;
-    var v = typeof args[key] === "string" && args[key].trim() !== "" ? Number(args[key]) : args[key];
-    return typeof min === "number" && typeof v === "number" && isFinite(v) && v < min;
-  }).map(function(key) { return key + " must be " + props[key].minimum + " or more"; });
+  var problems = [];
+  Object.keys(props).forEach(function(key) {
+    var p = props[key], v = args[key];
+    if (v === undefined || v === null) return;
+    if (Array.isArray(p.enum) && typeof v === "string" && p.enum.indexOf(v) === -1) { problems.push(key + " must be one of: " + p.enum.join(", ")); return; }
+    if (p.type !== "number" && p.type !== "integer") return;
+    if (typeof v === "string") {
+      var n = v.trim() === "" ? NaN : Number(v.replace(/,/g, "").trim());
+      if (!isFinite(n)) { problems.push(key + " must be a number, written with digits only (for example 42000)"); return; }
+      args[key] = n; v = n;
+    }
+    if (typeof v !== "number" || !isFinite(v)) { problems.push(key + " must be a number"); return; }
+    if (typeof p.minimum === "number" && v < p.minimum) problems.push(key + " must be " + p.minimum + " or more");
+  });
+  return problems;
 }
 
 export default async function handler(req, context) {
@@ -227,7 +239,7 @@ export default async function handler(req, context) {
         id: id,
         result: {
           protocolVersion: version,
-          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.0" },
+          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.1" },
           capabilities: { tools: {} }
         }
       });
