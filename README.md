@@ -148,10 +148,8 @@ Co-Founder and Fractional CMO, Helix GTM Consulting
 
 ### Proven Results
 
-| Result | Role and company |
-|--------|------------------|
-| 161% ARR growth | VP Marketing, Happay (acquired by CRED) |
-| $4.2M pipeline | VP Performance Marketing, Locus (acquired by IKEA) |
+- VP Marketing, Happay: 161% ARR growth. 2x exit: CRED ($180M), then MakeMyTrip.
+- VP Performance Marketing, Locus: $4.2M pipeline. Acquired by IKEA (Ingka Group) in Oct 2025.
 
 ---
 
