@@ -59,6 +59,13 @@ test("a complete form gets the report page, with a policy that allows only its o
   assert.ok(/\/assets\/fonts\.css\?v=[0-9a-f]{10}/.test(html) && /\/assets\/site\.css\?v=[0-9a-f]{10}/.test(html), "versioned stylesheets");
 });
 
+test("a report built from the made-up example answers says so; others do not (run 10 R10-16)", async () => {
+  const ex = await (await post("/api/premium-audit", new URLSearchParams({ ...FORM, company_name: "Clausewise (example company)" }).toString())).text();
+  assert.ok(ex.includes("This report uses the made-up example answers"));
+  const own = await (await post("/api/premium-audit", new URLSearchParams(FORM).toString())).text();
+  assert.ok(!own.includes("made-up example answers"));
+});
+
 test("JSON posts work the same way", async () => {
   const res = await post("/api/premium-audit", JSON.stringify(FORM), "application/json");
   assert.equal(res.status, 200);

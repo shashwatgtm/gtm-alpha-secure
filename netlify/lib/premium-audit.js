@@ -151,7 +151,8 @@ export default async (req) => {
   }
   if (!report) return messagePage(500, "The report could not be built", ["Please try again in a minute. If it keeps failing, email shashwat@gtmhelix.com."]);
 
-  const page = withChrome(report);
+  // R10-16: a report built from the form's made-up example answers says so at the top.
+  const page = withChrome(report, /\(example company\)$/.test(checked.clean.company_name));
   return new Response(page, { status: 200, headers: { ...PAGE_HEADERS, "Content-Security-Policy": reportPolicy(page) } });
 };
 
@@ -178,9 +179,11 @@ export const ACTIONS = '<nav class="hx10-actions" aria-label="Report actions">' 
 // still in it (nothing is stored anywhere); without that history, or without JavaScript, the link opens the form.
 export const EDIT_SCRIPT = "(function(){var a=document.getElementById('edit-answers');if(!a)return;a.addEventListener('click',function(e){" +
   "try{var r=document.referrer?new URL(document.referrer):null;if(r&&r.origin===location.origin&&(r.pathname==='/consultation'||r.pathname==='/consultation.html')&&history.length>1){e.preventDefault();history.back();}}catch(x){}});})();";
-export function withChrome(report) {
+export const EXAMPLE_NOTE = '<p class="hx10-note"><strong>This report uses the made-up example answers (Clausewise).</strong> ' +
+  'Press Edit my answers to change them to your own.</p>';
+export function withChrome(report, example = false) {
   return report
     .replace("</head>", `${STYLESHEETS}</head>`)
-    .replace("<body>", `<body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx10-report">${ACTIONS}`)
+    .replace("<body>", `<body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx10-report">${example ? EXAMPLE_NOTE : ""}${ACTIONS}`)
     .replace("</body>", `${NEXT}</main>${FOOTER}<script>${EDIT_SCRIPT}</script></body>`);
 }
