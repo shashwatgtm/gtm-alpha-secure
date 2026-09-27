@@ -110,3 +110,9 @@ h1, h2, h3 { text-wrap: balance; }
   /* a question that is alone in its section, and the closing box, use both columns */
   .hx10-sec:has(> .faq-item) > .faq-item:first-of-type:last-of-type, .hx10-sec:has(> .faq-item) > .highlight-box { grid-column: 3 / span 2; }
 }
+/* no heading ends with a single word: "pretty" wrapping keeps at least two words on the last line (Chrome) */
+.report-container h2, .report-container h3, .hx10-sec > h2, .hx-qa > h2, .section-header .section-title, .epic-item h3 { text-wrap: pretty; }
+@media (min-width: 1280px) {
+  /* the four motion cards: two per row beside the heading, so each name stays on one line */
+  .epic-framework .epic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
