@@ -309,6 +309,9 @@
         .code-block .key { color: #EAD9D5; }
         .code-block .string { color: #EAD9D5; }
         .code-block .bracket { color: #EAD9D5; }
+        .hx8-dev h3 { font-size: 20px; margin: 20px 0 10px; }
+        .hx8-dev ul { margin: 8px 0 16px 20px; }
+        .hx8-dev .code-container { margin: 8px 0 12px; }
         footer { background: var(--primary-navy); color: #FAF8F6; padding: 60px 0 30px; border-top: 1px solid rgba(250, 248, 246, 0.1); }
         .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 40px; }
         .footer-brand h3 { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
@@ -372,10 +375,9 @@
                 <div class="tab-buttons">
                     <button class="tab-btn active" data-tab="claude">Claude</button>
                     <button class="tab-btn" data-tab="cursor">Cursor and Windsurf</button>
-                    <button class="tab-btn" data-tab="openai">ChatGPT and OpenAI</button>
+                    <button class="tab-btn" data-tab="openai">ChatGPT</button>
                     <button class="tab-btn" data-tab="gemini">Google Gemini</button>
-                    <button class="tab-btn" data-tab="copilot">MS Copilot</button>
-                    <button class="tab-btn" data-tab="api">Direct API</button>
+                    <button class="tab-btn" data-tab="copilot">Microsoft Copilot</button>
                 </div>
 
                 <div class="tab-content">
@@ -450,25 +452,79 @@
                     </div>
 
                     <div class="tab-panel" id="openai">
-                        <div class="integration-content">
                             <div class="integration-text">
                                 <h3>Set it up in ChatGPT</h3>
-                                <p>Access GTM Alpha tools through ChatGPT Custom GPTs or OpenAI API using our MCP endpoint.</p>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
+                                <p>Use GTM Alpha in ChatGPT, or in your own app built on OpenAI, with the connector address below. No sign-in or key is needed.</p>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Connector address:</h4>
                                 <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Features:</h4>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">What you can ask for:</h4>
                                 <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
-                                    <li>JSON-RPC 2.0 protocol</li>
-                                    <li>Streamable HTTP transport (POST requests, JSON responses)</li>
-                                    <li>Tool annotations for safety</li>
+                                    <li>GTM Consultation: your EPIC scores and the motion to lead with</li>
+                                    <li>EPIC Audit: your EPIC scores with the rule behind each</li>
+                                    <li>GTM Roadmap: a 30, 60 or 90 day plan for one motion</li>
                                 </ul>
-                            </div>
-                            <div class="code-container">
-                                <div class="code-header">
-                                    <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
-                                    <span>API Request Example</span>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
+                                    <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
+                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
                                 </div>
-                                <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
+                            </div>
+                    </div>
+
+                    <div class="tab-panel" id="gemini">
+                            <div class="integration-text">
+                                <h3>Set it up with Gemini</h3>
+                                <p>Connect GTM Alpha to Google Gemini with the same connector address. No sign-in or key is needed.</p>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Connector address:</h4>
+                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">What you can ask for:</h4>
+                                <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
+                                    <li>GTM Consultation: your EPIC scores and the motion to lead with</li>
+                                    <li>EPIC Audit: your EPIC scores with the rule behind each</li>
+                                    <li>GTM Roadmap: a 30, 60 or 90 day plan for one motion</li>
+                                </ul>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
+                                    <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
+                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
+                                </div>
+                            </div>
+                    </div>
+
+                    <div class="tab-panel" id="copilot">
+                            <div class="integration-text">
+                                <h3>Set it up with Copilot</h3>
+                                <p>Connect GTM Alpha to Microsoft Copilot with the same connector address. No sign-in or key is needed.</p>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Connector address:</h4>
+                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
+                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">What you can ask for:</h4>
+                                <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
+                                    <li>GTM Consultation: your EPIC scores and the motion to lead with</li>
+                                    <li>EPIC Audit: your EPIC scores with the rule behind each</li>
+                                    <li>GTM Roadmap: a 30, 60 or 90 day plan for one motion</li>
+                                </ul>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
+                                    <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
+                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <details class="hx8-dev" id="for-developers">
+                <summary>For developers</summary>
+                <div>
+                    <h3>How the connector works</h3>
+                    <ul>
+                        <li>Address: https://gtmalpha.gtmhelix.com/mcp (the older address /mcp-sse also works)</li>
+                        <li>JSON-RPC 2.0 over HTTP POST (Streamable HTTP transport, JSON responses)</li>
+                        <li>MCP protocol versions: 2025-06-18, 2025-03-26, 2024-11-05</li>
+                        <li>Server version: 1.3.1</li>
+                        <li>Tool annotations for safety: all three tools are read-only</li>
+                        <li>Tool names: gtm_consultation (GTM Consultation), epic_audit (EPIC Audit), generate_roadmap (GTM Roadmap)</li>
+                    </ul>
+                    <h3>Call a tool</h3>
+                    <div class="code-container"><div class="code-header"><span>API request example (curl)</span></div>
+                    <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -480,105 +536,35 @@
         "gtm_challenge": "How to enter enterprise market?"
       }
     }
-  }'</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-panel" id="gemini">
-                        <div class="integration-content">
-                            <div class="integration-text">
-                                <h3>Set it up with Gemini</h3>
-                                <p>Connect GTM Alpha to Google Gemini through function calling using our MCP endpoint.</p>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
-                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Available Tools:</h4>
-                                <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
-                                    <li>gtm_consultation: GTM strategy advice with EPIC scores</li>
-                                    <li>epic_audit: EPIC framework scores and the rules behind them</li>
-                                    <li>generate_roadmap: a 30, 60 or 90 day plan for one motion</li>
-                                </ul>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                                    <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
-                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
-                                </div>
-                            </div>
-                            <div class="code-container">
-                                <div class="code-header">
-                                    <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
-                                    <span>Get Tools List</span>
-                                </div>
-                                <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
+  }'</div></div>
+                    <h3>List the tools</h3>
+                    <div class="code-container"><div class="code-header"><span>Get the tools list (curl)</span></div>
+                    <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
     "id": 1,
     "method": "tools/list"
-  }'</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-panel" id="copilot">
-                        <div class="integration-content">
-                            <div class="integration-text">
-                                <h3>Set it up with Copilot</h3>
-                                <p>Integrate GTM Alpha with Microsoft Copilot using our MCP endpoint.</p>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">MCP Endpoint (Streamable HTTP):</h4>
-                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Protocol:</h4>
-                                <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
-                                    <li>JSON-RPC 2.0 over HTTP POST</li>
-                                    <li>MCP Protocol Versions: 2025-06-18, 2025-03-26, 2024-11-05</li>
-                                    <li>Server Version: 1.3.1</li>
-                                </ul>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                                    <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
-                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
-                                </div>
-                            </div>
-                            <div class="code-container">
-                                <div class="code-header">
-                                    <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
-                                    <span>Initialize Connection</span>
-                                </div>
-                                <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
+  }'</div></div>
+                    <h3>Start a connection</h3>
+                    <div class="code-container"><div class="code-header"><span>Initialize (curl)</span></div>
+                    <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
     "id": 1,
     "method": "initialize"
-  }'</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="tab-panel" id="api">
-                        <div class="integration-content">
-                            <div class="integration-text">
-                                <h3>Call it from your own code</h3>
-                                <p>Direct REST API and MCP access for custom integrations and applications.</p>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Endpoints:</h4>
-                                <div class="file-location">MCP: https://gtmalpha.gtmhelix.com/mcp (the older address /mcp-sse also works)<br>REST API: see the API documentation</div>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                                    <a href="/api-docs" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">API Documentation</a>
-                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
-                                </div>
-                            </div>
-                            <div class="code-container">
-                                <div class="code-header">
-                                    <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
-                                    <span>npm Install</span>
-                                </div>
-                                <div class="code-block">npm install @shashwatgtmalpha/gtm-alpha-mcp-server
+  }'</div></div>
+                    <h3>Call it from your own code</h3>
+                    <p>Use the MCP address above, or the REST API described in the <a href="/api-docs">API documentation</a>. To run the server on your own machine, use the npm package:</p>
+                    <div class="code-container"><div class="code-header"><span>npm install</span></div>
+                    <div class="code-block">npm install @shashwatgtmalpha/gtm-alpha-mcp-server
 
 # Or run directly with npx
-npx @shashwatgtmalpha/gtm-alpha-mcp-server</div>
-                            </div>
-                        </div>
-                    </div>
+npx @shashwatgtmalpha/gtm-alpha-mcp-server</div></div>
+                    <p><a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server">npm package</a> · <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant">MCP Registry</a></p>
                 </div>
-            </div>
+            </details>
 
             <div style="text-align: center; margin-top: 40px;">
                 <a href="/consultation" class="btn-primary">Get your free EPIC audit</a>

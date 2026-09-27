@@ -536,6 +536,12 @@
             accent-color: var(--accent-coral);
         }
 
+        .hx9-example { margin: 14px 0 4px; }
+        .hx9-example button { cursor: pointer; }
+        .hx9-example-note { font-size: 15px; }
+        .hx8-dev code { font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+        .hx8-dev ul { margin: 8px 0 8px 20px; }
+
         .submit-btn {
             width: 100%;
             background: var(--gradient-accent);
@@ -712,6 +718,8 @@
                 <div class="form-header">
                     <h2>Your answers build your report</h2>
                     <p>Questions marked * are required. The optional ones make the scores fuller. Your report opens on the next page, and you can save it as a PDF.</p>
+                    <p class="hx9-example"><button type="button" id="fill-example" class="hx-btn-ghost">Fill in an example</button></p>
+                    <p class="hx9-example-note" id="example-note" role="status" aria-live="polite">Want to see a real report first? The example fills the form with a made-up company. You still press the button at the end.</p>
                 </div>
                 
                 <div class="security-note">
@@ -726,7 +734,7 @@
                                 <input type="text" id="client_name" name="client_name" required placeholder="John Smith">
                             </div>
                             <div class="form-group">
-                                <label for="client_designation">Your Role/Title <span class="required">*</span></label>
+                                <label for="client_designation">Your Role or Title <span class="required">*</span></label>
                                 <input type="text" id="client_designation" name="client_designation" required placeholder="CEO, CMO, Founder">
                             </div>
                         </div>
@@ -800,7 +808,7 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="monthly_budget">Monthly GTM Budget <span class="required">*</span><br><small style="font-weight: normal; color: #5A4A4D;">(Marketing + Tools + SDR + Sales/CS Promotion, excluding manpower). These amounts are your own budget answer, not our prices. The EPIC scores do not use it.</small></label>
+                                <label for="monthly_budget">Monthly GTM Budget <span class="required">*</span><br><small style="font-weight: normal; color: #5A4A4D;">What you spend each month on marketing, tools, outreach and sales promotion, not counting salaries. These amounts are your own budget, not our prices. The EPIC scores do not use it.</small></label>
                                 <select id="monthly_budget" name="monthly_budget" required>
                                     <option value="">Select Budget Range</option>
                                     <option value="500">Under $500</option>
@@ -815,7 +823,7 @@
                             <div class="form-group">
                                 <label for="primary_focus">Primary Focus Area</label>
                                 <input type="text" id="primary_focus" name="primary_focus"
-                                       placeholder="e.g., Customer Acquisition, Product Development">
+                                       placeholder="For example: winning new customers">
                             </div>
                         </div>
 
@@ -841,7 +849,7 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="deal_cycle_band">Deal cycle, first touch to closed-won (optional)</label>
+                                <label for="deal_cycle_band">How long a deal takes, from first contact to signed contract (optional)</label>
                                 <select id="deal_cycle_band" name="deal_cycle_band">
                                     <option value="">Not sure</option>
                                     <option value="under_14_days">Under 14 days</option>
@@ -853,7 +861,7 @@
 
                         <div class="form-row">
                             <div class="form-group">
-                                <label for="nrr_band">Net revenue retention (optional)</label>
+                                <label for="nrr_band">Net revenue retention (optional)<br><small style="font-weight: normal; color: #5A4A4D;">What last year&#x27;s customers pay you this year, as a share of what they paid last year. 100% means you kept all of it.</small></label>
                                 <select id="nrr_band" name="nrr_band">
                                     <option value="">Not sure</option>
                                     <option value="under_100">Under 100%</option>
@@ -920,9 +928,28 @@
                             </label>
                         </div>
 
-                        <button type="submit" class="submit-btn">Get my free EPIC audit</button>
+                        <button type="submit" class="submit-btn">Get my free EPIC audit report</button>
                     </div>
                 </form>
+
+                <details class="hx8-dev">
+                    <summary>For developers</summary>
+                    <div>
+                        <p>The form posts its answers as a normal form to the address in its <code>action</code>. For the lists whose codes differ from the words you see, it sends these codes:</p>
+                        <ul>
+                            <li><code>team_size</code>: <code>1</code> (Solo Founder), <code>5</code> (2 to 5 people), <code>10</code> (6 to 10 people), <code>20</code> (11 to 20 people), <code>50</code> (21 to 50 people), <code>100</code> (51 to 100 people), <code>200</code> (100+ people)</li>
+                            <li><code>monthly_budget</code>: <code>500</code> (Under $500), <code>1000</code> ($500 to $1,000), <code>5000</code> ($1,000 to $5,000), <code>10000</code> ($5,000 to $10,000), <code>25000</code> ($10,000 to $25,000), <code>50000</code> ($25,000 to $50,000), <code>100000</code> (Over $50,000)</li>
+                            <li><code>acv_band</code>: <code>under_5k</code> (Under $5,000), <code>5k_to_50k</code> ($5,000 to $50,000), <code>over_50k</code> (Over $50,000)</li>
+                            <li><code>deal_cycle_band</code>: <code>under_14_days</code> (Under 14 days), <code>14_to_90_days</code> (14 to 90 days), <code>over_90_days</code> (Over 90 days)</li>
+                            <li><code>nrr_band</code>: <code>under_100</code> (Under 100%), <code>100_to_120</code> (100% to 120%), <code>over_120</code> (Over 120%)</li>
+                            <li><code>tam_band</code>: <code>under_500</code> (Under 500), <code>500_to_10000</code> (500 to 10,000), <code>over_10000</code> (Over 10,000)</li>
+                            <li><code>deal_source</code>: <code>referrals</code> (Referrals), <code>outbound</code> (Outbound), <code>partnerships</code> (Partnerships), <code>inbound</code> (Inbound), <code>mixed</code> (Mixed, no single source)</li>
+                            <li><code>geography</code>: <code>india</code> (India), <code>us_eu</code> (US or Europe), <code>middle_east</code> (Middle East), <code>apac</code> (APAC outside India), <code>global</code> (Global or several regions)</li>
+                            <li><code>self_serve</code>: <code>yes</code> (Yes), <code>no</code> (No)</li>
+                        </ul>
+                        <p>The JSON API and the MCP tools are described in the <a href="/api-docs">API docs</a>.</p>
+                    </div>
+                </details>
 
                 <div id="result"></div>
             </div>
@@ -977,5 +1004,6 @@
         </div>
     </footer>
     <script src="/assets/js/consultation.js"></script>
+    <script src="/assets/js/example.js"></script>
 </body>
 </html>

@@ -238,122 +238,121 @@
 
     <div class="container content">
         <div class="highlight-box">
-            <strong>Your Privacy Matters</strong><br>
-            GTM Alpha is committed to protecting your personal data. This policy explains what data we collect, why we collect it, how we use it, and your rights regarding your data.
+            <strong>In short</strong><br>
+            The free EPIC audit form and GTM Alpha in Claude keep nothing you type. The EPIC audit API for developers keeps what it is sent until you ask us to delete it. Our pages set no cookies and run no analytics. This page explains what we collect, why, how long we keep it and what you can ask us to do.
         </div>
 
-        <h2>1. Data Controller</h2>
-        <p>Helix GTM Consulting ("we", "us", "our") is the data controller for personal data collected through this website and services.</p>
+        <h2>1. Who is responsible for your data</h2>
+        <p>Helix GTM Consulting ("we", "us", "our") decides how the personal data collected through this website and the GTM Alpha tools is used.</p>
         <p><strong>Contact:</strong><br>
         Shashwat Ghosh<br>
         Email: <a href="mailto:shashwat@gtmhelix.com">shashwat@gtmhelix.com</a><br>
         Website: <a href="https://gtmalpha.gtmhelix.com">gtmalpha.gtmhelix.com</a></p>
 
-        <h2>2. Data We Collect</h2>
+        <h2>2. What we collect</h2>
 
-        <h3>2.1 Free EPIC audit form</h3>
+        <h3>2.1 The free EPIC audit form</h3>
         <table>
-            <tr><th>Data</th><th>Why</th><th>Where it is kept</th></tr>
-            <tr><td>Your name and role, company name, company description, GTM challenge, industry, business stage, team size, monthly budget, primary focus, company website and LinkedIn URL, and, if you choose to give them, your contract value band, deal cycle band, net revenue retention band, number of addressable accounts, main deal source, primary market and whether you offer self-serve sign-up</td><td>To build your free EPIC audit report</td><td>Not kept. The form sends your answers to <code>/api/premium-audit</code>, which checks them, builds the report in the same request and returns it to your browser. Our code does not store or log the answers or the report, and sends them to no one</td></tr>
+            <tr><th>What you enter</th><th>Why</th><th>Do we keep it?</th></tr>
+            <tr><td>Your name and role, company name, company description, GTM challenge, industry, business stage, team size, monthly budget, primary focus, company website and LinkedIn address, and any of the optional questions you answer (contract value, deal cycle, net revenue retention, addressable accounts, main deal source, primary market and self-serve sign-up)</td><td>To build your free EPIC audit report</td><td>No. Your answers go to our server, which checks them, builds your report straight away and sends it back to your browser. Our code does not save or log your answers or your report, and sends them to no one</td></tr>
         </table>
-        <p>The form does not ask for your email address, and no payment is taken, so no payment details are asked for. The report stays in your browser tab; if you download the PDF, it is saved on your device.</p>
+        <p>The form does not ask for your email address and takes no payment, so it asks for no payment details. Your report stays in your browser tab. If you download it as a PDF, the file is saved on your device.</p>
 
-        <h3>2.2 EPIC audit API</h3>
-        <p>If you or an application send data to <code>/api/epic-audit</code>, the inputs are saved with the audit result in our Netlify Blobs database (store "epic-audits").</p>
+        <h3>2.2 The EPIC audit API for developers</h3>
+        <p>Developers can send company details to the EPIC audit API (described in the <a href="/api-docs">API docs</a>). What they send is saved, with the result, in a database at Netlify, the company that hosts this site.</p>
 
-        <h3>2.3 The connector in Claude and other assistants</h3>
-        <p>When an AI assistant calls a GTM Alpha tool through <code>/mcp</code> (or the older address <code>/mcp-sse</code>), the server receives the tool name and the inputs for that call and uses them only to build the reply. Our code does not store or log these inputs or the results, and it never receives your conversation. Replies are sent with <code>Cache-Control: no-store</code>.</p>
+        <h3>2.3 GTM Alpha in Claude and other AI assistants</h3>
+        <p>When your AI assistant uses a GTM Alpha tool, our server receives the name of the tool and the details for that request, and uses them only to build the answer. Our code does not save or log them, and it never sees the rest of your conversation. Answers are marked so that they are not stored in any cache.</p>
 
-        <h3>2.4 Data collected automatically</h3>
+        <h3>2.4 What is collected automatically</h3>
         <ul>
-            <li>Our pages include no analytics or tracking scripts and set no cookies.</li>
-            <li>Netlify, which hosts this site, processes each request (including your IP address and browser details) to deliver it and to apply the rate limits, and keeps its own logs: <a href="https://www.netlify.com/privacy/">netlify.com/privacy</a>.</li>
-            <li>Our pages load their fonts, images and scripts from this site. The generated report loads a PDF library from cdnjs, which receives your IP address when your browser loads it.</li>
+            <li>Our pages set no cookies and run no analytics or tracking.</li>
+            <li>Netlify, which hosts this site, handles each visit (including your IP address and browser details) to deliver the page and to apply the rate limits, and keeps its own logs: <a href="https://www.netlify.com/privacy/">netlify.com/privacy</a>.</li>
+            <li>Our pages load their fonts, images and scripts from this site. The report page loads a PDF tool from cdnjs, which sees your IP address when your browser fetches it.</li>
         </ul>
 
         <h3>2.5 Older records</h3>
-        <p>Earlier versions of this site saved consultation form answers in three other stores: "pending-payments" (until 25 September 2026, when the form stopped using PayPal), "gtm-consultations" and "consultations". Nothing writes to them now. Existing records are kept until you ask us to delete them.</p>
+        <p>Earlier versions of this site saved the answers people gave in an older consultation form, in the same database at Netlify. For orders placed when that form took payments, the record also holds the service chosen and its price. These records hold no card or bank details. Nothing adds to them now, and we keep them until you ask us to delete them.</p>
 
-        <h2>3. How We Use Your Data</h2>
+        <h2>3. How we use your data</h2>
         <ul>
-            <li>Build your free EPIC audit report and EPIC scores from your answers</li>
-            <li>Answer EPIC audit API and MCP tool calls</li>
-            <li>Comply with legal obligations</li>
+            <li>To build your free EPIC audit report and EPIC scores from your answers</li>
+            <li>To answer requests to the EPIC audit API and the GTM Alpha tools</li>
+            <li>To meet our legal obligations</li>
         </ul>
         <p>We do not sell your data, share it with competitors or use it to train AI models.</p>
 
-        <h2>4. Data Sharing</h2>
+        <h2>4. Who else sees your data</h2>
         <ul>
-            <li><strong>Netlify:</strong> hosting, our Blobs database (EPIC audit API records and the older records) and request logs (as a data processor)</li>
-            <li><strong>cdnjs:</strong> receives your IP address when your browser loads the PDF library for the generated report</li>
-            <li><strong>Legal authorities:</strong> when required by law</li>
+            <li><strong>Netlify:</strong> hosts the site, holds the database (EPIC audit API records and the older records) and keeps request logs, on our behalf</li>
+            <li><strong>cdnjs:</strong> sees your IP address when your browser loads the PDF tool for your report</li>
+            <li><strong>Legal authorities:</strong> only when the law requires it</li>
         </ul>
 
-        <h2>5. Data Retention</h2>
+        <h2>5. How long we keep it</h2>
         <table>
             <tr><th>Data</th><th>How long it is kept</th></tr>
-            <tr><td>Free EPIC audit form answers and reports</td><td>Not stored</td></tr>
-            <tr><td>EPIC audit API inputs and results (store "epic-audits")</td><td>Until you ask us to delete them. There is no automatic deletion</td></tr>
-            <tr><td>Older consultation records (stores "pending-payments", "gtm-consultations" and "consultations")</td><td>Until you ask us to delete them</td></tr>
-            <tr><td>MCP tool inputs and results</td><td>Not stored</td></tr>
+            <tr><td>Free EPIC audit form answers and reports</td><td>Not kept</td></tr>
+            <tr><td>What is sent to the EPIC audit API, and its results</td><td>Until you ask us to delete them. Nothing is deleted automatically</td></tr>
+            <tr><td>Older consultation records</td><td>Until you ask us to delete them</td></tr>
+            <tr><td>What your AI assistant sends to the GTM Alpha tools, and the answers</td><td>Not kept</td></tr>
             <tr><td>Netlify request logs</td><td>Kept by Netlify under its own policy</td></tr>
         </table>
 
-        <h2>6. Your Rights</h2>
+        <h2>6. Your rights</h2>
 
         <div class="highlight-box">
-            <strong>Under GDPR (EU), DPDP (India), CCPA (California), and similar laws, you have the right to:</strong>
+            <strong>Under GDPR (EU), DPDP (India), CCPA (California) and similar laws, you have the right to:</strong>
         </div>
 
         <ul>
-            <li><strong>Access:</strong> Request a copy of your personal data</li>
-            <li><strong>Rectification:</strong> Correct inaccurate data</li>
-            <li><strong>Erasure:</strong> Request deletion of your data ("right to be forgotten")</li>
-            <li><strong>Portability:</strong> Receive your data in a machine-readable format</li>
-            <li><strong>Restriction:</strong> Limit how we process your data</li>
-            <li><strong>Object:</strong> Object to processing based on legitimate interests</li>
-            <li><strong>Withdraw Consent:</strong> Where processing is based on consent</li>
+            <li><strong>Access:</strong> ask for a copy of your personal data</li>
+            <li><strong>Correction:</strong> have wrong data corrected</li>
+            <li><strong>Deletion:</strong> have your data deleted</li>
+            <li><strong>Portability:</strong> receive your data in a file a computer can read</li>
+            <li><strong>Restriction:</strong> limit how we use your data</li>
+            <li><strong>Objection:</strong> object to uses based on our legitimate interests</li>
+            <li><strong>Withdrawing consent:</strong> where we rely on your consent</li>
         </ul>
 
-        <p>To exercise these rights, email us at <a href="mailto:shashwat@gtmhelix.com">shashwat@gtmhelix.com</a> with subject "Data Rights Request". Each stored record carries the company name you gave and the time it was saved, so please include your company name and roughly when you used the site. We find and delete records by hand within 30 days.</p>
+        <p>To use these rights, email <a href="mailto:shashwat@gtmhelix.com">shashwat@gtmhelix.com</a> with the subject "Data Rights Request". Each saved record carries the company name you gave and the time it was saved, so please include your company name and roughly when you used the site. We find and delete records by hand within 30 days.</p>
 
         <h2>7. Cookies</h2>
         <p>Our pages set no cookies and include no analytics, advertising cookies or tracking pixels.</p>
 
-        <h2>8. International Transfers</h2>
-        <p>Your data may be processed in:</p>
+        <h2>8. Where your data is processed</h2>
         <ul>
-            <li><strong>India:</strong> Primary business location</li>
-            <li><strong>United States:</strong> Netlify hosting</li>
+            <li><strong>India:</strong> where we are based</li>
+            <li><strong>United States:</strong> where Netlify hosts the site</li>
         </ul>
         <p>Netlify processes this data in the United States under its own data processing terms.</p>
 
         <h2>9. Security</h2>
         <ul>
-            <li>HTTPS encryption for all data in transit</li>
-            <li>Security headers on every page, including a Content-Security-Policy that also stops other websites from framing this site</li>
-            <li>No user accounts or passwords are held by us, and no payments are taken</li>
-            <li>Rate limits: the free EPIC audit form, the EPIC audit API and the health check share 30 requests a minute per visitor; the MCP server allows 300 a minute</li>
-            <li>The free EPIC audit form accepts only its own fields, each with a length limit, and a hidden field refuses automated submissions</li>
-            <li>Stored records cannot be read back through any public endpoint</li>
+            <li>Every page and request is encrypted (HTTPS)</li>
+            <li>Every page is sent with security settings that, among other things, stop other websites from showing this site inside theirs</li>
+            <li>We hold no user accounts or passwords, and take no payments</li>
+            <li>Rate limits: the free EPIC audit form, the EPIC audit API and the status check share 30 requests a minute per visitor, and the GTM Alpha tools allow 300 a minute</li>
+            <li>The free EPIC audit form accepts only its own questions, each with a length limit, and a hidden field turns away automated submissions</li>
+            <li>Saved records cannot be read back through any public address</li>
         </ul>
 
-        <h2>10. Children's Privacy</h2>
-        <p>Our services are not directed to individuals under 18. We do not knowingly collect data from children.</p>
+        <h2>10. Children</h2>
+        <p>GTM Alpha is not meant for anyone under 18. We do not knowingly collect data from children.</p>
 
-        <h2>11. Changes to This Policy</h2>
+        <h2>11. Changes to this policy</h2>
         <p>We may update this policy. Changes are published on this page with a new date.</p>
 
         <h2>12. Complaints</h2>
-        <p>If you have concerns about our data practices:</p>
+        <p>If you have concerns about how we handle data:</p>
         <ol>
             <li>Contact us first at <a href="mailto:shashwat@gtmhelix.com">shashwat@gtmhelix.com</a></li>
-            <li>You may also lodge a complaint with your local data protection authority</li>
+            <li>You can also complain to your local data protection authority</li>
         </ol>
 
         <div class="highlight-box">
             <strong>Questions?</strong><br>
-            Contact our Data Protection contact: <a href="mailto:shashwat@gtmhelix.com">shashwat@gtmhelix.com</a>
+            Email <a href="mailto:shashwat@gtmhelix.com">shashwat@gtmhelix.com</a>
         </div>
     </div>
 
