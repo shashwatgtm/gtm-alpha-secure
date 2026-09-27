@@ -1,5 +1,7 @@
-// Run 9 U2: "Fill in an example" on the free EPIC audit form (/consultation), and /consultation?example=1 fills it on load.
-// It only fills the form with a made-up company; the visitor still presses the submit button. The example matches the one
+// Run 9 U2: "Fill in an example" on the free EPIC audit form (/consultation) fills the form with a made-up company; the
+// visitor then presses the submit button. /consultation?example=1 fills it and runs it straight away, like the example links
+// on the other tool sites (E11 F3): the address loses ?example=1 first, so the browser's Back button returns to the form
+// instead of running the example again. The report endpoint stores nothing. The example matches the one
 // used across the site (Series A legal tech, 120 day sales cycle, $42,000 deals), with values taken from the form's own options.
 (function () {
     var form = document.getElementById('gtmForm');
@@ -45,5 +47,10 @@
     }
 
     var params = new URLSearchParams(window.location.search);
-    if (params.get('example') === '1') fill();
+    if (params.get('example') === '1') {
+        fill();
+        if (note) note.textContent = 'Building the example report for a made-up Series A legal tech company...';
+        if (window.history && history.replaceState) history.replaceState(null, '', window.location.pathname + window.location.hash);
+        if (form.requestSubmit) form.requestSubmit(); else form.submit();
+    }
 })();

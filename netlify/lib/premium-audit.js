@@ -5,6 +5,7 @@
 // Nothing is stored, logged or sent anywhere else.
 import { createHash } from "node:crypto";
 import analyze from "./analyze.js";
+import { HEADER, FOOTER, NEXT, CSS } from "./report-chrome.js";
 
 const MAX_BODY = 32000;
 const HONEYPOT = "leave_this_empty";
@@ -53,10 +54,10 @@ function messagePage(status, title, lines) {
   const csp = "default-src 'none'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
   const body = `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
-<title>${esc(title)} | GTM Alpha</title><link rel="stylesheet" href="/assets/fonts.css"><link rel="stylesheet" href="/assets/brand.css"></head>
-<body><main class="hx-wrap hx-message"><h1>${esc(title)}</h1>
+<title>${esc(title)} | GTM Alpha</title><link rel="stylesheet" href="/assets/fonts.css"><link rel="stylesheet" href="/assets/brand.css"><link rel="stylesheet" href="/assets/helix.css"></head>
+<body class="hx9-report-page">${HEADER}<main class="hx-wrap hx-message"><h1>${esc(title)}</h1>
 <ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>
-<p><a href="/consultation">Back to the free audit form</a> (use your browser's Back button to keep your answers)</p></main></body></html>`;
+<p><a href="/consultation">Back to the free audit form</a> (use your browser's Back button to keep your answers)</p></main>${FOOTER}</body></html>`;
   return new Response(body, { status, headers: { ...PAGE_HEADERS, "Content-Security-Policy": csp } });
 }
 
@@ -149,5 +150,14 @@ export default async (req) => {
   const csp = ["default-src 'none'", `script-src ${hashes.join(" ")} https://cdnjs.cloudflare.com`,
     "style-src 'self' 'unsafe-inline'", "font-src 'self'",
     "img-src 'self' data: blob:", "connect-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"].join("; ");
-  return new Response(report, { status: 200, headers: { ...PAGE_HEADERS, "Content-Security-Policy": csp } });
+  return new Response(withChrome(report), { status: 200, headers: { ...PAGE_HEADERS, "Content-Security-Policy": csp } });
 };
+
+// Run 9 E11 F2: the report page carries the global header and the GTM Alpha footer like every other page, so a visitor can
+// go home, see the tools or work with Shashwat from it. Markup and styles only (report-chrome.js); the report is unchanged.
+export function withChrome(report) {
+  return report
+    .replace("</head>", `<style>${CSS}</style></head>`)
+    .replace("<body>", `<body class="hx9-report-page">${HEADER}<div class="hx9-report">`)
+    .replace("</body>", `</div>${NEXT}${FOOTER}</body>`);
+}

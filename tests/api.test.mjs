@@ -52,7 +52,8 @@ test("JSON posts work the same way", async () => {
 test("the honeypot field refuses the request", async () => {
   const res = await post("/api/premium-audit", new URLSearchParams({ ...FORM, leave_this_empty: "http://spam.example" }).toString());
   assert.equal(res.status, 400);
-  assert.ok(!(await res.text()).includes("EPIC"));
+  // no report is built (run 9: the page header now links "EPIC framework", so the check looks for the report itself)
+  assert.ok(!(await res.text()).includes("GTM Alpha Consultation Report"));
 });
 
 test("missing and unexpected answers are listed, and no report is built", async () => {

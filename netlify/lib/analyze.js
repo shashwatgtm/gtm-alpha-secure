@@ -472,7 +472,7 @@ const GTM_ALPHA_ENGINE = {
             <h2>Next Steps</h2>
             <p>For personalized implementation support and detailed strategy development:</p>
             <ul>
-                <li><a href="mailto:shashwat@gtmhelix.com">Email Direct Support</a></li>
+                <li><a href="mailto:shashwat@gtmhelix.com">Email Shashwat</a></li>
                 <li><a href="https://gtmexpert.com">Visit GTMExpert.com</a></li>
             </ul>
         </div>
