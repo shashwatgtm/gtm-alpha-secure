@@ -364,8 +364,8 @@
         <div class="container">
             <div class="section-header">
                 <div class="section-badge">Free · no sign-in · no install</div>
-                <h1 class="section-title">Use GTM Alpha in Claude</h1>
-                <p class="section-subtitle">Add GTM Alpha to Claude in three steps, then ask it for an EPIC audit or a 30, 60 or 90 day plan. Setup for other AI assistants follows.</p>
+                <h1 class="section-title">Use GTM Alpha in Claude or ChatGPT</h1>
+                <p class="section-subtitle">Add GTM Alpha to Claude or ChatGPT with one address and no sign-in, then ask it for an EPIC audit or a 30, 60 or 90 day plan.</p>
             <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix GTM Consulting · Last updated <time datetime="2026-09-27">27 September 2026</time></p>
             </div>
         </div>
@@ -380,8 +380,6 @@
                     <button class="tab-btn active" data-tab="claude">Claude</button>
                     <button class="tab-btn" data-tab="cursor">Cursor and Windsurf</button>
                     <button class="tab-btn" data-tab="openai">ChatGPT</button>
-                    <button class="tab-btn" data-tab="gemini">Google Gemini</button>
-                    <button class="tab-btn" data-tab="copilot">Microsoft Copilot</button>
                 </div>
 
                 <div class="tab-content">
@@ -458,57 +456,15 @@
                     <div class="tab-panel" id="openai">
                             <div class="integration-text">
                                 <h3>Set it up in ChatGPT</h3>
-                                <p>Use GTM Alpha in ChatGPT, or in your own app built on OpenAI, with the connector address below. No sign-in or key is needed.</p>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Connector address:</h4>
+                                <p>ChatGPT can use remote MCP servers as custom connectors on plans that allow developer mode. In ChatGPT's settings, open the connectors (apps) section, turn on developer mode if your plan requires it, create a connector with the URL <code>https://gtmalpha.gtmhelix.com/mcp</code> and no authentication, then enable it in a chat. Menu names change between ChatGPT releases; OpenAI's help centre has the current path.</p>
+                                <h4>Connector address:</h4>
                                 <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">What you can ask for:</h4>
-                                <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
-                                    <li>GTM Consultation (in Claude): your EPIC scores and the motion to lead with</li>
-                                    <li>EPIC Audit: your EPIC scores with the rule behind each</li>
-                                    <li>GTM Roadmap: a 30, 60 or 90 day plan for one motion</li>
+                                <h4>What you can ask for:</h4>
+                                <ul>
+                                    <li>GTM Consultation (in your browser and in Claude): your EPIC scores and the motion to lead with</li>
+                                    <li>EPIC Audit (in Claude): your EPIC scores with the rule behind each</li>
+                                    <li>GTM Roadmap (in Claude): a 30, 60 or 90 day plan for one motion</li>
                                 </ul>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                                    <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
-                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
-                                </div>
-                            </div>
-                    </div>
-
-                    <div class="tab-panel" id="gemini">
-                            <div class="integration-text">
-                                <h3>Set it up with Gemini</h3>
-                                <p>Connect GTM Alpha to Google Gemini with the same connector address. No sign-in or key is needed.</p>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Connector address:</h4>
-                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">What you can ask for:</h4>
-                                <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
-                                    <li>GTM Consultation (in Claude): your EPIC scores and the motion to lead with</li>
-                                    <li>EPIC Audit: your EPIC scores with the rule behind each</li>
-                                    <li>GTM Roadmap: a 30, 60 or 90 day plan for one motion</li>
-                                </ul>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                                    <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
-                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
-                                </div>
-                            </div>
-                    </div>
-
-                    <div class="tab-panel" id="copilot">
-                            <div class="integration-text">
-                                <h3>Set it up with Copilot</h3>
-                                <p>Connect GTM Alpha to Microsoft Copilot with the same connector address. No sign-in or key is needed.</p>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Connector address:</h4>
-                                <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">What you can ask for:</h4>
-                                <ul style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
-                                    <li>GTM Consultation (in Claude): your EPIC scores and the motion to lead with</li>
-                                    <li>EPIC Audit: your EPIC scores with the rule behind each</li>
-                                    <li>GTM Roadmap: a 30, 60 or 90 day plan for one motion</li>
-                                </ul>
-                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                                    <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
-                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
-                                </div>
                             </div>
                     </div>
                 </div>
@@ -524,7 +480,7 @@
                         <li>MCP protocol versions: 2025-06-18, 2025-03-26, 2024-11-05</li>
                         <li>Server version: 1.3.1</li>
                         <li>Tool annotations for safety: all three tools are read-only</li>
-                        <li>Tool names: gtm_consultation (GTM Consultation, in Claude), epic_audit (EPIC Audit, in Claude), generate_roadmap (GTM Roadmap, in Claude)</li>
+                        <li>Tool names: gtm_consultation (GTM Consultation (in your browser and in Claude)), epic_audit (EPIC Audit (in Claude)), generate_roadmap (GTM Roadmap (in Claude))</li>
                     </ul>
                     <h3>Call a tool</h3>
                     <div class="code-container"><div class="code-header"><span>API request example (curl)</span></div>

@@ -3,7 +3,7 @@
 > GTM Alpha scores a company's go-to-market motion with Shashwat Ghosh's EPIC framework (Ecosystem and ABM, Product-Led Growth, Inbound and Outbound Demand Generation, Community-Led Advocacy), each from 1 to 10, and names the motion to lead with. By Helix GTM Consulting.
 
 - MCP server URL (Streamable HTTP, no sign-in, read-only tools): https://gtmalpha.gtmhelix.com/mcp
-- Setup for Claude and other assistants: https://gtmalpha.gtmhelix.com/integration
+- Setup for Claude, ChatGPT and other assistants: https://gtmalpha.gtmhelix.com/integration
 - API and tool documentation: https://gtmalpha.gtmhelix.com/api-docs
 - Free EPIC audit (web form, report with a 180 day plan): https://gtmalpha.gtmhelix.com/consultation
 - Pricing (free during testing): https://gtmalpha.gtmhelix.com/pricing
@@ -12,9 +12,9 @@
 
 ## Tools
 
-- GTM Consultation (gtm_consultation): EPIC scores from 1 to 10, primary and secondary motion, warnings.
-- EPIC Audit (epic_audit): EPIC scores from 1 to 10 with the rules that set each score. Optional inputs: ACV, deal cycle, NRR, TAM, self-serve, deal source, geography.
-- GTM Roadmap (generate_roadmap): a 30, 60 or 90 day plan for one EPIC motion.
+- GTM Consultation (in your browser and in Claude) (gtm_consultation): EPIC scores from 1 to 10, primary and secondary motion, warnings.
+- EPIC Audit (in Claude) (epic_audit): EPIC scores from 1 to 10 with the rules that set each score. Optional inputs: ACV, deal cycle, NRR, TAM, self-serve, deal source, geography.
+- GTM Roadmap (in Claude) (generate_roadmap): a 30, 60 or 90 day plan for one EPIC motion.
 
 ## Questions and answers
 
