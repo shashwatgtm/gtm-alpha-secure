@@ -317,7 +317,6 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.8; color: var(--text-primary); background: var(--bg-primary); }
-        .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
         header:not(.hx9-gh) { background: var(--primary-navy); color: #FAF8F6; padding: 60px 0 40px; margin-bottom: 40px; }
         header:not(.hx9-gh) h1 { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
         header:not(.hx9-gh) p { color: rgba(250, 248, 246,0.7); font-size: 16px; }
@@ -325,7 +324,7 @@
         h2 { font-size: 24px; font-weight: 700; margin: 40px 0 24px; color: var(--primary-navy); display: flex; align-items: center; gap: 12px; }
         h2 .icon { font-size: 28px; }
         .faq-item { background: var(--bg-secondary); border-radius: 12px; margin-bottom: 16px; overflow: hidden; border: 1px solid var(--border-light); }
-        .faq-question { padding: 20px 24px; font-weight: 600; color: var(--primary-navy); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
+        .faq-question { width: 100%; background: none; border: 0; font: inherit; text-align: left; gap: 16px; padding: 20px 24px; font-weight: 600; color: var(--primary-navy); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
         .faq-question:hover { background: #FAF8F6; }
         .faq-question::after { content: '+'; font-size: 24px; color: var(--accent-coral); font-weight: 300; }
         .faq-item.open .faq-question::after { content: '-'; }
@@ -352,7 +351,7 @@
 </head>
 <body>
     <a class="hx10-skip" href="#main">Skip to content</a>
-    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></nav></div><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">FAQ</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq" aria-current="page">FAQ</a></nav></div></div><details class="hx9-mm"><summary>Menu</summary><div class="hx9-mm-panel"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div></details></header>
+    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><details class="hx9-mm"><summary>Menu</summary><div class="hx9-mm-panel"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div></details><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></nav></div><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">FAQ</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq" aria-current="page">FAQ</a></nav></div></div></header>
     <main id="main">
 
     <section class="hx-hero">
@@ -364,12 +363,12 @@
     </section>
 <aside class="hx7-strip" aria-label="Built by Shashwat Ghosh"><div class="hx-wrap hx7-strip-row"><picture class="hx7-strip-photo"><source srcset="/assets/shashwat-ghosh-160.webp" type="image/webp"><img src="/assets/shashwat-ghosh-160.jpg" width="160" height="160" alt="Shashwat Ghosh" decoding="async"></picture><p><b>Built by Shashwat Ghosh</b>, Co-Founder and Fractional CMO, Helix GTM Consulting, with 24+ years in B2B and 10+ years fractional.</p><a href="https://gtmhelix.com/about/">About Shashwat</a></div></aside>
 
-    <div class="container content">
+    <div class="container content hx10-read">
 
         <h2>Fit and requirements</h2>
 
         <div class="faq-item open">
-            <div class="faq-question">What do I need to run an EPIC audit?</div>
+            <button type="button" class="faq-question">What do I need to run an EPIC audit?</button>
             <div class="faq-answer">
                 <p>In Claude, only your GTM challenge is required. The web form also asks for your name, role, company, industry, a short company description, stage, team size and budget. Add your stage (pre-seed, seed, series A, series B, series C or bootstrapped) and industry. For a full score rather than a preliminary one, also give your average contract value in US dollars, deal cycle in days, net revenue retention in percent, number of target accounts, whether customers can sign up without sales, your main deal source (referrals, outbound, partnerships, inbound or mixed) and your primary market (India, US and EU, Middle East, APAC or global).</p>
                 <ol>
@@ -381,7 +380,7 @@
         </div>
 
         <div class="faq-item open">
-            <div class="faq-question">Who is GTM Alpha not ideal for?</div>
+            <button type="button" class="faq-question">Who is GTM Alpha not ideal for?</button>
             <div class="faq-answer">
                 <p>Teams that want an AI-written strategy: the EPIC scores follow fixed rules from the documented rubric, and no AI model writes them. Companies that cannot share basic numbers: without contract value, deal cycle, net revenue retention and target account count, the result is marked preliminary. Anyone who needs live market data: GTM Alpha looks nothing up and works only from what you enter.</p>
             </div>
@@ -390,7 +389,7 @@
         <h2>The EPIC framework and the free audit</h2>
 
         <div class="faq-item">
-            <div class="faq-question">What is the EPIC framework?</div>
+            <button type="button" class="faq-question">What is the EPIC framework?</button>
             <div class="faq-answer">
                 <p>EPIC is Shashwat Ghosh&#x27;s go-to-market framework. It names four motions:</p>
                 <ul>
@@ -404,7 +403,7 @@
         </div>
 
         <div class="faq-item">
-            <div class="faq-question">What is in the free EPIC audit?</div>
+            <button type="button" class="faq-question">What is in the free EPIC audit?</button>
             <div class="faq-answer">
                 <ul>
                     <li>Your EPIC scores for the four motions from 1 to 10, with the rule behind each</li>
@@ -419,7 +418,7 @@
         <h2>Using it in Claude</h2>
 
         <div class="faq-item">
-            <div class="faq-question">Is it free to use in Claude?</div>
+            <button type="button" class="faq-question">Is it free to use in Claude?</button>
             <div class="faq-answer">
                 <p><strong>Yes.</strong> The three GTM Alpha tools are free, with no account, sign-in or key:</p>
                 <ul>
@@ -431,7 +430,7 @@
         </div>
 
         <div class="faq-item">
-            <div class="faq-question">Which AI assistants can use GTM Alpha?</div>
+            <button type="button" class="faq-question">Which AI assistants can use GTM Alpha?</button>
             <div class="faq-answer">
                 <ul>
                     <li><strong>Claude (web, desktop and mobile):</strong> add https://gtmalpha.gtmhelix.com/mcp as a custom connector</li>
@@ -443,7 +442,7 @@
         </div>
 
         <div class="faq-item">
-            <div class="faq-question">Is data from my AI conversations stored?</div>
+            <button type="button" class="faq-question">Is data from my AI conversations stored?</button>
             <div class="faq-answer">
                 <p><strong>No.</strong> GTM Alpha receives only the tool name and the inputs of each call, uses them to build the reply, and keeps nothing: our code does not store or log tool inputs or results. Netlify, which hosts the site, keeps its own request logs under its policy. See the <a href="/privacy">privacy policy</a>.</p>
             </div>
@@ -452,7 +451,7 @@
         <h2>Data and privacy</h2>
 
         <div class="faq-item open">
-            <div class="faq-question">What data does GTM Alpha collect?</div>
+            <button type="button" class="faq-question">What data does GTM Alpha collect?</button>
             <div class="faq-answer">
                 <p>Only what you type in, and most of it is not kept:</p>
                 <ul>
@@ -466,7 +465,7 @@
         </div>
 
         <div class="faq-item">
-            <div class="faq-question">Is my business data kept confidential?</div>
+            <button type="button" class="faq-question">Is my business data kept confidential?</button>
             <div class="faq-answer">
                 <p>Yes. The free EPIC audit form stores nothing, and the records the EPIC audit API stores cannot be read back through any public address. We:</p>
                 <ul>
@@ -478,7 +477,7 @@
         </div>
 
         <div class="faq-item">
-            <div class="faq-question">How can I access, correct, or delete my data?</div>
+            <button type="button" class="faq-question">How can I access, correct, or delete my data?</button>
             <div class="faq-answer">
                 <p>Email <a href="mailto:shashwat@gtmhelix.com">shashwat@gtmhelix.com</a> with one of these subjects:</p>
                 <ul>
@@ -491,7 +490,7 @@
         </div>
 
         <div class="faq-item">
-            <div class="faq-question">What do you do about GDPR, DPDP and CCPA?</div>
+            <button type="button" class="faq-question">What do you do about GDPR, DPDP and CCPA?</button>
             <div class="faq-answer">
                 <p>We describe what we do rather than claim compliance:</p>
                 <ul>
@@ -505,7 +504,7 @@
         </div>
 
         <div class="faq-item">
-            <div class="faq-question">Do you use cookies or tracking?</div>
+            <button type="button" class="faq-question">Do you use cookies or tracking?</button>
             <div class="faq-answer">
                 <p>No. Our pages set no cookies and include no analytics or tracking scripts:</p>
                 <ul>
@@ -518,14 +517,14 @@
         <h2>About GTM Alpha</h2>
 
         <div class="faq-item">
-            <div class="faq-question">Who is behind GTM Alpha?</div>
+            <button type="button" class="faq-question">Who is behind GTM Alpha?</button>
             <div class="faq-answer">
                 <p><strong>Shashwat Ghosh</strong>, Co-Founder and Fractional CMO, Helix GTM Consulting (founded 2022, Bengaluru). He created the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology. His results and recognition are on <a href="https://gtmhelix.com/about/">About Shashwat</a>.</p>
             </div>
         </div>
 
         <div class="faq-item">
-            <div class="faq-question">How can I contact support?</div>
+            <button type="button" class="faq-question">How can I contact support?</button>
             <div class="faq-answer">
                 <ul>
                     <li><strong>Email:</strong> <a href="mailto:shashwat@gtmhelix.com">shashwat@gtmhelix.com</a></li>
