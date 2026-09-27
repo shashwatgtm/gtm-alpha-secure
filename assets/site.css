@@ -43,7 +43,7 @@ main li > a:only-child { display: inline-flex; align-items: center; min-height: 
 
 /* R10-23: the answer-first block under the home H1 */
 .hx10-answer { max-width: 68ch; margin: 14px 0 0; padding: 12px 16px; border-left: 4px solid #641220; background: #FAF8F6; font-size: 17px !important; color: #1A0E10 !important; }
-.hx10-history { font-family: 'IBM Plex Mono', monospace; font-size: 13px !important; color: rgba(26, 14, 16, .72) !important; margin-top: 8px; }
+.hx10-history, .hx-hero .hx10-history { font-family: 'IBM Plex Mono', monospace; font-size: 13px !important; color: rgba(26, 14, 16, .72) !important; margin-top: 8px; }
 
 /* D1 (owner, run 10): headings balance their lines, so a heading does not end with one word where that can be avoided
    (the same rule goes into helix.css for every site). */
