@@ -106,3 +106,7 @@ h1, h2, h3 { text-wrap: balance; }
   .hx10-sec:has(> .faq-item) > :not(h2) { grid-column: auto; max-width: none; }
   .faq-section .faq-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 24px; align-items: start; }
 }
+@media (min-width: 1280px) {
+  /* a question that is alone in its section, and the closing box, use both columns */
+  .hx10-sec:has(> .faq-item) > .faq-item:first-of-type:last-of-type, .hx10-sec:has(> .faq-item) > .highlight-box { grid-column: 3 / span 2; }
+}
