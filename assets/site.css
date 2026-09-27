@@ -48,3 +48,51 @@ main li > a:only-child { display: inline-flex; align-items: center; min-height: 
 /* D1 (owner, run 10): headings balance their lines, so a heading does not end with one word where that can be avoided
    (the same rule goes into helix.css for every site). */
 h1, h2, h3 { text-wrap: balance; }
+
+/* The shared helix.css (run 10) also styles .hx10-actions for the tool cards (margin-top auto, padding-top); the report
+   pages' action bar keeps its own spacing. */
+.hx10-report > .hx10-actions { margin: 0 0 20px !important; padding-top: 0; }
+
+/* R10-14 (D1, owner): wide screens on GTM Alpha, the same layout as helix.css gives .hx-body > .hx-section on the other
+   sites. From 1280 px each content section's heading sits in a 300 px left column (sticky under the header, 28 px) and its
+   content beside it, 64 px apart, inside the header's 1248 px container. The hero is unchanged; below 1280 px nothing
+   changes. GTM Alpha's pages are hand-built, so the sections are named here one by one:
+   - home: the two section blocks (.features, .epic-framework) and the questions (.hx-qa)
+   - /consultation: the form box (its header, with the example buttons, on the left)
+   - /pricing: the two options and the pricing questions
+   - /integration: the question sections (.hx-qa); the setup tabs use the full width
+   - /faq, /privacy, /terms: .hx10-sec (each H2 with what follows it; work/run10/gtmalpha/d1_sections.py); the legal prose
+     keeps a readable line length (78 characters)
+   - the report and the sample report: each report section (.report-container .section) */
+@media (min-width: 1280px) {
+  .features > .container, .epic-framework > .container, .hx-qa, .form-container, #pricing, .faq-section, .hx10-sec,
+  .report-container .section {
+    display: grid; grid-template-columns: 300px minmax(0, 1fr); column-gap: 64px; align-items: start;
+  }
+  .features > .container > .section-header, .epic-framework > .container > .section-header, .hx-qa > h2,
+  .form-container > .form-header, #pricing > .section-header, .faq-section > .section-header, .hx10-sec > h2,
+  .report-container .section > h2 {
+    grid-column: 1; grid-row: 1 / span 40; position: sticky; top: 136px; margin: 0 !important; text-align: left !important; max-width: none !important;
+  }
+  .features > .container > :not(.section-header), .epic-framework > .container > :not(.section-header), .hx-qa > :not(h2),
+  .form-container > :not(.form-header), #pricing > :not(.section-header), .faq-section > :not(.section-header),
+  .hx10-sec > :not(h2), .report-container .section > :not(h2) {
+    grid-column: 2; min-width: 0;
+  }
+  .section-header .section-title, .hx-qa > h2, .hx10-sec > h2, .form-header h2, .report-container .section > h2 {
+    font-size: 28px !important; max-width: none !important; margin-left: 0 !important; margin-right: 0 !important;
+  }
+  .section-header .section-subtitle { margin: 12px 0 0 !important; max-width: none; }
+  .form-header .hx9-example { justify-content: flex-start; }
+  .form-container { max-width: none !important; padding: 0 !important; box-shadow: none !important; background: transparent !important; }
+  .form-container > .security-note { margin-top: 0; }
+  .pricing-grid, .faq-grid, .features-grid, .epic-grid, #gtmalpha-epic-visual { margin-top: 0 !important; max-width: none !important; }
+  .epic-grid { margin-top: 24px !important; }
+  .integration-tabs { max-width: none !important; }
+  .tab-buttons { justify-content: flex-start !important; }
+  .hx10-read > * { max-width: none; }
+  .hx10-sec { padding-top: 32px; }
+  .hx10-sec > :not(h2) { max-width: 78ch; }
+  .hx10-sec > h2 { padding-bottom: 8px; }
+  .report-container { max-width: none; }
+}
