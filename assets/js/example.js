@@ -1,8 +1,10 @@
 // Run 9 U2: "Fill in an example" on the free EPIC audit form (/consultation) fills the form with a made-up company; the
-// visitor then presses the submit button. /consultation?example=1 fills it and runs it straight away, like the example links
-// on the other tool sites (E11 F3): the address loses ?example=1 first, so the browser's Back button returns to the form
-// instead of running the example again. The report endpoint stores nothing. The example matches the one
-// used across the site (Series A legal tech, 120 day sales cycle, $42,000 deals), with values taken from the form's own options.
+// visitor then presses the submit button. Run 10 R10-A1-5 d: /consultation?example=1 does the same and no longer submits
+// the form by itself: it fills the answers and shows the made-up example note. The address loses ?example=1, so the
+// browser's Back button returns to the form as the visitor left it. Run 10 R10-16: the note hides as soon as the visitor
+// changes any answer. The example matches the one used across the site (Series A legal tech, 120 day sales cycle, $42,000
+// deals), with values taken from the form's own options. scripts/build-sample-report.mjs reads EXAMPLE from this file to
+// build the sample report, so the sample and the form use the same answers.
 (function () {
     var form = document.getElementById('gtmForm');
     var button = document.getElementById('fill-example');
@@ -23,8 +25,12 @@
         acv_band: '5k_to_50k',              // $42,000 deals
         deal_cycle_band: 'over_90_days'     // 120 day sales cycle
     };
+    var NOTE = 'This is a made-up example. Press Get my free EPIC audit report to see the report, or change the answers to your own.';
+    var filling = false;
+    var shown = false;
 
     function fill() {
+        filling = true;
         Object.keys(EXAMPLE).forEach(function (name) {
             var field = form.elements[name];
             if (!field) return;
@@ -33,10 +39,24 @@
         });
         var confirmBox = form.elements['confirm_consultation'];
         if (confirmBox) confirmBox.checked = true;
+        filling = false;
         if (note) {
-            note.textContent = 'Example answers filled in for a made-up Series A legal tech company. Change any of them, then press "Get my free EPIC audit report" at the end of the form.';
+            note.textContent = NOTE;
+            note.hidden = false;
+            note.classList.add('hx10-note');
+            shown = true;
         }
     }
+
+    // The note is about the example answers: once the visitor changes one, it goes away.
+    function edited(e) {
+        if (filling || !shown || !e.isTrusted || !note) return;
+        note.hidden = true;
+        note.textContent = '';
+        shown = false;
+    }
+    form.addEventListener('input', edited);
+    form.addEventListener('change', edited);
 
     if (button) {
         button.addEventListener('click', function () {
@@ -49,8 +69,7 @@
     var params = new URLSearchParams(window.location.search);
     if (params.get('example') === '1') {
         fill();
-        if (note) note.textContent = 'Building the example report for a made-up Series A legal tech company...';
         if (window.history && history.replaceState) history.replaceState(null, '', window.location.pathname + window.location.hash);
-        if (form.requestSubmit) form.requestSubmit(); else form.submit();
+        if (note && note.scrollIntoView) note.scrollIntoView({ block: 'center' });
     }
 })();

@@ -340,49 +340,47 @@ const GTM_ALPHA_ENGINE = {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GTM Alpha Consultation Report - ${esc(inputData.client_name || inputData.company_name)}</title>
+    <title>Your free EPIC audit report: ${esc(inputData.company_name || inputData.client_name)} | GTM Alpha</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link href="/assets/fonts.css" rel="stylesheet">
     <style>
-        body { font-family: 'Archivo', Arial, sans-serif; line-height: 1.6; color: #1A0E10; max-width: 800px; margin: 0 auto; padding: 20px; background: #FAF8F6; }
-        .report-container { background: #FAF8F6; padding: 40px; border-radius: 12px; box-shadow: 0 4px 6px rgba(26, 14, 16, 0.1); position: relative; }
-        .pdf-download { position: absolute; top: 20px; right: 20px; background: #C1121F; color: #FAF8F6; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
-        .pdf-download:hover { background: #641220; }
-        .header { text-align: left; background: #FAF8F6; color: #1A0E10; border-bottom: 1.5px solid #EAD9D5; padding: 40px; border-radius: 12px; margin-bottom: 40px; }
-        .epic-scores { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 30px 0; }
-        .epic-item { text-align: center; padding: 20px; background: #FAF8F6; border-radius: 8px; border-left: 4px solid #C1121F; transition: transform 0.2s; }
-        .epic-item:hover { transform: translateY(-2px); }
-        .epic-letter { font-size: 36px; font-weight: bold; color: #641220; }
-        .epic-score { font-size: 24px; font-weight: bold; color: #C1121F; }
-        .section { margin: 30px 0; padding: 20px; border-radius: 8px; background: #FAF8F6; border: 1px solid #EAD9D5; }
-        .primary-focus { background: linear-gradient(135deg, #C1121F 0%, #641220 100%); color: #FAF8F6; padding: 20px; border-radius: 8px; }
-        .recommendations li { margin: 10px 0; }
-        .roadmap { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-        .roadmap-item { padding: 20px; background: #FAF8F6; border-radius: 8px; }
-        .consultation-id { color: rgba(26, 14, 16, 0.72); font-size: 14px; }
-        @media (max-width: 768px) { 
-            .epic-scores { grid-template-columns: repeat(2, 1fr); }
+        /* Run 10 R10-A1-5 e: the report in the Helix design (Archivo, Helix colours, no gradient banners). The page links
+           fonts.css, brand.css, helix.css and site.css (premium-audit.js), so headings follow the shared type scale. */
+        .report-container { max-width: 960px; background: #FAF8F6; color: #1A0E10; font-family: 'Archivo', Arial, sans-serif; line-height: 1.6; }
+        .header { padding: 0 0 18px; margin: 0 0 8px; border-bottom: 1.5px solid rgba(26, 14, 16, 0.12); }
+        .header h1 { font-weight: 800; letter-spacing: -0.02em; margin: 0 0 12px; }
+        .header h2, .header h3 { font-size: 18px !important; font-weight: 600; line-height: 1.4 !important; margin: 0; }
+        .header h3 { color: rgba(26, 14, 16, 0.72); }
+        .section { margin: 0; padding: 24px 0; border-top: 1.5px solid rgba(26, 14, 16, 0.12); background: transparent; }
+        .header + .section { border-top: 0; }
+        .section h2 { font-weight: 800; letter-spacing: -0.02em; margin: 0 0 12px; }
+        .section h2::before { content: ""; display: block; width: 10px; height: 10px; background: #C1121F; margin: 0 0 14px; }
+        .section ul { padding-left: 22px; }
+        .section li { margin: 6px 0; }
+        .primary-focus { background: #EAD9D5; border-left: 4px solid #641220; padding: 18px 20px; margin: 16px 0; color: #1A0E10; }
+        .epic-scores { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 16px 0 0; }
+        .epic-item { padding: 14px 16px; background: #FAF8F6; border: 1.5px solid rgba(26, 14, 16, 0.12); border-top: 4px solid #641220; text-align: left; }
+        .epic-letter { font-size: 28px; font-weight: 800; line-height: 1; color: #641220; }
+        .epic-score { font-family: 'IBM Plex Mono', monospace; font-size: 20px; font-weight: 600; color: #1A0E10; margin: 6px 0 4px; }
+        .roadmap { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+        .roadmap-item { padding: 16px; background: #FAF8F6; border: 1.5px solid rgba(26, 14, 16, 0.12); border-top: 3px solid #641220; }
+        .roadmap-item h3 { margin: 0 0 8px; }
+        .consultation-id { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: rgba(26, 14, 16, 0.72); margin: 4px 0; }
+        .report-footer { margin: 8px 0 0; padding: 18px 0 0; border-top: 1.5px solid rgba(26, 14, 16, 0.12); font-size: 15px; }
+        .report-footer p { margin: 2px 0; }
+        @media (max-width: 768px) {
+            .epic-scores { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .roadmap { grid-template-columns: 1fr; }
-            .pdf-download { position: static; margin-bottom: 20px; display: block; width: 100%; }
         }
-        @media print {
-            .pdf-download { display: none; }
-            body { background: #FAF8F6; }
-            .report-container { box-shadow: none; }
-        }
+        @media print { .hx10-actions, .hx9-gh, footer.hx-footer { display: none; } }
     </style>
 </head>
 <body>
     <div class="report-container" id="report-content">
-        <button class="pdf-download" id="pdf-download" type="button">Download PDF</button>
-        
         <div class="header">
-            <h1>GTM Alpha Consultation Report</h1>
+            <h1>Your free EPIC audit report</h1>
             <h2>${esc(inputData.client_name || inputData.company_name)}</h2>
             ${inputData.client_designation ? `<h3>${esc(inputData.client_designation)}</h3>` : ''}
             <h3>${esc(inputData.company_name)}</h3>
-            <p class="consultation-id">Consultation ID: ${consultationId}</p>
-            <p class="consultation-id">Generated: ${new Date(timestamp).toISOString().slice(0, 16).replace('T', ' ')} UTC</p>
         </div>
 
         <div class="section primary-focus">
@@ -479,10 +477,10 @@ const GTM_ALPHA_ENGINE = {
 
         <p class="consultation-id">Suggested timings, lengths and counts: adjust them to your own.</p>
 
-        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #FAF8F6; border-radius: 8px;">
-            <p><strong>Generated by GTM Alpha Consultant</strong></p>
-            <p>Powered by Shashwat Ghosh's EPIC Framework</p>
-            <p><em>Co-Founder and Fractional CMO, Helix GTM Consulting</em></p>
+        <div class="report-footer">
+            <p><strong>Generated by GTM Alpha</strong>, with Shashwat Ghosh's EPIC framework</p>
+            <p class="consultation-id">Consultation ID: ${consultationId}</p>
+            <p class="consultation-id">Generated: ${new Date(timestamp).toISOString().slice(0, 16).replace('T', ' ')} UTC</p>
         </div>
     </div>
 
@@ -491,7 +489,7 @@ const GTM_ALPHA_ENGINE = {
             const element = document.getElementById('report-content');
             const opt = {
                 margin: 0.5,
-                filename: ${JSON.stringify('GTM_Alpha_Consultation_Report_' + String(inputData.company_name || 'Company').replace(/[^A-Za-z0-9 _-]/g, '') + '_' + consultationId + '.pdf').replace(/</g, '\\u003c')},
+                filename: ${JSON.stringify('GTM_Alpha_EPIC_audit_report_' + String(inputData.company_name || 'Company').replace(/[^A-Za-z0-9 _-]/g, '') + '_' + consultationId + '.pdf').replace(/</g, '\\u003c')},
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, useCORS: true },
                 jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
@@ -499,7 +497,9 @@ const GTM_ALPHA_ENGINE = {
             html2pdf().set(opt).from(element).save();
         }
         // Bound here, not with onclick, so the page's Content-Security-Policy can allow this one script by its hash.
-        document.getElementById('pdf-download').addEventListener('click', downloadPDF);
+        // The button sits in the action bar at the top of the page (run 10); pages without it (the sample) skip this.
+        var pdfButton = document.getElementById('pdf-download');
+        if (pdfButton) pdfButton.addEventListener('click', downloadPDF);
     </script>
 </body>
 </html>`;

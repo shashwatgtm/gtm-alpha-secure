@@ -551,7 +551,7 @@
             accent-color: var(--accent-coral);
         }
 
-        .hx9-example { margin: 14px 0 4px; }
+        .hx9-example { margin: 14px 0 4px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: center; align-items: center; }
         .hx9-example button { cursor: pointer; }
         .hx9-example-note { font-size: 15px; }
         .hx8-dev code { font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
@@ -723,8 +723,8 @@
                 <div class="form-header">
                     <h2>Your answers build your report</h2>
                     <p>Questions marked * are required. The optional ones make the scores fuller. Your report opens on the next page, and you can save it as a PDF.</p>
-                    <p class="hx9-example"><button type="button" id="fill-example" class="hx-btn-ghost">Fill in an example</button></p>
-                    <p class="hx9-example-note" id="example-note" role="status" aria-live="polite">Want to see a real report first? The example fills the form with a made-up company. You still press the button at the end.</p>
+                    <p class="hx9-example"><button type="button" id="fill-example" class="hx-btn-ghost">Fill in an example</button> <a class="hx-btn-ghost" href="/sample-report/">See a sample report</a></p>
+                    <p class="hx9-example-note" id="example-note" role="status" aria-live="polite">Want to see a report first? Open the sample report for a made-up company, or fill in the example answers and press the button at the end.</p>
                 </div>
                 
                 <div class="security-note">

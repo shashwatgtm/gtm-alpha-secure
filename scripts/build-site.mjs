@@ -3,7 +3,8 @@
 // GTM_ALPHA_HISTORY.txt were served to anyone. Functions are bundled separately from netlify/functions.
 import { createHash } from "node:crypto";
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { buildSampleReport } from "./build-sample-report.mjs";
 
 const ROOT = process.cwd();
 const OUT = join(ROOT, "site");
@@ -11,15 +12,21 @@ const OUT = join(ROOT, "site");
 // published: while GTM Alpha is free, the Premium Audit report is returned straight after the form (owner decision 3).
 // Run 10 R10-05: 404.html is Netlify's page for any address that does not exist (served with status 404).
 const PAGES = ["index.html", "pricing.html", "consultation.html", "integration.html", "faq.html", "api-docs.html",
-  "privacy.html", "terms.html", "404.html"];
+  "privacy.html", "terms.html", "404.html", "sample-report/index.html"];
 const FILES = [...PAGES, "favicon.svg", "logo.svg", "robots.txt", "sitemap.xml", "llms.txt", "_redirects", "_headers", "openapi.yaml",
   "5d1ec46b7e579accde50872ab5aef7a4.txt"];
 const DIRS = ["assets"];
+
+// Run 10 R10-A1-5 c: rebuild the sample report from the report code first, so the published sample always matches the
+// published code (scripts/build-sample-report.mjs; the same answers as "Fill in an example").
+await buildSampleReport();
+console.log("build-site: sample-report/index.html rebuilt from the report code");
 
 rmSync(OUT, { recursive: true, force: true });
 mkdirSync(OUT);
 for (const f of FILES) {
   if (!existsSync(join(ROOT, f))) throw new Error("build-site: missing " + f);
+  mkdirSync(dirname(join(OUT, f)), { recursive: true });
   cpSync(join(ROOT, f), join(OUT, f));
 }
 for (const d of DIRS) cpSync(join(ROOT, d), join(OUT, d), { recursive: true });

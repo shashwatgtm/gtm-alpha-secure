@@ -35,13 +35,28 @@ test("a complete form gets the report page, with a policy that allows only its o
   assert.ok(!html.includes("TEST Company <b>"));
   assert.ok(!/Valued Client|undefined|NaN/.test(html));
   assert.ok(!html.includes("onclick="), "no inline event handlers");
+  // run 10: two inline scripts (the PDF button in the report, and the Edit my answers link), each allowed by its hash
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
-  assert.equal(scripts.length, 1);
-  const hash = createHash("sha256").update(scripts[0][1], "utf8").digest("base64");
+  assert.equal(scripts.length, 2);
   const csp = res.headers.get("content-security-policy");
-  assert.ok(csp.includes(`'sha256-${hash}'`), "the one inline script is allowed by its hash");
+  for (const s of scripts) {
+    const hash = createHash("sha256").update(s[1], "utf8").digest("base64");
+    assert.ok(csp.includes(`'sha256-${hash}'`), "each inline script is allowed by its hash");
+  }
   assert.ok(!/script-src[^;]*unsafe-inline/.test(csp), "no unsafe-inline scripts");
+  // the PDF library is allowed by its full address only, not the whole of cdnjs
+  assert.ok(csp.includes("https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"));
+  assert.ok(!/https:\/\/cdnjs\.cloudflare\.com(?:[ ;]|$)/.test(csp), "not the whole of cdnjs");
   assert.ok(csp.includes("frame-ancestors 'none'"));
+  assert.equal(res.headers.get("x-content-type-options"), "nosniff");
+  assert.equal(res.headers.get("strict-transport-security"), "max-age=31536000");
+  // run 10 R10-A1-5 e: the H1 and the action bar
+  assert.ok(html.includes("<h1>Your free EPIC audit report</h1>"));
+  assert.ok(!html.includes("Consultation Report"));
+  for (const label of ["Edit my answers", "Download PDF", "Work with Shashwat on this plan"]) assert.ok(html.includes(label), label);
+  assert.ok(html.indexOf("Edit my answers") < html.indexOf("EPIC Framework Scores"), "the action bar is at the top");
+  assert.ok(html.indexOf("Consultation ID") > html.indexOf("GTM Implementation Roadmap"), "the consultation ID is in the report footer");
+  assert.ok(/\/assets\/fonts\.css\?v=[0-9a-f]{10}/.test(html) && /\/assets\/site\.css\?v=[0-9a-f]{10}/.test(html), "versioned stylesheets");
 });
 
 test("JSON posts work the same way", async () => {
@@ -53,7 +68,7 @@ test("the honeypot field refuses the request", async () => {
   const res = await post("/api/premium-audit", new URLSearchParams({ ...FORM, leave_this_empty: "http://spam.example" }).toString());
   assert.equal(res.status, 400);
   // no report is built (run 9: the page header now links "EPIC framework", so the check looks for the report itself)
-  assert.ok(!(await res.text()).includes("GTM Alpha Consultation Report"));
+  assert.ok(!(await res.text()).includes("Your free EPIC audit report"));
 });
 
 test("missing and unexpected answers are listed, and no report is built", async () => {

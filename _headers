@@ -61,3 +61,9 @@
 
 /terms.html
   Cache-Control: public, max-age=0, must-revalidate
+
+/sample-report/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/sample-report/index.html
+  Cache-Control: public, max-age=0, must-revalidate

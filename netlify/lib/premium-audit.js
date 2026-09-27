@@ -5,7 +5,7 @@
 // Nothing is stored, logged or sent anywhere else.
 import { createHash } from "node:crypto";
 import analyze from "./analyze.js";
-import { HEADER, FOOTER, NEXT, CSS, V_FONTS, V_BRAND, V_HELIX } from "./report-chrome.js";
+import { HEADER, FOOTER, NEXT, SKIP, V_FONTS, V_BRAND, V_HELIX, V_SITE } from "./report-chrome.js";
 
 const MAX_BODY = 32000;
 const HONEYPOT = "leave_this_empty";
@@ -40,8 +40,11 @@ const REQUIRED = ["client_name", "client_designation", "company_name", "industry
 
 const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
+// Run 10 R10-10: pages built here send the same protection as the static pages (_headers): no MIME sniffing, no framing,
+// a security policy (set per page below) and HSTS for a year (no preload).
 const PAGE_HEADERS = {
   "Content-Type": "text/html; charset=utf-8",
+  "Strict-Transport-Security": "max-age=31536000",
   "Cache-Control": "no-store",
   "X-Robots-Tag": "noindex",
   "X-Content-Type-Options": "nosniff",
@@ -50,12 +53,16 @@ const PAGE_HEADERS = {
   "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
 };
 
+// The four site stylesheets, each with its ?v= version (R10-10), for the report and message pages.
+const STYLESHEETS = `<link rel="stylesheet" href="/assets/fonts.css?v=${V_FONTS}"><link rel="stylesheet" href="/assets/brand.css?v=${V_BRAND}">` +
+  `<link rel="stylesheet" href="/assets/helix.css?v=${V_HELIX}"><link rel="stylesheet" href="/assets/site.css?v=${V_SITE}">`;
+
 function messagePage(status, title, lines) {
   const csp = "default-src 'none'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
   const body = `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
-<title>${esc(title)} | GTM Alpha</title><link rel="stylesheet" href="/assets/fonts.css?v=${V_FONTS}"><link rel="stylesheet" href="/assets/brand.css?v=${V_BRAND}"><link rel="stylesheet" href="/assets/helix.css?v=${V_HELIX}"></head>
-<body class="hx9-report-page">${HEADER}<main class="hx-wrap hx-message"><h1>${esc(title)}</h1>
+<title>${esc(title)} | GTM Alpha</title>${STYLESHEETS}</head>
+<body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx-message"><h1>${esc(title)}</h1>
 <ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>
 <p><a href="/consultation">Back to the free audit form</a> (use your browser's Back button to keep your answers)</p></main>${FOOTER}</body></html>`;
   return new Response(body, { status, headers: { ...PAGE_HEADERS, "Content-Security-Policy": csp } });
@@ -144,20 +151,36 @@ export default async (req) => {
   }
   if (!report) return messagePage(500, "The report could not be built", ["Please try again in a minute. If it keeps failing, email shashwat@gtmhelix.com."]);
 
-  // The report has one inline script (the PDF button): the policy allows exactly that script, by its hash, and the
-  // PDF library from cdnjs (loaded with a Subresource Integrity hash). Styles are inline; fonts come from this site.
-  const hashes = [...report.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => "'sha256-" + createHash("sha256").update(m[1], "utf8").digest("base64") + "'");
-  const csp = ["default-src 'none'", `script-src ${hashes.join(" ")} https://cdnjs.cloudflare.com`,
-    "style-src 'self' 'unsafe-inline'", "font-src 'self'",
-    "img-src 'self' data: blob:", "connect-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"].join("; ");
-  return new Response(withChrome(report), { status: 200, headers: { ...PAGE_HEADERS, "Content-Security-Policy": csp } });
+  const page = withChrome(report);
+  return new Response(page, { status: 200, headers: { ...PAGE_HEADERS, "Content-Security-Policy": reportPolicy(page) } });
 };
 
+// Run 10 R10-10: the report page's policy allows exactly its own inline scripts (the PDF button, and the Edit my answers
+// link), each by its hash, and the one PDF library file from cdnjs by its full address (the tag also carries its Subresource
+// Integrity hash). Nothing else may run. Styles are the site's own files plus the report's style block.
+export function reportPolicy(page) {
+  const hashes = [...page.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => "'sha256-" + createHash("sha256").update(m[1], "utf8").digest("base64") + "'");
+  const files = [...page.matchAll(/<script src="(https:\/\/cdnjs\.cloudflare\.com\/ajax\/libs\/[^"]+)" integrity="sha512-[^"]+"/g)].map((m) => m[1]);
+  return ["default-src 'none'", `script-src ${[...hashes, ...files].join(" ")}`,
+    "style-src 'self' 'unsafe-inline'", "font-src 'self'",
+    "img-src 'self' data: blob:", "connect-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"].join("; ");
+}
+
 // Run 9 E11 F2: the report page carries the global header and the GTM Alpha footer like every other page, so a visitor can
-// go home, see the tools or work with Shashwat from it. Markup and styles only (report-chrome.js); the report is unchanged.
+// go home, see the tools or work with Shashwat from it. Run 10 R10-A1-5 e: it links the site's stylesheets (Helix design,
+// shared type scale) and opens with an action bar: Edit my answers, Download PDF, Work with Shashwat on this plan. Markup and
+// styles only; every figure in the report is built by analyze.js as before.
+export const ACTIONS = '<nav class="hx10-actions" aria-label="Report actions">' +
+  '<a href="/consultation" id="edit-answers">Edit my answers</a>' +
+  '<button type="button" id="pdf-download">Download PDF</button>' +
+  '<a class="hx10-primary" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat on this plan</a></nav>';
+// "Edit my answers" goes back one step when the visitor came from the form, so the browser shows the form with the answers
+// still in it (nothing is stored anywhere); without that history, or without JavaScript, the link opens the form.
+export const EDIT_SCRIPT = "(function(){var a=document.getElementById('edit-answers');if(!a)return;a.addEventListener('click',function(e){" +
+  "try{var r=document.referrer?new URL(document.referrer):null;if(r&&r.origin===location.origin&&(r.pathname==='/consultation'||r.pathname==='/consultation.html')&&history.length>1){e.preventDefault();history.back();}}catch(x){}});})();";
 export function withChrome(report) {
   return report
-    .replace("</head>", `<style>${CSS}</style></head>`)
-    .replace("<body>", `<body class="hx9-report-page">${HEADER}<div class="hx9-report">`)
-    .replace("</body>", `</div>${NEXT}${FOOTER}</body>`);
+    .replace("</head>", `${STYLESHEETS}</head>`)
+    .replace("<body>", `<body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx10-report">${ACTIONS}`)
+    .replace("</body>", `</main>${NEXT}${FOOTER}<script>${EDIT_SCRIPT}</script></body>`);
 }
