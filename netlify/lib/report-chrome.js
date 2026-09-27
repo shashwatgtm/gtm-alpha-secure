@@ -7,4 +7,4 @@ export const CSS = ":root {\n  --hx-ox: #641220;\n  --hx-signal: #C1121F;\n  --h
 // ?v= for the stylesheets the error pages link, so a changed file gets a new address (D4)
 export const V_FONTS = "181b7ec591";
 export const V_BRAND = "58a48228fa";
-export const V_HELIX = "3ca80b01a3";
+export const V_HELIX = "741f6a1051";
