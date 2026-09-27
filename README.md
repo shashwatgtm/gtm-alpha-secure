@@ -58,8 +58,8 @@ For direct API access without MCP, send a JSON POST to https://gtmalpha.gtmhelix
 
 Use the OpenAPI schema in openai-gpt-actions.json to create a Custom GPT action for the EPIC audit endpoint:
 
-1. Go to ChatGPT - Create a GPT
-2. Add Actions - Import from URL or paste schema
+1. In ChatGPT, open Create a GPT
+2. Add Actions: import from URL or paste the schema
 3. Base URL: https://gtmalpha.gtmhelix.com/api (the audit inputs are stored; see https://gtmalpha.gtmhelix.com/privacy)
 
 ### Google Gemini
@@ -131,10 +131,10 @@ The GTM Alpha methodology is built on the EPIC Framework:
 
 | Component | Focus Area |
 |-----------|------------|
-| E - Ecosystem | Account-Based Marketing and Strategic Partnerships |
-| P - Product-Led | Product-Led Growth and User Experience Optimization |
-| I - Inbound/Outbound | Demand Generation and Content Marketing |
-| C - Community | Community-Led Growth and Advocacy Programs |
+| E: Ecosystem | Account-Based Marketing and Strategic Partnerships |
+| P: Product-Led | Product-Led Growth and User Experience Optimization |
+| I: Inbound/Outbound | Demand Generation and Content Marketing |
+| C: Community | Community-Led Growth and Advocacy Programs |
 
 ---
 

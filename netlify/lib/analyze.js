@@ -30,7 +30,7 @@ const GTM_ALPHA_ENGINE = {
     const secondaryFocus = focusMap[epic.secondary.letter];
 
     // Generate consultation insights based on actual GTM Alpha methodology
-    const insights = this.generateConsultationInsights(inputData, primaryFocus);
+    const insights = this.generateConsultationInsights(inputData, primaryFocus, epic.stage_used);
     // The recommendation rules were written for a 0 to 100 scale (gates at 70); a 1 to 10 score times 10 keeps their meaning.
     const hundredScale = { E: epicScores.E * 10, P: epicScores.P * 10, I: epicScores.I * 10, C: epicScores.C * 10 };
     const recommendations = this.generateActionableRecommendations(inputData, hundredScale, digitalAnalysis);
@@ -130,11 +130,16 @@ const GTM_ALPHA_ENGINE = {
     return insights;
   },
 
-  generateConsultationInsights(inputData, primaryFocus) {
+  generateConsultationInsights(inputData, primaryFocus, stageUsed = '') {
     const { company_name, gtm_challenge, business_stage } = inputData;
+    // Run 10 R10-28 (P14): name the stage the way the scoring note does. The form's label (for example "Early Traction")
+    // is followed by the stage row the scores started from ("Series A"), so the two lines of the report agree. Text only:
+    // the stage row itself comes from epic-advanced.js and is not changed here.
+    const stageText = stageUsed && !/\(used because/.test(stageUsed) && String(stageUsed).toLowerCase() !== String(business_stage).toLowerCase()
+      ? `${business_stage} (${stageUsed})` : business_stage;
     
     // Real consultation insight based on GTM Alpha methodology
-    const baseInsight = `Based on my experience with ${business_stage} companies, your specific challenge represents a critical GTM optimization opportunity. Most founders think GTM is just a marketing or sales problem, but it's actually a comprehensive operating system.`;
+    const baseInsight = `Based on my experience with ${stageText} companies, your specific challenge represents a critical GTM optimization opportunity. Most founders think GTM is just a marketing or sales problem, but it's actually a comprehensive operating system.`;
 
     const focusSpecificInsights = {
       'Product-Led Growth Acceleration': `Your challenge requires treating GTM as a dynamic operating system where Product-Led Growth becomes your primary lever. Focus on engineering product as GTM engine, PLG + sales synergy, and user experience optimization for conversion.`,
@@ -297,7 +302,7 @@ const GTM_ALPHA_ENGINE = {
   },
 
   generateMentalVelocityAnalysis(inputData) {
-    return `Based on B2B buyer psychology, optimizing for mental velocity - the speed of buyer hypothesis-to-resolution progression - is more critical than traditional funnel metrics. Focus on eliminating decision dead zones in your buyer journey.`;
+    return `Based on B2B buyer psychology, optimizing for mental velocity (the speed of buyer hypothesis-to-resolution progression) is more critical than traditional funnel metrics. Focus on eliminating decision dead zones in your buyer journey.`;
   },
 
   // Generate complete HTML report with PDF download functionality
