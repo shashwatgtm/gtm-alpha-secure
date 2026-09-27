@@ -2,7 +2,52 @@
 // EPIC Framework Audit with stored results and a 6-month roadmap
 
 import { getStore } from '@netlify/blobs';
+import { randomUUID } from 'node:crypto';
 import { allowedOrigin } from './site-origin.js';
+
+// Run 10 R10-09: the API accepts only the fields it reads (the same ones openapi.yaml documents), with a 32 KB body cap as
+// on the free audit form (premium-audit.js), and the server makes the storage key itself. The scoring code below is
+// unchanged: a request with only known fields and normal values is scored exactly as before.
+export const MAX_BODY = 32000;
+const TEXT = { company: 200, company_id: 100, industry: 100, company_stage: 60, business_stage: 60, current_gtm: 200 };
+const FOCUS = { max: 8, len: 40 };
+const METRICS = ["average_deal_size", "brand_advocacy_score", "community_engagement_rate", "content_engagement_rate",
+  "content_influenced_pipeline", "conversion_rate", "customer_acquisition_cost", "lead_to_customer_conversion",
+  "monthly_active_users", "monthly_organic_traffic", "product_adoption_rate", "trial_to_paid_conversion",
+  "user_activation_rate", "user_generated_content"];
+
+// Returns { clean } with only the known fields, or { problems } to send back. Unknown fields are dropped.
+export function cleanAuditInput(d) {
+  if (!d || typeof d !== 'object' || Array.isArray(d)) return { problems: ['The body must be a JSON object.'] };
+  const clean = {};
+  const problems = [];
+  for (const [f, cap] of Object.entries(TEXT)) {
+    if (d[f] === undefined || d[f] === null) continue;
+    if (typeof d[f] !== 'string') problems.push(`${f} must be text.`);
+    else if (d[f].length > cap) problems.push(`${f} is longer than ${cap} characters.`);
+    else clean[f] = d[f];
+  }
+  if (d.focus_areas !== undefined && d.focus_areas !== null) {
+    if (!Array.isArray(d.focus_areas) || d.focus_areas.length > FOCUS.max ||
+        d.focus_areas.some((x) => typeof x !== 'string' || x.length > FOCUS.len)) {
+      problems.push(`focus_areas must be a list of at most ${FOCUS.max} short texts.`);
+    } else clean.focus_areas = d.focus_areas;
+  }
+  if (d.current_metrics !== undefined && d.current_metrics !== null) {
+    if (typeof d.current_metrics !== 'object' || Array.isArray(d.current_metrics)) problems.push('current_metrics must be an object.');
+    else {
+      const m = {};
+      for (const k of METRICS) {
+        const v = d.current_metrics[k];
+        if (v === undefined || v === null) continue;
+        if ((typeof v === 'number' && isFinite(v)) || (typeof v === 'string' && v.length <= 30)) m[k] = v;
+        else problems.push(`current_metrics.${k} must be a number.`);
+      }
+      clean.current_metrics = m;
+    }
+  }
+  return problems.length ? { problems } : { clean };
+}
 
 const EPIC_AUDIT_ENGINE = {
   // Store previous audits for progress tracking
@@ -878,7 +923,21 @@ export default async (req, context) => {
   }
 
   try {
-    const inputData = await req.json();
+    const text = await req.text();
+    if (text.length > MAX_BODY) {
+      return new Response(JSON.stringify({ error: 'Request body too large (limit 32 KB)' }), { status: 413, headers });
+    }
+    let raw;
+    try {
+      raw = JSON.parse(text);
+    } catch {
+      return new Response(JSON.stringify({ error: 'The body is not valid JSON' }), { status: 400, headers });
+    }
+    const checked = cleanAuditInput(raw);
+    if (checked.problems) {
+      return new Response(JSON.stringify({ error: 'Invalid input', problems: checked.problems }), { status: 400, headers });
+    }
+    const inputData = checked.clean;
     
     // Validate required fields
     if (!inputData.company) {
@@ -890,10 +949,11 @@ export default async (req, context) => {
       });
     }
 
-    // Generate unique company ID for tracking
+    // Generate unique company ID for tracking (returned to the caller only). The storage key is made by the server
+    // (run 10 R10-09): a random ID, so no caller value decides where a record is written.
     const companyId = inputData.company_id || 
                       inputData.company.toLowerCase().replace(/\s+/g, '-');
-    const consultationId = `EPIC-AUDIT-${companyId}-${Date.now()}`;
+    const consultationId = `EPIC-AUDIT-${randomUUID()}`;
 
     // Perform EPIC framework audit
     const auditResults = EPIC_AUDIT_ENGINE.assessEPICMaturity(inputData);

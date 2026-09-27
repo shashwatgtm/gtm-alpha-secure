@@ -117,6 +117,34 @@ test("the audit API allows browsers only from the site's own addresses", async (
   assert.equal(allowedOrigin({ headers: new Headers() }), null);
 });
 
+test("the audit API keeps only its known fields, caps the body and makes the storage key itself (run 10 R10-09)", async () => {
+  const { cleanAuditInput } = await import("../netlify/lib/epic-audit.js");
+  const c = cleanAuditInput({ company: "TEST Co", industry: "saas", evil: "x".repeat(10), __proto__x: 1, current_metrics: { conversion_rate: 3, other: 5 } });
+  assert.deepEqual(Object.keys(c.clean).sort(), ["company", "current_metrics", "industry"]);
+  assert.deepEqual(c.clean.current_metrics, { conversion_rate: 3 });
+  assert.deepEqual(cleanAuditInput({ company: "x".repeat(201) }).problems, ["company is longer than 200 characters."]);
+  assert.deepEqual(cleanAuditInput({ company: "A", focus_areas: "ecosystem" }).problems, ["focus_areas must be a list of at most 8 short texts."]);
+  assert.deepEqual(cleanAuditInput([]).problems, ["The body must be a JSON object."]);
+  const big = await api(new Request(BASE + "/api/epic-audit", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ company: "A", pad: "x".repeat(33000) }) }), {});
+  assert.equal(big.status, 413);
+  const r = await api(new Request(BASE + "/api/epic-audit", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ company: "TEST Co", company_id: "EPIC-AUDIT-" }) }), {});
+  const j = await r.json();
+  assert.match(j.consultation_id, /^EPIC-AUDIT-[0-9a-f-]{36}$/, "the storage key is a server-made random ID");
+});
+
+test("the MCP endpoint caps the body and each text input (run 10 R10-09)", async () => {
+  const mcp = (await import("../netlify/functions/mcp-sse.js")).default;
+  const call = (args) => mcp(new Request(BASE + "/mcp", { method: "POST", headers: { "content-type": "application/json" },
+    body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/call", params: { name: "epic_audit", arguments: args } }) }), {});
+  const long = await (await call({ challenge: "x".repeat(4001) })).json();
+  assert.equal(long.result.isError, true);
+  assert.match(long.result.content[0].text, /challenge is longer than 4000 characters/);
+  const ok = await (await call({ challenge: "x".repeat(4000) })).json();
+  assert.ok(!ok.result.isError);
+  const huge = await mcp(new Request(BASE + "/mcp", { method: "POST", headers: { "content-type": "application/json" }, body: "{" + " ".repeat(70000) + "}" }), {});
+  assert.equal(huge.status, 413);
+});
+
 test("other paths answer 404", async () => {
   assert.equal((await api(new Request(BASE + "/api/create-payment", { method: "POST" }), {})).status, 404);
 });

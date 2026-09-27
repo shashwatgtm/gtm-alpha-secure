@@ -171,6 +171,17 @@ function toolError(id, text) {
   return reply(200, { jsonrpc: "2.0", id: id, result: { content: [{ type: "text", text: text }], isError: true } });
 }
 
+// Run 10 R10-09: size caps. The whole request may be at most 64 KB, and each text input at most 4,000 characters (a GTM
+// challenge is a paragraph, not a document). The caps sit here, in the checks, so the tool definitions in tools/list are
+// unchanged; a request inside them runs exactly as before.
+var MAX_BODY = 65536;
+var MAX_TEXT = 4000;
+
+function tooLong(args) {
+  return Object.keys(args).filter(function(key) { return typeof args[key] === "string" && args[key].length > MAX_TEXT; })
+    .map(function(key) { return key + " is longer than " + MAX_TEXT + " characters"; });
+}
+
 function missingRequired(tool, args) {
   var required = (tool.inputSchema && tool.inputSchema.required) || [];
   return required.filter(function(key) { return args[key] === undefined || args[key] === null; });
@@ -209,7 +220,11 @@ export default async function handler(req, context) {
 
   var body;
   try {
-    body = await req.json();
+    var text = await req.text();
+    if (text.length > MAX_BODY) {
+      return rpcError(null, -32600, "Invalid request: the request body is larger than 64 KB.", 413);
+    }
+    body = JSON.parse(text);
   } catch (parseError) {
     return rpcError(null, -32700, "Parse error: the request body is not valid JSON.", 400);
   }
@@ -255,7 +270,7 @@ export default async function handler(req, context) {
 
     if (method === "tools/call") {
       var toolName = params.name;
-      var toolArgs = params.arguments || {};
+      var toolArgs = params.arguments && typeof params.arguments === "object" && !Array.isArray(params.arguments) ? params.arguments : {};
       var tool = TOOLS.find(function(t) { return t.name === toolName; });
       if (!tool) {
         return toolError(id, "Unknown tool: " + toolName + ". Available tools: " + TOOLS.map(function(t) { return t.name; }).join(", ") + ".");
@@ -263,6 +278,10 @@ export default async function handler(req, context) {
       var missing = missingRequired(tool, toolArgs);
       if (missing.length > 0) {
         return toolError(id, "Missing required input for " + toolName + ": " + missing.join(", ") + ". Provide " + (missing.length === 1 ? "it" : "them") + " and call the tool again.");
+      }
+      var long = tooLong(toolArgs);
+      if (long.length > 0) {
+        return toolError(id, "Invalid input for " + toolName + ": " + long.join("; ") + ".");
       }
       var below = belowMinimum(tool, toolArgs);
       if (below.length > 0) {
