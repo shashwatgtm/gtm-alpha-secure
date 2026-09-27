@@ -449,6 +449,9 @@
             border-bottom: 1px solid var(--border-light);
         }
 
+        .hx10-release { width: 100%; border-collapse: collapse; font-size: 15px; margin: 12px 0; }
+        .hx10-release th, .hx10-release td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--border-light); }
+
         .docs-section h3 {
             font-size: 20px;
             font-weight: 600;
@@ -694,6 +697,7 @@
                 <h1>GTM Alpha API and MCP docs</h1>
                 <p class="hero-subtitle">Connect the three GTM Alpha tools over MCP, or call the REST API. No key needed, and free during testing.</p>
             <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix GTM Consulting · Last updated <time datetime="2026-09-27">27 September 2026</time></p>
+                <p class="hx10-history">History: first commit 13 July 2025, first npm release 8 September 2025, in the MCP Registry since 11 December 2025.</p>
             </div>
         </div>
     </section>
@@ -711,6 +715,7 @@
                     <li><a href="#authentication">Authentication</a></li>
                     <li><a href="#limits">Limits</a></li>
                     <li><a href="#examples">Examples</a></li>
+                    <li><a href="#release-history">Release history</a></li>
                 </ul>
             </aside>
 
@@ -945,6 +950,23 @@ platform to mid-market companies (100-1000 employees).</code></pre>
     }
   }'</code></pre>
                     </div>
+                </section>
+                <section id="release-history" class="docs-section">
+                    <h2>Release history</h2>
+                    <p>History: first commit 13 July 2025, first npm release 8 September 2025, in the MCP Registry since 11 December 2025. Versions and dates below come from the git history of this site's code and from npm and the MCP Registry. Versions after 1.0.5 run on this site and have not been published to npm, so the npm package can lag behind this site.</p>
+                    <table class="hx10-release">
+                        <thead><tr><th>Version</th><th>Date</th><th>Where</th><th>What changed</th></tr></thead>
+                        <tbody>
+                            <tr><td>1.0.0</td><td>13 July 2025 (first commit 96e14059); on npm 8 September 2025</td><td>npm</td><td>First version of the GTM Alpha consultation system</td></tr>
+                            <tr><td>1.0.1 and 1.0.2</td><td>11 December 2025</td><td>npm and the MCP Registry (as io.github.shashwatgtm/gtm-alpha-mcp-server, 1.0.2)</td><td>Listed in the MCP Registry (commit c3929f69)</td></tr>
+                            <tr><td>1.0.3</td><td>12 December 2025</td><td>npm</td><td>Command-line MCP server for local use (commit 8f8dfb96)</td></tr>
+                            <tr><td>1.0.4 and 1.0.5</td><td>19 December 2025; MCP Registry 20 December 2025</td><td>npm and the MCP Registry (as io.github.shashwatgtm/gtm-alpha-consultant, 1.0.5)</td><td>Tool safety annotations and a privacy policy for ChatGPT apps (commits 993debd5, 36e4e41e)</td></tr>
+                            <tr><td>1.1.0</td><td>24 September 2026</td><td>this site</td><td>Prepared for the Claude connector directory (commit ea2ef939)</td></tr>
+                            <tr><td>1.2.0</td><td>24 September 2026</td><td>this site</td><td>Advanced EPIC scoring from the documented rubric (commit 31cd0e5a)</td></tr>
+                            <tr><td>1.3.0</td><td>26 September 2026</td><td>this site</td><td>Negative amounts refused, one npm code path (commit 2d4f9cca)</td></tr>
+                            <tr><td>1.3.1</td><td>26 September 2026</td><td>this site (current)</td><td>Fixes from a code check (commit f58d31d9)</td></tr>
+                        </tbody>
+                    </table>
                 </section>
             </main>
         </div>
