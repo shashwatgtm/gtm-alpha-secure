@@ -96,3 +96,13 @@ h1, h2, h3 { text-wrap: balance; }
   .hx10-sec > h2 { padding-bottom: 8px; }
   .report-container { max-width: none; }
 }
+@media (min-width: 1280px) {
+  /* Full-width blocks with the page's own paper background are held to the header's 1248 px container (no visible change:
+     same background, no border), so their box lines up with the header like the other sites' sections. */
+  .features, .epic-framework, .page-content { max-width: 1248px; margin-left: auto !important; margin-right: auto !important; }
+  /* Question lists (closed questions are one short line each) run in two columns beside their heading on wide screens. */
+  .hx10-sec:has(> .faq-item) { grid-template-columns: 300px 16px minmax(0, 1fr) minmax(0, 1fr); column-gap: 24px; }
+  .hx10-sec:has(> .faq-item) > h2 { grid-column: 1 / span 2; }
+  .hx10-sec:has(> .faq-item) > :not(h2) { grid-column: auto; max-width: none; }
+  .faq-section .faq-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 24px; align-items: start; }
+}
