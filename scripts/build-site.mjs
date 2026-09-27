@@ -13,7 +13,9 @@ const OUT = join(ROOT, "site");
 // Run 10 R10-05: 404.html is Netlify's page for any address that does not exist (served with status 404).
 const PAGES = ["index.html", "pricing.html", "consultation.html", "integration.html", "faq.html", "api-docs.html",
   "privacy.html", "terms.html", "404.html", "sample-report/index.html"];
-const FILES = [...PAGES, "favicon.svg", "logo.svg", "robots.txt", "sitemap.xml", "llms.txt", "_redirects", "_headers", "openapi.yaml",
+// Run 10 R10-28 (P13): favicon.ico is favicon.svg drawn at 16, 32 and 48 px (work/run10/gtmalpha/favicon_ico.mjs), for
+// browsers and tools that ask for /favicon.ico.
+const FILES = [...PAGES, "favicon.svg", "favicon.ico", "logo.svg", "robots.txt", "sitemap.xml", "llms.txt", "_redirects", "_headers", "openapi.yaml",
   "5d1ec46b7e579accde50872ab5aef7a4.txt"];
 const DIRS = ["assets"];
 

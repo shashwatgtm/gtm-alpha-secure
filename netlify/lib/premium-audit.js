@@ -53,8 +53,9 @@ const PAGE_HEADERS = {
   "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
 };
 
-// The four site stylesheets, each with its ?v= version (R10-10), for the report and message pages.
-const STYLESHEETS = `<link rel="stylesheet" href="/assets/fonts.css?v=${V_FONTS}"><link rel="stylesheet" href="/assets/brand.css?v=${V_BRAND}">` +
+// The four site stylesheets, each with its ?v= version (R10-10), for the report and message pages. Run 10 R10-28 (P13): the
+// site's icon comes first, as on the static pages, so the browser does not ask for a missing /favicon.ico.
+const STYLESHEETS = `<link rel="icon" type="image/svg+xml" href="/favicon.svg">` + `<link rel="stylesheet" href="/assets/fonts.css?v=${V_FONTS}"><link rel="stylesheet" href="/assets/brand.css?v=${V_BRAND}">` +
   `<link rel="stylesheet" href="/assets/helix.css?v=${V_HELIX}"><link rel="stylesheet" href="/assets/site.css?v=${V_SITE}">`;
 
 function messagePage(status, title, lines) {
