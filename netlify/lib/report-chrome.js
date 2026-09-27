@@ -14,4 +14,4 @@ export const LD_SAMPLE = "{\n \"@context\": \"https://schema.org\",\n \"@graph\"
 export const V_FONTS = "181b7ec591";
 export const V_BRAND = "58a48228fa";
 export const V_HELIX = "741f6a1051";
-export const V_SITE = "abbce545e1";
+export const V_SITE = "41064255ab";
