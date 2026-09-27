@@ -28,10 +28,10 @@
  "@graph": [
   {
    "@type": "Organization",
-   "@id": "https://tools.gtmhelix.com/#org",
+   "@id": "https://gtmhelix.com/#org",
    "name": "Helix GTM Consulting",
    "alternateName": "Helix GTM",
-   "url": "https://tools.gtmhelix.com",
+   "url": "https://gtmhelix.com/",
    "email": "shashwat@gtmhelix.com",
    "foundingDate": "2022",
    "description": "Business consulting and services firm, founded in 2022 in Bengaluru.",
@@ -57,15 +57,16 @@
    "@id": "https://www.gtmexpert.com/#shashwat",
    "name": "Shashwat Ghosh",
    "jobTitle": "Co-Founder and Fractional CMO",
-   "description": "Co-Founder and Fractional CMO of Helix GTM Consulting since October 2022, with 24+ years in B2B and 10+ years of fractional experience. Creator of the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology. Has led 6+ major corporate rebrands. Results: VP Marketing, Happay: 161% ARR growth. 2x exit: CRED ($180M), then MakeMyTrip. VP Performance Marketing, Locus: $4.2M pipeline. Acquired by IKEA (Ingka Group) in Oct 2025. Fractional CMO, FieldAssist: 2.25x growth in mid-market and enterprise qualified leads. Advisor, QuantumStreet AI: rebranded a $7Bn AUM AI investment fund, with Digitas and IBM. 4x business growth, Airtel Data Centers and Managed Services. Rs 2.35 Cr TCV in 6 months with ABM at Seclore, and 225+ sales meetings across Seclore's target accounts.",
+   "description": "Co-Founder and Fractional CMO of Helix GTM Consulting, with 24+ years in B2B and 10+ years of fractional experience. Creator of the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology. Has led 6+ corporate rebrands. Results: VP Marketing, Happay: 161% ARR growth. 2x exit: CRED ($180M), then MakeMyTrip. VP Performance Marketing, Locus: $4.2M pipeline. Acquired by IKEA (Ingka Group) in Oct 2025. Fractional CMO, FieldAssist: 2.25x growth in mid-market and enterprise qualified leads. Advisor, QuantumStreet AI: rebranded a $7Bn AUM AI investment fund, with Digitas and IBM. 4x business growth, Airtel Data Centers and Managed Services. Rs 2.35 Cr TCV in 6 months with ABM at Seclore, and 225+ sales meetings across Seclore's target accounts.",
    "worksFor": {
-    "@id": "https://tools.gtmhelix.com/#org"
+    "@id": "https://gtmhelix.com/#org"
    },
    "url": "https://www.gtmexpert.com",
    "email": "shashwat@gtmhelix.com",
    "award": [
     "LinkedIn Top Product Marketing Voice: #10 India, #52 worldwide (Favikon verified)",
     "#14 in AI Research and Innovation on LinkedIn India",
+    "Top 30 PLG creators worldwide",
     "Most Admired Marketing Leaders 2025 (CMO Asia)",
     "B2B Marketer of the Year 2020, Fintech (CMO Asia)"
    ],
@@ -124,7 +125,7 @@
    "url": "https://gtmalpha.gtmhelix.com/",
    "name": "GTM Alpha",
    "publisher": {
-    "@id": "https://tools.gtmhelix.com/#org"
+    "@id": "https://gtmhelix.com/#org"
    },
    "inLanguage": "en"
   },
@@ -138,7 +139,7 @@
     "@id": "https://gtmalpha.gtmhelix.com/#site"
    },
    "about": {
-    "@id": "https://tools.gtmhelix.com/#org"
+    "@id": "https://gtmhelix.com/#org"
    },
    "dateModified": "2026-09-27",
    "inLanguage": "en",
@@ -150,13 +151,25 @@
     {
      "@type": "ListItem",
      "position": 1,
-     "name": "Home",
-     "item": "https://gtmalpha.gtmhelix.com/"
+     "name": "Helix GTM",
+     "item": "https://gtmhelix.com/"
     },
     {
      "@type": "ListItem",
      "position": 2,
-     "name": "Terms of Service",
+     "name": "All tools",
+     "item": "https://tools.gtmhelix.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 3,
+     "name": "GTM Alpha",
+     "item": "https://gtmalpha.gtmhelix.com/"
+    },
+    {
+     "@type": "ListItem",
+     "position": 4,
+     "name": "Terms",
      "item": "https://gtmalpha.gtmhelix.com/terms"
     }
    ]
@@ -184,9 +197,9 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.8; color: var(--text-primary); background: var(--bg-primary); }
         .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
-        header { background: var(--primary-navy); color: #FAF8F6; padding: 60px 0 40px; margin-bottom: 40px; }
-        header h1 { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
-        header p { color: rgba(250, 248, 246,0.7); font-size: 14px; }
+        header:not(.hx9-gh) { background: var(--primary-navy); color: #FAF8F6; padding: 60px 0 40px; margin-bottom: 40px; }
+        header:not(.hx9-gh) h1 { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
+        header:not(.hx9-gh) p { color: rgba(250, 248, 246,0.7); font-size: 14px; }
         .content { padding: 0 0 60px; }
         h2 { font-size: 24px; font-weight: 700; margin: 40px 0 16px; color: var(--primary-navy); border-bottom: 2px solid var(--accent-coral); padding-bottom: 8px; }
         h3 { font-size: 18px; font-weight: 600; margin: 24px 0 12px; color: var(--primary-blue); }
@@ -210,20 +223,7 @@
     <link rel="stylesheet" href="/assets/helix.css">
 </head>
 <body>
-    <header class="hx-header">
-        <div class="hx-wrap hx-header-row">
-            <a class="hx-lockup" href="/"><span class="hx-alpha" aria-hidden="true">&#945;</span><span class="hx-wordmark">GTM Alpha</span></a>
-            <nav class="hx-nav" aria-label="GTM Alpha">
-                <a href="/#epic">EPIC framework</a>
-                <a href="/integration">Use it in Claude</a>
-                <a href="/pricing">Pricing</a>
-                <a href="/faq">FAQ</a>
-                <a href="https://tools.gtmhelix.com/about/">About Shashwat</a>
-                <a href="https://tools.gtmhelix.com/">All tools</a>
-                <a href="/consultation" class="hx-cta">Get your free EPIC audit</a>
-            </nav>
-        </div>
-    </header>
+    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/">All tools</a><a href="https://gtmhelix.com/#writing">Writing</a><a href="https://gtmhelix.com/about/">About</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></nav></div><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">Terms</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></nav></div></div><details class="hx9-mm"><summary>Menu</summary><div class="hx9-mm-panel"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/">All tools</a><a href="https://gtmhelix.com/#writing">Writing</a><a href="https://gtmhelix.com/about/">About</a><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div></details></header>
     <main id="main">
 
     <section class="hx-hero">
@@ -415,7 +415,8 @@
                 <div>
                     <p class="hx-foot-h">Contact</p>
                     <a href="/consultation">Free EPIC audit</a>
-                    <a href="mailto:shashwat@gtmhelix.com">Email Support</a>
+                    <a href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a>
+                    <a href="mailto:shashwat@gtmhelix.com">Email Shashwat</a>
                     <a href="https://www.gtmexpert.com/">GTMExpert.com</a>
                 </div>
             </div>
