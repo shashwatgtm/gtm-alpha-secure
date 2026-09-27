@@ -9,7 +9,7 @@ const ROUTES = { "/api/epic-audit": epicAudit, "/api/premium-audit": premiumAudi
 export default async (req, context) => {
   const route = ROUTES[new URL(req.url).pathname];
   if (!route) {
-    return new Response(JSON.stringify({ error: "Not found" }), { status: 404, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
+    return new Response(JSON.stringify({ error: "Not found" }), { status: 404, headers: { "Content-Type": "application/json", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", "Strict-Transport-Security": "max-age=31536000" } });
   }
   return route(req, context);
 };

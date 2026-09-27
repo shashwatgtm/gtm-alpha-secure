@@ -159,7 +159,7 @@ var CORS_HEADERS = {
 
 function reply(status, body, extraHeaders) {
   // Answers are never cached, as on the other connectors.
-  var headers = Object.assign({ "Content-Type": "application/json", "Cache-Control": "no-store" }, CORS_HEADERS, extraHeaders || {});
+  var headers = Object.assign({ "Content-Type": "application/json", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", "Strict-Transport-Security": "max-age=31536000" }, CORS_HEADERS, extraHeaders || {});
   return new Response(body === null ? null : JSON.stringify(body), { status: status, headers: headers });
 }
 

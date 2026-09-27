@@ -1,7 +1,7 @@
 // netlify/lib/health.js (served by netlify/functions/api.js at GET /api/health): a plain liveness answer.
 // It reports no environment, memory, uptime or configuration details (audit check 11b).
 export default async (req) => {
-  const headers = { "Content-Type": "application/json", "Cache-Control": "no-store" };
+  const headers = { "Content-Type": "application/json", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", "Strict-Transport-Security": "max-age=31536000" };
   if (req.method !== "GET") {
     return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405, headers: { ...headers, "Allow": "GET" } });
   }
