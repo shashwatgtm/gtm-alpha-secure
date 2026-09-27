@@ -21,6 +21,13 @@ footer.hx-footer a { display: flex !important; align-items: center; margin: 0 !i
 footer.hx-footer .hx-footer-bottom a { display: inline-flex !important; }
 .hx-qa summary { min-height: 44px; }
 .sidebar-nav a { display: flex !important; align-items: center; }
+/* The shared header's logo (30 px) and top links (40 px) get a 44 px tap area without changing the header's look; the
+   same rule belongs in helix.css for every site (reported to the coordinator). */
+.hx9-gh .hx9-logo, .hx9-gh .hx9-nav a { min-height: 44px; box-sizing: border-box; }
+.hx9-gh .hx9-nav a { display: inline-flex; align-items: center; }
+/* Buttons drawn as underlined links, a link that is a list item's only content, and the email line under a card */
+.btn-secondary, .hx-btn-ghost, .plan-alt a { display: inline-flex !important; align-items: center; min-height: 44px; box-sizing: border-box; }
+main li > a:only-child { display: inline-flex; align-items: center; min-height: 44px; }
 
 /* R10-A1-5 and R10-16: the action bar at the top of a report, and the made-up example note */
 .hx10-actions { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin: 0 0 20px; }
