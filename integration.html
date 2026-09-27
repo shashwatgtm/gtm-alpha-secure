@@ -326,6 +326,10 @@
         .hx8-dev h3 { font-size: 20px; margin: 20px 0 10px; }
         .hx8-dev ul { margin: 8px 0 16px 20px; }
         .hx8-dev .code-container { margin: 8px 0 12px; }
+        /* run 10 R10-28 (P15): the bordered code box keeps its 24 px padding on every side; the code scrolls inside it,
+           so long lines are cut 24 px inside the border instead of running into it */
+        .code-block { overflow: hidden !important; }
+        .code-block .hx10-code-scroll { overflow-x: auto; white-space: pre; background: transparent !important; }
         footer { background: var(--primary-navy); color: #FAF8F6; padding: 60px 0 30px; border-top: 1px solid rgba(250, 248, 246, 0.1); }
         .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 40px; }
         .footer-brand h3 { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
@@ -414,14 +418,14 @@
                                     <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
                                     <span>claude_desktop_config.json</span>
                                 </div>
-                                <div class="code-block">{
+                                <div class="code-block"><div class="hx10-code-scroll">{
   "mcpServers": {
     "gtm-alpha": {
       "command": "npx",
       "args": ["-y", "@shashwatgtmalpha/gtm-alpha-mcp-server"]
     }
   }
-}</div>
+}</div></div>
                             </div>
                         </div>
                     </div>
@@ -441,14 +445,14 @@
                                     <div class="code-dots"><div class="code-dot dot-red"></div><div class="code-dot dot-yellow"></div><div class="code-dot dot-green"></div></div>
                                     <span>mcp.json</span>
                                 </div>
-                                <div class="code-block">{
+                                <div class="code-block"><div class="hx10-code-scroll">{
   "mcpServers": {
     "gtm-alpha": {
       "command": "npx",
       "args": ["-y", "@shashwatgtmalpha/gtm-alpha-mcp-server"]
     }
   }
-}</div>
+}</div></div>
                             </div>
                         </div>
                     </div>
@@ -484,7 +488,7 @@
                     </ul>
                     <h3>Call a tool</h3>
                     <div class="code-container"><div class="code-header"><span>API request example (curl)</span></div>
-                    <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
+                    <div class="code-block"><div class="hx10-code-scroll">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
@@ -496,32 +500,32 @@
         "gtm_challenge": "How to enter enterprise market?"
       }
     }
-  }'</div></div>
+  }'</div></div></div>
                     <h3>List the tools</h3>
                     <div class="code-container"><div class="code-header"><span>Get the tools list (curl)</span></div>
-                    <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
+                    <div class="code-block"><div class="hx10-code-scroll">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
     "id": 1,
     "method": "tools/list"
-  }'</div></div>
+  }'</div></div></div>
                     <h3>Start a connection</h3>
                     <div class="code-container"><div class="code-header"><span>Initialize (curl)</span></div>
-                    <div class="code-block">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
+                    <div class="code-block"><div class="hx10-code-scroll">curl -X POST https://gtmalpha.gtmhelix.com/mcp \
   -H "Content-Type: application/json" \
   -d '{
     "jsonrpc": "2.0",
     "id": 1,
     "method": "initialize"
-  }'</div></div>
+  }'</div></div></div>
                     <h3>Call it from your own code</h3>
                     <p>Use the MCP address above, or the REST API described in the <a href="/api-docs">API documentation</a>. To run the server on your own machine, use the npm package:</p>
                     <div class="code-container"><div class="code-header"><span>npm install</span></div>
-                    <div class="code-block">npm install @shashwatgtmalpha/gtm-alpha-mcp-server
+                    <div class="code-block"><div class="hx10-code-scroll">npm install @shashwatgtmalpha/gtm-alpha-mcp-server
 
 # Or run directly with npx
-npx @shashwatgtmalpha/gtm-alpha-mcp-server</div></div>
+npx @shashwatgtmalpha/gtm-alpha-mcp-server</div></div></div>
                     <p><a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server">npm package</a> · <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant">MCP Registry</a></p>
                 </div>
             </details>
