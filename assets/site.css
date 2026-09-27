@@ -1,0 +1,36 @@
+/* GTM Alpha's own shared rules (run 10), loaded after brand.css and helix.css on every page, the 404 page, the sample
+   report and the report page. helix.css is the shared Helix file and is not edited here. Helix colours only. */
+
+/* R10-15: skip link, first thing on every page; hidden until it has keyboard focus */
+.hx10-skip { position: absolute; left: 12px; top: -200px; z-index: 100; background: #641220; color: #FAF8F6 !important; padding: 12px 18px; min-height: 44px; font: 600 16px/1.25 'Archivo', Arial, sans-serif; text-decoration: none !important; }
+.hx10-skip:focus, .hx10-skip:focus-visible { top: 12px; }
+
+/* R10-15 (D4 of the chat review): the page containers line up with the shared header. The header's container is 1248 px
+   wide, border-box, with 24 px on each side (helix.css, .hx9-gh .hx-wrap); the pages' own .container was 1200 px, so
+   their text started 24 px to the right of the logo. Reading pages keep their 800 px text measure, aligned left. */
+.container, .hx-wrap { max-width: 1248px !important; margin-left: auto !important; margin-right: auto !important; padding-left: 24px !important; padding-right: 24px !important; box-sizing: border-box !important; }
+.hx10-read > * { max-width: 800px; }
+.hx-hero .hero-content, .hx-hero .section-header, .hx-hero .hx-hero-inner { margin-left: 0 !important; margin-right: 0 !important; text-align: left !important; }
+.hx-qa { max-width: 1248px !important; box-sizing: border-box; padding-left: 24px !important; padding-right: 24px !important; }
+
+/* R10-15: tap targets at least 44 px high */
+.hx9-crumbs a, .hx9-site a, footer.hx-footer a, .hx7-links a, .hx7-strip a, .hx9-mm > summary, .tab-btn, .faq-question, .copy-btn,
+.hx-byline a, .hx10-actions a, .hx10-actions button, .hx10-links a, .sidebar-nav a { min-height: 44px; box-sizing: border-box; }
+.hx9-crumbs a, .hx9-site a, .hx7-links a, .hx7-strip a, .hx-byline a { display: inline-flex; align-items: center; }
+footer.hx-footer a { display: flex !important; align-items: center; margin: 0 !important; }
+footer.hx-footer .hx-footer-bottom a { display: inline-flex !important; }
+.hx-qa summary { min-height: 44px; }
+.sidebar-nav a { display: flex !important; align-items: center; }
+
+/* R10-A1-5 and R10-16: the action bar at the top of a report, and the made-up example note */
+.hx10-actions { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin: 0 0 20px; }
+.hx10-actions a, .hx10-actions button { display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; font: 600 13px/1.2 'IBM Plex Mono', monospace; letter-spacing: .06em; text-transform: uppercase; text-decoration: none !important; cursor: pointer; border: 1.5px solid #641220; background: transparent; color: #641220 !important; border-radius: 0; }
+.hx10-actions .hx10-primary { background: #641220; color: #FAF8F6 !important; }
+.hx10-actions a:hover, .hx10-actions button:hover { background: #C1121F; border-color: #C1121F; color: #FAF8F6 !important; }
+.hx10-note { margin: 0 0 18px; padding: 12px 16px; background: #EAD9D5; border-left: 4px solid #C1121F; font-size: 17px; color: #1A0E10; }
+.hx10-links { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
+.hx10-links a { display: inline-flex; align-items: center; font-weight: 700; color: #1A0E10 !important; text-decoration: underline; text-decoration-color: #C1121F; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+
+/* R10-23: the answer-first block under the home H1 */
+.hx10-answer { max-width: 68ch; margin: 14px 0 0; padding: 12px 16px; border-left: 4px solid #641220; background: #FAF8F6; font-size: 17px !important; color: #1A0E10 !important; }
+.hx10-history { font-family: 'IBM Plex Mono', monospace; font-size: 13px !important; color: rgba(26, 14, 16, .72) !important; margin-top: 8px; }

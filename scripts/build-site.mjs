@@ -9,8 +9,9 @@ const ROOT = process.cwd();
 const OUT = join(ROOT, "site");
 // The PayPal pages (payment-success.html, payment-cancel.html) stay in the repository for a paid launch but are not
 // published: while GTM Alpha is free, the Premium Audit report is returned straight after the form (owner decision 3).
+// Run 10 R10-05: 404.html is Netlify's page for any address that does not exist (served with status 404).
 const PAGES = ["index.html", "pricing.html", "consultation.html", "integration.html", "faq.html", "api-docs.html",
-  "privacy.html", "terms.html"];
+  "privacy.html", "terms.html", "404.html"];
 const FILES = [...PAGES, "favicon.svg", "logo.svg", "robots.txt", "sitemap.xml", "llms.txt", "_redirects", "_headers", "openapi.yaml",
   "5d1ec46b7e579accde50872ab5aef7a4.txt"];
 const DIRS = ["assets"];
