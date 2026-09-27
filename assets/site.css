@@ -27,6 +27,9 @@ footer.hx-footer .hx-footer-bottom a { display: inline-flex !important; }
 .hx10-actions a, .hx10-actions button { display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; font: 600 13px/1.2 'IBM Plex Mono', monospace; letter-spacing: .06em; text-transform: uppercase; text-decoration: none !important; cursor: pointer; border: 1.5px solid #641220; background: transparent; color: #641220 !important; border-radius: 0; }
 .hx10-actions .hx10-primary { background: #641220; color: #FAF8F6 !important; }
 .hx10-actions a:hover, .hx10-actions button:hover { background: #C1121F; border-color: #C1121F; color: #FAF8F6 !important; }
+.hx10-report { padding-top: 24px; padding-bottom: 8px; }
+.hx9-report-next { margin: 20px 0 0; padding-top: 14px; border-top: 1.5px solid rgba(26, 14, 16, .12); font-size: 17px; }
+.hx9-report-next a { color: #641220 !important; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
 .hx10-note { margin: 0 0 18px; padding: 12px 16px; background: #EAD9D5; border-left: 4px solid #C1121F; font-size: 17px; color: #1A0E10; }
 .hx10-links { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
 .hx10-links a { display: inline-flex; align-items: center; font-weight: 700; color: #1A0E10 !important; text-decoration: underline; text-decoration-color: #C1121F; text-decoration-thickness: 3px; text-underline-offset: 6px; }

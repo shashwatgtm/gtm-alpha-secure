@@ -182,5 +182,5 @@ export function withChrome(report) {
   return report
     .replace("</head>", `${STYLESHEETS}</head>`)
     .replace("<body>", `<body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx10-report">${ACTIONS}`)
-    .replace("</body>", `</main>${NEXT}${FOOTER}<script>${EDIT_SCRIPT}</script></body>`);
+    .replace("</body>", `${NEXT}</main>${FOOTER}<script>${EDIT_SCRIPT}</script></body>`);
 }

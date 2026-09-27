@@ -85,8 +85,8 @@ ${chrome.LD_SAMPLE}
     <p class="hx10-note"><strong>Sample report for a made-up company (${esc(company)}).</strong> This is a made-up example: every score and line below is what GTM Alpha's report code returns for the example answers on the free audit form.</p>
     <nav class="hx10-actions" aria-label="Sample report actions"><a class="hx10-primary" href="/consultation">Get your own free audit</a><a href="https://tools.gtmhelix.com/tools/">Back to all tools</a><a href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></nav>
     ${report}
-    </main>
     ${chrome.NEXT}
+    </main>
     ${chrome.FOOTER}
 </body>
 </html>
