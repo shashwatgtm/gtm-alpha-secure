@@ -63,23 +63,21 @@ h1, h2, h3 { text-wrap: balance; }
    - /integration: the question sections (.hx-qa); the setup tabs use the full width
    - /faq, /privacy, /terms: .hx10-sec (each H2 with what follows it; work/run10/gtmalpha/d1_sections.py); the legal prose
      keeps a readable line length (78 characters)
-   - the report and the sample report: each report section (.report-container .section) */
+   - the report and the sample report: the full container width, headings above their sections (see below) */
 @media (min-width: 1280px) {
-  .features > .container, .epic-framework > .container, .hx-qa, .form-container, #pricing, .faq-section, .hx10-sec,
-  .report-container .section {
+  .features > .container, .epic-framework > .container, .hx-qa, .form-container, #pricing, .faq-section, .hx10-sec {
     display: grid; grid-template-columns: 300px minmax(0, 1fr); column-gap: 64px; align-items: start;
   }
   .features > .container > .section-header, .epic-framework > .container > .section-header, .hx-qa > h2,
-  .form-container > .form-header, #pricing > .section-header, .faq-section > .section-header, .hx10-sec > h2,
-  .report-container .section > h2 {
+  .form-container > .form-header, #pricing > .section-header, .faq-section > .section-header, .hx10-sec > h2 {
     grid-column: 1; grid-row: 1 / span 40; position: sticky; top: 136px; margin: 0 !important; text-align: left !important; max-width: none !important;
   }
   .features > .container > :not(.section-header), .epic-framework > .container > :not(.section-header), .hx-qa > :not(h2),
   .form-container > :not(.form-header), #pricing > :not(.section-header), .faq-section > :not(.section-header),
-  .hx10-sec > :not(h2), .report-container .section > :not(h2) {
+  .hx10-sec > :not(h2) {
     grid-column: 2; min-width: 0;
   }
-  .section-header .section-title, .hx-qa > h2, .hx10-sec > h2, .form-header h2, .report-container .section > h2 {
+  .section-header .section-title, .hx-qa > h2, .hx10-sec > h2, .form-header h2 {
     font-size: 28px !important; max-width: none !important; margin-left: 0 !important; margin-right: 0 !important;
   }
   .section-header .section-subtitle { margin: 12px 0 0 !important; max-width: none; }
@@ -94,6 +92,8 @@ h1, h2, h3 { text-wrap: balance; }
   .hx10-sec { padding-top: 32px; }
   .hx10-sec > :not(h2) { max-width: 78ch; }
   .hx10-sec > h2 { padding-bottom: 8px; }
+  /* The report pages keep each heading above its section (the report headings are two or three long words, which would
+     end on one word in a 300 px column); from 1280 px the report uses the container's full width. */
   .report-container { max-width: none; }
 }
 @media (min-width: 1280px) {
@@ -110,8 +110,6 @@ h1, h2, h3 { text-wrap: balance; }
   /* a question that is alone in its section, and the closing box, use both columns */
   .hx10-sec:has(> .faq-item) > .faq-item:first-of-type:last-of-type, .hx10-sec:has(> .faq-item) > .highlight-box { grid-column: 3 / span 2; }
 }
-/* no heading ends with a single word: "pretty" wrapping keeps at least two words on the last line (Chrome) */
-.report-container h2, .report-container h3, .hx10-sec > h2, .hx-qa > h2, .section-header .section-title, .epic-item h3 { text-wrap: pretty; }
 @media (min-width: 1280px) {
   /* the four motion cards: two per row beside the heading, so each name stays on one line */
   .epic-framework .epic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
