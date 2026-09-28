@@ -83,7 +83,7 @@ Generated on 26 September 2026 from the server's own tool list (`tools/list` of 
 
 ### Inputs of each tool
 
-#### 1. GTM Consultation (`gtm_consultation`)
+#### 1. Free EPIC audit (in your browser and in Claude) (`gtm_consultation`)
 
 | Input | Required | Type | Description |
 |---|---|---|---|
@@ -100,7 +100,7 @@ Generated on 26 September 2026 from the server's own tool list (`tools/list` of 
 | `geography` | No | one of: `india`, `us_eu`, `middle_east`, `apac`, `global` | Optional. Primary market |
 | `current_channels` | No | string | Optional. What you do today (content, outbound, events, partnerships, PLG, community) |
 
-#### 2. EPIC Audit (`epic_audit`)
+#### 2. EPIC scores (in Claude) (`epic_audit`)
 
 | Input | Required | Type | Description |
 |---|---|---|---|
@@ -116,7 +116,7 @@ Generated on 26 September 2026 from the server's own tool list (`tools/list` of 
 | `geography` | No | one of: `india`, `us_eu`, `middle_east`, `apac`, `global` | Optional. Primary market |
 | `current_channels` | No | string | Optional. What you do today (content, outbound, events, partnerships, PLG, community) |
 
-#### 3. GTM Roadmap (`generate_roadmap`)
+#### 3. GTM Roadmap (in Claude) (`generate_roadmap`)
 
 | Input | Required | Type | Description |
 |---|---|---|---|
