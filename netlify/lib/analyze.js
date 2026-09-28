@@ -33,7 +33,9 @@ const GTM_ALPHA_ENGINE = {
     const insights = this.generateConsultationInsights(inputData, primaryFocus, epic.stage_used);
     // The recommendation rules were written for a 0 to 100 scale (gates at 70); a 1 to 10 score times 10 keeps their meaning.
     const hundredScale = { E: epicScores.E * 10, P: epicScores.P * 10, I: epicScores.I * 10, C: epicScores.C * 10 };
-    const recommendations = this.generateActionableRecommendations(inputData, hundredScale, digitalAnalysis);
+    // Run 11 (D9 item 11): the SaaS product-led line depends on the lead motion, so the top-scoring letter is passed in
+    // (epic.primary: the highest score, ties broken E, P, C, I in epic-advanced.js TIE_ORDER). No score or threshold changes.
+    const recommendations = this.generateActionableRecommendations(inputData, hundredScale, digitalAnalysis, epic.primary.letter);
     const roadmap = this.generateGTMRoadmap(inputData, primaryFocus, secondaryFocus);
     const digitalInsights = digitalAnalysis ? this.generateDigitalInsights(digitalAnalysis) : null;
 
@@ -151,7 +153,7 @@ const GTM_ALPHA_ENGINE = {
     return baseInsight + '\n\n' + focusSpecificInsights[primaryFocus];
   },
 
-  generateActionableRecommendations(inputData, epicScores, digitalAnalysis = null) {
+  generateActionableRecommendations(inputData, epicScores, digitalAnalysis = null, primaryLetter = '') {
     const { industry, business_stage, gtm_challenge } = inputData;
     
     const recommendations = [];
@@ -192,7 +194,8 @@ const GTM_ALPHA_ENGINE = {
 
     // Industry-specific recommendations
     if (industry === 'SaaS') {
-      recommendations.push('Focus on product-led growth with freemium-to-paid conversion optimization');
+      // Run 11 (D9 item 11, owner-approved): shown only when Product-Led is the top-scoring motion.
+      if (primaryLetter === 'P') recommendations.push('Focus on product-led growth with freemium-to-paid conversion optimization');
     } else if (industry === 'Healthcare') {
       recommendations.push('Emphasize compliance-first messaging and regulatory partnership ecosystem');
     } else if (industry === 'Finance') {
@@ -475,8 +478,7 @@ const GTM_ALPHA_ENGINE = {
             <h2>Next Steps</h2>
             <p>For personalized implementation support and detailed strategy development:</p>
             <ul>
-                <li><a href="mailto:shashwat@gtmhelix.com">Email Shashwat</a></li>
-                <li><a href="https://gtmexpert.com">Visit GTMExpert.com</a></li>
+                <li><a href="https://gtmhelix.com/lets-get-started/">Work with Shashwat on this plan</a></li>
             </ul>
         </div>
 
