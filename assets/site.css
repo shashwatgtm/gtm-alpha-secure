@@ -70,6 +70,7 @@ main > :last-child { margin-bottom: clamp(56px, 7vw, 112px); }
 /* /pricing */
 .pricing-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
 .pricing-card { position: relative; display: flex; flex-direction: column; gap: 12px; background: var(--white); color: var(--ink); border: 1.5px solid var(--edge); border-top: 6px solid var(--ox); padding: 22px; box-shadow: 6px 6px 0 var(--shadow); }
+@media (max-width: 768px) { .pricing-grid { grid-template-columns: minmax(0, 1fr); } } /* Run 11 R11-A2-7: one card per row on phones, so .plan-cta is full width (pricing.html's own phone rule) */
 .plan-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 12px 24px; width: 100%; background: var(--ox); color: var(--paper); border: 2px solid var(--ox); font: 600 14px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; text-decoration: none; cursor: pointer; }
 .plan-cta:hover, .plan-cta:focus-visible { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .plan-alt a { display: inline-flex; align-items: center; min-height: 44px; }
