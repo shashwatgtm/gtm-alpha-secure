@@ -579,9 +579,9 @@
                             <span class="method-badge method-post">POST</span>
                             <span class="endpoint-path">/mcp</span>
                         </div>
-                        <div class="endpoint-desc">
+                        <p class="endpoint-desc">
                             MCP endpoint (Streamable HTTP, stateless). Send JSON-RPC 2.0 messages with POST; each reply is a single JSON response. Other methods return 405. The older address /mcp-sse answers the same way.
-                        </div>
+                        </p>
                     </div>
 
                     <div class="endpoint-card">
@@ -589,9 +589,9 @@
                             <span class="method-badge method-post">POST</span>
                             <span class="endpoint-path">/api/epic-audit</span>
                         </div>
-                        <div class="endpoint-desc">
+                        <p class="endpoint-desc">
                             REST endpoint for an EPIC maturity audit. Returns JSON. It accepts only its documented fields (company, company_id, industry, company_stage, current_gtm, focus_areas, current_metrics), up to 32 KB. The inputs you send are stored with the result; see the <a href="/privacy">privacy policy</a>.
-                        </div>
+                        </p>
                     </div>
 
                     <div class="endpoint-card">
@@ -599,9 +599,9 @@
                             <span class="method-badge method-post">POST</span>
                             <span class="endpoint-path">/api/premium-audit</span>
                         </div>
-                        <div class="endpoint-desc">
+                        <p class="endpoint-desc">
                             Used by the <a href="/consultation">free EPIC audit form</a>. Takes the form's fields (form-encoded or JSON) and returns the report as an HTML page. Nothing is stored.
-                        </div>
+                        </p>
                     </div>
 
                     <p>Rate limits: the <code>/api</code> paths share 30 requests a minute per visitor, and the MCP server allows 300 a minute. Over a limit, the answer is 429 (Too Many Requests).</p>
