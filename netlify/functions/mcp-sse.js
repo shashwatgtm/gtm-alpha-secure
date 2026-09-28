@@ -71,7 +71,7 @@ const GTM_CONSULTANT = {
 var TOOLS = [
   {
     name: "gtm_consultation",
-    title: "GTM Consultation",
+    title: "Free EPIC audit (in your browser and in Claude)",
     description: "Get GTM strategy consultation using Shashwat Ghosh EPIC framework. Scores the four motions from 1 to 10 with the documented rubric and names the primary and secondary motion. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary.",
     inputSchema: {
       type: "object",
@@ -91,11 +91,11 @@ var TOOLS = [
       },
       required: ["gtm_challenge"]
     },
-    annotations: { title: "GTM Consultation", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
+    annotations: { title: "Free EPIC audit (in your browser and in Claude)", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
   },
   {
     name: "epic_audit",
-    title: "EPIC Audit",
+    title: "EPIC scores (in Claude)",
     description: "Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes. Add the optional inputs for a full score; without them the result is marked preliminary.",
     inputSchema: {
       type: "object",
@@ -114,11 +114,11 @@ var TOOLS = [
       },
       required: ["challenge"]
     },
-    annotations: { title: "EPIC Audit", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
+    annotations: { title: "EPIC scores (in Claude)", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
   },
   {
     name: "generate_roadmap",
-    title: "GTM Roadmap",
+    title: "GTM Roadmap (in Claude)",
     description: "Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps. Builds text from the inputs only.",
     inputSchema: {
       type: "object",
@@ -128,7 +128,7 @@ var TOOLS = [
       },
       required: ["primary_focus"]
     },
-    annotations: { title: "GTM Roadmap", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
+    annotations: { title: "GTM Roadmap (in Claude)", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
   }
 ];
 
