@@ -95,8 +95,11 @@ main > :last-child { margin-bottom: clamp(56px, 7vw, 112px); }
 .form-group input:not([type=checkbox]):not([type=radio]), .form-group select, .form-group textarea { width: 100%; min-height: 50px; font: inherit; font-size: 17px; color: var(--ink); background: var(--white); border: 2px solid var(--edge); border-radius: 0; padding: 10px 12px; }
 .form-group textarea { min-height: 120px; }
 .form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: 3px solid var(--signal); outline-offset: 2px; }
-.checkbox-group input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--ox); }
-.checkbox-group label { min-height: 44px; display: inline-flex; align-items: center; }
+.checkbox-group input[type="checkbox"] { flex: none; margin: 0; width: 22px; height: 22px; accent-color: var(--ox); }
+/* R11-A1-9: the checkbox sits inside its label, so the whole row (at least 44 px tall and wide) is one tap area */
+.checkbox-group label { min-height: 44px; min-width: 44px; width: 100%; display: flex; align-items: center; gap: 12px; cursor: pointer; }
+/* R11-A1-4: placeholders at least 4.5:1 in light and dark (muted on the field: #5A4B4E on white, #CBB9BC on #261619) */
+.form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted); opacity: 1; }
 .submit-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 12px 28px; background: var(--ox); color: var(--paper); border: 2px solid var(--ox); font: 600 14px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; margin-top: 8px; }
 .submit-btn:hover:not(:disabled) { background: var(--ink); border-color: var(--ink); }
 .submit-btn:disabled { opacity: .6; cursor: default; }
@@ -180,7 +183,32 @@ main li > a:only-child { display: inline-flex; align-items: center; min-height: 
   .hx10-actions .hx10-primary { color: #1A0E10; }
 }
 
+/* Run 11 R11-A1-8: /sample-report/ in B2. The hero holds a pixel tag, the H1 in crop marks at the D6 inner size (helix.css
+   h1), the made-up example note, the actions and the report's name, role and company lines in a window; below it the
+   report sections sit on a two-column grid from 1100 px (the page used to stop at 960 px and leave the right side empty) */
+.ga-sample-grid { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 3vw, 48px); align-items: start; margin-top: clamp(18px, 2vw, 28px); }
+.ga-sample-hero .hx10-note { margin: 0 0 18px; max-width: 64ch; }
+.ga-sample-hero .hx10-actions { margin: 0; }
+.ga-sample-who h2 { font-size: clamp(24px, 2.2vw, 32px); line-height: 1.15; margin: 0 0 8px; }
+.ga-sample-who h3 { font: 500 16px/1.5 var(--mono); color: var(--muted); margin: 0; }
+.ga-sample .report-container { max-width: none; }
+.ga-sample .report-container .section p, .ga-sample .report-container .section li { max-width: 78ch; }
+@media (min-width: 1100px) {
+  .ga-sample .report-container { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 4vw, 64px); }
+  .ga-sample .report-container > * { grid-column: 1 / -1; }
+  .ga-sample .report-container > .section:nth-child(3), .ga-sample .report-container > .section:nth-child(4),
+  .ga-sample .report-container > .section:nth-child(7), .ga-sample .report-container > .section:nth-child(8) { grid-column: auto; }
+  .ga-sample .roadmap { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) { .ga-sample-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Run 11 R11-A1-8: a code window title longer than its window wraps (it was clipped at 360, and pushed the page sideways
+   when the window was narrower) */
+.code-header > span { min-width: 0; overflow-wrap: anywhere; }
+
 @media print {
+  .ga-sample-hero { background: none; }
+  .ga-sample-hero::before, .ga-sample-hero::after { display: none; }
   .hx10-skip, .hx9-gh, footer.hx-footer, .hx10-actions, .hx10-report > .hx10-actions { display: none; }
   .report-container, .report-container * { background: #FFFFFF; color: #1A0E10; box-shadow: none; }
 }

@@ -290,12 +290,14 @@
             gap: 12px;
             margin: 24px 0;
         }
-        .checkbox-group label { min-height: 44px; display: flex; align-items: center; cursor: pointer; } /* R10-15: 44 px tap area */
+        /* R11-A1-9: the checkbox sits inside its label, so the whole row (at least 44 px tall, full width) is its tap area */
+        .checkbox-group label { min-height: 44px; min-width: 44px; width: 100%; display: flex; align-items: center; gap: 12px; padding: 4px 0; cursor: pointer; }
 
         .checkbox-group input[type="checkbox"] {
-            margin-top: 4px;
-            width: 18px;
-            height: 18px;
+            flex: none;
+            margin: 0;
+            width: 22px;
+            height: 22px;
             accent-color: var(--accent-coral);
         }
 
@@ -559,9 +561,8 @@
                         </div>
 
                         <div class="checkbox-group">
-                            <input type="checkbox" id="confirm_consultation" name="confirm_consultation" required>
-                            <label for="confirm_consultation">
-                                I want my GTM Alpha report, built from these answers and shown on the next page
+                            <label for="confirm_consultation"><input type="checkbox" id="confirm_consultation" name="confirm_consultation" required>
+                                <span>I want my GTM Alpha report, built from these answers and shown on the next page</span>
                             </label>
                         </div>
 
