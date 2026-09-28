@@ -7,6 +7,25 @@ import { scoreEpic } from './epic-advanced.js';
 // URL was typed. It stays in the code but is switched off, and the report does not mention it, until it really checks websites.
 export const DIGITAL_PRESENCE_AUDIT_ENABLED = false;
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// Run 11 R11-A2-5: the report's PDF script is one fixed text, so the report page's Content-Security-Policy hash never
+// changes per request. The file name comes from the escaped data-pdf-name attribute on the report container.
+export const PDF_SCRIPT = `
+        function downloadPDF() {
+            const element = document.getElementById('report-content');
+            const opt = {
+                margin: 0.5,
+                filename: element.getAttribute('data-pdf-name') || 'GTM_Alpha_EPIC_audit_report.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().set(opt).from(element).save();
+        }
+        // Bound here, not with onclick, so the page's Content-Security-Policy can allow this one script by its hash.
+        // The button sits in the action bar at the top of the page (run 10); pages without it (the sample) skip this.
+        var pdfButton = document.getElementById('pdf-download');
+        if (pdfButton) pdfButton.addEventListener('click', downloadPDF);
+    `;
 
 const GTM_ALPHA_ENGINE = {
   // EPIC scoring: the documented advanced rubric (epic-advanced.js), 1 to 10 per motion.
@@ -327,17 +346,17 @@ const GTM_ALPHA_ENGINE = {
     const digitalSection = analysis.digitalInsights ? `
     <div class="section">
         <h2>Digital Presence Analysis</h2>
-        <p><strong>Digital Maturity Level:</strong> ${analysis.digitalInsights.digital_maturity_level}</p>
+        <p><strong>Digital Maturity Level:</strong> ${esc(analysis.digitalInsights.digital_maturity_level)}</p>
         ${analysis.digitalInsights.key_digital_strengths.length > 0 ? `
         <h3>Digital Strengths:</h3>
         <ul>
-            ${analysis.digitalInsights.key_digital_strengths.map(strength => `<li>${strength}</li>`).join('')}
+            ${analysis.digitalInsights.key_digital_strengths.map(strength => `<li>${esc(strength)}</li>`).join('')}
         </ul>
         ` : ''}
         ${analysis.digitalInsights.critical_digital_gaps.length > 0 ? `
         <h3>Digital Gaps to Address:</h3>
         <ul>
-            ${analysis.digitalInsights.critical_digital_gaps.map(gap => `<li>${gap}</li>`).join('')}
+            ${analysis.digitalInsights.critical_digital_gaps.map(gap => `<li>${esc(gap)}</li>`).join('')}
         </ul>
         ` : ''}
     </div>` : '';
@@ -383,7 +402,7 @@ const GTM_ALPHA_ENGINE = {
     </style>
 </head>
 <body>
-    <div class="report-container" id="report-content">
+    <div class="report-container" id="report-content" data-pdf-name="${esc('GTM_Alpha_EPIC_audit_report_' + String(inputData.company_name || 'Company').replace(/[^A-Za-z0-9 _-]/g, '') + '_' + consultationId + '.pdf')}">
         <div class="header">
             <h1>Your free EPIC audit report</h1>
             <h2>${esc(inputData.client_name || inputData.company_name)}</h2>
@@ -393,8 +412,8 @@ const GTM_ALPHA_ENGINE = {
 
         <div class="section primary-focus">
             <h2>Strategic Focus Areas</h2>
-            <p><strong>Primary Focus:</strong> ${analysis.primaryFocus}</p>
-            <p><strong>Secondary Focus:</strong> ${analysis.secondaryFocus}</p>
+            <p><strong>Primary Focus:</strong> ${esc(analysis.primaryFocus)}</p>
+            <p><strong>Secondary Focus:</strong> ${esc(analysis.secondaryFocus)}</p>
         </div>
 
         <div class="section">
@@ -427,7 +446,7 @@ const GTM_ALPHA_ENGINE = {
 
         <div class="section">
             <h2>GTM Alpha Insights</h2>
-            <p>${analysis.insights}</p>
+            <p>${esc(analysis.insights)}</p>
         </div>
 
         ${digitalSection}
@@ -435,7 +454,7 @@ const GTM_ALPHA_ENGINE = {
         <div class="section">
             <h2>Strategic Recommendations</h2>
             <ul>
-                ${analysis.recommendations.map(rec => `<li>${rec}</li>`).join('')}
+                ${analysis.recommendations.map(rec => `<li>${esc(rec)}</li>`).join('')}
             </ul>
         </div>
 
@@ -445,25 +464,25 @@ const GTM_ALPHA_ENGINE = {
                 <div class="roadmap-item">
                     <h3>Days 1-30: Foundation</h3>
                     <ul>
-                        ${analysis.roadmap.days_30.map(item => `<li>${item}</li>`).join('')}
+                        ${analysis.roadmap.days_30.map(item => `<li>${esc(item)}</li>`).join('')}
                     </ul>
                 </div>
                 <div class="roadmap-item">
                     <h3>Days 31-60: Implementation</h3>
                     <ul>
-                        ${analysis.roadmap.days_60.map(item => `<li>${item}</li>`).join('')}
+                        ${analysis.roadmap.days_60.map(item => `<li>${esc(item)}</li>`).join('')}
                     </ul>
                 </div>
                 <div class="roadmap-item">
                     <h3>First Quarter (90 days): Scale</h3>
                     <ul>
-                        ${analysis.roadmap.first_quarter.map(item => `<li>${item}</li>`).join('')}
+                        ${analysis.roadmap.first_quarter.map(item => `<li>${esc(item)}</li>`).join('')}
                     </ul>
                 </div>
                 <div class="roadmap-item">
                     <h3>Second Quarter (180 days): Optimize</h3>
                     <ul>
-                        ${analysis.roadmap.second_quarter.map(item => `<li>${item}</li>`).join('')}
+                        ${analysis.roadmap.second_quarter.map(item => `<li>${esc(item)}</li>`).join('')}
                     </ul>
                 </div>
             </div>
@@ -471,7 +490,7 @@ const GTM_ALPHA_ENGINE = {
 
         <div class="section">
             <h2>Mental Velocity Analysis</h2>
-            <p>${analysis.mentalVelocityAnalysis}</p>
+            <p>${esc(analysis.mentalVelocityAnalysis)}</p>
         </div>
 
         <div class="section">
@@ -491,23 +510,7 @@ const GTM_ALPHA_ENGINE = {
         </div>
     </div>
 
-    <script>
-        function downloadPDF() {
-            const element = document.getElementById('report-content');
-            const opt = {
-                margin: 0.5,
-                filename: ${JSON.stringify('GTM_Alpha_EPIC_audit_report_' + String(inputData.company_name || 'Company').replace(/[^A-Za-z0-9 _-]/g, '') + '_' + consultationId + '.pdf').replace(/</g, '\\u003c')},
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(element).save();
-        }
-        // Bound here, not with onclick, so the page's Content-Security-Policy can allow this one script by its hash.
-        // The button sits in the action bar at the top of the page (run 10); pages without it (the sample) skip this.
-        var pdfButton = document.getElementById('pdf-download');
-        if (pdfButton) pdfButton.addEventListener('click', downloadPDF);
-    </script>
+    <script>${PDF_SCRIPT}</script>
 </body>
 </html>`;
   }

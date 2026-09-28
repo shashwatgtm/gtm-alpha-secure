@@ -4,7 +4,7 @@
 // answers are checked, the report is built in this request by netlify/lib/analyze.js, and the report page is returned.
 // Nothing is stored, logged or sent anywhere else.
 import { createHash } from "node:crypto";
-import analyze from "./analyze.js";
+import analyze, { PDF_SCRIPT } from "./analyze.js";
 import { HEADER, FOOTER, NEXT, SKIP, V_FONTS, V_BRAND, V_HELIX, V_SITE } from "./report-chrome.js";
 
 const MAX_BODY = 32000;
@@ -154,15 +154,19 @@ export default async (req) => {
 
   // R10-16: a report built from the form's made-up example answers says so at the top.
   const page = withChrome(report, /\(example company\)$/.test(checked.clean.company_name));
-  return new Response(page, { status: 200, headers: { ...PAGE_HEADERS, "Content-Security-Policy": reportPolicy(page) } });
+  return new Response(page, { status: 200, headers: { ...PAGE_HEADERS, "Content-Security-Policy": reportPolicy() } });
 };
 
 // Run 10 R10-10: the report page's policy allows exactly its own inline scripts (the PDF button, and the Edit my answers
 // link), each by its hash, and the one PDF library file from cdnjs by its full address (the tag also carries its Subresource
 // Integrity hash). Nothing else may run. Styles are the site's own files plus the report's style block.
-export function reportPolicy(page) {
-  const hashes = [...page.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => "'sha256-" + createHash("sha256").update(m[1], "utf8").digest("base64") + "'");
-  const files = [...page.matchAll(/<script src="(https:\/\/cdnjs\.cloudflare\.com\/ajax\/libs\/[^"]+)" integrity="sha512-[^"]+"/g)].map((m) => m[1]);
+// Run 11 R11-A2-5: the hashes are computed once, from the two fixed scripts (PDF_SCRIPT from analyze.js, EDIT_SCRIPT
+// below), never from the page, so nothing a visitor types can change what the policy allows.
+const hashOf = (t) => "'sha256-" + createHash("sha256").update(t, "utf8").digest("base64") + "'";
+const PDF_LIBRARY = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+export function reportPolicy() {
+  const hashes = [hashOf(PDF_SCRIPT), hashOf(EDIT_SCRIPT)];
+  const files = [PDF_LIBRARY];
   return ["default-src 'none'", `script-src ${[...hashes, ...files].join(" ")}`,
     "style-src 'self' 'unsafe-inline'", "font-src 'self'",
     "img-src 'self' data: blob:", "connect-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"].join("; ");

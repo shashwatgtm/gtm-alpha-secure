@@ -37,10 +37,11 @@ export async function buildSampleReport() {
     if (n !== 1) throw new Error(`build-sample-report: ${what} found ${n} times`);
   };
   // The report itself, exactly as the handler built it: from its container to the end of the container.
-  const start = page.indexOf('<div class="report-container" id="report-content">');
+  // Run 11 R11-A2-5: the container carries the PDF file name (data-pdf-name); the sample has no PDF button, so it is dropped.
+  const start = page.search(/<div class="report-container" id="report-content"(?: data-pdf-name="[^"]*")?>/);
   const end = page.indexOf("<script>", start);
   if (start < 0 || end < 0) throw new Error("build-sample-report: report container not found");
-  let report = page.slice(start, end).trimEnd();
+  let report = page.slice(start, end).trimEnd().replace(/^(<div class="report-container" id="report-content") data-pdf-name="[^"]*">/, "$1>");
   one(report, /<h1>Your free EPIC audit report<\/h1>/g, "the report H1");
   report = report.replace("<h1>Your free EPIC audit report</h1>", "<h1>Sample EPIC audit report</h1>");
   one(report, /<p class="consultation-id">Consultation ID: GTM-\d+<\/p>\s*<p class="consultation-id">Generated: [0-9: -]+ UTC<\/p>/g, "the consultation ID and time");
