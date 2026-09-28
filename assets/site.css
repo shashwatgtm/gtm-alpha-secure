@@ -184,3 +184,6 @@ main li > a:only-child { display: inline-flex; align-items: center; min-height: 
   .hx10-skip, .hx9-gh, footer.hx-footer, .hx10-actions, .hx10-report > .hx10-actions { display: none; }
   .report-container, .report-container * { background: #FFFFFF; color: #1A0E10; box-shadow: none; }
 }
+
+/* run 11 R11-16: the three decorative dots of a code header are hidden on phones (they pushed the page 9 px sideways at 390) */
+@media (max-width: 600px) { .code-dots { display: none; } }
