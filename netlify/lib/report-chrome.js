@@ -13,5 +13,5 @@ export const LD_SAMPLE = "{\n \"@context\": \"https://schema.org\",\n \"@graph\"
 // ?v= for the stylesheets these pages link, so a changed file gets a new address (run 9 D4, run 10 R10-10)
 export const V_FONTS = "b422cea75d";
 export const V_BRAND = "58a48228fa";
-export const V_HELIX = "1f4ac88e6f";
+export const V_HELIX = "7918cc1ca1";
 export const V_SITE = "b056331495";
