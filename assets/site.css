@@ -187,3 +187,6 @@ main li > a:only-child { display: inline-flex; align-items: center; min-height: 
 
 /* run 11 R11-16: the three decorative dots of a code header are hidden on phones (they pushed the page 9 px sideways at 390) */
 @media (max-width: 600px) { .code-dots { display: none; } }
+
+/* Run 11 R11-16: the contact email links are tap targets too (D6: at least 44 px) */
+a[href^="mailto:"] { display: inline-flex; align-items: center; min-height: 44px; }
