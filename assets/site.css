@@ -26,7 +26,7 @@
 .section-header { margin: 0 0 clamp(24px, 3vw, 40px); }
 .section-header h2 { max-width: 20ch; }
 .section-badge { display: block; margin: 0 0 24px; }
-.section-subtitle { font-size: var(--lead); line-height: 1.45; color: var(--muted); max-width: 60ch; margin: 18px 0 0; }
+.section-subtitle { font-size: var(--lead); line-height: 1.45; color: var(--muted); max-width: 60ch; margin: 28px 0 0; }
 .features-grid, .epic-grid { gap: 24px; }
 .feature-card .feature-icon { font: 800 var(--tile)/1 var(--display); letter-spacing: -.04em; color: var(--ox); }
 .feature-card p, .epic-item p { color: var(--muted); margin: 0; }
