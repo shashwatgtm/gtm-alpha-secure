@@ -9,6 +9,7 @@
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
   Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Cross-Origin-Opener-Policy: same-origin
 
 # Run 9 D4: caching. Every /assets/ address in the published pages carries ?v=<content hash> (scripts/build-site.mjs), so
 # assets can be kept for a year; the pages themselves are checked again on every visit. The page rules are listed by path

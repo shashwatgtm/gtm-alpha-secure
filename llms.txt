@@ -36,7 +36,7 @@ Yes, while it is in testing. The MCP tools are free and need no account, and the
 
 ### What data does GTM Alpha keep?
 
-The MCP server and the free EPIC audit form store and log nothing: the form's answers build your report in that request and are then dropped. The EPIC audit API stores what you send in Netlify Blobs until you ask for deletion. The privacy policy lists every field.
+The MCP server and the free EPIC audit form store and log nothing: the form's answers build your report in that request and are then dropped. The EPIC audit API does not keep new audits; older records are deleted on request within 30 days. The privacy policy lists every field.
 
 ### Who is behind GTM Alpha?
 
@@ -54,3 +54,4 @@ CRAFT GTM (go-to-market planning), CRAFT Content (B2B content), IMPACT (position
 - ICP Intelligence: https://icp-intelligence.gtmhelix.com/
 - Revenue Enablement: https://revenue-enablement.gtmhelix.com/
 - All connectors and Claude plugins: https://tools.gtmhelix.com/
+- [gtmexpert.com](https://www.gtmexpert.com/)

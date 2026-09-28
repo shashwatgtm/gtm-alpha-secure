@@ -28,6 +28,5 @@ https://gtmalpha.netlify.app/llms.txt              https://gtmalpha.gtmhelix.com
 /terms            /terms.html                               200
 /faq              /faq.html                                 200
 
-# Page Redirects
-/#consultation    /consultation
-/#access          /integration
+# Run 11 R11-A2-11 g: the two "/#consultation" and "/#access" rules were removed. A browser never sends the part after
+# "#" to the server, so they could never match.
