@@ -1,7 +1,6 @@
 // netlify/lib/epic-audit.js (served by netlify/functions/api.js at POST /api/epic-audit)
 // EPIC Framework Audit with a 6-month roadmap (results are not stored)
 
-import { getStore } from '@netlify/blobs';
 import { randomUUID } from 'node:crypto';
 import { allowedOrigin } from './site-origin.js';
 
@@ -50,27 +49,6 @@ export function cleanAuditInput(d) {
 }
 
 const EPIC_AUDIT_ENGINE = {
-  // Retrieve previous audits for progress comparison
-  async getPreviousAudits(companyId) {
-    try {
-      const store = getStore('epic-audits');
-      const audits = [];
-      
-      // Get all audits for this company
-      for await (const entry of store.list({ prefix: companyId })) {
-        const audit = await store.get(entry.key);
-        if (audit) {
-          audits.push(JSON.parse(audit));
-        }
-      }
-      
-      return audits.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-    } catch (error) {
-      console.error('Error retrieving audits:', error);
-      return [];
-    }
-  },
-
   // Calculate progress from previous audits
   calculateProgress(currentScores, previousAudits) {
     if (!previousAudits || previousAudits.length === 0) {

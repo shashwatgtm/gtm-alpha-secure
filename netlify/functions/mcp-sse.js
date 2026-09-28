@@ -221,7 +221,8 @@ export default async function handler(req, context) {
   var body;
   try {
     var text = await req.text();
-    if (text.length > MAX_BODY) {
+    // Run 11 R11-A3-9 c: the limit counts bytes (UTF-8), not characters, so multi-byte text cannot pass 64 KB.
+    if (Buffer.byteLength(text, "utf8") > MAX_BODY) {
       return rpcError(null, -32600, "Invalid request: the request body is larger than 64 KB.", 413);
     }
     body = JSON.parse(text);
@@ -300,7 +301,8 @@ export default async function handler(req, context) {
     return rpcError(id, -32601, "Method not found: " + method);
   } catch (error) {
     console.error("mcp-sse error:", error && error.message);
-    return rpcError(id, -32603, "Internal error while handling " + method + ". Please try again.", 500);
+    // Run 11 R11-A3-9 c: a fixed message; the caller's method name is never echoed back.
+    return rpcError(id, -32603, "Internal error. Please try again.", 500);
   }
 }
 
