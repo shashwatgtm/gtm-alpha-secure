@@ -1,116 +1,183 @@
-/* GTM Alpha's own shared rules (run 10), loaded after brand.css and helix.css on every page, the 404 page, the sample
-   report and the report page. helix.css is the shared Helix file and is not edited here. Helix colours only. */
+/* GTM Alpha's own rules (run 11, B2): loaded after fonts.css and helix.css on every page, the 404 page, the sample report
+   and the report page. helix.css is the shared Helix B2 layer (copied from the project's work/run7/design/helix.css; not
+   edited here). brand.css is no longer loaded (B21: one design layer). This file styles only GTM Alpha's own page parts
+   (its hand-built sections, the form, the docs, the pricing cards, the report) with the B2 tokens, so dark mode (D11)
+   swaps them with the rest of the page. No !important: the rules it used to override were deleted from the pages
+   (design/run11/css-changes-gtmalpha.md in the project folder). */
+
+:root { --ga-soft: #EAD9D5; }
 
 /* R10-15: skip link, first thing on every page; hidden until it has keyboard focus */
-.hx10-skip { position: absolute; left: 12px; top: -200px; z-index: 100; background: #641220; color: #FAF8F6 !important; padding: 12px 18px; min-height: 44px; font: 600 16px/1.25 'Archivo', Arial, sans-serif; text-decoration: none !important; }
+.hx10-skip { position: absolute; left: 12px; top: -200px; z-index: 100; background: var(--ox); color: var(--paper); padding: 12px 18px; min-height: 44px; font: 600 16px/1.25 var(--display); text-decoration: none; }
 .hx10-skip:focus, .hx10-skip:focus-visible { top: 12px; }
 
-/* R10-15 (D4 of the chat review): the page containers line up with the shared header. The header's container is 1248 px
-   wide, border-box, with 24 px on each side (helix.css, .hx9-gh .hx-wrap); the pages' own .container was 1200 px, so
-   their text started 24 px to the right of the logo. Reading pages keep their 800 px text measure, aligned left. */
-.container, .hx-wrap { max-width: 1248px !important; margin-left: auto !important; margin-right: auto !important; padding-left: 24px !important; padding-right: 24px !important; box-sizing: border-box !important; }
-.hx10-read > * { max-width: 800px; }
-.hx-hero .hero-content, .hx-hero .section-header, .hx-hero .hx-hero-inner { margin-left: 0 !important; margin-right: 0 !important; text-align: left !important; }
-.hx-qa { max-width: 1248px !important; box-sizing: border-box; padding-left: 24px !important; padding-right: 24px !important; }
+/* The pages' own containers line up with the header (helix.css .hx-wrap: 1440 px, side padding var(--gut)) */
+.container { max-width: var(--maxw); margin-left: auto; margin-right: auto; padding-left: var(--gut); padding-right: var(--gut); }
+.hx-hero .container, .hx-hero .hx-wrap { position: relative; }
+.hx-hero .hero-content, .hx-hero .hx-hero-inner { max-width: none; margin: 0; text-align: left; }
+.hx-hero .hx-lead { margin: 18px 0 0; }
+.hx-hero .hx-cta-row { margin-top: 26px; }
+.hx-hero .hx10-answer { font-size: 16px; line-height: 1.6; color: var(--ink); }
+.hx-hero .hx-eyebrow { margin: 0 0 14px; }
+.hx10-history { font: 500 13px/1.5 var(--mono); color: var(--muted); margin: 8px 0 0; }
 
-/* R10-15: tap targets at least 44 px high */
-.hx9-crumbs a, .hx9-site a, footer.hx-footer a, .hx7-links a, .hx7-strip a, .hx9-mm > summary, .tab-btn, .faq-question, .copy-btn,
-.hx-byline a, .hx10-actions a, .hx10-actions button, .hx10-links a, .sidebar-nav a { min-height: 44px; box-sizing: border-box; }
-.hx9-crumbs a, .hx9-site a, .hx7-links a, .hx7-strip a, .hx-byline a { display: inline-flex; align-items: center; }
-footer.hx-footer a { display: flex !important; align-items: center; margin: 0 !important; }
-footer.hx-footer .hx-footer-bottom a { display: inline-flex !important; }
-.hx-qa summary { min-height: 44px; }
-.sidebar-nav a { display: flex !important; align-items: center; }
-/* The shared header's logo (30 px) and top links (40 px) get a 44 px tap area without changing the header's look; the
-   same rule belongs in helix.css for every site (reported to the coordinator). */
-.hx9-gh .hx9-logo, .hx9-gh .hx9-nav a { min-height: 44px; box-sizing: border-box; }
-.hx9-gh .hx9-nav a { display: inline-flex; align-items: center; }
-/* Buttons drawn as underlined links, a link that is a list item's only content, and the email line under a card */
-.btn-secondary, .hx-btn-ghost, .plan-alt a { display: inline-flex !important; align-items: center; min-height: 44px; box-sizing: border-box; }
+/* Sections: headings full width above their content (D6; the run 10 300 px left column is deleted) */
+.features, .epic-framework, .page-content, .form-section, .faq-section, .main-content > .section { padding: clamp(56px, 7vw, 112px) 0 0; }
+.section-header { margin: 0 0 clamp(24px, 3vw, 40px); }
+.section-header h2 { max-width: 20ch; }
+.section-badge { display: block; margin: 0 0 14px; }
+.section-subtitle { font-size: var(--lead); line-height: 1.45; color: var(--muted); max-width: 60ch; margin: 18px 0 0; }
+.features-grid, .epic-grid { gap: 24px; }
+.feature-icon { font: 800 var(--tile)/1 var(--display); letter-spacing: -.04em; color: var(--ox); }
+.feature-card p, .epic-item p { color: var(--muted); margin: 0; }
+.epic-letter { display: inline-grid; place-items: center; width: 44px; height: 44px; background: var(--ox); color: var(--paper); font: 800 24px/1 var(--display); }
+#gtmalpha-epic-visual .hx8-vis { margin: 0 0 32px; }
+.hx-qa { max-width: var(--maxw); margin: 0 auto; padding: clamp(56px, 7vw, 112px) var(--gut) 0; }
+.hx-qa > h2 { margin: 0 0 clamp(24px, 3vw, 40px); max-width: 20ch; }
+main > :last-child { margin-bottom: clamp(56px, 7vw, 112px); }
+
+/* Documents (/faq, /privacy, /terms): H2 above each part; lists keep their bullets; a readable line length */
+.doc .hx10-sec { padding-top: 40px; max-width: 78ch; }
+.doc .hx10-sec > h2 { margin: 0 0 16px; }
+.doc h3 { margin: 24px 0 8px; }
+.doc ul, .doc ol { padding-left: 24px; margin: 0 0 1em; }
+.doc li { margin: 6px 0; }
+.doc p, .doc li { color: var(--ink); }
+.doc table { margin: 16px 0; }
+.highlight-box, .warning-box { background: var(--rose); color: var(--ink); border-left: 4px solid var(--signal); padding: 16px 20px; margin: 16px 0; }
+.warning-box { background: var(--white); border: 2px solid var(--edge); border-left: 4px solid var(--ox); }
+/* D9 item 7: the closing "Ready to score your GTM motions?" box is a solid B2 band (no gradient) */
+.ga-band { background: var(--rose-mid); color: var(--ink); padding: clamp(28px, 4vw, 48px) clamp(20px, 3vw, 40px); margin: 40px 0 0; }
+.ga-band h3 { margin: 0 0 10px; }
+.ga-band p { margin: 0 0 20px; }
+
+/* Questions on /faq and /pricing (buttons that open an answer) */
+.faq-item { border-bottom: 1.5px solid var(--edge); }
+.hx10-sec > .faq-item:first-of-type, .faq-grid > .faq-item:first-child { border-top: 2px solid var(--edge); }
+.faq-question { display: flex; justify-content: space-between; align-items: center; gap: 16px; width: 100%; min-height: 44px; padding: 16px 0; background: none; border: 0; color: var(--ink); font: 600 17px/1.35 var(--mono); text-align: left; cursor: pointer; }
+.faq-question::after { content: "+"; flex: none; width: 34px; height: 34px; display: grid; place-items: center; background: var(--ox); color: var(--paper); font: 600 22px/1 var(--mono); }
+.faq-item.open .faq-question::after, .faq-question.active::after { content: "x"; font-size: 18px; }
+.faq-question .faq-icon { display: none; }
+.faq-answer { display: none; padding: 0 0 18px; color: var(--ink); }
+.faq-item.open .faq-answer, .faq-answer.active { display: block; }
+.faq-answer p { max-width: 64ch; }
+.faq-answer ul { padding-left: 22px; }
+.faq-answer .ga-tools { padding: 0; margin: 8px 0 14px; }
+
+/* D12: the three GTM Alpha tools as tool rows (helix.css section 13) */
+.ga-tools .trow .rv { color: var(--muted); }
+
+/* /pricing */
+.pricing-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.pricing-card { position: relative; display: flex; flex-direction: column; gap: 12px; background: var(--white); color: var(--ink); border: 1.5px solid var(--edge); border-top: 6px solid var(--ox); padding: 22px; box-shadow: 6px 6px 0 var(--shadow); }
+.plan-cta { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 12px 24px; width: 100%; background: var(--ox); color: var(--paper); border: 2px solid var(--ox); font: 600 14px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; text-decoration: none; cursor: pointer; }
+.plan-cta:hover, .plan-cta:focus-visible { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.plan-alt a { display: inline-flex; align-items: center; min-height: 44px; }
+.mcp-highlight, .eeat-card { background: var(--white); color: var(--ink); border: 2px solid var(--edge); padding: 22px; box-shadow: 6px 6px 0 var(--shadow); }
+
+/* The primary and secondary buttons written with the old class names (outside the hero) */
+.btn-primary { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 12px 24px; background: var(--ox); color: var(--paper); border: 2px solid var(--ox); font: 600 14px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; text-decoration: none; }
+.btn-primary:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.btn-secondary { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink); font: 700 18px/1.3 var(--display); text-decoration: underline; text-decoration-color: var(--signal); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+
+/* /consultation: the form in a window, two fields per row, each field at most 640 px (D9 item 6) */
+.form-container { max-width: none; margin: 0; padding: 0; background: none; }
+.form-header { margin: 0 0 24px; }
+.form-header h2 { max-width: 20ch; margin: 0 0 clamp(16px, 2vw, 28px); }
+.form-header p { max-width: 72ch; }
+.hx9-example { display: flex; flex-wrap: wrap; gap: 4px 28px; align-items: center; }
+.hx9-example-note { margin: 12px 0 0; max-width: 72ch; }
+.security-note { margin: 0 0 20px; padding: 12px 16px; background: var(--rose); color: var(--ink); border-left: 4px solid var(--signal); max-width: 72ch; }
+.ga-form-win .win-body { padding: clamp(18px, 2.4vw, 32px); }
+.form-grid { max-width: 1320px; }
+.form-row { gap: 20px 40px; }
+.form-group { max-width: 640px; }
+.form-group input:not([type=checkbox]):not([type=radio]), .form-group select, .form-group textarea { width: 100%; min-height: 50px; font: inherit; font-size: 17px; color: var(--ink); background: var(--white); border: 2px solid var(--edge); border-radius: 0; padding: 10px 12px; }
+.form-group textarea { min-height: 120px; }
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: 3px solid var(--signal); outline-offset: 2px; }
+.checkbox-group input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--ox); }
+.checkbox-group label { min-height: 44px; display: inline-flex; align-items: center; }
+.submit-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 12px 28px; background: var(--ox); color: var(--paper); border: 2px solid var(--ox); font: 600 14px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; margin-top: 8px; }
+.submit-btn:hover:not(:disabled) { background: var(--ink); border-color: var(--ink); }
+.submit-btn:disabled { opacity: .6; cursor: default; }
+
+/* /integration and the home: set-up tabs and code in windows */
+.tab-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 28px; }
+.tab-btn { font: 700 16px/1 var(--display); padding: 12px 18px; min-height: 46px; border: 2px solid var(--ink); background: transparent; color: var(--ink); cursor: pointer; }
+.tab-btn.active { background: var(--ox); border-color: var(--ox); color: var(--paper); }
+.tab-content { padding: 0; }
+.tab-panel h3 { margin: 0 0 14px; }
+.integration-content { gap: clamp(24px, 3vw, 40px); }
+.integration-content > * { min-width: 0; }
+.file-location { background: var(--white); color: var(--ink); border: 2px solid var(--edge); padding: 12px 14px; margin: 12px 0; font: 500 14px/1.5 var(--mono); overflow-wrap: anywhere; }
+.code-container { background: var(--white); color: var(--ink); border: 2px solid var(--edge); box-shadow: 6px 6px 0 var(--shadow); min-width: 0; }
+.code-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: var(--ink); color: var(--paper); font: 400 22px/1.1 var(--pixel); padding: 5px 10px 4px; }
+.code-dots { display: flex; gap: 5px; order: 2; }
+.code-dot { display: block; width: 12px; height: 12px; border: 2px solid var(--paper); }
+.code-block { color: var(--ink); background: var(--white); padding: 16px; font: 400 14px/1.6 var(--mono); max-width: 100%; overflow-x: auto; margin: 0; }
+.code-block pre { margin: 0; border: 0; padding: 0; background: none; }
+.hx8-dev .code-container { margin: 12px 0; }
+.copy-btn { min-height: 44px; padding: 0 14px; background: none; border: 2px solid var(--paper); color: var(--paper); font: 600 13px/1 var(--mono); cursor: pointer; }
+@media (max-width: 760px) { .integration-content { grid-template-columns: minmax(0, 1fr); } }
+
+/* /api-docs: the docs layout (navigation beside the reference) */
+.container > .main-content { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 40px; padding: 48px 0 0; }
+.sidebar { align-self: start; }
+.sidebar-nav { list-style: none; margin: 0; padding: 0; }
+.sidebar-nav a { display: flex; align-items: center; min-height: 44px; padding: 0 12px; color: var(--ink); font: 600 14px/1.3 var(--mono); text-decoration: none; border-left: 3px solid transparent; }
+.sidebar-nav a:hover, .sidebar-nav a.active { border-left-color: var(--signal); background: var(--rose); color: #1A0E10; }
+.docs-section { padding: 0 0 40px; }
+.docs-section h2 { margin: 0 0 18px; font-size: clamp(32px, 3.4vw, 52px); }
+.docs-section p code, .docs-section li code, .docs-section td code { overflow-wrap: anywhere; }
+.tool-item, .alert { background: var(--white); color: var(--ink); border: 1.5px solid var(--edge); padding: 16px 18px; margin: 14px 0; }
+.alert { display: flex; gap: 12px; border-left: 4px solid var(--signal); }
+.method-badge { display: inline-block; font: 600 13px/1 var(--mono); padding: 6px 8px; background: var(--ox); color: var(--paper); }
+.inline-code { font-family: var(--mono); background: var(--ga-soft); color: #1A0E10; padding: 1px 5px; }
+@media (max-width: 900px) { .container > .main-content { grid-template-columns: minmax(0, 1fr); } .sidebar { display: none; } }
+
+/* Tap targets at least 44 px (R10-15) */
+.hx-byline a, .hx10-actions a, .hx10-actions button, .hx10-links a { min-height: 44px; display: inline-flex; align-items: center; }
 main li > a:only-child { display: inline-flex; align-items: center; min-height: 44px; }
 
 /* R10-A1-5 and R10-16: the action bar at the top of a report, and the made-up example note */
-.hx10-actions { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin: 0 0 20px; }
-.hx10-actions a, .hx10-actions button { display: inline-flex; align-items: center; justify-content: center; padding: 10px 18px; font: 600 13px/1.2 'IBM Plex Mono', monospace; letter-spacing: .06em; text-transform: uppercase; text-decoration: none !important; cursor: pointer; border: 1.5px solid #641220; background: transparent; color: #641220 !important; border-radius: 0; }
-.hx10-actions .hx10-primary { background: #641220; color: #FAF8F6 !important; }
-.hx10-actions a:hover, .hx10-actions button:hover { background: #C1121F; border-color: #C1121F; color: #FAF8F6 !important; }
 .hx10-report { padding-top: 24px; padding-bottom: 8px; }
-.hx9-report-next { margin: 20px 0 0; padding-top: 14px; border-top: 1.5px solid rgba(26, 14, 16, .12); font-size: 17px; }
-.hx9-report-next a { color: #641220 !important; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
-.hx10-note { margin: 0 0 18px; padding: 12px 16px; background: #EAD9D5; border-left: 4px solid #C1121F; font-size: 17px; color: #1A0E10; }
+.hx10-report > .hx10-actions, .hx10-actions { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin: 0 0 20px; padding-top: 0; }
+.hx10-actions a, .hx10-actions button { justify-content: center; padding: 10px 18px; font: 600 13px/1.2 var(--mono); letter-spacing: .06em; text-transform: uppercase; text-decoration: none; cursor: pointer; border: 2px solid var(--ox); background: transparent; color: var(--ox); border-radius: 0; }
+.hx10-actions .hx10-primary { background: var(--ox); color: var(--paper); min-height: 50px; }
+.hx10-actions a:hover, .hx10-actions button:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.hx9-report-next { margin: 20px 0 0; padding-top: 14px; border-top: 1.5px solid var(--line); font-size: 17px; }
+.hx9-report-next a { color: var(--link); font-weight: 700; }
+.hx10-note { margin: 0 0 18px; padding: 12px 16px; background: var(--rose); border-left: 4px solid var(--signal); font-size: 17px; color: #1A0E10; }
 .hx10-links { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 22px; }
-.hx10-links a { display: inline-flex; align-items: center; font-weight: 700; color: #1A0E10 !important; text-decoration: underline; text-decoration-color: #C1121F; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+.hx10-links a { font-weight: 700; color: var(--ink); text-decoration: underline; text-decoration-color: var(--signal); text-decoration-thickness: 3px; text-underline-offset: 6px; }
+.hx-message { padding-top: 48px; padding-bottom: 48px; max-width: 720px; }
+.hx-message li { margin: 6px 0; }
 
-/* R10-23: the answer-first block under the home H1 */
-.hx10-answer { max-width: 68ch; margin: 14px 0 0; padding: 12px 16px; border-left: 4px solid #641220; background: #FAF8F6; font-size: 17px !important; color: #1A0E10 !important; }
-.hx10-history, .hx-hero .hx10-history { font-family: 'IBM Plex Mono', monospace; font-size: 13px !important; color: rgba(26, 14, 16, .72) !important; margin-top: 8px; }
+/* The report (its markup and inline style come from netlify/lib/analyze.js, which is not changed): headings on the document
+   scale, and the report's boxes on the B2 tokens so it reads in light and dark */
+.report-container { --h2: clamp(28px, 2.6vw, 38px); --card: clamp(20px, 1.8vw, 24px); max-width: 960px; background: var(--paper); color: var(--ink); }
+.report-container .header h1 { font-size: clamp(40px, 5vw, 72px); }
+.report-container .epic-item, .report-container .roadmap-item { background: var(--white); border-color: var(--edge); border-top-color: var(--ox); }
+.report-container .epic-letter { display: block; width: auto; height: auto; background: none; color: var(--ox); }
+.report-container .epic-score { color: var(--ink); }
+.report-container .header h3, .report-container .consultation-id { color: var(--muted); }
+.report-container .primary-focus { background: var(--rose); color: #1A0E10; border-left-color: var(--ox); }
+.report-container .primary-focus h2 { color: #1A0E10; }
 
-/* D1 (owner, run 10): headings balance their lines, so a heading does not end with one word where that can be avoided
-   (the same rule goes into helix.css for every site). */
-h1, h2, h3 { text-wrap: balance; }
-
-/* The shared helix.css (run 10) also styles .hx10-actions for the tool cards (margin-top auto, padding-top); the report
-   pages' action bar keeps its own spacing. */
-.hx10-report > .hx10-actions { margin: 0 0 20px !important; padding-top: 0; }
-
-/* R10-14 (D1, owner): wide screens on GTM Alpha, the same layout as helix.css gives .hx-body > .hx-section on the other
-   sites. From 1280 px each content section's heading sits in a 300 px left column (sticky under the header, 28 px) and its
-   content beside it, 64 px apart, inside the header's 1248 px container. The hero is unchanged; below 1280 px nothing
-   changes. GTM Alpha's pages are hand-built, so the sections are named here one by one:
-   - home: the two section blocks (.features, .epic-framework) and the questions (.hx-qa)
-   - /consultation: the form box (its header, with the example buttons, on the left)
-   - /pricing: the two options and the pricing questions
-   - /integration: the question sections (.hx-qa); the setup tabs use the full width
-   - /faq, /privacy, /terms: .hx10-sec (each H2 with what follows it; work/run10/gtmalpha/d1_sections.py); the legal prose
-     keeps a readable line length (78 characters)
-   - the report and the sample report: the full container width, headings above their sections (see below) */
-@media (min-width: 1280px) {
-  .features > .container, .epic-framework > .container, .hx-qa, .form-container, #pricing, .faq-section, .hx10-sec {
-    display: grid; grid-template-columns: 300px minmax(0, 1fr); column-gap: 64px; align-items: start;
-  }
-  .features > .container > .section-header, .epic-framework > .container > .section-header, .hx-qa > h2,
-  .form-container > .form-header, #pricing > .section-header, .faq-section > .section-header, .hx10-sec > h2 {
-    grid-column: 1; grid-row: 1 / span 40; position: sticky; top: 136px; margin: 0 !important; text-align: left !important; max-width: none !important;
-  }
-  .features > .container > :not(.section-header), .epic-framework > .container > :not(.section-header), .hx-qa > :not(h2),
-  .form-container > :not(.form-header), #pricing > :not(.section-header), .faq-section > :not(.section-header),
-  .hx10-sec > :not(h2) {
-    grid-column: 2; min-width: 0;
-  }
-  .section-header h2.section-title, .hx-qa > h2, .hx10-sec > h2, .form-header h2 {
-    font-size: 28px !important; max-width: none !important; margin-left: 0 !important; margin-right: 0 !important;
-  }
-  .section-header .section-subtitle { margin: 12px 0 0 !important; max-width: none; }
-  .form-header .hx9-example { justify-content: flex-start; }
-  .form-container { max-width: none !important; padding: 0 !important; box-shadow: none !important; background: transparent !important; }
-  .form-container > .security-note { margin-top: 0; }
-  .pricing-grid, .faq-grid, .features-grid, .epic-grid, #gtmalpha-epic-visual { margin-top: 0 !important; max-width: none !important; }
-  .epic-grid { margin-top: 24px !important; }
-  .integration-tabs { max-width: none !important; }
-  .tab-buttons { justify-content: flex-start !important; }
-  .hx10-read > * { max-width: none; }
-  .hx10-sec { padding-top: 32px; }
-  .hx10-sec > :not(h2) { max-width: 78ch; }
-  .hx10-sec > h2 { padding-bottom: 8px; }
-  /* The report pages keep each heading above its section (the report headings are two or three long words, which would
-     end on one word in a 300 px column); from 1280 px the report uses the container's full width. */
-  .report-container { max-width: none; }
+/* D11: GTM Alpha's own colours in dark mode */
+@media (prefers-color-scheme: dark) {
+  :root { --ga-soft: #3A2226; }
+  .inline-code { color: #FAF8F6; }
+  .sidebar-nav a:hover, .sidebar-nav a.active { background: #3A2226; color: #FAF8F6; }
+  .hx10-note, .security-note, .highlight-box { background: #3A2226; color: #FAF8F6; }
+  .report-container .primary-focus { background: #3A2226; color: #FAF8F6; border-left-color: #F2AAB3; }
+  .report-container .primary-focus h2 { color: #FAF8F6; }
+  .ga-band { background: #2A1216; }
+  .tab-btn.active, .epic-letter { color: #1A0E10; }
+  .hx10-actions .hx10-primary { color: #1A0E10; }
 }
-@media (min-width: 1280px) {
-  /* Full-width blocks with the page's own paper background are held to the header's 1248 px container (no visible change:
-     same background, no border), so their box lines up with the header like the other sites' sections. */
-  .features, .epic-framework, .page-content { max-width: 1248px; margin-left: auto !important; margin-right: auto !important; }
-  /* Question lists (closed questions are one short line each) run in two columns beside their heading on wide screens. */
-  .hx10-sec:has(> .faq-item) { grid-template-columns: 300px 16px minmax(0, 1fr) minmax(0, 1fr); column-gap: 24px; }
-  .hx10-sec:has(> .faq-item) > h2 { grid-column: 1 / span 2; }
-  .hx10-sec:has(> .faq-item) > :not(h2) { grid-column: auto; max-width: none; }
-  .faq-section .faq-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 24px; align-items: start; }
-}
-@media (min-width: 1280px) {
-  /* a question that is alone in its section, and the closing box, use both columns */
-  .hx10-sec:has(> .faq-item) > .faq-item:first-of-type:last-of-type, .hx10-sec:has(> .faq-item) > .highlight-box { grid-column: 3 / span 2; }
-}
-@media (min-width: 1280px) {
-  /* the four motion cards: two per row beside the heading, so each name stays on one line */
-  .epic-framework .epic-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+
+@media print {
+  .hx10-skip, .hx9-gh, footer.hx-footer, .hx10-actions { display: none; }
+  .report-container, .report-container * { background: #FFFFFF; color: #1A0E10; box-shadow: none; }
 }

@@ -259,117 +259,66 @@
     <link rel="stylesheet" href="/assets/fonts.css">
     <style>
         :root {
-            --primary-navy: #1A0E10;
-            --primary-dark: #1A0E10;
-            --primary-slate: #1A0E10;
-            --accent-coral: #C1121F;
-            --accent-rose: #EAD9D5;
-            --accent-gold: #641220;
-            --text-primary: #1A0E10;
-            --text-secondary: rgba(26, 14, 16, 0.72);
-            --text-light: rgba(26, 14, 16, 0.55);
-            --bg-primary: #FAF8F6;
-            --bg-secondary: #FAF8F6;
-            --bg-accent: #FAF8F6;
-            --border-light: #EAD9D5;
-            --gradient-primary: linear-gradient(135deg, #641220 0%, #1A0E10 100%);
-            --gradient-accent: linear-gradient(135deg, #C1121F 0%, #C1121F 100%);
+            --primary-navy: var(--ink);
+            --primary-dark: var(--ink);
+            --primary-slate: var(--ink);
+            --accent-coral: var(--signal);
+            --accent-rose: var(--ga-soft);
+            --accent-gold: var(--ox);
+            --text-primary: var(--ink);
+            --text-secondary: var(--muted);
+            --text-light: var(--muted);
+            --bg-primary: var(--paper);
+            --bg-secondary: var(--paper);
+            --bg-accent: var(--paper);
+            --border-light: var(--ga-soft);
+            --gradient-primary: var(--ox);
+            --gradient-accent: var(--ox);
             --shadow-sm: 0 1px 2px 0 rgba(26, 14, 16, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(26, 14, 16, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(26, 14, 16, 0.1);
             --shadow-xl: 0 20px 25px -5px rgba(26, 14, 16, 0.1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; line-height: 1.6; color: var(--text-primary); background: var(--bg-primary); }
-        header:not(.hx9-gh) { background: rgba(250, 248, 246, 0.95); backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--border-light); position: fixed; width: 100%; top: 0; z-index: 1000; }
-        nav:not([class^="hx9-"]) { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
-        .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo { width: 56px; height: 56px; background: var(--accent-coral); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: Georgia, serif; font-style: italic; font-size: 32px; font-weight: 400; color: #FAF8F6; }
-        .brand-text { display: flex; flex-direction: column; }
-        .brand-name { font-size: 20px; font-weight: 700; color: var(--text-primary); letter-spacing: -0.5px; line-height: 1.2; }
-        .brand-tagline { font-size: 12px; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-        .nav-links { display: flex; list-style: none; gap: 32px; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 14px; transition: all 0.2s ease; position: relative; }
-        .nav-links a:hover, .nav-links a.active { color: var(--text-primary); }
-        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: var(--accent-coral); transition: width 0.2s ease; }
-        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-        .cta-nav { background: var(--accent-coral) !important; color: #FAF8F6 !important; padding: 12px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; transition: all 0.2s ease; text-decoration: none; }
-        .cta-nav:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); background: #641220 !important; }
-        .cta-nav::after { display: none !important; }
-        .page-content { margin-top: 0; padding: 40px 0; background: var(--primary-navy); color: #FAF8F6; min-height: calc(100vh - 88px); }
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-badge { display: inline-block; background: var(--accent-coral); color: #FAF8F6; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px; }
-        .section-title { font-size: 48px; font-weight: 800; color: #FAF8F6; margin-bottom: 16px; letter-spacing: -1px; line-height: 1.2; }
-        .section-subtitle { font-size: 20px; color: rgba(250, 248, 246, 0.8); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+
         .integration-tabs { max-width: 1000px; margin: 0 auto; }
         .tab-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px; justify-content: center; }
-        .tab-btn { background: rgba(250, 248, 246, 0.1); color: rgba(250, 248, 246, 0.7); border: 1px solid rgba(250, 248, 246, 0.2); padding: 12px 20px; border-radius: 8px; cursor: pointer; transition: all 0.2s ease; font-size: 14px; font-weight: 500; }
-        .tab-btn:hover { background: rgba(250, 248, 246, 0.2); color: #FAF8F6; }
-        .tab-btn.active { background: var(--accent-coral); color: #FAF8F6; border-color: var(--accent-coral); }
-        .tab-content { background: rgba(26, 14, 16, 0.2); border-radius: 16px; padding: 40px; border: 1px solid rgba(250, 248, 246, 0.1); }
+
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
-        .tab-panel h3 { font-size: 28px; margin-bottom: 16px; color: #FAF8F6; }
+        .tab-panel h3 { font-size: 28px; margin-bottom: 16px; color: var(--paper); }
         .integration-content { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
-        .file-location { background: rgba(250, 248, 246, 0.05); padding: 16px; border-radius: 8px; margin: 16px 0; font-family: 'IBM Plex Mono', monospace; font-size: 14px; border: 1px solid rgba(250, 248, 246, 0.1); }
-        .code-container { background: rgba(26, 14, 16, 0.3); border-radius: 12px; overflow: hidden; border: 1px solid rgba(250, 248, 246, 0.1); }
-        .code-header { background: rgba(250, 248, 246, 0.05); padding: 16px 24px; border-bottom: 1px solid rgba(250, 248, 246, 0.1); display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; }
-        .code-dots { display: flex; gap: 6px; }
-        .code-dot { width: 8px; height: 8px; border-radius: 50%; }
-        .dot-red { background: #C1121F; }
-        .dot-yellow { background: #EAD9D5; }
-        .dot-green { background: #641220; }
-        .code-block { background: transparent; color: #EAD9D5; padding: 24px; font-family: 'IBM Plex Mono', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace; font-size: 14px; line-height: 1.6; overflow-x: auto; white-space: pre; }
-        .code-block .key { color: #EAD9D5; }
-        .code-block .string { color: #EAD9D5; }
-        .code-block .bracket { color: #EAD9D5; }
+
         .hx8-dev h3 { font-size: 20px; margin: 20px 0 10px; }
         .hx8-dev ul { margin: 8px 0 16px 20px; }
-        .hx8-dev .code-container { margin: 8px 0 12px; }
+        
         /* run 10 R10-28 (P15): the bordered code box keeps its 24 px padding on every side; the code scrolls inside it,
            so long lines are cut 24 px inside the border instead of running into it */
-        .code-block { overflow: hidden !important; }
-        .code-block .hx10-code-scroll { overflow-x: auto; white-space: pre; background: transparent !important; }
-        footer { background: var(--primary-navy); color: #FAF8F6; padding: 60px 0 30px; border-top: 1px solid rgba(250, 248, 246, 0.1); }
-        .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 40px; }
-        .footer-brand h3 { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
-        .footer-brand p { color: rgba(250, 248, 246, 0.7); line-height: 1.6; margin-bottom: 24px; }
-        .footer-section h4 { font-size: 16px; font-weight: 600; margin-bottom: 20px; color: var(--accent-rose); }
-        .footer-section a { color: rgba(250, 248, 246, 0.7); text-decoration: none; display: block; margin-bottom: 12px; font-size: 14px; transition: color 0.2s ease; }
-        .footer-section a:hover { color: #FAF8F6; }
-        .footer-bottom { border-top: 1px solid rgba(250, 248, 246, 0.1); padding-top: 30px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; color: rgba(250, 248, 246, 0.6); }
-        .social-links { display: flex; gap: 16px; }
-        .social-links a { width: 40px; height: 40px; background: rgba(250, 248, 246, 0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #FAF8F6; text-decoration: none; transition: all 0.2s ease; }
-        .social-links a:hover { background: var(--accent-coral); transform: translateY(-2px); }
-        .btn-primary { background: var(--accent-coral); color: #FAF8F6; padding: 16px 32px; border-radius: 12px; text-decoration: none; font-weight: 600; font-size: 16px; transition: all 0.2s ease; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
-        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(193, 18, 31, 0.3); }
+
         @media (max-width: 768px) {
-            .nav-links { display: none; }
+            
             .integration-content { grid-template-columns: 1fr; }
-            .footer-content { grid-template-columns: 1fr; gap: 30px; }
-            .footer-bottom { flex-direction: column; gap: 20px; }
+
         }
     
         /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
-        h1, h2 { font-family: 'Archivo', 'Archivo', sans-serif; }
-        .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
-            /* run 9 U3: section H2s on the shared type scale */ main h2.section-title, main .hx-qa > h2 { font-size: var(--fs-h2) !important; }
+
+            /* run 9 U3: section H2s on the shared type scale */ 
     </style>
-    <link rel="stylesheet" href="/assets/brand.css">
     <link rel="stylesheet" href="/assets/helix.css">
     <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
     <a class="hx10-skip" href="#main">Skip to content</a>
-    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><details class="hx9-mm"><summary>Menu</summary><div class="hx9-mm-panel"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div></details><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></nav></div><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">Use it in Claude or ChatGPT</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration" aria-current="page">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></nav></div></div></header>
+    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/" aria-label="Helix GTM home"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a></nav><a class="hx-btn btn-sm hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><span class="tag">GTM Alpha</span><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">Use it in Claude or ChatGPT</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration" aria-current="page">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></nav></div></div></header>
     <main id="main">
 
     <section class="hx-hero">
         <div class="container">
             <div class="section-header">
-                <div class="section-badge">Free · no sign-in · no install</div>
-                <h1 class="section-title">Use GTM Alpha in Claude or ChatGPT</h1>
-                <p class="section-subtitle">Add GTM Alpha to Claude or ChatGPT with one address and no sign-in, then ask it for an EPIC audit or a 30, 60 or 90 day plan.</p>
+                <p class="hx-eyebrow">Free · no sign-in · no install</p>
+                <div class="crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><h1>Use GTM Alpha in Claude or ChatGPT</h1></div>
+                <p class="hx-lead section-subtitle">Add GTM Alpha to Claude or ChatGPT with one address and no sign-in, then ask it for an EPIC audit or a 30, 60 or 90 day plan.</p>
             <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-09-27">27 September 2026</time></p>
             </div>
         </div>
@@ -464,11 +413,7 @@
                                 <h4>Connector address:</h4>
                                 <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
                                 <h4>What you can ask for:</h4>
-                                <ul>
-                                    <li>Free EPIC audit (in your browser and in Claude): your EPIC scores and the motion to lead with</li>
-                                    <li>EPIC scores (in Claude): your EPIC scores with the rule behind each</li>
-                                    <li>GTM Roadmap (in Claude): a 30, 60 or 90 day plan for one motion</li>
-                                </ul>
+                                <ul class="tools cols3 ga-tools"><li><a class="trow" href="/consultation" aria-labelledby="ga-t1"><span class="nm" id="ga-t1">Free EPIC audit (in your browser and in Claude)</span><span class="rv">your EPIC scores and the motion to lead with</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li><li><a class="trow" href="/api-docs#available-tools" aria-labelledby="ga-t2"><span class="nm" id="ga-t2">EPIC scores (in Claude)</span><span class="rv">your EPIC scores with the rule behind each</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li><li><a class="trow" href="/api-docs#available-tools" aria-labelledby="ga-t3"><span class="nm" id="ga-t3">GTM Roadmap (in Claude)</span><span class="rv">a 30, 60 or 90 day plan for one motion</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li></ul>
                             </div>
                     </div>
                 </div>
@@ -614,7 +559,7 @@ npx @shashwatgtmalpha/gtm-alpha-mcp-server</div></div></div>
                     <a href="https://www.gtmexpert.com/">GTMExpert.com</a>
                 </div>
             </div>
-            <p class="hx7-giant" aria-hidden="true">Helix GTM</p>
+            <div class="crop ft-crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><svg class="giant" viewBox="0 0 1000 150" role="img" aria-label="Helix GTM"><text x="0" y="128" font-size="170" textLength="1000" lengthAdjust="spacingAndGlyphs">HELIX GTM</text></svg></div>
             <div class="hx-footer-bottom">
                 <span>&copy; 2026 Helix GTM Consulting.</span>
                 <span><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></span>

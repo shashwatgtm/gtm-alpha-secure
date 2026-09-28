@@ -248,281 +248,56 @@
     <link rel="stylesheet" href="/assets/fonts.css">
     <style>
         :root {
-            --primary-navy: #1A0E10;
-            --primary-dark: #1A0E10;
-            --primary-slate: #1A0E10;
-            --accent-coral: #C1121F;
-            --accent-rose: #EAD9D5;
-            --accent-gold: #641220;
-            --text-primary: #1A0E10;
-            --text-secondary: rgba(26, 14, 16, 0.72);
-            --text-light: rgba(26, 14, 16, 0.55);
-            --bg-primary: #FAF8F6;
-            --bg-secondary: #FAF8F6;
-            --bg-accent: #FAF8F6;
-            --border-light: #EAD9D5;
-            --gradient-primary: linear-gradient(135deg, #641220 0%, #1A0E10 100%);
-            --gradient-accent: linear-gradient(135deg, #C1121F 0%, #C1121F 100%);
+            --primary-navy: var(--ink);
+            --primary-dark: var(--ink);
+            --primary-slate: var(--ink);
+            --accent-coral: var(--signal);
+            --accent-rose: var(--ga-soft);
+            --accent-gold: var(--ox);
+            --text-primary: var(--ink);
+            --text-secondary: var(--muted);
+            --text-light: var(--muted);
+            --bg-primary: var(--paper);
+            --bg-secondary: var(--paper);
+            --bg-accent: var(--paper);
+            --border-light: var(--ga-soft);
+            --gradient-primary: var(--ox);
+            --gradient-accent: var(--ox);
             --shadow-sm: 0 1px 2px 0 rgba(26, 14, 16, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(26, 14, 16, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(26, 14, 16, 0.1);
             --shadow-xl: 0 20px 25px -5px rgba(26, 14, 16, 0.1);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background: var(--bg-primary);
-            -webkit-font-smoothing: antialiased;
-        }
-        header:not(.hx9-gh) {
-            background: rgba(250, 248, 246, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-light);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-        nav:not([class^="hx9-"]) { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; }
-        .logo-container { display: flex; align-items: center; gap: 12px; }
-        .logo {
-            width: 56px; height: 56px;
-            background: var(--accent-coral);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-family: Georgia, serif; font-style: italic;
-            font-size: 32px;
-            font-weight: 400;
-            color: #FAF8F6;
-        }
-        .brand-text { display: flex; flex-direction: column; }
-        .brand-name { font-size: 20px; font-weight: 700; color: var(--text-primary); line-height: 1.2; }
-        .brand-tagline { font-size: 12px; color: var(--text-secondary); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-        .nav-links { display: flex; list-style: none; gap: 32px; align-items: center; }
-        .nav-links a { text-decoration: none; color: var(--text-secondary); font-weight: 500; font-size: 14px; transition: all 0.2s ease; }
-        .nav-links a:hover { color: var(--text-primary); }
-        .cta-nav {
-            background: var(--accent-coral) !important;
-            color: #FAF8F6 !important;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        .status-banner {
-            background: linear-gradient(135deg, #641220 0%, #641220 100%);
-            color: #FAF8F6;
-            padding: 12px 0;
-            text-align: center;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 88px;
-        }
-        .status-icon {
-            width: 8px; height: 8px;
-            background: #EAD9D5;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-        .hero {
-            background: var(--gradient-primary);
-            color: #FAF8F6;
-            padding: 60px 0 40px;
-            position: relative;
-        }
-        .hero-content { position: relative; z-index: 2; text-align: center; max-width: 800px; margin: 0 auto; }
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(250, 248, 246, 0.1);
-            border: 1px solid rgba(250, 248, 246, 0.2);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 14px;
-            margin-bottom: 24px;
-        }
-        .hero h1 { font-size: 56px; font-weight: 800; line-height: 1.1; margin-bottom: 24px; }
-        .hero-subtitle { font-size: 20px; color: rgba(250, 248, 246, 0.8); margin-bottom: 40px; }
-        .hero-cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-        .btn-primary {
-            background: var(--accent-coral);
-            color: #FAF8F6;
-            padding: 16px 32px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-secondary {
-            background: rgba(250, 248, 246, 0.1);
-            color: #FAF8F6;
-            padding: 16px 32px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            border: 1px solid rgba(250, 248, 246, 0.2);
-        }
-        .features { padding: 80px 0; background: var(--bg-secondary); }
-        .section-header { text-align: center; margin-bottom: 60px; }
-        .section-badge {
-            display: inline-block;
-            background: var(--accent-coral);
-            color: #FAF8F6;
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-        }
-        .section-title { font-size: 48px; font-weight: 800; color: var(--text-primary); margin-bottom: 16px; }
-        .section-subtitle { font-size: 20px; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+
         .features-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
         @media (max-width: 900px) { .features-grid { grid-template-columns: 1fr; } }
         /* Run 8: the credentials band now has four results (bio.json band_results), so four columns on wide screens */
         @media (min-width: 1000px) { .hx7-cred .hx7-results { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
         @media (min-width: 761px) and (max-width: 999px) { .hx7-cred .hx7-results { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hx7-cred .hx7-results li:nth-child(3) { border-left: 0; padding-left: 0; } }
-        .feature-card {
-            background: #FAF8F6;
-            padding: 40px;
-            border-radius: 16px;
-            border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-        .feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); }
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
-            background: var(--gradient-accent);
-        }
-        .feature-icon {
-            width: 64px; height: 64px;
-            background: var(--gradient-accent);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: #FAF8F6;
-            margin-bottom: 24px;
-        }
-        .feature-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
-        .feature-card p { color: var(--text-secondary); font-size: 16px; }
-        .epic-framework { padding: 80px 0; background: #FAF8F6; }
+
         .epic-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 40px; }
-        .epic-item {
-            background: var(--bg-secondary);
-            padding: 32px 24px;
-            border-radius: 16px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-        .epic-item:hover { transform: translateY(-4px); border-color: var(--accent-coral); }
-        .epic-letter {
-            width: 64px; height: 64px;
-            background: var(--gradient-primary);
-            color: #FAF8F6;
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            font-weight: 800;
-            margin: 0 auto 20px;
-        }
-        .epic-item h3, .epic-item h4 { font-size: 20px; font-weight: 700; margin-bottom: 12px; }
-        .epic-item p { color: var(--text-secondary); font-size: 14px; }
-        .integration { padding: 80px 0; background: var(--primary-navy); color: #FAF8F6; }
+
         .integration-tabs { max-width: 1000px; margin: 0 auto; }
         .tab-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 40px; justify-content: center; }
-        .tab-btn {
-            background: rgba(250, 248, 246, 0.1);
-            color: rgba(250, 248, 246, 0.7);
-            border: 1px solid rgba(250, 248, 246, 0.2);
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .tab-btn:hover { background: rgba(250, 248, 246, 0.2); color: #FAF8F6; }
-        .tab-btn.active { background: var(--accent-coral); color: #FAF8F6; border-color: var(--accent-coral); }
-        .tab-content {
-            background: rgba(26, 14, 16, 0.2);
-            border-radius: 16px;
-            padding: 40px;
-            border: 1px solid rgba(250, 248, 246, 0.1);
-        }
+
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
         .tab-panel h3 { font-size: 28px; margin-bottom: 16px; }
         .integration-content { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
-        .file-location {
-            background: rgba(250, 248, 246, 0.05);
-            padding: 16px;
-            border-radius: 8px;
-            margin: 16px 0;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 14px;
-            border: 1px solid rgba(250, 248, 246, 0.1);
-        }
-        .code-container {
-            background: rgba(26, 14, 16, 0.3);
-            border-radius: 12px;
-            overflow: hidden;
-            border: 1px solid rgba(250, 248, 246, 0.1);
-        }
-        .code-header {
-            background: rgba(250, 248, 246, 0.05);
-            padding: 16px 24px;
-            border-bottom: 1px solid rgba(250, 248, 246, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-        }
-        .code-dots { display: flex; gap: 6px; }
-        .code-dot { width: 8px; height: 8px; border-radius: 50%; }
-        .dot-red { background: #C1121F; }
-        .dot-yellow { background: #EAD9D5; }
-        .dot-green { background: #641220; }
-        .code-block {
-            color: #EAD9D5;
-            padding: 24px;
-            font-family: 'IBM Plex Mono', 'SF Mono', Monaco, Consolas, monospace;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-        .code-block .key { color: #EAD9D5; }
-        .code-block .string { color: #EAD9D5; }
-        .code-block .bracket { color: #EAD9D5; }
-        .about { padding: 80px 0; background: #FAF8F6; }
+
+        .about { padding: 80px 0; background: var(--paper); }
         .about-content { display: grid; grid-template-columns: 1fr 1.2fr; gap: 60px; align-items: start; }
         .profile-card {
             background: var(--bg-secondary);
             padding: 40px;
-            border-radius: 20px;
-            box-shadow: var(--shadow-xl);
+
             text-align: center;
             border: 1px solid var(--border-light);
         }
         .profile-avatar {
             width: 140px; height: 140px;
-            border-radius: 50%;
+
             object-fit: cover;
             margin: 0 auto 24px;
             border: 4px solid var(--accent-gold);
@@ -531,9 +306,9 @@
         .profile-title { color: var(--text-secondary); font-size: 16px; margin-bottom: 16px; }
         .profile-ranking {
             background: var(--gradient-accent);
-            color: #FAF8F6;
+            color: var(--paper);
             padding: 8px 16px;
-            border-radius: 20px;
+
             font-size: 12px;
             font-weight: 600;
             display: inline-block;
@@ -542,75 +317,45 @@
         .stat-item {
             text-align: center;
             padding: 20px 16px;
-            background: #FAF8F6;
-            border-radius: 12px;
+            background: var(--paper);
+
             border: 1px solid var(--border-light);
         }
         .stat-number { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
         .stat-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; font-weight: 600; }
-        footer { background: var(--primary-navy); color: #FAF8F6; padding: 60px 0 30px; }
-        .footer-content { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; margin-bottom: 40px; }
-        .footer-brand h3 { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
-        .footer-brand p { color: rgba(250, 248, 246, 0.7); line-height: 1.6; margin-bottom: 24px; }
-        .footer-section h4 { font-size: 16px; font-weight: 600; margin-bottom: 20px; color: var(--accent-rose); }
-        .footer-section a { color: rgba(250, 248, 246, 0.7); text-decoration: none; display: block; margin-bottom: 12px; font-size: 14px; }
-        .footer-section a:hover { color: #FAF8F6; }
-        .footer-bottom {
-            border-top: 1px solid rgba(250, 248, 246, 0.1);
-            padding-top: 30px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 14px;
-            color: rgba(250, 248, 246, 0.6);
-        }
-        .social-links { display: flex; gap: 16px; }
-        .social-links a {
-            width: 40px; height: 40px;
-            background: rgba(250, 248, 246, 0.1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #FAF8F6;
-            text-decoration: none;
-        }
-        .social-links a:hover { background: var(--accent-coral); }
+
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero h1 { font-size: 36px; }
-            .section-title { font-size: 32px; }
+
             .features-grid { grid-template-columns: 1fr; }
             .epic-grid { grid-template-columns: 1fr 1fr; }
             .integration-content, .about-content { grid-template-columns: 1fr; }
-            .footer-content { grid-template-columns: 1fr; }
+            
         }
         @media (max-width: 480px) {
             .epic-grid { grid-template-columns: 1fr; }
-            .hero-cta { flex-direction: column; }
+            
         }
     
         /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
-        h1, h2 { font-family: 'Archivo', 'Archivo', sans-serif; }
-        .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
-            /* run 9 U3: section H2s on the shared type scale */ main h2.section-title, main .hx-qa > h2 { font-size: var(--fs-h2) !important; }
+
+            /* run 9 U3: section H2s on the shared type scale */ 
     </style>
-    <link rel="stylesheet" href="/assets/brand.css">
     <link rel="stylesheet" href="/assets/helix.css">
     <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
     <a class="hx10-skip" href="#main">Skip to content</a>
-    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><details class="hx9-mm"><summary>Menu</summary><div class="hx9-mm-panel"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div></details><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></nav></div><div class="hx9-row2 hx9-row2-nocrumb"><div class="hx-wrap hx9-row2-in"><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></nav></div></div></header>
+    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/" aria-label="Helix GTM home"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a></nav><a class="hx-btn btn-sm hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div><div class="hx9-row2 hx9-row2-nocrumb"><div class="hx-wrap hx9-row2-in"><span class="tag">GTM Alpha</span><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></nav></div></div></header>
     <main id="main">
 
     <section class="hero hx-hero">
         <div class="container">
             <div class="hero-content">
-                <h1>Which GTM motion should you lead with?</h1>
+                <div class="crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><h1>Which GTM motion should you lead with?</h1></div>
                 <p class="hero-subtitle hx10-answer">GTM Alpha is a free tool by Shashwat Ghosh of Helix GTM Consulting. It scores the four EPIC go-to-market motions (Ecosystem and ABM, Product-Led, Inbound and Outbound, Community-Led) from 1 to 10 with fixed rules, names the motion to lead with and suggests a plan: 180 days in the browser report, 30 to 90 days in Claude. No sign-in.</p>
-                <div class="hero-cta">
-                    <a href="/consultation" class="btn-primary">Get your free EPIC audit</a>
-                    <a href="/integration" class="btn-secondary">Use it in Claude or ChatGPT</a>
+                <div class="hero-cta hx-cta-row">
+                    <a href="/consultation" class="btn">Get your free EPIC audit</a>
+                    <a href="/integration" class="tlink">Use it in Claude or ChatGPT</a>
                 </div>
                 <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-09-27">27 September 2026</time></p>
                 <p class="hx10-history">History: first commit 13 July 2025, first npm release 8 September 2025, in the MCP Registry since 11 December 2025.</p>
@@ -636,22 +381,22 @@
     <section class="features" id="features">
         <div class="container">
             <div class="section-header">
-                <div class="section-badge">Inside the report</div>
+                <p class="hx-mono section-badge">Inside the report</p>
                 <h2 class="section-title">Scores you can check, and a plan you can use</h2>
                 <p class="section-subtitle">GTM Alpha works only from what you enter. It looks nothing up, and no AI model writes the scores.</p>
             </div>
             <div class="features-grid">
-                <div class="feature-card">
+                <div class="feature-card card">
                     <div class="feature-icon">10</div>
                     <h3>A score for each motion</h3>
                     <p>Each motion gets a score from 1 to 10 from Shashwat Ghosh&#x27;s documented EPIC rules, and the report shows the rule behind each score.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card card">
                     <div class="feature-icon">180</div>
                     <h3>A plan in four stages</h3>
                     <p>Recommendations for your lead motion and a plan for days 1 to 30, days 31 to 60, the first quarter (90 days) and the second quarter (180 days). Save it as a PDF.</p>
                 </div>
-                <div class="feature-card">
+                <div class="feature-card card">
                     <div class="feature-icon">=</div>
                     <h3>Same answers, same scores</h3>
                     <p>The same inputs always give the same scores. Without contract value, deal cycle, retention and target accounts, the result is marked preliminary.</p>
@@ -663,7 +408,7 @@
     <section class="epic-framework" id="epic">
         <div class="container">
             <div class="section-header">
-                <div class="section-badge">The EPIC framework</div>
+                <p class="hx-mono section-badge">The EPIC framework</p>
                 <h2 class="section-title">The four motions GTM Alpha scores</h2>
                 <p class="section-subtitle">EPIC is Shashwat Ghosh&#x27;s go-to-market framework. GTM Alpha scores each motion for your company and names the one to lead with.</p>
             </div>
@@ -671,22 +416,22 @@
             <div id="gtmalpha-epic-visual">
 <!-- run8-vis:epic --><figure class="hx8-vis "><svg viewBox="0 0 360 332" width="360" height="332" role="img" aria-labelledby="v1t v1d" class="hx8-svg"><title id="v1t">How your EPIC scores were set</title><desc id="v1d">How your EPIC scores were set. Starting points: Ecosystem 5, Product-Led 5, Inbound 6, Community 4. Deal cycle above 90 days: Ecosystem plus 2, Inbound minus 1. Final scores: Ecosystem 7, Product-Led 5, Inbound 5, Community 4.</desc><text x="0" y="16" class="v-k" text-anchor="start">How your EPIC scores were set</text><line x1="0" y1="230" x2="360" y2="230" class="v-line"/><rect x="6" y="150" width="35" height="80" class="v-clayd v-grow-y d1"/><rect x="45" y="118" width="16" height="32" class="v-sig v-grow-y d3"/><rect x="64" y="118" width="20" height="112" class="v-ox v-grow-y d7"/><text x="45.0" y="248" class="v-tb" text-anchor="middle">E 7</text><rect x="96" y="150" width="35" height="80" class="v-clayd v-grow-y d1"/><rect x="154" y="150" width="20" height="80" class="v-ox v-grow-y d7"/><text x="135.0" y="248" class="v-tb" text-anchor="middle">P 5</text><rect x="186" y="134" width="35" height="96" class="v-clayd v-grow-y d1"/><rect x="225" y="134" width="16" height="16" class="v-ink7 v-grow-y d3"/><rect x="244" y="150" width="20" height="80" class="v-ox v-grow-y d7"/><text x="225.0" y="248" class="v-tb" text-anchor="middle">I 5</text><rect x="276" y="166" width="35" height="64" class="v-clayd v-grow-y d1"/><rect x="334" y="166" width="20" height="64" class="v-ox v-grow-y d7"/><text x="315.0" y="248" class="v-tb" text-anchor="middle">C 4</text><rect x="0" y="260" width="10" height="10" class="v-clayd"/><text x="16" y="270" class="v-ts" text-anchor="start">Stage starting point</text><rect x="180" y="260" width="10" height="10" class="v-sig"/><text x="196" y="270" class="v-ts" text-anchor="start">Rule adjustment</text><rect x="0" y="280" width="10" height="10" class="v-ox"/><text x="16" y="290" class="v-ts" text-anchor="start">Final score</text><rect x="180" y="280" width="10" height="10" class="v-ink7"/><text x="196" y="290" class="v-ts" text-anchor="start">Rule lowered it</text><text x="0" y="310" class="v-tm" text-anchor="start">Deal cycle above 90 days: E +2, I -1</text></svg><figcaption>The real steps GTM Alpha printed for the example on this site: Series A legal tech, 120 day sales cycle, $42,000 deals.</figcaption></figure><!-- /run8-vis:epic --></div>
             <div class="epic-grid">
-                <div class="epic-item">
+                <div class="epic-item card">
                     <div class="epic-letter">E</div>
                     <h3>Ecosystem and ABM</h3>
                     <p>Win named accounts through account-based marketing and partners.</p>
                 </div>
-                <div class="epic-item">
+                <div class="epic-item card">
                     <div class="epic-letter">P</div>
                     <h3>Product-Led Growth</h3>
                     <p>Let the product win and grow customers, with sales where it helps.</p>
                 </div>
-                <div class="epic-item">
+                <div class="epic-item card">
                     <div class="epic-letter">I</div>
                     <h3>Inbound and Outbound</h3>
                     <p>Create demand with content and direct outreach.</p>
                 </div>
-                <div class="epic-item">
+                <div class="epic-item card">
                     <div class="epic-letter">C</div>
                     <h3>Community-Led</h3>
                     <p>Grow through a community of customers and peers who speak for you.</p>
@@ -745,7 +490,7 @@
                     <a href="https://www.gtmexpert.com/">GTMExpert.com</a>
                 </div>
             </div>
-            <p class="hx7-giant" aria-hidden="true">Helix GTM</p>
+            <div class="crop ft-crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><svg class="giant" viewBox="0 0 1000 150" role="img" aria-label="Helix GTM"><text x="0" y="128" font-size="170" textLength="1000" lengthAdjust="spacingAndGlyphs">HELIX GTM</text></svg></div>
             <div class="hx-footer-bottom">
                 <span>&copy; 2026 Helix GTM Consulting.</span>
                 <span><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></span>

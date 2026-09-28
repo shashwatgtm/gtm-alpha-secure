@@ -312,66 +312,43 @@
 
     <style>
         :root {
-            --primary-navy: #1A0E10;
-            --primary-dark: #1A0E10;
-            --accent-coral: #C1121F;
-            --accent-rose: #EAD9D5;
-            --accent-green: #641220;
-            --text-primary: #1A0E10;
-            --text-secondary: rgba(26, 14, 16, 0.72);
-            --bg-primary: #FAF8F6;
-            --bg-secondary: #FAF8F6;
-            --border-light: #EAD9D5;
+            --primary-navy: var(--ink);
+            --primary-dark: var(--ink);
+            --accent-coral: var(--signal);
+            --accent-rose: var(--ga-soft);
+            --accent-green: var(--ox);
+            --text-primary: var(--ink);
+            --text-secondary: var(--muted);
+            --bg-primary: var(--paper);
+            --bg-secondary: var(--paper);
+            --border-light: var(--ga-soft);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.8; color: var(--text-primary); background: var(--bg-primary); }
-        header:not(.hx9-gh) { background: var(--primary-navy); color: #FAF8F6; padding: 60px 0 40px; margin-bottom: 40px; }
-        header:not(.hx9-gh) h1 { font-size: 36px; font-weight: 700; margin-bottom: 8px; }
-        header:not(.hx9-gh) p { color: rgba(250, 248, 246,0.7); font-size: 16px; }
-        .content { padding-bottom: 60px; }
-        h2 { font-size: 24px; font-weight: 700; margin: 40px 0 24px; color: var(--primary-navy); display: flex; align-items: center; gap: 12px; }
+
         h2 .icon { font-size: 28px; }
-        .faq-item { background: var(--bg-secondary); border-radius: 12px; margin-bottom: 16px; overflow: hidden; border: 1px solid var(--border-light); }
-        .faq-question { width: 100%; background: none; border: 0; font: inherit; text-align: left; gap: 16px; padding: 20px 24px; font-weight: 600; color: var(--primary-navy); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.2s; }
-        .faq-question:hover { background: #FAF8F6; }
-        .faq-question::after { content: '+'; font-size: 24px; color: var(--accent-coral); font-weight: 300; }
-        .faq-item.open .faq-question::after { content: '-'; }
-        .faq-answer { padding: 0 24px 20px; color: var(--text-secondary); display: none; }
-        .faq-item.open .faq-answer { display: block; }
-        a { color: var(--accent-coral); text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        footer { background: var(--primary-navy); color: #FAF8F6; padding: 40px 0; text-align: center; }
-        footer a { color: var(--accent-rose); }
-        .back-link { display: inline-block; margin-bottom: 20px; color: var(--accent-rose); font-weight: 500; }
-        .highlight-box { background: linear-gradient(135deg, var(--accent-coral) 0%, #641220 100%); color: #FAF8F6; padding: 24px; border-radius: 12px; margin: 40px 0; text-align: center; }
-        .highlight-box h3 { font-size: 20px; margin-bottom: 8px; }
-        .highlight-box p { opacity: 0.9; margin-bottom: 16px; }
-        .highlight-box a { color: #FAF8F6; background: rgba(26, 14, 16,0.2); padding: 10px 24px; border-radius: 8px; display: inline-block; font-weight: 600; }
-    
+
         /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
-        h1, h2 { font-family: 'Archivo', 'Archivo', sans-serif; }
-        .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
-            /* run 9 U3: section H2s on the shared type scale */ main h2.section-title, main .hx-qa > h2 { font-size: var(--fs-h2) !important; }
+
+            /* run 9 U3: section H2s on the shared type scale */ 
     </style>
-    <link rel="stylesheet" href="/assets/brand.css">
     <link rel="stylesheet" href="/assets/helix.css">
     <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
     <a class="hx10-skip" href="#main">Skip to content</a>
-    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><details class="hx9-mm"><summary>Menu</summary><div class="hx9-mm-panel"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div></details><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></nav></div><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">FAQ</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq" aria-current="page">FAQ</a></nav></div></div></header>
+    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/" aria-label="Helix GTM home"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a></nav><a class="hx-btn btn-sm hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><span class="tag">GTM Alpha</span><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">FAQ</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq" aria-current="page">FAQ</a></nav></div></div></header>
     <main id="main">
 
     <section class="hx-hero">
         <div class="hx-wrap"><div class="hx-hero-inner">
-            <h1>Questions about GTM Alpha</h1>
+            <div class="crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><h1>Questions about GTM Alpha</h1></div>
             <p>What it does, what it costs, what it keeps and who built it.</p>
             <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-09-27">27 September 2026</time></p>
         </div></div>
     </section>
 <aside class="hx7-strip" aria-label="Built by Shashwat Ghosh"><div class="hx-wrap hx7-strip-row"><picture class="hx7-strip-photo"><source srcset="/assets/shashwat-ghosh-160.webp" type="image/webp"><img src="/assets/shashwat-ghosh-160.jpg" width="160" height="160" alt="Shashwat Ghosh" decoding="async"></picture><p><b>Built by Shashwat Ghosh</b>, Co-Founder and Fractional CMO, Helix GTM Consulting, with 24+ years in B2B and 10+ years fractional.</p><a href="https://gtmhelix.com/about/">About Shashwat</a></div></aside>
 
-    <div class="container content hx10-read">
+    <div class="container content hx10-read doc">
 
         <section class="hx10-sec">
         <h2>In short</h2>
@@ -442,11 +419,7 @@
             <button type="button" class="faq-question">Is it free to use in Claude?</button>
             <div class="faq-answer">
                 <p><strong>Yes.</strong> The three GTM Alpha tools are free, with no account, sign-in or key:</p>
-                <ul>
-                    <li>Free EPIC audit (in your browser and in Claude): EPIC scores and the motion to lead with (in your browser, the free EPIC audit form)</li>
-                    <li>EPIC scores (in Claude): EPIC scores with the rules behind them</li>
-                    <li>GTM Roadmap (in Claude): a 30, 60 or 90 day plan for one motion</li>
-                </ul>
+                <ul class="tools cols3 ga-tools"><li><a class="trow" href="/consultation" aria-labelledby="ga-t1"><span class="nm" id="ga-t1">Free EPIC audit (in your browser and in Claude)</span><span class="rv">EPIC scores and the motion to lead with (in your browser, the free EPIC audit form)</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li><li><a class="trow" href="/api-docs#available-tools" aria-labelledby="ga-t2"><span class="nm" id="ga-t2">EPIC scores (in Claude)</span><span class="rv">EPIC scores with the rules behind them</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li><li><a class="trow" href="/api-docs#available-tools" aria-labelledby="ga-t3"><span class="nm" id="ga-t3">GTM Roadmap (in Claude)</span><span class="rv">a 30, 60 or 90 day plan for one motion</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li></ul>
             </div>
         </div>
 
@@ -558,10 +531,10 @@
             </div>
         </div>
 
-        <div class="highlight-box">
+        <div class="ga-band band-rose">
             <h3>Ready to score your GTM motions?</h3>
             <p>One form, and your report opens straight away.</p>
-            <a href="/consultation">Get your free EPIC audit</a>
+            <a class="btn" href="/consultation">Get your free EPIC audit</a>
         </div>
         </section>
     </div>
@@ -607,7 +580,7 @@
                     <a href="https://www.gtmexpert.com/">GTMExpert.com</a>
                 </div>
             </div>
-            <p class="hx7-giant" aria-hidden="true">Helix GTM</p>
+            <div class="crop ft-crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><svg class="giant" viewBox="0 0 1000 150" role="img" aria-label="Helix GTM"><text x="0" y="128" font-size="170" textLength="1000" lengthAdjust="spacingAndGlyphs">HELIX GTM</text></svg></div>
             <div class="hx-footer-bottom">
                 <span>&copy; 2026 Helix GTM Consulting.</span>
                 <span><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></span>

@@ -229,23 +229,23 @@
 
     <style>
         :root {
-            --primary-navy: #1A0E10;
-            --primary-dark: #1A0E10;
-            --primary-slate: #1A0E10;
-            --accent-coral: #C1121F;
-            --accent-rose: #EAD9D5;
-            --accent-gold: #641220;
-            --accent-green: #641220;
-            --text-primary: #1A0E10;
-            --text-secondary: rgba(26, 14, 16, 0.72);
-            --text-light: rgba(26, 14, 16, 0.55);
-            --bg-primary: #FAF8F6;
-            --bg-secondary: #FAF8F6;
-            --bg-accent: #FAF8F6;
-            --bg-code: #1A0E10;
-            --border-light: #EAD9D5;
-            --gradient-primary: linear-gradient(135deg, #641220 0%, #1A0E10 100%);
-            --gradient-accent: linear-gradient(135deg, #C1121F 0%, #C1121F 100%);
+            --primary-navy: var(--ink);
+            --primary-dark: var(--ink);
+            --primary-slate: var(--ink);
+            --accent-coral: var(--signal);
+            --accent-rose: var(--ga-soft);
+            --accent-gold: var(--ox);
+            --accent-green: var(--ox);
+            --text-primary: var(--ink);
+            --text-secondary: var(--muted);
+            --text-light: var(--muted);
+            --bg-primary: var(--paper);
+            --bg-secondary: var(--paper);
+            --bg-accent: var(--paper);
+            --bg-code: var(--ink);
+            --border-light: var(--ga-soft);
+            --gradient-primary: var(--ox);
+            --gradient-accent: var(--ox);
             --shadow-sm: 0 1px 2px 0 rgba(26, 14, 16, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(26, 14, 16, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(26, 14, 16, 0.1);
@@ -257,148 +257,13 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background: var(--bg-primary);
-        }
-
-
         /* Header */
-        header:not(.hx9-gh) {
-            background: rgba(250, 248, 246, 0.95);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-light);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-
-        nav:not([class^="hx9-"]) {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo {
-            width: 56px;
-            height: 56px;
-            background: var(--accent-coral);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: Georgia, serif; font-style: italic;
-            font-size: 32px;
-            font-weight: 400;
-            color: #FAF8F6;
-        }
-
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand-name {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .brand-tagline {
-            font-size: 12px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 14px;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--text-primary);
-        }
-
-        .cta-nav {
-            background: var(--accent-coral) !important;
-            color: #FAF8F6 !important;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-        }
 
         /* Hero */
-        .hero {
-            background: var(--gradient-primary);
-            color: #FAF8F6;
-            padding: 120px 0 60px;
-        }
-
-        .hero-content {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(250, 248, 246, 0.1);
-            border: 1px solid rgba(250, 248, 246, 0.2);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 800;
-            margin-bottom: 20px;
-        }
-
-        .hero-subtitle {
-            font-size: 18px;
-            color: rgba(250, 248, 246, 0.8);
-            margin-bottom: 30px;
-        }
 
         /* Main Content */
-        .main-content {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            gap: 40px;
-            padding: 60px 0;
-        }
 
         /* Sidebar */
-        .sidebar {
-            position: sticky;
-            top: 120px;
-            height: fit-content;
-        }
 
         .sidebar h3, .sidebar .sidebar-title {
             font-size: 12px;
@@ -416,21 +281,6 @@
             margin-bottom: 8px;
         }
 
-        .sidebar-nav a {
-            display: block;
-            padding: 8px 12px;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            border-radius: 6px;
-            transition: all 0.2s;
-        }
-
-        .sidebar-nav a:hover, .sidebar-nav a.active {
-            background: var(--bg-accent);
-            color: var(--text-primary);
-        }
-
         /* Documentation Content */
         .docs-content {
             max-width: 800px;
@@ -438,15 +288,6 @@
 
         .docs-section {
             margin-bottom: 60px;
-        }
-
-        .docs-section h2 {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-light);
         }
 
         .hx10-release { width: 100%; border-collapse: collapse; font-size: 15px; margin: 12px 0; }
@@ -466,21 +307,6 @@
         }
 
         /* Code Blocks */
-        .code-block {
-            background: var(--bg-code);
-            border-radius: 12px;
-            margin: 20px 0;
-            overflow: hidden;
-        }
-
-        .code-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 16px;
-            background: rgba(250, 248, 246, 0.05);
-            border-bottom: 1px solid rgba(250, 248, 246, 0.1);
-        }
 
         .code-lang {
             font-size: 12px;
@@ -489,48 +315,11 @@
             text-transform: uppercase;
         }
 
-        .copy-btn {
-            background: none;
-            border: 1px solid rgba(250, 248, 246, 0.2);
-            color: #FAF8F6;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .copy-btn:hover {
-            background: rgba(250, 248, 246, 0.1);
-        }
-
-        pre {
-            padding: 20px;
-            overflow-x: auto;
-            margin: 0;
-        }
-
-        code {
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 14px;
-            color: #EAD9D5;
-            line-height: 1.6;
-        }
-
-        .inline-code {
-            background: var(--bg-accent);
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-family: 'IBM Plex Mono', monospace;
-            font-size: 13px;
-            color: var(--accent-coral);
-        }
-
         /* Endpoint Cards */
         .endpoint-card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-light);
-            border-radius: 12px;
+
             padding: 24px;
             margin: 20px 0;
         }
@@ -542,22 +331,14 @@
             margin-bottom: 16px;
         }
 
-        .method-badge {
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
         .method-get {
-            background: #641220;
-            color: #FAF8F6;
+            background: var(--ox);
+            color: var(--paper);
         }
 
         .method-post {
-            background: #641220;
-            color: #FAF8F6;
+            background: var(--ox);
+            color: var(--paper);
         }
 
         .endpoint-path {
@@ -578,19 +359,6 @@
             margin: 20px 0;
         }
 
-        .tool-item {
-            background: #FAF8F6;
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            padding: 20px;
-            transition: all 0.2s;
-        }
-
-        .tool-item:hover {
-            border-color: var(--accent-coral);
-            box-shadow: var(--shadow-md);
-        }
-
         .tool-name {
             font-weight: 600;
             color: var(--text-primary);
@@ -602,9 +370,9 @@
 
         .tool-name .free-badge {
             background: var(--accent-green);
-            color: #FAF8F6;
+            color: var(--paper);
             padding: 2px 8px;
-            border-radius: 4px;
+
             font-size: 10px;
             font-weight: 700;
         }
@@ -615,24 +383,17 @@
         }
 
         /* Alert Boxes */
-        .alert {
-            padding: 16px 20px;
-            border-radius: 8px;
-            margin: 20px 0;
-            display: flex;
-            gap: 12px;
-        }
 
         .alert-success {
-            background: #EAD9D5;
-            border: 1px solid #641220;
-            color: #641220;
+            background: var(--ga-soft);
+            border: 1px solid var(--ox);
+            color: var(--ox);
         }
 
         .alert-info {
-            background: #EAD9D5;
-            border: 1px solid #641220;
-            color: #641220;
+            background: var(--ga-soft);
+            border: 1px solid var(--ox);
+            color: var(--ox);
         }
 
         .alert-icon {
@@ -640,62 +401,26 @@
         }
 
         /* Footer */
-        footer {
-            background: var(--primary-navy);
-            color: #FAF8F6;
-            padding: 40px 0;
-            text-align: center;
-        }
-
-        footer p {
-            color: rgba(250, 248, 246, 0.7);
-        }
-
-        footer a {
-            color: var(--accent-rose);
-            text-decoration: none;
-        }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
 
-            .main-content {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 32px;
-            }
-        }
-    
         /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
-        h1, h2 { font-family: 'Archivo', 'Archivo', sans-serif; }
-        .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
-            /* run 9 U3: section H2s on the shared type scale */ main h2.section-title, main .hx-qa > h2 { font-size: var(--fs-h2) !important; }
+
+            /* run 9 U3: section H2s on the shared type scale */ 
     </style>
-    <link rel="stylesheet" href="/assets/brand.css">
     <link rel="stylesheet" href="/assets/helix.css">
     <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
     <a class="hx10-skip" href="#main">Skip to content</a>
-    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><details class="hx9-mm"><summary>Menu</summary><div class="hx9-mm-panel"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div></details><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></nav></div><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">API docs</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></nav></div></div></header>
+    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/" aria-label="Helix GTM home"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a></nav><a class="hx-btn btn-sm hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><span class="tag">GTM Alpha</span><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">API docs</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></nav></div></div></header>
 
     <section class="hero hx-hero">
         <div class="container">
             <div class="hero-content">
-                <div class="hero-badge">
-                    <span>For developers</span>
-                </div>
-                <h1>GTM Alpha API and MCP docs</h1>
-                <p class="hero-subtitle">Connect the three GTM Alpha tools over MCP, or call the REST API. No key needed, and free during testing.</p>
+                <p class="hx-eyebrow">For developers</p>
+                <div class="crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><h1>GTM Alpha API and MCP docs</h1></div>
+                <p class="hx-lead hero-subtitle">Connect the three GTM Alpha tools over MCP, or call the REST API. No key needed, and free during testing.</p>
             <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-09-27">27 September 2026</time></p>
                 <p class="hx10-history">History: first commit 13 July 2025, first npm release 8 September 2025, in the MCP Registry since 11 December 2025.</p>
             </div>
@@ -1012,7 +737,7 @@ platform to mid-market companies (100-1000 employees).</code></pre>
                     <a href="https://www.gtmexpert.com/">GTMExpert.com</a>
                 </div>
             </div>
-            <p class="hx7-giant" aria-hidden="true">Helix GTM</p>
+            <div class="crop ft-crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><svg class="giant" viewBox="0 0 1000 150" role="img" aria-label="Helix GTM"><text x="0" y="128" font-size="170" textLength="1000" lengthAdjust="spacingAndGlyphs">HELIX GTM</text></svg></div>
             <div class="hx-footer-bottom">
                 <span>&copy; 2026 Helix GTM Consulting.</span>
                 <span><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></span>

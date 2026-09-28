@@ -199,21 +199,21 @@
     
     <style>
         :root {
-            --primary-navy: #1A0E10;
-            --primary-dark: #1A0E10;
-            --primary-slate: #1A0E10;
-            --accent-coral: #C1121F;
-            --accent-rose: #EAD9D5;
-            --accent-gold: #641220;
-            --text-primary: #1A0E10;
-            --text-secondary: rgba(26, 14, 16, 0.72);
-            --text-light: rgba(26, 14, 16, 0.55);
-            --bg-primary: #FAF8F6;
-            --bg-secondary: #FAF8F6;
-            --bg-accent: #FAF8F6;
-            --border-light: #EAD9D5;
-            --gradient-primary: linear-gradient(135deg, #641220 0%, #1A0E10 100%);
-            --gradient-accent: linear-gradient(135deg, #C1121F 0%, #C1121F 100%);
+            --primary-navy: var(--ink);
+            --primary-dark: var(--ink);
+            --primary-slate: var(--ink);
+            --accent-coral: var(--signal);
+            --accent-rose: var(--ga-soft);
+            --accent-gold: var(--ox);
+            --text-primary: var(--ink);
+            --text-secondary: var(--muted);
+            --text-light: var(--muted);
+            --bg-primary: var(--paper);
+            --bg-secondary: var(--paper);
+            --bg-accent: var(--paper);
+            --border-light: var(--ga-soft);
+            --gradient-primary: var(--ox);
+            --gradient-accent: var(--ox);
             --shadow-sm: 0 1px 2px 0 rgba(26, 14, 16, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(26, 14, 16, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(26, 14, 16, 0.1);
@@ -226,230 +226,17 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Archivo', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background: var(--bg-primary);
-        }
-
-
         /* Header - Matching Home Page Exactly */
-        header:not(.hx9-gh) {
-            background: rgba(250, 248, 246, 0.95);
-            backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid var(--border-light);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        nav:not([class^="hx9-"]) {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo {
-            width: 56px;
-            height: 56px;
-            background: var(--accent-coral);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: Georgia, serif; font-style: italic;
-            font-size: 32px;
-            font-weight: 400;
-            color: #FAF8F6;
-        }
-
-        .brand-text {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .brand-name {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
-            line-height: 1.2;
-        }
-
-        .brand-tagline {
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 32px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--text-primary);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-coral);
-            transition: width 0.2s ease;
-        }
-
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
-        }
-
-        .cta-nav {
-            background: var(--accent-coral) !important;
-            color: #FAF8F6 !important;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            text-decoration: none;
-        }
-
-        .cta-nav:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-            background: #641220 !important;
-        }
-
-        .cta-nav::after {
-            display: none !important;
-        }
 
         /* Status Banner */
-        .status-banner {
-            background: linear-gradient(135deg, #641220 0%, #641220 100%);
-            color: #FAF8F6;
-            padding: 12px 0;
-            text-align: center;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 88px;
-        }
-
-        .status-icon {
-            width: 8px;
-            height: 8px;
-            background: #EAD9D5;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
 
         /* Hero Section */
-        .hero {
-            background: var(--gradient-primary);
-            color: #FAF8F6;
-            padding: 60px 0 40px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(250, 248, 246, 0.1);
-            border: 1px solid rgba(250, 248, 246, 0.2);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            letter-spacing: -1px;
-        }
-
-        .hero-subtitle {
-            font-size: 18px;
-            color: rgba(250, 248, 246, 0.9);
-            margin-bottom: 30px;
-            line-height: 1.5;
-        }
 
         /* Form Section */
-        .form-section {
-            background: var(--bg-secondary);
-            padding: 60px 0;
-        }
-
-        .form-container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: #FAF8F6;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: var(--shadow-lg);
-        }
 
         .form-header {
             text-align: center;
             margin-bottom: 30px;
-        }
-
-        .form-header h2 {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 12px;
         }
 
         .form-header p {
@@ -458,16 +245,16 @@
         }
 
         .security-note {
-            background: #EAD9D5;
-            border: 1px solid #641220;
-            border-radius: 8px;
+            background: var(--ga-soft);
+            border: 1px solid var(--ox);
+
             padding: 16px;
             margin: 20px 0;
             display: flex;
             align-items: center;
             gap: 12px;
             font-size: 14px;
-            color: #641220;
+            color: var(--ox);
         }
 
         .form-grid {
@@ -493,41 +280,6 @@
             font-size: 14px;
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            padding: 12px 16px;
-            border: 2px solid var(--border-light);
-            border-radius: 8px;
-            font-size: 15px;
-            transition: all 0.3s ease;
-            background: #FAF8F6;
-            font-family: 'Archivo', sans-serif;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent-coral);
-            box-shadow: 0 0 0 3px rgba(193, 18, 31, 0.1);
-        }
-
-        .form-group select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 12px center;
-            background-repeat: no-repeat;
-            background-size: 16px;
-            padding-right: 40px;
-        }
-
-        .form-group textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
         .required {
             color: var(--accent-coral);
         }
@@ -548,165 +300,49 @@
         }
 
         .hx9-example { margin: 14px 0 4px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: center; align-items: center; }
-        .hx9-example button { cursor: pointer; }
-        .hx9-example-note { font-size: 15px; }
+
         .hx8-dev code { font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
         .hx8-dev ul { margin: 8px 0 8px 20px; }
-
-        .submit-btn {
-            width: 100%;
-            background: var(--gradient-accent);
-            color: #FAF8F6;
-            border: none;
-            padding: 16px 24px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(193, 18, 31, 0.3);
-        }
-
-        .submit-btn:disabled {
-            background: var(--text-light);
-            cursor: not-allowed;
-        }
 
         /* Results section */
         #result {
             margin-top: 30px;
             padding: 24px;
             background: var(--bg-secondary);
-            border-radius: 8px;
+
             display: none;
             border: 1px solid var(--border-light);
         }
 
         /* Footer - Matching Home Page Exactly */
-        footer {
-            background: var(--primary-navy);
-            color: #FAF8F6;
-            padding: 60px 0 30px;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 50px;
-            margin-bottom: 40px;
-        }
-
-        .footer-brand h3 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 16px;
-        }
-
-        .footer-brand p {
-            color: rgba(250, 248, 246, 0.7);
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-
-        .footer-section h4 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: var(--accent-rose);
-        }
-
-        .footer-section a {
-            color: rgba(250, 248, 246, 0.7);
-            text-decoration: none;
-            display: block;
-            margin-bottom: 12px;
-            font-size: 14px;
-            transition: color 0.2s ease;
-        }
-
-        .footer-section a:hover {
-            color: #FAF8F6;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid rgba(250, 248, 246, 0.1);
-            padding-top: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            color: rgba(250, 248, 246, 0.6);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 16px;
-        }
-
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            background: rgba(250, 248, 246, 0.1);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #FAF8F6;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .social-links a:hover {
-            background: var(--accent-coral);
-            transform: translateY(-2px);
-        }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            .hero h1 {
-                font-size: 36px;
-            }
+
             .form-row {
                 grid-template-columns: 1fr;
             }
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-            .footer-bottom {
-                flex-direction: column;
-                gap: 20px;
-            }
+
         }
     
         /* Brand: Archivo display, IBM Plex Mono eyebrows and footers */
-        h1, h2 { font-family: 'Archivo', 'Archivo', sans-serif; }
-        .section-badge, .footer-bottom { font-family: 'IBM Plex Mono', monospace; }
-            /* run 9 U3: section H2s on the shared type scale */ main h2.section-title, main .hx-qa > h2 { font-size: var(--fs-h2) !important; }
+
+            /* run 9 U3: section H2s on the shared type scale */ 
     </style>
-    <link rel="stylesheet" href="/assets/brand.css">
     <link rel="stylesheet" href="/assets/helix.css">
     <link rel="stylesheet" href="/assets/site.css">
 </head>
 <body>
     <a class="hx10-skip" href="#main">Skip to content</a>
-    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><details class="hx9-mm"><summary>Menu</summary><div class="hx9-mm-panel"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div></details><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a><a class="hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></nav></div><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">Free EPIC audit</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></nav></div></div></header>
+    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/" aria-label="Helix GTM home"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a></nav><a class="hx-btn btn-sm hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></div><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><span class="tag">GTM Alpha</span><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">Free EPIC audit</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></nav></div></div></header>
     <main id="main">
 
     <section class="hero hx-hero">
         <div class="container">
             <div class="hero-content">
                 <p class="hx-eyebrow">No sign-in · no email · no payment</p>
-                <h1>Get your free EPIC audit</h1>
-                <p class="hero-subtitle">Answer the questions below. You get a score for each of the four GTM motions, recommendations for the one to lead with and a 180 day plan.</p>
+                <div class="crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><h1>Get your free EPIC audit</h1></div>
+                <p class="hx-lead hero-subtitle">Answer the questions below. You get a score for each of the four GTM motions, recommendations for the one to lead with and a 180 day plan.</p>
             <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-09-27">27 September 2026</time></p>
             </div>
         </div>
@@ -719,7 +355,7 @@
                 <div class="form-header">
                     <h2>Your answers build your report</h2>
                     <p>Questions marked * are required. The optional ones make the scores fuller. Your report opens on the next page, and you can save it as a PDF.</p>
-                    <p class="hx9-example"><button type="button" id="fill-example" class="hx-btn-ghost">Fill in an example</button> <a class="hx-btn-ghost" href="/sample-report/">See a sample report</a></p>
+                    <p class="hx9-example"><button type="button" id="fill-example" class="tlink">Fill in an example</button> <a class="tlink" href="/sample-report/">See a sample report</a></p>
                     <p class="hx9-example-note" id="example-note" role="status" aria-live="polite">Want to see a report first? Open the sample report for a made-up company, or fill in the example answers and press the button at the end.</p>
                 </div>
                 
@@ -727,7 +363,7 @@
                     Your answers are used only to build your report, which opens on the next page. Nothing is stored, logged or emailed.
                 </div>
 
-                <form id="gtmForm" method="post" action="/api/premium-audit">
+                <div class="win ga-form-win"><div class="win-bar"><span class="t">gtm-alpha / free EPIC audit</span><span class="wb" aria-hidden="true"><i></i><i></i></span></div><div class="win-body"><form id="gtmForm" method="post" action="/api/premium-audit">
                     <div class="form-grid">
                         <div class="form-row">
                             <div class="form-group">
@@ -931,7 +567,7 @@
 
                         <button type="submit" class="submit-btn">Get my free EPIC audit report</button>
                     </div>
-                </form>
+                </form></div></div>
 
                 <details class="hx8-dev">
                     <summary>For developers</summary>
@@ -998,7 +634,7 @@
                     <a href="https://www.gtmexpert.com/">GTMExpert.com</a>
                 </div>
             </div>
-            <p class="hx7-giant" aria-hidden="true">Helix GTM</p>
+            <div class="crop ft-crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><svg class="giant" viewBox="0 0 1000 150" role="img" aria-label="Helix GTM"><text x="0" y="128" font-size="170" textLength="1000" lengthAdjust="spacingAndGlyphs">HELIX GTM</text></svg></div>
             <div class="hx-footer-bottom">
                 <span>&copy; 2026 Helix GTM Consulting.</span>
                 <span><a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></span>
