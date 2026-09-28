@@ -2,7 +2,7 @@
    and the report page. helix.css is the shared Helix B2 layer (copied from the project's work/run7/design/helix.css; not
    edited here). brand.css is no longer loaded (B21: one design layer). This file styles only GTM Alpha's own page parts
    (its hand-built sections, the form, the docs, the pricing cards, the report) with the B2 tokens, so dark mode (D11)
-   swaps them with the rest of the page. No !important: the rules it used to override were deleted from the pages
+   swaps them with the rest of the page. No important flags: the rules it used to override were deleted from the pages
    (design/run11/css-changes-gtmalpha.md in the project folder). */
 
 :root { --ga-soft: #EAD9D5; }
@@ -25,10 +25,10 @@
 .features, .epic-framework, .page-content, .form-section, .faq-section, .main-content > .section { padding: clamp(56px, 7vw, 112px) 0 0; }
 .section-header { margin: 0 0 clamp(24px, 3vw, 40px); }
 .section-header h2 { max-width: 20ch; }
-.section-badge { display: block; margin: 0 0 14px; }
+.section-badge { display: block; margin: 0 0 24px; }
 .section-subtitle { font-size: var(--lead); line-height: 1.45; color: var(--muted); max-width: 60ch; margin: 18px 0 0; }
 .features-grid, .epic-grid { gap: 24px; }
-.feature-icon { font: 800 var(--tile)/1 var(--display); letter-spacing: -.04em; color: var(--ox); }
+.feature-card .feature-icon { font: 800 var(--tile)/1 var(--display); letter-spacing: -.04em; color: var(--ox); }
 .feature-card p, .epic-item p { color: var(--muted); margin: 0; }
 .epic-letter { display: inline-grid; place-items: center; width: 44px; height: 44px; background: var(--ox); color: var(--paper); font: 800 24px/1 var(--display); }
 #gtmalpha-epic-visual .hx8-vis { margin: 0 0 32px; }
@@ -100,6 +100,7 @@ main > :last-child { margin-bottom: clamp(56px, 7vw, 112px); }
 .submit-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 12px 28px; background: var(--ox); color: var(--paper); border: 2px solid var(--ox); font: 600 14px/1.2 var(--mono); letter-spacing: .08em; text-transform: uppercase; cursor: pointer; margin-top: 8px; }
 .submit-btn:hover:not(:disabled) { background: var(--ink); border-color: var(--ink); }
 .submit-btn:disabled { opacity: .6; cursor: default; }
+@media (max-width: 600px) { .submit-btn { width: 100%; padding: 12px 10px; letter-spacing: .03em; } }
 
 /* /integration and the home: set-up tabs and code in windows */
 .tab-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 28px; }
@@ -156,7 +157,7 @@ main li > a:only-child { display: inline-flex; align-items: center; min-height: 
 /* The report (its markup and inline style come from netlify/lib/analyze.js, which is not changed): headings on the document
    scale, and the report's boxes on the B2 tokens so it reads in light and dark */
 .report-container { --h2: clamp(28px, 2.6vw, 38px); --card: clamp(20px, 1.8vw, 24px); max-width: 960px; background: var(--paper); color: var(--ink); }
-.report-container .header h1 { font-size: clamp(40px, 5vw, 72px); }
+.report-container .header h1 { font-size: clamp(40px, 5vw, 72px); line-height: 1.05; }
 .report-container .epic-item, .report-container .roadmap-item { background: var(--white); border-color: var(--edge); border-top-color: var(--ox); }
 .report-container .epic-letter { display: block; width: auto; height: auto; background: none; color: var(--ox); }
 .report-container .epic-score { color: var(--ink); }
@@ -174,10 +175,12 @@ main li > a:only-child { display: inline-flex; align-items: center; min-height: 
   .report-container .primary-focus h2 { color: #FAF8F6; }
   .ga-band { background: #2A1216; }
   .tab-btn.active, .epic-letter { color: #1A0E10; }
+  .required { color: #F2AAB3; }
+  .form-group small { color: #CBB9BC; }
   .hx10-actions .hx10-primary { color: #1A0E10; }
 }
 
 @media print {
-  .hx10-skip, .hx9-gh, footer.hx-footer, .hx10-actions { display: none; }
+  .hx10-skip, .hx9-gh, footer.hx-footer, .hx10-actions, .hx10-report > .hx10-actions { display: none; }
   .report-container, .report-container * { background: #FFFFFF; color: #1A0E10; box-shadow: none; }
 }

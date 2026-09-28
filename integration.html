@@ -286,7 +286,7 @@
 
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
-        .tab-panel h3 { font-size: 28px; margin-bottom: 16px; color: var(--paper); }
+        .tab-panel h3 { font-size: 28px; margin-bottom: 16px; }
         .integration-content { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
 
         .hx8-dev h3 { font-size: 20px; margin: 20px 0 10px; }
@@ -341,25 +341,25 @@
                             <div class="integration-text">
                                 <h3>Set it up in Claude</h3>
                                 <p>Add GTM Alpha as a custom connector in three steps. Nothing to install.</p>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Claude on the web, desktop or mobile (no install):</h4>
-                                <ol style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
+                                <h4 style="margin: 20px 0 8px;">Claude on the web, desktop or mobile (no install):</h4>
+                                <ol style="margin: 16px 0; padding-left: 20px;">
                                     <li>Open Customize, then Connectors, select +, then Add custom connector</li>
                                     <li>MCP server URL: https://gtmalpha.gtmhelix.com/mcp</li>
                                     <li>Choose no sign-in, then Add</li>
                                 </ol>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Or run it locally with the npm package:</h4>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Configuration File Location:</h4>
+                                <h4 style="margin: 20px 0 8px;">Or run it locally with the npm package:</h4>
+                                <h4 style="margin: 20px 0 8px;">Configuration File Location:</h4>
                                 <div class="file-location">Windows: %APPDATA%\Claude\claude_desktop_config.json<br>macOS: ~/Library/Application Support/Claude/claude_desktop_config.json</div>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Setup Instructions:</h4>
-                                <ol style="color: rgba(250, 248, 246,0.8); margin: 16px 0; padding-left: 20px;">
+                                <h4 style="margin: 20px 0 8px;">Setup Instructions:</h4>
+                                <ol style="margin: 16px 0; padding-left: 20px;">
                                     <li>Open the configuration file in your text editor</li>
                                     <li>Add the GTM Alpha server configuration</li>
                                     <li>Save the file and restart Claude Desktop</li>
                                     <li>Test with: "Analyze my GTM strategy using EPIC framework"</li>
                                 </ol>
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px;">
-                                    <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">MCP Registry</a>
-                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="color: var(--accent-rose); text-decoration: none; padding: 12px; background: rgba(250, 248, 246,0.1); border-radius: 8px; text-align: center;">npm Package</a>
+                                    <a href="https://registry.modelcontextprotocol.io/v0/servers?search=io.github.shashwatgtm/gtm-alpha-consultant" style="padding: 12px; text-align: center;">MCP Registry</a>
+                                    <a href="https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server" style="padding: 12px; text-align: center;">npm Package</a>
                                 </div>
                             </div>
                             <div class="code-container">
@@ -384,9 +384,9 @@
                             <div class="integration-text">
                                 <h3>Set it up in Cursor or Windsurf</h3>
                                 <p>Connect GTM Alpha to Cursor or Windsurf with npx.</p>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">Configuration File:</h4>
+                                <h4 style="margin: 20px 0 8px;">Configuration File:</h4>
                                 <div class="file-location">.cursor/mcp.json (in project root)</div>
-                                <h4 style="color: rgba(250, 248, 246,0.9); margin: 20px 0 8px;">npm Package:</h4>
+                                <h4 style="margin: 20px 0 8px;">npm Package:</h4>
                                 <div class="file-location">@shashwatgtmalpha/gtm-alpha-mcp-server</div>
                             </div>
                             <div class="code-container">
@@ -477,8 +477,8 @@ npx @shashwatgtmalpha/gtm-alpha-mcp-server</div></div></div>
 
             <div style="text-align: center; margin-top: 40px;">
                 <a href="/consultation" class="btn-primary">Get your free EPIC audit</a>
-                <div style="margin-top: 16px; color: rgba(250, 248, 246,0.8); font-size: 14px;">
-                    Or email: <a href="mailto:shashwat@gtmhelix.com" style="color: var(--accent-rose); text-decoration: none;">shashwat@gtmhelix.com</a>
+                <div style="margin-top: 16px; font-size: 14px;">
+                    Or email: <a href="mailto:shashwat@gtmhelix.com" style="text-decoration: none;">shashwat@gtmhelix.com</a>
                 </div>
             </div>
         </div>
