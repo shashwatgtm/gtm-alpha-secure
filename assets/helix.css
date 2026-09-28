@@ -49,7 +49,7 @@ h1, h2, h3, h4 { font-family: var(--display); color: inherit; margin: 0; text-wr
 /* R11-A3-11: while VT323 is not yet loaded (font-display optional keeps the fallback on a first visit), window titles and tags use a local
    monospace face scaled to VT323's width: 70% (median of the 30 titles and tags of the 9 homes and hub /tools/ against Courier New, the
    0.6 em width shared by Menlo, Droid Sans Mono, Noto Sans Mono and DejaVu Sans Mono; Consolas, narrower, comes last). Nothing is downloaded. */
-@font-face { font-family: "VT323 Fallback"; src: local("Courier New"), local("CourierNewPSMT"), local("Menlo"), local("Courier"), local("Droid Sans Mono"), local("Noto Sans Mono"), local("DejaVu Sans Mono"), local("Cutive Mono"), local("Consolas"); size-adjust: 70%; }
+@font-face { font-family: "VT323 Fallback"; src: local("Courier New"), local("CourierNewPSMT"), local("Menlo"), local("Courier"), local("Droid Sans Mono"), local("Noto Sans Mono"), local("DejaVu Sans Mono"), local("Cutive Mono"), local("Consolas"); size-adjust: 66%; }  /* R11-A3-13: VT323 advances 0.4 em per character, Courier New, Menlo and Noto Sans Mono 0.6 em (0.4 / 0.6 = 66.7%, measured on hub /tools/); 66% keeps the fallback about 1% narrower so no tag gains a line */
 @font-face { font-family: "Archivo Fallback Heavy"; src: local("Arial Bold"), local("Arial-BoldMT"), local("Arial"); font-weight: 700 900; size-adjust: 103%; ascent-override: 88%; descent-override: 21%; line-gap-override: 0%; }
 h1, h2 { font-family: "Archivo", "Archivo Fallback Heavy", Arial, sans-serif; }
 h1 { font-weight: 800; font-size: var(--h1); line-height: .93; letter-spacing: -.045em; }
