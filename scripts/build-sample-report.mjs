@@ -81,6 +81,7 @@ ${chrome.LD_SAMPLE}
 </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
     <link rel="preload" href="/assets/fonts/Archivo-latin-1.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/VT323-latin-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/assets/fonts.css?v=${chrome.V_FONTS}">
     ${style[0]}
     <link rel="stylesheet" href="/assets/helix.css?v=${chrome.V_HELIX}">
