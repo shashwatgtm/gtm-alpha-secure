@@ -26,7 +26,7 @@ const GTM_CONSULTANT = {
     });
     var analysis = this.analyzeEPIC(input);
     var lines = [
-      "GTM Alpha consultation for: " + who,
+      "GTM Alpha Free EPIC audit for: " + who,
       "Challenge: " + (args.gtm_challenge ? String(args.gtm_challenge) : "not supplied"),
       "",
       "Primary Focus: " + analysis.primary.motion,
@@ -254,7 +254,7 @@ export default async function handler(req, context) {
         id: id,
         result: {
           protocolVersion: version,
-          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.1" },
+          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.2" },
           capabilities: { tools: {} }
         }
       });
