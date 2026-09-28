@@ -72,7 +72,7 @@ var TOOLS = [
   {
     name: "gtm_consultation",
     title: "Free EPIC audit (in your browser and in Claude)",
-    description: "Get GTM strategy consultation using Shashwat Ghosh EPIC framework. Scores the four motions from 1 to 10 with the documented rubric and names the primary and secondary motion. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary.",
+    description: "Scores the four motions from 1 to 10 with the documented rubric and names the primary and secondary motion. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary.",
     inputSchema: {
       type: "object",
       properties: {

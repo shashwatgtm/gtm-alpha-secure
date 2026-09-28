@@ -1,5 +1,5 @@
 // netlify/lib/epic-audit.js (served by netlify/functions/api.js at POST /api/epic-audit)
-// EPIC Framework Audit with stored results and a 6-month roadmap
+// EPIC Framework Audit with a 6-month roadmap (results are not stored)
 
 import { getStore } from '@netlify/blobs';
 import { randomUUID } from 'node:crypto';
@@ -50,21 +50,6 @@ export function cleanAuditInput(d) {
 }
 
 const EPIC_AUDIT_ENGINE = {
-  // Store previous audits for progress tracking
-  async storePreviousAudit(consultationId, auditData) {
-    try {
-      const store = getStore('epic-audits');
-      await store.set(consultationId, JSON.stringify({
-        ...auditData,
-        timestamp: new Date().toISOString()
-      }));
-      return true;
-    } catch (error) {
-      console.error('Error storing audit:', error);
-      return false;
-    }
-  },
-
   // Retrieve previous audits for progress comparison
   async getPreviousAudits(companyId) {
     try {
@@ -969,12 +954,8 @@ export default async (req, context) => {
     // Calculate progress from previous audits
     const progressAnalysis = EPIC_AUDIT_ENGINE.calculateProgress(auditResults, previousAudits);
 
-    // Store current audit for future comparison
-    const stored = await EPIC_AUDIT_ENGINE.storePreviousAudit(consultationId, {
-      company_id: companyId,
-      ...auditResults,
-      input_data: inputData
-    });
+    // Run 11 A2-D5 (2026-09-28): new audits are not saved. The Netlify Blobs save call was removed; records saved
+    // earlier stay untouched in the "epic-audits" store (nothing is deleted) and are deleted on request.
 
     return new Response(JSON.stringify({
       status: 'success',
@@ -1012,10 +993,8 @@ export default async (req, context) => {
       ],
       
       persistence: {
-        stored: stored,
-        tracking_enabled: true,
-        next_audit_recommended: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString(),
-        historical_audits_available: previousAudits.length
+        stored: false,
+        tracking_enabled: false
       }
     }), {
       status: 200,

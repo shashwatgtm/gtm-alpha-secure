@@ -2,7 +2,7 @@ openapi: 3.0.0
 info:
   title: GTM Alpha API
   description: EPIC framework audit endpoint of GTM Alpha. The AI assistant tools are served separately over MCP at https://gtmalpha.gtmhelix.com/mcp (see https://gtmalpha.gtmhelix.com/api-docs).
-  version: 1.1.0
+  version: 1.1.1
   contact:
     name: Shashwat Ghosh
     email: shashwat@gtmhelix.com
@@ -16,7 +16,7 @@ paths:
   /epic-audit:
     post:
       summary: EPIC framework maturity audit
-      description: "Scores Ecosystem, Product-Led, Inbound and Outbound, and Community maturity and returns a 6-month roadmap. The inputs are saved with the result in GTM Alpha's database (Netlify Blobs store epic-audits); see https://gtmalpha.gtmhelix.com/privacy. Only the fields below are accepted (others are ignored), the body may be at most 32 KB, and the storage key is made by the server. Limited to 30 requests per minute per IP address, shared with the site's other /api paths."
+      description: "Scores Ecosystem, Product-Led, Inbound and Outbound, and Community maturity and returns a 6-month roadmap. The inputs are not saved (new audits are not kept); see https://gtmalpha.gtmhelix.com/privacy. Only the fields below are accepted (others are ignored), and the body may be at most 32 KB. Limited to 30 requests per minute per IP address, shared with the site's other /api paths."
       requestBody:
         required: true
         content:
@@ -34,7 +34,7 @@ paths:
                   },
                   "company_id": {
                     "type": "string",
-                    "description": "Optional tracking ID; defaults to the company name in lower case with dashes"
+                    "description": "Optional ID; defaults to the company name in lower case with dashes"
                   },
                   "industry": {
                     "type": "string",
@@ -63,7 +63,7 @@ paths:
               }
       responses:
         '200':
-          description: Audit results (status, audit_results, progress_analysis, consultation_id, company_id, timestamp, summary, next_actions, persistence)
+          description: Audit results (status, audit_results, progress_analysis, consultation_id, company_id, timestamp, summary, next_actions, persistence). persistence is always stored false and tracking_enabled false: nothing is saved
         '400':
           description: Missing required field company
         '405':

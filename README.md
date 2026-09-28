@@ -48,7 +48,7 @@ gtm-alpha-mcp
 
 ### Option 4: REST API
 
-For direct API access without MCP, send a JSON POST to https://gtmalpha.gtmhelix.com/api/epic-audit (documented in openapi.yaml and on https://gtmalpha.gtmhelix.com/api-docs). The inputs you send are stored with the result; see https://gtmalpha.gtmhelix.com/privacy.
+For direct API access without MCP, send a JSON POST to https://gtmalpha.gtmhelix.com/api/epic-audit (documented in openapi.yaml and on https://gtmalpha.gtmhelix.com/api-docs). The inputs you send are not stored; see https://gtmalpha.gtmhelix.com/privacy.
 
 ---
 
@@ -60,7 +60,7 @@ Use the OpenAPI schema in openai-gpt-actions.json to create a Custom GPT action 
 
 1. In ChatGPT, open Create a GPT
 2. Add Actions: import from URL or paste the schema
-3. Base URL: https://gtmalpha.gtmhelix.com/api (the audit inputs are stored; see https://gtmalpha.gtmhelix.com/privacy)
+3. Base URL: https://gtmalpha.gtmhelix.com/api (the audit inputs are not stored; see https://gtmalpha.gtmhelix.com/privacy)
 
 ### Google Gemini
 
@@ -77,7 +77,7 @@ Generated on 26 September 2026 from the server's own tool list (`tools/list` of 
 
 | # | Tool | Title | What it does |
 |---|---|---|---|
-| 1 | `gtm_consultation` | Free EPIC audit (in your browser and in Claude) | Get GTM strategy consultation using Shashwat Ghosh EPIC framework. Scores the four motions from 1 to 10 with the documented rubric and names the primary and secondary motion. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary. |
+| 1 | `gtm_consultation` | Free EPIC audit (in your browser and in Claude) | Scores the four motions from 1 to 10 with the documented rubric and names the primary and secondary motion. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary. |
 | 2 | `epic_audit` | EPIC scores (in Claude) | Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes. Add the optional inputs for a full score; without them the result is marked preliminary. |
 | 3 | `generate_roadmap` | GTM Roadmap (in Claude) | Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps. Builds text from the inputs only. |
 
