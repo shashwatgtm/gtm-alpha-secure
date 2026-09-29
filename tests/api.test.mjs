@@ -55,7 +55,9 @@ test("a complete form gets the report page, with a policy that allows only its o
   assert.ok(!html.includes("Consultation Report"));
   for (const label of ["Edit my answers", "Download PDF", "Work with Shashwat on this plan"]) assert.ok(html.includes(label), label);
   assert.ok(html.indexOf("Edit my answers") < html.indexOf("EPIC Framework Scores"), "the action bar is at the top");
-  assert.ok(html.indexOf("Consultation ID") > html.indexOf("GTM Implementation Roadmap"), "the consultation ID is in the report footer");
+  // run 12 R12-12 b: the visible label is "Audit ID" (the variable name stays)
+  assert.ok(html.indexOf("Audit ID") > html.indexOf("GTM Implementation Roadmap"), "the audit ID is in the report footer");
+  assert.ok(!html.includes("Consultation ID"), "no Consultation ID label");
   assert.ok(/\/assets\/fonts\.css\?v=[0-9a-f]{10}/.test(html) && /\/assets\/site\.css\?v=[0-9a-f]{10}/.test(html), "versioned stylesheets");
 });
 

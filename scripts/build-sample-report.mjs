@@ -44,8 +44,8 @@ export async function buildSampleReport() {
   let report = page.slice(start, end).trimEnd().replace(/^(<div class="report-container" id="report-content") data-pdf-name="[^"]*">/, "$1>");
   one(report, /<h1>Your free EPIC audit report<\/h1>/g, "the report H1");
   report = report.replace("<h1>Your free EPIC audit report</h1>", "<h1>Sample EPIC audit report</h1>");
-  one(report, /<p class="consultation-id">Consultation ID: GTM-\d+<\/p>\s*<p class="consultation-id">Generated: [0-9: -]+ UTC<\/p>/g, "the consultation ID and time");
-  report = report.replace(/<p class="consultation-id">Consultation ID: GTM-\d+<\/p>\s*<p class="consultation-id">Generated: [0-9: -]+ UTC<\/p>/,
+  one(report, /<p class="consultation-id">Audit ID: GTM-\d+<\/p>\s*<p class="consultation-id">Generated: [0-9: -]+ UTC<\/p>/g, "the consultation ID and time");
+  report = report.replace(/<p class="consultation-id">Audit ID: GTM-\d+<\/p>\s*<p class="consultation-id">Generated: [0-9: -]+ UTC<\/p>/,
     `<p class="consultation-id">Built by the GTM Alpha ${version} report code from the example answers on the free audit form.</p>`);
   // Run 11 R11-A1-8: the B2 hero. The report's own header block moves, word for word, into the hero: its H1 in crop marks
   // under a pixel tag (D6 inner H1 size from helix.css), its name, role and company lines in a window on the right. The

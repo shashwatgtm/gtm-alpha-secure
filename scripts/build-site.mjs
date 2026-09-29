@@ -8,7 +8,7 @@ import { buildSampleReport } from "./build-sample-report.mjs";
 
 const ROOT = process.cwd();
 const OUT = join(ROOT, "site");
-// The PayPal pages (payment-success.html, payment-cancel.html) stay in the repository for a paid launch but are not
+// The PayPal pages (payment-success.html, payment-cancel.html) are kept for a paid launch in netlify/retired/ (run 12) and are not
 // published: while GTM Alpha is free, the Premium Audit report is returned straight after the form (owner decision 3).
 // Run 10 R10-05: 404.html is Netlify's page for any address that does not exist (served with status 404).
 const PAGES = ["index.html", "pricing.html", "consultation.html", "integration.html", "faq.html", "api-docs.html",
@@ -64,3 +64,26 @@ function bust(out) {
   return n;
 }
 console.log(`build-site: ${bust(OUT)} /assets/ references versioned with ?v=<sha256>`);
+
+// Run 12 R12-12 h (G-M7): the live report (netlify/lib/premium-audit.js) links the stylesheets with the V_* versions in
+// netlify/lib/report-chrome.js. Set them here from the published files, after the versioning above, so the ?v= the report
+// asks for is always the hash of the file that is served (fonts.css changes when its font addresses are versioned).
+const CHROME = join(ROOT, "netlify", "lib", "report-chrome.js");
+let chromeJs = readFileSync(CHROME, "utf8");
+const chromeBefore = chromeJs;
+for (const name of ["fonts", "brand", "helix", "site"]) {
+  const v = createHash("sha256").update(readFileSync(join(OUT, "assets", name + ".css"))).digest("hex").slice(0, 10);
+  const re = new RegExp(`export const V_${name.toUpperCase()} = "[0-9a-f]+";`);
+  if (!re.test(chromeJs)) throw new Error("build-site: V_" + name.toUpperCase() + " missing in report-chrome.js");
+  chromeJs = chromeJs.replace(re, `export const V_${name.toUpperCase()} = "${v}";`);
+}
+// Run 12 R12-12 l: the live report preloads its two fonts like the static pages; their ?v= must equal the one the
+// versioned fonts.css asks for, so the preloaded file is the one the page uses.
+for (const [name, file] of [["ARCHIVO", "Archivo-latin-1.woff2"], ["VT323", "VT323-latin-400.woff2"]]) {
+  const v = createHash("sha256").update(readFileSync(join(OUT, "assets", "fonts", file))).digest("hex").slice(0, 10);
+  const line = `export const V_${name} = "${v}";`;
+  const re = new RegExp(`export const V_${name} = "[0-9a-f]+";`);
+  chromeJs = re.test(chromeJs) ? chromeJs.replace(re, line) : chromeJs.replace(/\n?$/, "\n" + line + "\n");
+}
+if (chromeJs !== chromeBefore) writeFileSync(CHROME, chromeJs);
+console.log(`build-site: report-chrome.js V_FONTS, V_BRAND, V_HELIX, V_SITE, V_ARCHIVO, V_VT323 set from site/assets (${chromeJs === chromeBefore ? "unchanged" : "updated"})`);

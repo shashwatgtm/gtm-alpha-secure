@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/@shashwatgtmalpha/gtm-alpha-mcp-server)](https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Professional Go-To-Market strategy consultation using Shashwat Ghosh's EPIC Framework.
+Free EPIC audit using Shashwat Ghosh's EPIC framework.
 
 On the website, the free EPIC audit (https://gtmalpha.gtmhelix.com/consultation) scores the four motions and returns a 180 day plan in four stages. In Claude, the GTM Roadmap tool returns a 30, 60 or 90 day plan.
 
@@ -16,7 +16,11 @@ The hosted server at https://gtmalpha.gtmhelix.com/mcp always runs the newest ve
 
 ### Option 1: Claude Desktop (Recommended)
 
-Add to your Claude Desktop config file:
+First install the package globally, which adds the `gtm-alpha-mcp` command:
+
+npm install -g @shashwatgtmalpha/gtm-alpha-mcp-server
+
+Then add to your Claude Desktop config file:
 
 Windows: %APPDATA%\Claude\claude_desktop_config.json
 Mac: ~/Library/Application Support/Claude/claude_desktop_config.json

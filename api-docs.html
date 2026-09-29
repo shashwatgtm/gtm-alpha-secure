@@ -143,7 +143,7 @@
    "about": {
     "@id": "https://gtmalpha.gtmhelix.com/#app"
    },
-   "dateModified": "2026-09-27",
+   "dateModified": "2026-09-29",
    "inLanguage": "en",
    "primaryImageOfPage": "https://gtmalpha.gtmhelix.com/assets/og.png"
   },
@@ -291,6 +291,11 @@
             margin-bottom: 60px;
         }
 
+        /* Run 12 R12-12 d: the hero H1 now sits inside main, so these keep the layout as it was when main held only the docs */
+        .sidebar-nav li > a:only-child { display: flex; }
+        main#main > .container:last-child { margin-bottom: 0; }
+        .docs-content > .docs-section:last-child { margin-bottom: clamp(56px, 7vw, 112px); }
+
         .hx10-release { width: 100%; border-collapse: collapse; font-size: 15px; margin: 12px 0; }
         .hx10-release th, .hx10-release td { text-align: left; vertical-align: top; padding: 8px 10px; border-bottom: 1px solid var(--border-light); }
 
@@ -414,15 +419,16 @@
 </head>
 <body>
     <a class="hx10-skip" href="#main">Skip to content</a>
-    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/" aria-label="Helix GTM home"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a></nav><a class="hx-btn btn-sm hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a><details class="hx9-menu"><summary>Menu</summary><nav class="hx9-menu-nav" aria-label="Helix GTM menu"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a></nav></details></div></header><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><span class="tag">GTM Alpha</span><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">API docs</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></nav></div></div>
+    <header class="hx9-gh"><div class="hx-wrap hx9-row1"><a class="hx9-logo" href="https://gtmhelix.com/" aria-label="Helix GTM home"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx9-word">Helix GTM</span></a><nav class="hx9-nav" aria-label="Helix GTM"><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a></nav><a class="hx-btn btn-sm hx9-cta" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a><details class="hx9-menu"><summary>Menu</summary><nav class="hx9-menu-nav" aria-label="Helix GTM menu"><div class="hx9-menu-site" role="group" aria-label="This site"><span class="hx9-menu-lbl" aria-hidden="true">This site</span><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></div><a href="https://gtmhelix.com/#start">Start here</a><a href="https://tools.gtmhelix.com/tools/">All tools</a><a href="https://gtmhelix.com/writing/">Writing</a><a href="https://gtmhelix.com/about/">About</a></nav></details></div></header><div class="hx9-row2"><div class="hx-wrap hx9-row2-in"><span class="tag">GTM Alpha</span><nav class="hx9-crumbs" aria-label="Breadcrumb"><a href="https://gtmhelix.com/">Helix GTM</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://tools.gtmhelix.com/tools/">All tools</a><span class="hx9-sep" aria-hidden="true">/</span><a href="https://gtmalpha.gtmhelix.com/">GTM Alpha</a><span class="hx9-sep" aria-hidden="true">/</span><span aria-current="page">API docs</span></nav><nav class="hx9-site" aria-label="This site"><a href="/#epic">EPIC framework</a><a href="/integration">Use it in Claude or ChatGPT</a><a href="/pricing">Pricing</a><a href="/faq">FAQ</a></nav></div></div>
 
+    <main id="main">
     <section class="hero hx-hero">
         <div class="container">
             <div class="hero-content">
                 <p class="hx-eyebrow">For developers</p>
                 <div class="crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><h1>GTM Alpha API and MCP docs</h1></div>
                 <p class="hx-lead hero-subtitle">Connect the three GTM Alpha tools over MCP, or call the REST API. No key needed, and free during testing.</p>
-            <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-09-27">27 September 2026</time></p>
+            <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-09-29">29 September 2026</time></p>
                 <p class="hx10-history">History: first commit 13 July 2025, first npm release 8 September 2025, in the MCP Registry since 11 December 2025.</p>
             </div>
         </div>
@@ -445,7 +451,7 @@
                 </ul>
             </aside>
 
-            <main class="docs-content" id="main">
+            <div class="docs-content">
                 <section id="overview" class="docs-section">
                     <h2>Overview</h2>
                     <p>
@@ -462,7 +468,7 @@
 
                     <h3>What You Can Do</h3>
                     <ul style="margin-left: 20px; color: var(--text-secondary);">
-                        <li>Get a GTM consultation summary using the EPIC framework</li>
+                        <li>Get a Free EPIC audit summary using the EPIC framework</li>
                         <li>Get EPIC framework scores for a GTM situation</li>
                         <li>Generate a GTM implementation roadmap</li>
                     </ul>
@@ -504,18 +510,32 @@
 }</code></pre>
                     </div>
 
-                    <h3>Cursor and VS Code</h3>
+                    <h3>Cursor</h3>
                     <div class="code-block">
                         <div class="code-header">
                             <span class="code-lang">JSON</span>
                             <button class="copy-btn">Copy</button>
                         </div>
                         <pre><code>{
-  "mcp": {
-    "servers": {
-      "gtm-alpha": {
-        "url": "https://gtmalpha.gtmhelix.com/mcp"
-      }
+  "mcpServers": {
+    "gtm-alpha": {
+      "url": "https://gtmalpha.gtmhelix.com/mcp"
+    }
+  }
+}</code></pre>
+                    </div>
+
+                    <h3>VS Code</h3>
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span class="code-lang">JSON</span>
+                            <button class="copy-btn">Copy</button>
+                        </div>
+                        <pre><code>{
+  "servers": {
+    "gtm-alpha": {
+      "type": "http",
+      "url": "https://gtmalpha.gtmhelix.com/mcp"
     }
   }
 }</code></pre>
@@ -541,7 +561,7 @@
                                 <span class="free-badge">FREE</span>
                             </div>
                             <div class="tool-desc">
-                                A GTM consultation summary using the EPIC framework (Ecosystem, Product-Led, Inbound and Outbound, Community): scores from 1 to 10 per motion, the primary and secondary motion, and any warnings.
+                                A Free EPIC audit summary using the EPIC framework (Ecosystem, Product-Led, Inbound and Outbound, Community): scores from 1 to 10 per motion, the primary and secondary motion, and any warnings.
                                 Required input: gtm_challenge. Optional: company_name, business_stage, industry. Optional EPIC inputs: acv_usd, deal_cycle_days, nrr_percent, tam_accounts, self_serve, deal_source, geography, current_channels. Without them the result is marked preliminary. Read-only.
                             </div>
                         </div>
@@ -703,9 +723,10 @@ platform to mid-market companies (100-1000 employees).</code></pre>
                         </tbody>
                     </table>
                 </section>
-            </main>
+            </div>
         </div>
     </div>
+    </main>
 
     <footer class="hx-footer">
         <div class="hx-wrap">

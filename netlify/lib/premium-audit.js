@@ -5,7 +5,8 @@
 // Nothing is stored, logged or sent anywhere else.
 import { createHash } from "node:crypto";
 import analyze, { PDF_SCRIPT } from "./analyze.js";
-import { HEADER, FOOTER, NEXT, SKIP, V_FONTS, V_BRAND, V_HELIX, V_SITE } from "./report-chrome.js";
+import * as RC from "./report-chrome.js";
+const { HEADER, FOOTER, NEXT, SKIP, V_FONTS, V_BRAND, V_HELIX, V_SITE } = RC;
 
 const MAX_BODY = 32000;
 const HONEYPOT = "leave_this_empty";
@@ -55,7 +56,11 @@ const PAGE_HEADERS = {
 
 // The four site stylesheets, each with its ?v= version (R10-10), for the report and message pages. Run 10 R10-28 (P13): the
 // site's icon comes first, as on the static pages, so the browser does not ask for a missing /favicon.ico.
-const STYLESHEETS = `<link rel="icon" type="image/svg+xml" href="/favicon.svg">` + `<link rel="stylesheet" href="/assets/fonts.css?v=${V_FONTS}">` +
+// Run 12 R12-12 l: the two fonts are preloaded, as on the static pages (their ?v= is set by scripts/build-site.mjs).
+const STYLESHEETS = `<link rel="icon" type="image/svg+xml" href="/favicon.svg">` +
+  (RC.V_ARCHIVO ? `<link rel="preload" href="/assets/fonts/Archivo-latin-1.woff2?v=${RC.V_ARCHIVO}" as="font" type="font/woff2" crossorigin>` : "") +
+  (RC.V_VT323 ? `<link rel="preload" href="/assets/fonts/VT323-latin-400.woff2?v=${RC.V_VT323}" as="font" type="font/woff2" crossorigin>` : "") +
+  `<link rel="stylesheet" href="/assets/fonts.css?v=${V_FONTS}">` +
   `<link rel="stylesheet" href="/assets/helix.css?v=${V_HELIX}"><link rel="stylesheet" href="/assets/site.css?v=${V_SITE}">`;
 
 function messagePage(status, title, lines) {

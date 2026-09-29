@@ -13,3 +13,4 @@ Netlify deploys only `netlify/functions/`. The files in this folder are kept for
 | check-config.js | /api/check-config | Told anyone whether PayPal keys were set and which PayPal mode was on (audit check 11b). |
 | submit-consultation.js | /api/submit-consultation (already off) | Moved here from netlify/lib on 25 September 2026; no page calls it. |
 | epic-scores.js | /api/epic-scores (already off) | Moved here from netlify/lib on 25 September 2026; the live scoring is netlify/lib/epic-advanced.js. |
+| payment-success.html, payment-cancel.html | the PayPal return pages (never published by scripts/build-site.mjs) | Moved here from the repository root on 29 September 2026 (run 12): they still describe a paid PayPal checkout, which GTM Alpha does not have while it is free. Keep for a paid launch. |
