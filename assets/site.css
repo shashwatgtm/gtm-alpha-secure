@@ -222,3 +222,9 @@ main li > a:only-child { display: inline-flex; align-items: center; min-height: 
 
 /* Run 11 R11-16: the contact email links are tap targets too (D6: at least 44 px) */
 a[href^="mailto:"] { display: inline-flex; align-items: center; min-height: 44px; }
+/* Run 13 D22 (verifier R13-41): on the sample report the title block sits in the hero, so in print the 6 px oxblood rule opens the title block, not the report body below it */
+@media print {
+  .ga-sample .hxr-head { border-top: 6px solid #641220; padding-top: 10px; }
+  .ga-sample .report-container.hxr { border-top: 0; }
+  .ga-sample .hxr-head .win { box-shadow: none !important; }
+}

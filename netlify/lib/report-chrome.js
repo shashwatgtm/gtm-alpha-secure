@@ -15,6 +15,6 @@ export const V_FONTS = "a7f7495a4f";
 export const V_BRAND = "58a48228fa";
 export const V_HELIX = "bb6dd8a7a6";
 export const V_HELIX_REPORT = "ea6fcf1ffa";
-export const V_SITE = "6836977d21";
+export const V_SITE = "92bcde78d7";
 export const V_ARCHIVO = "8f704806db";
 export const V_VT323 = "8ddbebcc10";
