@@ -1,6 +1,6 @@
 # GTM Alpha Privacy Policy
 
-Last updated: 29 September 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
+Last updated: 30 September 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
 
 Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
@@ -19,7 +19,7 @@ Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
 ## Sharing
 
-Netlify (hosting, database, logs), and legal authorities when required by law. We do not sell your data, share it with competitors or use it to train AI models.
+Netlify (hosting, database, logs) and legal authorities when required by law. We do not sell your data, share it with competitors or use it to train AI models.
 
 ## Your rights
 
