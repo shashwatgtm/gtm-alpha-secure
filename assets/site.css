@@ -237,4 +237,7 @@ a[href^="mailto:"] { display: inline-flex; align-items: center; min-height: 44px
   .ga-sample .hxr-head { border-top: 6px solid #641220; padding-top: 10px; }
   .ga-sample .report-container.hxr { border-top: 0; }
   .ga-sample .hxr-head .win { box-shadow: none !important; }
+  /* Run 14: the "Sample report" eyebrow (helix.css: paper text on an ink box) prints as ink text with a 1.5 px ink border,
+     like every other label (D22), so it survives "background graphics" off */
+  .ga-sample .hx-eyebrow { background: none !important; color: #1A0E10 !important; border: 1.5px solid #1A0E10 !important; }
 }
