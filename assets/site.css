@@ -212,6 +212,9 @@ main li > a:only-child { display: inline-flex; align-items: center; min-height: 
   .ga-sample-hero::before, .ga-sample-hero::after { display: none; }
   .hx10-skip, .hx9-gh, footer.hx-footer, .hx10-actions, .hx10-report > .hx10-actions { display: none; }
   .report-container, .report-container * { background: #FFFFFF; color: #1A0E10; box-shadow: none; }
+  /* Run 13 D22: the rule above painted every descendant white one at a time, so the rose primary-focus box printed as
+     white strips behind its own text. Paint the box and everything inside it the same rose, in one rule, instead. */
+  .report-container .primary-focus, .report-container .primary-focus * { background: #EAD9D5; }
 }
 
 /* run 11 R11-16: the three decorative dots of a code header are hidden on phones (they pushed the page 9 px sideways at 390) */

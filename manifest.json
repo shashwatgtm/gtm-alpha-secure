@@ -1,6 +1,6 @@
 {
   "name": "GTM Alpha MCP Server",
-  "version": "1.3.3",
+  "version": "1.3.4",
   "description": "Free EPIC audit using Shashwat Ghosh's EPIC framework, with EPIC scores and a GTM roadmap.",
   "author": "https://github.com/shashwatgtm",
   "license": "MIT",

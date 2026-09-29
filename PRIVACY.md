@@ -1,6 +1,6 @@
 # GTM Alpha Privacy Policy
 
-Last updated: 28 September 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
+Last updated: 29 September 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
 
 Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
@@ -28,3 +28,5 @@ Email shashwat@gtmhelix.com with subject "Data Rights Request" to access, correc
 ## Security
 
 HTTPS for all traffic, security headers on every page, no user accounts or passwords held by us and no payments taken, rate limits (30 requests a minute per visitor across the website's API paths, 300 a minute on the MCP server), a hidden form field that refuses automated submissions, and no public endpoint that reads stored records back.
+
+Size limits: a request to the free EPIC audit form or the EPIC audit API may hold at most 32,000 characters, with at most 4,000 characters for the company description and for the GTM challenge; a request to the GTM Alpha tools may hold at most 65,536 bytes, with at most 4,000 characters in each text input.

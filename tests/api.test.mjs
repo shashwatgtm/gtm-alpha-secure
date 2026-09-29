@@ -44,28 +44,37 @@ test("a complete form gets the report page, with a policy that allows only its o
     assert.ok(csp.includes(`'sha256-${hash}'`), "each inline script is allowed by its hash");
   }
   assert.ok(!/script-src[^;]*unsafe-inline/.test(csp), "no unsafe-inline scripts");
-  // the PDF library is allowed by its full address only, not the whole of cdnjs
-  assert.ok(csp.includes("https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"));
-  assert.ok(!/https:\/\/cdnjs\.cloudflare\.com(?:[ ;]|$)/.test(csp), "not the whole of cdnjs");
+  // run 13 D23: the report prints with window.print(), so no PDF library address is allowed any more
+  assert.ok(!csp.includes("cdnjs.cloudflare.com"), "no cdnjs in the policy");
+  assert.ok(!html.includes("html2pdf"), "no html2pdf anywhere in the page");
   assert.ok(csp.includes("frame-ancestors 'none'"));
   assert.equal(res.headers.get("x-content-type-options"), "nosniff");
   assert.equal(res.headers.get("strict-transport-security"), "max-age=31536000");
   // run 10 R10-A1-5 e: the H1 and the action bar
-  assert.ok(html.includes("<h1>Your free EPIC audit report</h1>"));
+  assert.ok(html.includes(`<h1 class="hxr-title">Your free EPIC audit report</h1>`));
   assert.ok(!html.includes("Consultation Report"));
-  for (const label of ["Edit my answers", "Download PDF", "Work with Shashwat on this plan"]) assert.ok(html.includes(label), label);
+  for (const label of ["Edit my answers", "Print or save as PDF", "Work with Shashwat on this plan"]) assert.ok(html.includes(label), label);
   assert.ok(html.indexOf("Edit my answers") < html.indexOf("EPIC Framework Scores"), "the action bar is at the top");
   // run 12 R12-12 b: the visible label is "Audit ID" (the variable name stays)
   assert.ok(html.indexOf("Audit ID") > html.indexOf("GTM Implementation Roadmap"), "the audit ID is in the report footer");
   assert.ok(!html.includes("Consultation ID"), "no Consultation ID label");
+  // run 13 D22: the Helix report standard stylesheet, after helix.css and before site.css
   assert.ok(/\/assets\/fonts\.css\?v=[0-9a-f]{10}/.test(html) && /\/assets\/site\.css\?v=[0-9a-f]{10}/.test(html), "versioned stylesheets");
+  assert.ok(/\/assets\/helix\.css\?v=[0-9a-f]{10}/.test(html) && /\/assets\/helix-report\.css\?v=[0-9a-f]{10}/.test(html), "versioned report stylesheets");
+  assert.ok(html.indexOf("helix.css?v=") < html.indexOf("helix-report.css?v="), "helix-report.css links after helix.css");
+  // run 13 D22: the report's own meta line (date, made with, based on)
+  assert.ok(html.includes("Made with GTM Alpha by Helix GTM Consulting"));
+  assert.ok(html.includes("Based on what you entered"));
+  assert.ok(html.includes("Built by Shashwat Ghosh"));
 });
 
 test("a report built from the made-up example answers says so; others do not (run 10 R10-16)", async () => {
   const ex = await (await post("/api/premium-audit", new URLSearchParams({ ...FORM, company_name: "Clausewise (example company)" }).toString())).text();
   assert.ok(ex.includes("This report uses the made-up example answers"));
+  assert.ok(ex.includes("Based on the made-up example inputs"), "the report's own meta line says so too");
   const own = await (await post("/api/premium-audit", new URLSearchParams(FORM).toString())).text();
   assert.ok(!own.includes("made-up example answers"));
+  assert.ok(own.includes("Based on what you entered"));
 });
 
 test("JSON posts work the same way", async () => {

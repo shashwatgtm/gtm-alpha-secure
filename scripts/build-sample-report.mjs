@@ -38,19 +38,22 @@ export async function buildSampleReport() {
   };
   // The report itself, exactly as the handler built it: from its container to the end of the container.
   // Run 11 R11-A2-5: the container carries the PDF file name (data-pdf-name); the sample has no PDF button, so it is dropped.
-  const start = page.search(/<div class="report-container" id="report-content"(?: data-pdf-name="[^"]*")?>/);
+  const start = page.search(/<div class="report-container hxr" id="report-content"(?: data-pdf-name="[^"]*")?>/);
   const end = page.indexOf("<script>", start);
   if (start < 0 || end < 0) throw new Error("build-sample-report: report container not found");
-  let report = page.slice(start, end).trimEnd().replace(/^(<div class="report-container" id="report-content") data-pdf-name="[^"]*">/, "$1>");
-  one(report, /<h1>Your free EPIC audit report<\/h1>/g, "the report H1");
-  report = report.replace("<h1>Your free EPIC audit report</h1>", "<h1>Sample EPIC audit report</h1>");
+  let report = page.slice(start, end).trimEnd().replace(/^(<div class="report-container hxr" id="report-content") data-pdf-name="[^"]*">/, "$1>");
+  one(report, /<h1 class="hxr-title">Your free EPIC audit report<\/h1>/g, "the report H1");
+  report = report.replace(`<h1 class="hxr-title">Your free EPIC audit report</h1>`, `<h1 class="hxr-title">Sample EPIC audit report</h1>`);
   one(report, /<p class="consultation-id">Audit ID: GTM-\d+<\/p>\s*<p class="consultation-id">Generated: [0-9: -]+ UTC<\/p>/g, "the consultation ID and time");
   report = report.replace(/<p class="consultation-id">Audit ID: GTM-\d+<\/p>\s*<p class="consultation-id">Generated: [0-9: -]+ UTC<\/p>/,
     `<p class="consultation-id">Built by the GTM Alpha ${version} report code from the example answers on the free audit form.</p>`);
   // Run 11 R11-A1-8: the B2 hero. The report's own header block moves, word for word, into the hero: its H1 in crop marks
   // under a pixel tag (D6 inner H1 size from helix.css), its name, role and company lines in a window on the right. The
   // rest of the report stays in its container, unchanged, laid out on the B2 grid by site.css (.ga-sample).
-  const HEAD_RE = /\s*<div class="header">\s*<h1>Sample EPIC audit report<\/h1>\s*([\s\S]*?)\s*<\/div>/;
+  // Run 13 D22: the report's own tag ("GTM Alpha report") and H1 are dropped here too (the hero already carries the
+  // "Sample report" tag and its own H1); the meta line (date, made with, based on) moves into the hero window with the
+  // name, role and company lines, word for word.
+  const HEAD_RE = /\s*<div class="header hxr-head">\s*<p class="hxr-tag">GTM Alpha report<\/p>\s*<h1 class="hxr-title">Sample EPIC audit report<\/h1>\s*([\s\S]*?)\s*<\/div>/;
   one(report, new RegExp(HEAD_RE.source, "g"), "the report header block");
   const headLines = report.match(HEAD_RE)[1].replace(/\n\s*/g, "\n                ");
   report = report.replace(HEAD_RE, "");
@@ -85,6 +88,7 @@ ${chrome.LD_SAMPLE}
     <link rel="stylesheet" href="/assets/fonts.css?v=${chrome.V_FONTS}">
     ${style[0]}
     <link rel="stylesheet" href="/assets/helix.css?v=${chrome.V_HELIX}">
+    <link rel="stylesheet" href="/assets/helix-report.css?v=${chrome.V_HELIX_REPORT}">
     <link rel="stylesheet" href="/assets/site.css?v=${chrome.V_SITE}">
 </head>
 <body class="ga-sample">

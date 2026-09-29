@@ -71,8 +71,9 @@ console.log(`build-site: ${bust(OUT)} /assets/ references versioned with ?v=<sha
 const CHROME = join(ROOT, "netlify", "lib", "report-chrome.js");
 let chromeJs = readFileSync(CHROME, "utf8");
 const chromeBefore = chromeJs;
-for (const name of ["fonts", "brand", "helix", "site"]) {
-  const v = createHash("sha256").update(readFileSync(join(OUT, "assets", name + ".css"))).digest("hex").slice(0, 10);
+for (const [name, cssFile] of [["fonts", "fonts.css"], ["brand", "brand.css"], ["helix", "helix.css"],
+  ["helix_report", "helix-report.css"], ["site", "site.css"]]) {
+  const v = createHash("sha256").update(readFileSync(join(OUT, "assets", cssFile))).digest("hex").slice(0, 10);
   const re = new RegExp(`export const V_${name.toUpperCase()} = "[0-9a-f]+";`);
   if (!re.test(chromeJs)) throw new Error("build-site: V_" + name.toUpperCase() + " missing in report-chrome.js");
   chromeJs = chromeJs.replace(re, `export const V_${name.toUpperCase()} = "${v}";`);
@@ -86,4 +87,4 @@ for (const [name, file] of [["ARCHIVO", "Archivo-latin-1.woff2"], ["VT323", "VT3
   chromeJs = re.test(chromeJs) ? chromeJs.replace(re, line) : chromeJs.replace(/\n?$/, "\n" + line + "\n");
 }
 if (chromeJs !== chromeBefore) writeFileSync(CHROME, chromeJs);
-console.log(`build-site: report-chrome.js V_FONTS, V_BRAND, V_HELIX, V_SITE, V_ARCHIVO, V_VT323 set from site/assets (${chromeJs === chromeBefore ? "unchanged" : "updated"})`);
+console.log(`build-site: report-chrome.js V_FONTS, V_BRAND, V_HELIX, V_HELIX_REPORT, V_SITE, V_ARCHIVO, V_VT323 set from site/assets (${chromeJs === chromeBefore ? "unchanged" : "updated"})`);

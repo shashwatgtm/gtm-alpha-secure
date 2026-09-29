@@ -6,7 +6,7 @@
 import { createHash } from "node:crypto";
 import analyze, { PDF_SCRIPT } from "./analyze.js";
 import * as RC from "./report-chrome.js";
-const { HEADER, FOOTER, NEXT, SKIP, V_FONTS, V_BRAND, V_HELIX, V_SITE } = RC;
+const { HEADER, FOOTER, NEXT, SKIP, V_FONTS, V_BRAND, V_HELIX, V_SITE, V_HELIX_REPORT } = RC;
 
 const MAX_BODY = 32000;
 const HONEYPOT = "leave_this_empty";
@@ -61,7 +61,9 @@ const STYLESHEETS = `<link rel="icon" type="image/svg+xml" href="/favicon.svg">`
   (RC.V_ARCHIVO ? `<link rel="preload" href="/assets/fonts/Archivo-latin-1.woff2?v=${RC.V_ARCHIVO}" as="font" type="font/woff2" crossorigin>` : "") +
   (RC.V_VT323 ? `<link rel="preload" href="/assets/fonts/VT323-latin-400.woff2?v=${RC.V_VT323}" as="font" type="font/woff2" crossorigin>` : "") +
   `<link rel="stylesheet" href="/assets/fonts.css?v=${V_FONTS}">` +
-  `<link rel="stylesheet" href="/assets/helix.css?v=${V_HELIX}"><link rel="stylesheet" href="/assets/site.css?v=${V_SITE}">`;
+  `<link rel="stylesheet" href="/assets/helix.css?v=${V_HELIX}">` +
+  `<link rel="stylesheet" href="/assets/helix-report.css?v=${V_HELIX_REPORT}">` +
+  `<link rel="stylesheet" href="/assets/site.css?v=${V_SITE}">`;
 
 function messagePage(status, title, lines) {
   const csp = "default-src 'none'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
@@ -163,16 +165,14 @@ export default async (req) => {
 };
 
 // Run 10 R10-10: the report page's policy allows exactly its own inline scripts (the PDF button, and the Edit my answers
-// link), each by its hash, and the one PDF library file from cdnjs by its full address (the tag also carries its Subresource
-// Integrity hash). Nothing else may run. Styles are the site's own files plus the report's style block.
+// link), each by its hash. Nothing else may run. Styles are the site's own files plus the report's style block.
 // Run 11 R11-A2-5: the hashes are computed once, from the two fixed scripts (PDF_SCRIPT from analyze.js, EDIT_SCRIPT
 // below), never from the page, so nothing a visitor types can change what the policy allows.
+// Run 13 D23: the report prints with window.print(), so no PDF library address is allowed here any more.
 const hashOf = (t) => "'sha256-" + createHash("sha256").update(t, "utf8").digest("base64") + "'";
-const PDF_LIBRARY = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
 export function reportPolicy() {
   const hashes = [hashOf(PDF_SCRIPT), hashOf(EDIT_SCRIPT)];
-  const files = [PDF_LIBRARY];
-  return ["default-src 'none'", `script-src ${[...hashes, ...files].join(" ")}`,
+  return ["default-src 'none'", `script-src ${hashes.join(" ")}`,
     "style-src 'self' 'unsafe-inline'", "font-src 'self'",
     "img-src 'self' data: blob:", "connect-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"].join("; ");
 }
@@ -180,10 +180,11 @@ export function reportPolicy() {
 // Run 9 E11 F2: the report page carries the global header and the GTM Alpha footer like every other page, so a visitor can
 // go home, see the tools or work with Shashwat from it. Run 10 R10-A1-5 e: it links the site's stylesheets (Helix design,
 // shared type scale) and opens with an action bar: Edit my answers, Download PDF, Work with Shashwat on this plan. Markup and
-// styles only; every figure in the report is built by analyze.js as before.
+// styles only; every figure in the report is built by analyze.js as before. Run 13 D23: the button now calls the
+// browser's own print (window.print()), so the page can print or save as PDF without loading a PDF library.
 export const ACTIONS = '<nav class="hx10-actions" aria-label="Report actions">' +
   '<a href="/consultation" id="edit-answers">Edit my answers</a>' +
-  '<button type="button" id="pdf-download">Download PDF</button>' +
+  '<button type="button" id="pdf-download">Print or save as PDF</button>' +
   '<a class="hx10-primary" href="https://gtmhelix.com/lets-get-started/">Work with Shashwat on this plan</a></nav>';
 // "Edit my answers" goes back one step when the visitor came from the form, so the browser shows the form with the answers
 // still in it (nothing is stored anywhere); without that history, or without JavaScript, the link opens the form.

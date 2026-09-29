@@ -7,24 +7,14 @@ import { scoreEpic, MOTIONS, MOTION_MEANS, ROADMAP_STEPS } from './epic-advanced
 // URL was typed. It stays in the code but is switched off, and the report does not mention it, until it really checks websites.
 export const DIGITAL_PRESENCE_AUDIT_ENABLED = false;
 const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-// Run 11 R11-A2-5: the report's PDF script is one fixed text, so the report page's Content-Security-Policy hash never
-// changes per request. The file name comes from the escaped data-pdf-name attribute on the report container.
+// Run 13 D23: the report prints with the browser's own Print or save as PDF, so no PDF library is loaded and no
+// Content-Security-Policy exception for it is needed. The script is one fixed text, so the page's
+// Content-Security-Policy hash never changes per request.
 export const PDF_SCRIPT = `
-        function downloadPDF() {
-            const element = document.getElementById('report-content');
-            const opt = {
-                margin: 0.5,
-                filename: element.getAttribute('data-pdf-name') || 'GTM_Alpha_EPIC_audit_report.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-            };
-            html2pdf().set(opt).from(element).save();
-        }
         // Bound here, not with onclick, so the page's Content-Security-Policy can allow this one script by its hash.
         // The button sits in the action bar at the top of the page (run 10); pages without it (the sample) skip this.
         var pdfButton = document.getElementById('pdf-download');
-        if (pdfButton) pdfButton.addEventListener('click', downloadPDF);
+        if (pdfButton) pdfButton.addEventListener('click', function () { window.print(); });
     `;
 
 const GTM_ALPHA_ENGINE = {
@@ -242,7 +232,12 @@ const GTM_ALPHA_ENGINE = {
         </div>`;
     const timestamp = new Date().toISOString();
     const consultationId = `GTM-${Date.now()}`;
-    
+    // D22: the report's own meta line. The server's date (the report has no date of its own before this), the tool line and
+    // whether the answers were typed in or are the made-up example (the company name carries "(example company)" only then,
+    // the same test premium-audit.js runs on the form's company name).
+    const reportDate = new Date(timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    const basedOn = /\(example company\)$/.test(inputData.company_name || '') ? 'Based on the made-up example inputs' : 'Based on what you entered';
+
     const digitalSection = analysis.digitalInsights ? `
     <div class="section">
         <h2>Digital Presence Analysis</h2>
@@ -268,7 +263,6 @@ const GTM_ALPHA_ENGINE = {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your free EPIC audit report: ${esc(inputData.company_name || inputData.client_name)} | GTM Alpha</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         /* Run 10 R10-A1-5 e: the report in the Helix design (Archivo, Helix colours, no gradient banners). The page links
            fonts.css, brand.css, helix.css and site.css (premium-audit.js), so headings follow the shared type scale. */
@@ -302,15 +296,17 @@ const GTM_ALPHA_ENGINE = {
     </style>
 </head>
 <body>
-    <div class="report-container" id="report-content" data-pdf-name="${esc('GTM_Alpha_EPIC_audit_report_' + String(inputData.company_name || 'Company').replace(/[^A-Za-z0-9 _-]/g, '') + '_' + consultationId + '.pdf')}">
-        <div class="header">
-            <h1>Your free EPIC audit report</h1>
+    <div class="report-container hxr" id="report-content" data-pdf-name="${esc('GTM_Alpha_EPIC_audit_report_' + String(inputData.company_name || 'Company').replace(/[^A-Za-z0-9 _-]/g, '') + '_' + consultationId + '.pdf')}">
+        <div class="header hxr-head">
+            <p class="hxr-tag">GTM Alpha report</p>
+            <h1 class="hxr-title">Your free EPIC audit report</h1>
+            <p class="hxr-meta"><span>${reportDate}</span><span>Made with GTM Alpha by Helix GTM Consulting</span><span>${basedOn}</span></p>
             <h2>${esc(inputData.client_name || inputData.company_name)}</h2>
             ${inputData.client_designation ? `<h3>${esc(inputData.client_designation)}</h3>` : ''}
             <h3>${esc(inputData.company_name)}</h3>
         </div>
 
-        <div class="section primary-focus">
+        <div class="section primary-focus hxr-insight">
             <h2>Strategic Focus Areas</h2>
             <p><strong>Primary Focus:</strong> ${esc(analysis.primaryFocus)}</p>
             <p><strong>Secondary Focus:</strong> ${esc(analysis.secondaryFocus)}</p>
@@ -319,22 +315,22 @@ const GTM_ALPHA_ENGINE = {
         <div class="section">
             <h2>EPIC Framework Scores</h2>
             <div class="epic-scores">
-                <div class="epic-item">
+                <div class="epic-item hxr-keep">
                     <div class="epic-letter">E</div>
                     <div class="epic-score">${epicScores.E} / 10</div>
                     <div>Ecosystem and ABM</div>
                 </div>
-                <div class="epic-item">
+                <div class="epic-item hxr-keep">
                     <div class="epic-letter">P</div>
                     <div class="epic-score">${epicScores.P} / 10</div>
                     <div>Product-Led Growth</div>
                 </div>
-                <div class="epic-item">
+                <div class="epic-item hxr-keep">
                     <div class="epic-letter">I</div>
                     <div class="epic-score">${epicScores.I} / 10</div>
                     <div>Inbound and Outbound</div>
                 </div>
-                <div class="epic-item">
+                <div class="epic-item hxr-keep">
                     <div class="epic-letter">C</div>
                     <div class="epic-score">${epicScores.C} / 10</div>
                     <div>Community-Led</div>
@@ -361,25 +357,25 @@ const GTM_ALPHA_ENGINE = {
         <div class="section">
             <h2>GTM Implementation Roadmap</h2>
             <div class="roadmap">
-                <div class="roadmap-item">
+                <div class="roadmap-item hxr-keep">
                     <h3>Days 1 to 30: Foundation</h3>
                     <ul>
                         ${analysis.roadmap.days_30.map(item => `<li>${esc(item)}</li>`).join('')}
                     </ul>
                 </div>
-                <div class="roadmap-item">
+                <div class="roadmap-item hxr-keep">
                     <h3>Days 31 to 60: Implementation</h3>
                     <ul>
                         ${analysis.roadmap.days_60.map(item => `<li>${esc(item)}</li>`).join('')}
                     </ul>
                 </div>
-                <div class="roadmap-item">
+                <div class="roadmap-item hxr-keep">
                     <h3>Days 61 to 90: Scale</h3>
                     <ul>
                         ${analysis.roadmap.first_quarter.map(item => `<li>${esc(item)}</li>`).join('')}
                     </ul>
                 </div>
-                <div class="roadmap-item">
+                <div class="roadmap-item hxr-keep">
                     <h3>Days 91 to 180: Optimize</h3>
                     <ul>
                         ${analysis.roadmap.second_quarter.map(item => `<li>${esc(item)}</li>`).join('')}
@@ -397,10 +393,11 @@ const GTM_ALPHA_ENGINE = {
 
         <p class="consultation-id">Suggested timings, lengths and counts: adjust them to your own.</p>
 
-        <div class="report-footer">
+        <div class="report-footer hxr-foot">
             <p><strong>Generated by GTM Alpha</strong>, with Shashwat Ghosh's EPIC framework</p>
             <p class="consultation-id">Audit ID: ${consultationId}</p>
             <p class="consultation-id">Generated: ${new Date(timestamp).toISOString().slice(0, 16).replace('T', ' ')} UTC</p>
+            <p>Built by Shashwat Ghosh</p>
         </div>
     </div>
 
