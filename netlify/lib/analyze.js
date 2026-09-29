@@ -1,4 +1,4 @@
-import { scoreEpic } from './epic-advanced.js';
+import { scoreEpic, MOTIONS, MOTION_MEANS, ROADMAP_STEPS } from './epic-advanced.js';
 
 // netlify/lib/analyze.js (internal module, not a public function)
 // GTM Alpha Premium Audit report: EPIC framework scores, recommendations and a 6-month roadmap.
@@ -39,12 +39,8 @@ const GTM_ALPHA_ENGINE = {
     const epicScores = epic.scores;
 
     // Primary and secondary focus come from the EPIC result (highest scores; ties go E, P, C, I).
-    const focusMap = {
-      'E': 'Ecosystem & ABM-led Sales Motion',
-      'P': 'Product-Led Growth Acceleration',
-      'I': 'Inbound & Outbound Demand Generation',
-      'C': 'Community-Led Growth Strategy'
-    };
+    // Run 12 R12-20 (D1 proposal 1): the tools/list motion names (epic-advanced.js MOTIONS), the same in the report and in Claude.
+    const focusMap = MOTIONS;
     const primaryFocus = focusMap[epic.primary.letter];
     const secondaryFocus = focusMap[epic.secondary.letter];
 
@@ -151,25 +147,11 @@ const GTM_ALPHA_ENGINE = {
     return insights;
   },
 
+  // Run 12 R12-20 (D1 proposals 1 and 2): the two sentences about the lead motion, word for word from gtmhelix.com/epic/
+  // (epic-advanced.js MOTION_MEANS), replace the first-person paragraph that was the same for every company.
   generateConsultationInsights(inputData, primaryFocus, stageUsed = '') {
-    const { company_name, gtm_challenge, business_stage } = inputData;
-    // Run 10 R10-28 (P14): name the stage the way the scoring note does. The form's label (for example "Early Traction")
-    // is followed by the stage row the scores started from ("Series A"), so the two lines of the report agree. Text only:
-    // the stage row itself comes from epic-advanced.js and is not changed here.
-    const stageText = stageUsed && !/\(used because/.test(stageUsed) && String(stageUsed).toLowerCase() !== String(business_stage).toLowerCase()
-      ? `${business_stage} (${stageUsed})` : business_stage;
-    
-    // Real consultation insight based on GTM Alpha methodology
-    const baseInsight = `Based on my experience with ${stageText} companies, your specific challenge represents a critical GTM optimization opportunity. Most founders think GTM is just a marketing or sales problem, but it's actually a comprehensive operating system.`;
-
-    const focusSpecificInsights = {
-      'Product-Led Growth Acceleration': `Your challenge requires treating GTM as a dynamic operating system where Product-Led Growth becomes your primary lever. Focus on engineering product as GTM engine, PLG + sales synergy, and user experience optimization for conversion.`,
-      'Ecosystem & ABM-led Sales Motion': `Focus on leveraging unique data advantages, partner ecosystems, and relationship intelligence for enterprise sales acceleration. Build strategic partnerships and account-based approaches that create sustainable competitive moats.`,
-      'Inbound & Outbound Demand Generation': `Implement an integrated approach combining content marketing excellence with hyper-personalized outreach. Focus on eliminating decision dead zones in your buyer journey rather than optimizing vanity metrics.`,
-      'Community-Led Growth Strategy': `Build community-driven advocacy and authentic relationship building as your primary growth engine. Focus on creating genuine value exchange and thought leadership positioning.`
-    };
-
-    return baseInsight + '\n\n' + focusSpecificInsights[primaryFocus];
+    const letter = Object.keys(MOTIONS).find((k) => MOTIONS[k] === primaryFocus);
+    return MOTION_MEANS[letter];
   },
 
   generateActionableRecommendations(inputData, epicScores, digitalAnalysis = null, primaryLetter = '') {
@@ -193,7 +175,7 @@ const GTM_ALPHA_ENGINE = {
     if (epicScores.I >= 70) {
       recommendations.push('Launch integrated content marketing targeting specific buyer personas');
       recommendations.push('Implement hyper-personalized outbound sequences based on buyer signals');
-      recommendations.push('Optimize conversion funnel with mental velocity principles');
+      recommendations.push('Shorten the time buyers take from first question to decision');
     }
     
     if (epicScores.C >= 70) {
@@ -233,92 +215,10 @@ const GTM_ALPHA_ENGINE = {
       second_quarter: []
     };
 
-    // Primary focus implementation with realistic GTM timelines
-    if (primaryFocus.includes('Product-Led')) {
-      roadmap.days_30 = [
-        'Audit current user onboarding flow and identify friction points',
-        'Implement product usage analytics and user tracking',
-        'Create self-service trial experience design'
-      ];
-      roadmap.days_60 = [
-        'Launch optimized onboarding flow with progressive disclosure',
-        'Implement usage-based engagement triggers and expansion prompts',
-        'A/B test pricing page and conversion funnel optimization'
-      ];
-      roadmap.first_quarter = [
-        'Scale successful PLG motions with automated user journey optimization',
-        'Launch referral program and viral growth mechanisms',
-        'Measure and optimize product-qualified lead (PQL) conversion'
-      ];
-      roadmap.second_quarter = [
-        'Implement advanced product-led sales (PLS) hybrid model',
-        'Launch enterprise PLG features with white-glove onboarding',
-        'Optimize product-market fit based on comprehensive usage analytics'
-      ];
-    } else if (primaryFocus.includes('Ecosystem')) {
-      roadmap.days_30 = [
-        'Map current partner ecosystem and identify strategic gaps',
-        'Develop ideal customer profile (ICP) for ABM targeting',
-        'Research and prioritize top 50 enterprise prospects'
-      ];
-      roadmap.days_60 = [
-        'Launch pilot ABM campaigns for top 20 enterprise accounts',
-        'Establish strategic partnerships with complementary solution providers',
-        'Implement relationship intelligence tools and account mapping'
-      ];
-      roadmap.first_quarter = [
-        'Scale ABM approach with personalized account journeys',
-        'Expand partner ecosystem with joint go-to-market initiatives',
-        'Launch partner enablement program with co-marketing materials'
-      ];
-      roadmap.second_quarter = [
-        'Develop enterprise channel partner program with certification',
-        'Launch strategic alliance partnerships with technology integrations',
-        'Measure partnership-driven pipeline and optimize ROI'
-      ];
-    } else if (primaryFocus.includes('Inbound')) {
-      roadmap.days_30 = [
-        'Complete buyer persona research and journey mapping',
-        'Audit content strategy and identify high-intent keywords',
-        'Create editorial calendar aligned with sales cycles'
-      ];
-      roadmap.days_60 = [
-        'Launch thought leadership content series targeting decision makers',
-        'Implement lead scoring and marketing automation workflows',
-        'Begin hyper-personalized outbound campaigns based on content engagement'
-      ];
-      roadmap.first_quarter = [
-        'Scale content distribution across multiple channels and platforms',
-        'Optimize conversion paths with A/B tested landing pages',
-        'Implement attribution modeling for content-driven pipeline'
-      ];
-      roadmap.second_quarter = [
-        'Launch account-based content strategy for enterprise prospects',
-        'Implement advanced marketing automation with predictive scoring',
-        'Develop thought leadership speaking and industry recognition strategy'
-      ];
-    } else {
-      roadmap.days_30 = [
-        'Define community vision and core value proposition',
-        'Research community platforms and engagement strategies',
-        'Create founding member outreach and onboarding process'
-      ];
-      roadmap.days_60 = [
-        'Launch community with high-value content and expert positioning',
-        'Implement community engagement and moderation workflows',
-        'Begin thought leadership content creation from community insights'
-      ];
-      roadmap.first_quarter = [
-        'Scale community growth with member-driven content and advocacy',
-        'Launch community-driven product feedback and development cycles',
-        'Measure community engagement impact on sales and retention metrics'
-      ];
-      roadmap.second_quarter = [
-        'Develop community-led customer success and expansion programs',
-        'Launch industry events and community-driven thought leadership',
-        'Implement community influence on product roadmap and strategy'
-      ];
-    }
+    // Primary focus implementation with realistic GTM timelines. Run 12: the steps live in epic-advanced.js ROADMAP_STEPS
+    // (words unchanged) so the generate_roadmap tool in Claude uses the same ones; the motion is chosen as before.
+    const letter = primaryFocus.includes('Product-Led') ? 'P' : primaryFocus.includes('Ecosystem') ? 'E' : primaryFocus.includes('Inbound') ? 'I' : 'C';
+    for (const k of Object.keys(roadmap)) roadmap[k] = [...ROADMAP_STEPS[letter][k]];
 
     return roadmap;
   },
@@ -422,7 +322,7 @@ const GTM_ALPHA_ENGINE = {
                 <div class="epic-item">
                     <div class="epic-letter">E</div>
                     <div class="epic-score">${epicScores.E} / 10</div>
-                    <div>Ecosystem & ABM</div>
+                    <div>Ecosystem and ABM</div>
                 </div>
                 <div class="epic-item">
                     <div class="epic-letter">P</div>
@@ -432,7 +332,7 @@ const GTM_ALPHA_ENGINE = {
                 <div class="epic-item">
                     <div class="epic-letter">I</div>
                     <div class="epic-score">${epicScores.I} / 10</div>
-                    <div>Inbound & Outbound</div>
+                    <div>Inbound and Outbound</div>
                 </div>
                 <div class="epic-item">
                     <div class="epic-letter">C</div>
@@ -445,7 +345,7 @@ const GTM_ALPHA_ENGINE = {
         ${epicNotesSection}
 
         <div class="section">
-            <h2>GTM Alpha Insights</h2>
+            <h2>What leading with ${esc(analysis.primaryFocus)} means</h2>
             <p>${esc(analysis.insights)}</p>
         </div>
 
@@ -462,25 +362,25 @@ const GTM_ALPHA_ENGINE = {
             <h2>GTM Implementation Roadmap</h2>
             <div class="roadmap">
                 <div class="roadmap-item">
-                    <h3>Days 1-30: Foundation</h3>
+                    <h3>Days 1 to 30: Foundation</h3>
                     <ul>
                         ${analysis.roadmap.days_30.map(item => `<li>${esc(item)}</li>`).join('')}
                     </ul>
                 </div>
                 <div class="roadmap-item">
-                    <h3>Days 31-60: Implementation</h3>
+                    <h3>Days 31 to 60: Implementation</h3>
                     <ul>
                         ${analysis.roadmap.days_60.map(item => `<li>${esc(item)}</li>`).join('')}
                     </ul>
                 </div>
                 <div class="roadmap-item">
-                    <h3>First Quarter (90 days): Scale</h3>
+                    <h3>Days 61 to 90: Scale</h3>
                     <ul>
                         ${analysis.roadmap.first_quarter.map(item => `<li>${esc(item)}</li>`).join('')}
                     </ul>
                 </div>
                 <div class="roadmap-item">
-                    <h3>Second Quarter (180 days): Optimize</h3>
+                    <h3>Days 91 to 180: Optimize</h3>
                     <ul>
                         ${analysis.roadmap.second_quarter.map(item => `<li>${esc(item)}</li>`).join('')}
                     </ul>
@@ -489,13 +389,7 @@ const GTM_ALPHA_ENGINE = {
         </div>
 
         <div class="section">
-            <h2>Mental Velocity Analysis</h2>
-            <p>${esc(analysis.mentalVelocityAnalysis)}</p>
-        </div>
-
-        <div class="section">
             <h2>Next Steps</h2>
-            <p>For personalized implementation support and detailed strategy development:</p>
             <ul>
                 <li><a href="https://gtmhelix.com/lets-get-started/">Work with Shashwat on this plan</a></li>
             </ul>

@@ -1,11 +1,11 @@
-import { scoreEpic } from "../lib/epic-advanced.js";
+import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 
 const GTM_CONSULTANT = {
   epicFramework: {
-    E: { name: "Ecosystem and ABM-led Sales Motion", keywords: ["partners", "ecosystem", "abm", "enterprise", "integration", "channel", "alliances", "b2b"] },
-    P: { name: "Product-Led Growth Acceleration", keywords: ["product-led", "plg", "user experience", "onboarding", "activation", "self-serve", "viral", "freemium"] },
-    I: { name: "Inbound and Outbound Demand Generation", keywords: ["content", "demand", "marketing", "channels", "campaigns", "seo", "paid", "outbound", "inbound"] },
-    C: { name: "Community-Led Advocacy and Engagement", keywords: ["community", "advocacy", "engagement", "loyalty", "referrals", "events", "network", "social"] }
+    E: { name: MOTIONS.E, keywords: ["partners", "ecosystem", "abm", "enterprise", "integration", "channel", "alliances", "b2b"] },
+    P: { name: MOTIONS.P, keywords: ["product-led", "plg", "user experience", "onboarding", "activation", "self-serve", "viral", "freemium"] },
+    I: { name: MOTIONS.I, keywords: ["content", "demand", "marketing", "channels", "campaigns", "seo", "paid", "outbound", "inbound"] },
+    C: { name: MOTIONS.C, keywords: ["community", "advocacy", "engagement", "loyalty", "referrals", "events", "network", "social"] }
   },
 
   // EPIC scoring: the documented advanced rubric (netlify/lib/epic-advanced.js), 1 to 10 per motion.
@@ -17,22 +17,23 @@ const GTM_CONSULTANT = {
   },
 
   generateConsultation(args) {
-    // The user's own name (older clients send client_name) or company, else "not supplied": never an invented name.
-    var who = [args.client_name, args.company_name].map(function(v) { return typeof v === "string" ? v.trim() : ""; }).filter(Boolean)[0] || "not supplied";
+    // Run 12 R12-20: the heading is "GTM Alpha Free EPIC audit"; "Company: <name>" follows only when a company name is given
+    // (older clients may send client_name, shown as "Name: <name>" when no company name is given). Never an invented name.
+    var clean = function(v) { return typeof v === "string" ? v.trim() : ""; };
+    var company = clean(args.company_name), person = clean(args.client_name);
     var input = Object.assign({}, args, {
       gtm_challenge: args.gtm_challenge || "",
       business_stage: args.business_stage,
       industry: args.industry || ""
     });
     var analysis = this.analyzeEPIC(input);
-    var lines = [
-      "GTM Alpha Free EPIC audit for: " + who,
+    var lines = ["GTM Alpha Free EPIC audit"].concat(company ? ["Company: " + company] : person ? ["Name: " + person] : []).concat([
       "Challenge: " + (args.gtm_challenge ? String(args.gtm_challenge) : "not supplied"),
       "",
       "Primary Focus: " + analysis.primary.motion,
       "Secondary Focus: " + analysis.secondary.motion,
       "EPIC Scores (1 to 10): E:" + analysis.scores.E + ", P:" + analysis.scores.P + ", I:" + analysis.scores.I + ", C:" + analysis.scores.C
-    ];
+    ]);
     analysis.warnings.forEach(function(w) { lines.push("Warning: " + w); });
     analysis.notes.forEach(function(n) { lines.push("Note: " + n); });
     if (analysis.preliminary_note) lines.push(analysis.preliminary_note);
@@ -46,7 +47,13 @@ const GTM_CONSULTANT = {
   },
 
   generateRoadmap(focus, timeframe) {
-    var component = this.epicFramework[focus] || this.epicFramework.P;
+    var letter = this.epicFramework[focus] ? focus : "P";
+    var component = this.epicFramework[letter];
+    // Run 12 R12-20: the per-motion steps of the browser report (epic-advanced.js ROADMAP_STEPS, words unchanged), mapped to
+    // the timeframe: immediate = the report's first 30 days, short-term = days 31 to 60, medium-term = days 61 to 90.
+    // Counts such as "top 50" are examples, labelled the way this tool labels its other example figures.
+    var label = function(list) { return list.map(function(t) { return /\btop \d+\b/.test(t) ? t + " (Example figure: replace with your own)" : t; }); };
+    var steps = { days_30: label(ROADMAP_STEPS[letter].days_30), days_60: label(ROADMAP_STEPS[letter].days_60), first_quarter: label(ROADMAP_STEPS[letter].first_quarter) };
     // The chosen timeframe sets the day range of each phase (thirds of 30, 60 or 90 days).
     var days = { "30-day": 30, "60-day": 60, "90-day": 90 }[timeframe] || 90;
     var third = days / 3;
@@ -60,9 +67,9 @@ const GTM_CONSULTANT = {
         medium_term: "Days " + (2 * third + 1) + " to " + days
       },
       action_plan: {
-        immediate: ["Conduct GTM audit", "Map buyer journey", "Align teams on EPIC priorities"],
-        short_term: ["Implement " + component.name + " initiatives", "Establish success metrics", "Create feedback loops"],
-        medium_term: ["Scale successful experiments", "Build systematic GTM approach", "Optimize competitive advantage"]
+        immediate: steps.days_30.slice(),
+        short_term: steps.days_60.slice(),
+        medium_term: steps.first_quarter.slice()
       }
     };
   }

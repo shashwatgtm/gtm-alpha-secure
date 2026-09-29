@@ -9,11 +9,115 @@
 // deal cycle above 90 or below 14 days, NRR below 100 or above 120 percent, TAM below 500 or above 10,000
 // accounts; values on a boundary get no adjustment.
 
+// Run 12 R12-20 (D1 proposal 1): one set of motion names in the report, the Claude answers and tools/list (the tools/list names).
 export const MOTIONS = {
   E: "Ecosystem and ABM",
   P: "Product-Led Growth",
-  I: "Inbound and Outbound Demand Generation",
-  C: "Community-Led Advocacy"
+  I: "Inbound and Outbound",
+  C: "Community-Led"
+};
+
+// Run 12 R12-20 (D1 proposal 1): what leading with each motion means, word for word from https://gtmhelix.com/epic/
+// (read live on 29 September 2026). Shown in the browser report under "What leading with <motion> means".
+export const MOTION_MEANS = {
+  E: "Win large, multi-stakeholder deals through target accounts, partners and analysts. It tends to lead when deal cycles run past 90 days, deals are large, the market has few accounts, or partners bring revenue.",
+  P: "Let users reach value on their own, then turn that usage into revenue. It tends to lead when people can get value without talking to sales and the product can be tried on its own.",
+  I: "Build a steady pipeline with content, search, campaigns and outbound teams. It tends to lead when the market is large, pipeline is the main constraint, or a new category needs educating.",
+  C: "Grow through customers who vouch for you: references, reviews and peer groups. It tends to lead when net revenue retention is the north star and buyers trust peers over vendors."
+};
+
+// The per-motion plan steps of the browser report (moved here from netlify/lib/analyze.js in run 12, words unchanged), so the
+// report and the generate_roadmap tool in Claude use the same steps. days_30, days_60 and first_quarter are the Claude
+// roadmap's immediate, short-term and medium-term steps; second_quarter is used by the 180 day browser report only.
+export const ROADMAP_STEPS = {
+  P: {
+    days_30: [
+      'Audit current user onboarding flow and identify friction points',
+      'Implement product usage analytics and user tracking',
+      'Create self-service trial experience design'
+    ],
+    days_60: [
+      'Launch optimized onboarding flow with progressive disclosure',
+      'Implement usage-based engagement triggers and expansion prompts',
+      'A/B test pricing page and conversion funnel optimization'
+    ],
+    first_quarter: [
+      'Scale successful PLG motions with automated user journey optimization',
+      'Launch referral program and viral growth mechanisms',
+      'Measure and optimize product-qualified lead (PQL) conversion'
+    ],
+    second_quarter: [
+      'Implement advanced product-led sales (PLS) hybrid model',
+      'Launch enterprise PLG features with white-glove onboarding',
+      'Optimize product-market fit based on comprehensive usage analytics'
+    ]
+  },
+  E: {
+    days_30: [
+      'Map current partner ecosystem and identify strategic gaps',
+      'Develop ideal customer profile (ICP) for ABM targeting',
+      'Research and prioritize top 50 enterprise prospects'
+    ],
+    days_60: [
+      'Launch pilot ABM campaigns for top 20 enterprise accounts',
+      'Establish strategic partnerships with complementary solution providers',
+      'Implement relationship intelligence tools and account mapping'
+    ],
+    first_quarter: [
+      'Scale ABM approach with personalized account journeys',
+      'Expand partner ecosystem with joint go-to-market initiatives',
+      'Launch partner enablement program with co-marketing materials'
+    ],
+    second_quarter: [
+      'Develop enterprise channel partner program with certification',
+      'Launch strategic alliance partnerships with technology integrations',
+      'Measure partnership-driven pipeline and optimize ROI'
+    ]
+  },
+  I: {
+    days_30: [
+      'Complete buyer persona research and journey mapping',
+      'Audit content strategy and identify high-intent keywords',
+      'Create editorial calendar aligned with sales cycles'
+    ],
+    days_60: [
+      'Launch thought leadership content series targeting decision makers',
+      'Implement lead scoring and marketing automation workflows',
+      'Begin hyper-personalized outbound campaigns based on content engagement'
+    ],
+    first_quarter: [
+      'Scale content distribution across multiple channels and platforms',
+      'Optimize conversion paths with A/B tested landing pages',
+      'Implement attribution modeling for content-driven pipeline'
+    ],
+    second_quarter: [
+      'Launch account-based content strategy for enterprise prospects',
+      'Implement advanced marketing automation with predictive scoring',
+      'Develop thought leadership speaking and industry recognition strategy'
+    ]
+  },
+  C: {
+    days_30: [
+      'Define community vision and core value proposition',
+      'Research community platforms and engagement strategies',
+      'Create founding member outreach and onboarding process'
+    ],
+    days_60: [
+      'Launch community with high-value content and expert positioning',
+      'Implement community engagement and moderation workflows',
+      'Begin thought leadership content creation from community insights'
+    ],
+    first_quarter: [
+      'Scale community growth with member-driven content and advocacy',
+      'Launch community-driven product feedback and development cycles',
+      'Measure community engagement impact on sales and retention metrics'
+    ],
+    second_quarter: [
+      'Develop community-led customer success and expansion programs',
+      'Launch industry events and community-driven thought leadership',
+      'Implement community influence on product roadmap and strategy'
+    ]
+  }
 };
 
 const STAGE_DEFAULTS = {
@@ -213,7 +317,8 @@ export function scoreEpic(input) {
   const ranked = ["E", "P", "I", "C"].sort((a, b) => (sc[b] - sc[a]) || (TIE_ORDER.indexOf(a) - TIE_ORDER.indexOf(b)));
   const vals = Object.values(sc);
   if (Math.max(...vals) - Math.min(...vals) <= 2) {
-    notes.push("Your scores are evenly distributed. This usually means you are early stage and have not yet found the motion that compounds. Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own). Measure pipeline contribution. The scores will separate after one quarter of focused execution.");
+    // Run 12 R12-20: when the stage was assumed, the note does not call the company early stage (the rule is unchanged).
+    notes.push("Your scores are evenly distributed. " + (row ? "This usually means you are early stage and have not yet found the motion that compounds." : "This usually means no motion has pulled ahead yet.") + " Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own). Measure pipeline contribution. The scores will separate after one quarter of focused execution.");
   }
   const reasonFor = (m) => {
     const ups = applied.filter((a) => a.change && typeof a.change[m] === "number" && a.change[m] > 0 && !/^Stage starting point/.test(a.rule)).map((a) => a.rule + " (" + m + " +" + a.change[m] + ")");
