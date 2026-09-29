@@ -384,7 +384,7 @@ const GTM_ALPHA_ENGINE = {
             </div>
         </div>
 
-        <div class="section">
+        <div class="section hxr-keep">
             <h2>Next Steps</h2>
             <ul>
                 <li><a href="https://gtmhelix.com/lets-get-started/">Work with Shashwat on this plan</a></li>

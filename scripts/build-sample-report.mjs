@@ -96,8 +96,9 @@ ${chrome.LD_SAMPLE}
     ${chrome.SAMPLE_HEADER}
     <main id="main">
     <section class="hx-hero ga-sample-hero">
-        <div class="hx-wrap"><div class="hx-hero-inner">
+        <div class="hx-wrap"><div class="hx-hero-inner hxr-head">
             <p class="hx-eyebrow">Sample report</p>
+            <p class="hxr-tag">GTM Alpha report</p>
             <div class="crop">${CM}<h1>Sample EPIC audit report</h1></div>
             <div class="ga-sample-grid">
                 <div>
