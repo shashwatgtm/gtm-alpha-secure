@@ -169,8 +169,12 @@ main li > a:only-child { display: inline-flex; align-items: center; min-height: 
 .report-container .primary-focus { background: var(--rose); color: #1A0E10; border-left-color: var(--ox); }
 .report-container .primary-focus h2 { color: #1A0E10; }
 
-/* D11: GTM Alpha's own colours in dark mode */
-@media (prefers-color-scheme: dark) {
+/* D11: GTM Alpha's own colours in dark mode. Run 14 R14-10b: screen only (D22: white paper, light colours even in
+   dark mode, in print). Without "screen and", some of these selectors are more specific than the plain @media print
+   override below (for example ".report-container .primary-focus h2" beats ".report-container *"), so with the
+   device in dark mode they used to win in print too: near-white text with backgrounds off, a dark box with
+   backgrounds on. */
+@media screen and (prefers-color-scheme: dark) {
   :root { --ga-soft: #3A2226; }
   .inline-code { color: #FAF8F6; }
   .sidebar-nav a:hover, .sidebar-nav a.active { background: #3A2226; color: #FAF8F6; }
@@ -215,6 +219,12 @@ main li > a:only-child { display: inline-flex; align-items: center; min-height: 
   /* Run 13 D22: the rule above painted every descendant white one at a time, so the rose primary-focus box printed as
      white strips behind its own text. Paint the box and everything inside it the same rose, in one rule, instead. */
   .report-container .primary-focus, .report-container .primary-focus * { background: #EAD9D5; }
+  /* Run 14 R14-10d: helix-report.css only reaches .hxr-body links, and the GTM Alpha report has no .hxr-body; extend
+     the same D22 rule (an outside link's address, printed after it, in IBM Plex Mono 9 pt) to links inside the
+     report body itself. .hx10-actions (Edit my answers, Print or save as PDF, Work with Shashwat on this plan) is
+     already display: none above, so its links never print; this never reaches hidden chrome or the report's own
+     buttons, only the report content (for example the Next Steps link). */
+  .report-container a[href^="http"]::after { content: " (" attr(href) ")"; font: 400 9pt/1.3 var(--mono); color: #5A4B4E; overflow-wrap: anywhere; }
 }
 
 /* run 11 R11-16: the three decorative dots of a code header are hidden on phones (they pushed the page 9 px sideways at 390) */

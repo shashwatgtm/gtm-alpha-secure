@@ -250,8 +250,25 @@ export function scoreEpic(input) {
     stageLabel = "Series B (used because the stage was missing or not recognised)";
     skipped.push("business stage");
   }
-  applied.push({ rule: "Stage starting point: " + stageLabel, change: { ...sc } });
-  const add = (rule, d) => { for (const k of Object.keys(d)) sc[k] += d[k]; applied.push({ rule, change: d }); };
+  // Run 14 D31a: `applied` (returned as adjustments_applied, and used by the browser report's "why these scores"
+  // list) is unchanged by this fix: same entries, same order, same words, as before. `reasonTimeline` is a second,
+  // internal record of the same entries plus the 1 to 10 clamp events (see clampAndRecord, below), in the exact
+  // order things happened; only reasonFor (further down) reads it, to build the per-motion reason line.
+  const reasonTimeline = [];
+  const record = (entry) => { applied.push(entry); reasonTimeline.push(entry); };
+  record({ rule: "Stage starting point: " + stageLabel, change: { ...sc } });
+  const add = (rule, d) => { for (const k of Object.keys(d)) sc[k] += d[k]; record({ rule, change: d }); };
+  // When the 1 to 10 clamp actually moves a motion's running total, record it in reasonTimeline only (never in
+  // `applied`), in the order it happens, so the reason line can say so in plain words instead of silently dropping
+  // the adjustment that caused it. No effect on the scores themselves: sc[k] ends at the same clamped value as before.
+  const clampAndRecord = () => {
+    for (const k of Object.keys(sc)) {
+      const before = sc[k];
+      const after = clamp(before);
+      if (after !== before) reasonTimeline.push({ rule: "Held at the scale limit", change: { [k]: after - before }, isClamp: true, clampValue: after });
+      sc[k] = after;
+    }
+  };
 
   const acv = readAcv(inp.acv_usd != null ? inp.acv_usd : inp.acv);
   if (acv === "high") add("ACV above 50,000 US dollars", { E: 2, P: -1 });
@@ -292,27 +309,27 @@ export function scoreEpic(input) {
   else skipped.push("geography");
 
   if (P_CAP_INDUSTRY.test(String(inp.industry || "")) && sc.P > 4) {
-    applied.push({ rule: "Industry cap: P capped at 4 (" + inp.industry + "; self-serve is structurally unlikely)", change: { P: 4 - sc.P } });
+    record({ rule: "Industry cap: P capped at 4 (" + inp.industry + "; self-serve is structurally unlikely)", change: { P: 4 - sc.P } });
     sc.P = 4;
   }
 
-  for (const k of Object.keys(sc)) sc[k] = clamp(sc[k]);
+  clampAndRecord();
 
   const text = [inp.gtm_challenge, inp.challenge, inp.company_description, inp.current_channels].filter(Boolean).join(" ");
   if (nrr === "low" && LEAKY.test(text)) {
     sc.I -= 1;
-    applied.push({ rule: "Override: leaky bucket (NRR below 100 percent and an acquisition-framed challenge)", change: { I: -1 } });
+    record({ rule: "Override: leaky bucket (NRR below 100 percent and an acquisition-framed challenge)", change: { I: -1 } });
     warnings.push("Adding top of funnel while NRR is below 100% fills and empties simultaneously. Fix retention first.");
   }
   if (AEO.test(text)) {
     sc.I -= 2; sc.C += 2;
-    applied.push({ rule: "Override: AEO and GEO inbound disruption", change: { I: -2, C: 2 } });
+    record({ rule: "Override: AEO and GEO inbound disruption", change: { I: -2, C: 2 } });
     warnings.push("Inbound SEO is structurally disrupted by AI search. The fix is not more content. It is becoming the source that LLMs cite: G2 reviews, community threads, analyst mentions, peer recommendations.");
   }
   if (sc.P > 6 && sc.E > 6 && UPMARKET.test(text)) {
     warnings.push("Hybrid motion detected. PLG for land, Ecosystem for expand. Sequence matters: build self-serve conversion infrastructure first, then layer ABM on accounts with 10+ active free users (Example figure: replace with your own).");
   }
-  for (const k of Object.keys(sc)) sc[k] = clamp(sc[k]);
+  clampAndRecord();
 
   const ranked = ["E", "P", "I", "C"].sort((a, b) => (sc[b] - sc[a]) || (TIE_ORDER.indexOf(a) - TIE_ORDER.indexOf(b)));
   const vals = Object.values(sc);
@@ -321,9 +338,20 @@ export function scoreEpic(input) {
     // the rule and the scores are unchanged.
     notes.push("Your scores are evenly distributed. " + "This usually means no motion has pulled ahead yet." + " Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own). Measure pipeline contribution, then score again after a quarter to see whether that motion pulls ahead.");
   }
+  // Run 14 D31a: list every adjustment applied to this motion after the starting point, raises and cuts alike, in the
+  // order they happened (the industry cap and the two overrides are already in `reasonTimeline` in that order;
+  // clampAndRecord adds a "Held at the scale limit" entry exactly where the 1 to 10 clamp changed a value). Starting
+  // point plus every listed part, in order, always equals the score shown. `applied` itself (adjustments_applied,
+  // read by the browser report's "why these scores" list) is untouched by this.
   const reasonFor = (m) => {
-    const ups = applied.filter((a) => a.change && typeof a.change[m] === "number" && a.change[m] > 0 && !/^Stage starting point/.test(a.rule)).map((a) => a.rule + " (" + m + " +" + a.change[m] + ")");
-    return MOTIONS[m] + " scores " + sc[m] + " of 10: " + stageLabel + " starting point " + applied[0].change[m] + (ups.length ? "; " + ups.join("; ") : "; no further adjustment raised it") + ".";
+    const parts = [];
+    for (let i = 1; i < reasonTimeline.length; i++) {
+      const a = reasonTimeline[i];
+      if (!a.change || typeof a.change[m] !== "number" || a.change[m] === 0) continue;
+      if (a.isClamp) parts.push("held at " + a.clampValue + ", the " + (a.clampValue === 10 ? "top" : "bottom") + " of the scale");
+      else parts.push(a.rule + " (" + m + " " + (a.change[m] > 0 ? "+" : "") + a.change[m] + ")");
+    }
+    return MOTIONS[m] + " scores " + sc[m] + " of 10: " + stageLabel + " starting point " + reasonTimeline[0].change[m] + (parts.length ? "; " + parts.join("; ") : "; no further adjustment changed it") + ".";
   };
   if (sc[ranked[0]] === sc[ranked[1]]) {
     notes.push("Tie at the top between " + ranked[0] + " and " + ranked[1] + ": the lead goes to the motion with lower execution complexity, in the order E, P, C, I.");

@@ -9,7 +9,7 @@ Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 - **Premium Audit form (website):** your name and role, company name, company description, GTM challenge, industry, business stage, team size, monthly budget, primary focus, company website and LinkedIn URL, and, if you choose to give them, your contract value band, deal cycle band, net revenue retention band, number of addressable accounts, main deal source, primary market and whether you offer self-serve sign-up. The form sends them to `/api/premium-audit`, which builds your report in that request and returns it to your browser. Our code does not store or log them. The form does not ask for your email address, and no payment is taken.
 - **EPIC audit API:** new audits are not kept. Inputs sent to `/api/epic-audit` are used only to build the result; our code does not store them. Audits saved by earlier versions (store "epic-audits") are deleted on request within 30 days.
 - **MCP server (`/mcp`, also `/mcp-sse`, and the npm package):** receives the tool name and inputs of each call and uses them only to build the reply. Our code does not store or log them. The npm package runs on your computer and sends nothing to us.
-- **Automatically:** our pages include no analytics or tracking scripts and set no cookies. Netlify processes each request (including IP address) and keeps its own logs. Pages load their fonts, images and scripts from this site, and the generated report loads a PDF library from cdnjs.
+- **Automatically:** our pages include no analytics or tracking scripts and set no cookies. Netlify processes each request (including IP address) and keeps its own logs. Pages load their fonts, images and scripts from this site.
 
 ## Retention
 
@@ -19,7 +19,7 @@ Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
 ## Sharing
 
-Netlify (hosting, database, logs), cdnjs (receives your IP address when the report's PDF library loads), and legal authorities when required by law. We do not sell your data, share it with competitors or use it to train AI models.
+Netlify (hosting, database, logs), and legal authorities when required by law. We do not sell your data, share it with competitors or use it to train AI models.
 
 ## Your rights
 

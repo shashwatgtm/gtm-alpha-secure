@@ -3,6 +3,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { scoreEpic, stageRow } from "../netlify/lib/epic-advanced.js";
+import { exampleAnswers } from "../scripts/build-sample-report.mjs";
 
 const full = { industry: "Software", acv_usd: 20000, deal_cycle_days: 45, nrr_percent: 110, tam_accounts: 3000, deal_source: "inbound", geography: "global" };
 
@@ -99,4 +100,87 @@ test("missing inputs mark the result preliminary; never scored on the company na
   const a = scoreEpic({ ...full, business_stage: "Seed", company_name: "Acme" });
   const b = scoreEpic({ ...full, business_stage: "Seed", company_name: "Zeta" });
   assert.deepEqual(a.scores, b.scores);
+});
+
+// Run 14 D31a: reasonFor used to list only the rules that raised a motion's score, so a rule that raised it and a
+// later rule that cut it (for example "TAM above 10,000 accounts (E -1)" followed by "India B2B (E +1)") left the cut
+// out, and "starting point 7; India B2B (E +1)" read as 8 while the motion scored 7. It must now list every
+// adjustment after the starting point, raises and cuts alike, in the order applied, including the 1 to 10 clamp in
+// plain words, and the parts must always add up to the printed score. checkReason re-parses the printed sentence
+// (not the internal `applied` array) so it proves what actually prints, for the sample answers and 5 other inputs:
+// one that reproduces the reported bug (a raise and a cut on the same motion, cancelling out), the docs' gold case
+// (a cut applies, buried in a rich set of adjustments), one that clamps a motion at 10 (the top of the scale, in a
+// printed reason), one that clamps a motion at 1 (the bottom of the scale, confirmed in adjustments_applied), and
+// one with no recognised inputs at all (every reason ends "no further adjustment changed it").
+function checkReason(reason, letter, expectedFinal) {
+  const scoreM = reason.match(/scores (-?\d+) of 10:/);
+  assert.ok(scoreM, reason);
+  assert.equal(Number(scoreM[1]), expectedFinal, reason);
+  const spIdx = reason.indexOf("starting point ");
+  assert.ok(spIdx >= 0, reason);
+  const rest = reason.slice(spIdx + "starting point ".length);
+  const numM = rest.match(/^(-?\d+)/);
+  assert.ok(numM, reason);
+  let running = Number(numM[1]);
+  let tail = rest.slice(numM[1].length);
+  assert.ok(tail.endsWith("."), reason);
+  tail = tail.slice(0, -1);
+  if (tail === "; no further adjustment changed it") {
+    // nothing after the starting point changed this motion's score
+  } else {
+    assert.ok(tail.startsWith("; "), reason);
+    for (const seg of tail.slice(2).split("; ")) {
+      const clampM = seg.match(/^held at (\d+), the (top|bottom) of the scale$/);
+      if (clampM) {
+        running = Number(clampM[1]);
+        assert.equal(clampM[2], running === 10 ? "top" : "bottom", seg);
+        continue;
+      }
+      const partM = seg.match(/\(([A-Z]) ([+-]\d+)\)$/);
+      assert.ok(partM, "unrecognised reason segment: " + seg);
+      assert.equal(partM[1], letter, seg);
+      running += Number(partM[2]);
+    }
+  }
+  assert.equal(running, expectedFinal, reason);
+}
+
+test("D31a: the reason line lists every adjustment (raises and cuts) and the clamp, and always adds up to the printed score", () => {
+  const cases = {
+    sample: exampleAnswers(),
+    bug_repro: { business_stage: "Series B", industry: "Software", geography: "India", tam_accounts: 20000 },
+    gold: { business_stage: "Series A", industry: "Legal tech", deal_cycle_days: 120, acv_usd: 42000, nrr_percent: 108, tam_accounts: 2500, self_serve: false, deal_source: "partnerships", geography: "India", gtm_challenge: "Sales cycle is too long, losing deals to incumbents who have analyst coverage" },
+    clamps_at_10: { business_stage: "Series C", industry: "x", acv_usd: 90000, deal_cycle_days: 200, tam_accounts: 100, deal_source: "partnerships", geography: "Middle East" },
+    clamps_at_1: { business_stage: "Seed", industry: "x", acv_usd: 1000, deal_cycle_days: 5, tam_accounts: 20000, deal_source: "outbound", geography: "US" },
+    no_inputs: { gtm_challenge: "Help" }
+  };
+  for (const [label, input] of Object.entries(cases)) {
+    const r = scoreEpic(input);
+    checkReason(r.primary.reason, r.primary.letter, r.scores[r.primary.letter]);
+    checkReason(r.secondary.reason, r.secondary.letter, r.scores[r.secondary.letter]);
+  }
+  // The reported bug, reproduced and fixed: E is raised by India B2B and cut by TAM above 10,000 accounts; both now
+  // print, in the order applied, and cancel out to the starting point.
+  const bug = scoreEpic(cases.bug_repro);
+  assert.equal(bug.secondary.letter, "E");
+  assert.equal(bug.scores.E, 7);
+  assert.match(bug.secondary.reason, /TAM above 10,000 accounts \(E -1\); India B2B \(E \+1\)\.$/);
+  // Clamped at 10 (top of the scale), visible in the printed primary reason.
+  const hi = scoreEpic(cases.clamps_at_10);
+  assert.equal(hi.primary.letter, "E");
+  assert.equal(hi.scores.E, 10);
+  assert.match(hi.primary.reason, /held at 10, the top of the scale\.$/);
+  // Clamped at 1 (bottom of the scale): E is driven below 1 and held there. E is not one of this input's top two
+  // motions here (the same rules that cut a motion this hard also lift another one above it), so this reason line
+  // is not printed for this case; the score itself still proves the clamp held (E never goes below 1).
+  const lo = scoreEpic(cases.clamps_at_1);
+  assert.equal(lo.scores.E, 1);
+  // adjustments_applied (the browser report's "why these scores" list, read by netlify/lib/analyze.js) is untouched
+  // by this fix: it never carries a clamp entry, in this case or the one that clamps at 10 above.
+  assert.ok(hi.adjustments_applied.every((a) => !a.isClamp), "adjustments_applied must not carry a clamp entry");
+  assert.ok(lo.adjustments_applied.every((a) => !a.isClamp), "adjustments_applied must not carry a clamp entry");
+  // No recognised inputs at all: both reasons end "no further adjustment changed it".
+  const none = scoreEpic(cases.no_inputs);
+  assert.match(none.primary.reason, /no further adjustment changed it\.$/);
+  assert.match(none.secondary.reason, /no further adjustment changed it\.$/);
 });
