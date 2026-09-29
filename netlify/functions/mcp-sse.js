@@ -197,6 +197,9 @@ function belowMinimum(tool, args) {
     var p = props[key], v = args[key];
     if (v === undefined || v === null) return;
     if (Array.isArray(p.enum) && typeof v === "string" && p.enum.indexOf(v) === -1) { problems.push(key + " must be one of: " + p.enum.join(", ")); return; }
+    // Run 12 R12-12 a (A5-4 d): a value of the wrong type is refused with the type it must be, as on the connectors.
+    if (p.type === "string" && typeof v !== "string") { problems.push(key + " must be text"); return; }
+    if (p.type === "boolean" && typeof v !== "boolean") { problems.push(key + " must be true or false"); return; }
     if (p.type !== "number" && p.type !== "integer") return;
     if (typeof v === "string") {
       var n = v.trim() === "" ? NaN : Number(v.replace(/,/g, "").trim());
@@ -216,6 +219,12 @@ export default async function handler(req, context) {
 
   if (req.method !== "POST") {
     return rpcError(null, -32000, "Method not allowed. This MCP endpoint accepts POST requests only (Streamable HTTP, stateless). Setup: https://gtmalpha.gtmhelix.com/integration", 405, { "Allow": "POST, OPTIONS" });
+  }
+
+  // Run 12 R12-12 a (A5-4 c): a declared body size over the limit is refused before the body is read.
+  var declared = Number(req.headers.get("content-length"));
+  if (isFinite(declared) && declared > MAX_BODY) {
+    return rpcError(null, -32600, "Invalid request: the request body is larger than 64 KB.", 413);
   }
 
   var body;
@@ -255,7 +264,7 @@ export default async function handler(req, context) {
         id: id,
         result: {
           protocolVersion: version,
-          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.2" },
+          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.3" },
           capabilities: { tools: {} }
         }
       });
@@ -274,6 +283,8 @@ export default async function handler(req, context) {
       var toolArgs = params.arguments && typeof params.arguments === "object" && !Array.isArray(params.arguments) ? params.arguments : {};
       var tool = TOOLS.find(function(t) { return t.name === toolName; });
       if (!tool) {
+        // Run 12 R12-12 a (A5-4 a): a name that is not text, or is longer than 100 characters, is never echoed back.
+        if (typeof toolName !== "string" || toolName.length > 100) return toolError(id, "Unknown tool.");
         return toolError(id, "Unknown tool: " + toolName + ". Available tools: " + TOOLS.map(function(t) { return t.name; }).join(", ") + ".");
       }
       var missing = missingRequired(tool, toolArgs);
@@ -298,7 +309,8 @@ export default async function handler(req, context) {
       });
     }
 
-    return rpcError(id, -32601, "Method not found: " + method);
+    // Run 12 R12-12 a (A5-4 b): at most 100 characters of the method are echoed back.
+    return rpcError(id, -32601, "Method not found: " + method.slice(0, 100));
   } catch (error) {
     console.error("mcp-sse error:", error && error.message);
     // Run 11 R11-A3-9 c: a fixed message; the caller's method name is never echoed back.
