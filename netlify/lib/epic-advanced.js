@@ -317,8 +317,9 @@ export function scoreEpic(input) {
   const ranked = ["E", "P", "I", "C"].sort((a, b) => (sc[b] - sc[a]) || (TIE_ORDER.indexOf(a) - TIE_ORDER.indexOf(b)));
   const vals = Object.values(sc);
   if (Math.max(...vals) - Math.min(...vals) <= 2) {
-    // Run 12 R12-20: when the stage was assumed, the note does not call the company early stage (the rule is unchanged).
-    notes.push("Your scores are evenly distributed. " + (row ? "This usually means you are early stage and have not yet found the motion that compounds." : "This usually means no motion has pulled ahead yet.") + " Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own). Measure pipeline contribution. The scores will separate after one quarter of focused execution.");
+    // Run 12 R12-20 and R12-43: the note never calls the company early stage (the input may say Series B) and makes no prediction;
+    // the rule and the scores are unchanged.
+    notes.push("Your scores are evenly distributed. " + "This usually means no motion has pulled ahead yet." + " Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own). Measure pipeline contribution, then score again after a quarter to see whether that motion pulls ahead.");
   }
   const reasonFor = (m) => {
     const ups = applied.filter((a) => a.change && typeof a.change[m] === "number" && a.change[m] > 0 && !/^Stage starting point/.test(a.rule)).map((a) => a.rule + " (" + m + " +" + a.change[m] + ")");
