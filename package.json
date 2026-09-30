@@ -21,7 +21,7 @@
     "start": "node bin/cli.js",
     "dev": "netlify dev",
     "deploy": "netlify deploy --prod",
-    "test": "node --test tests/epic-advanced.test.mjs tests/api.test.mjs"
+    "test": "node --test tests/*.test.mjs"
   },
   "repository": {
     "type": "git",

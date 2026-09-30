@@ -7,6 +7,7 @@ import { allowedOrigin } from './site-origin.js';
 // Run 10 R10-09: the API accepts only the fields it reads (the same ones openapi.yaml documents), with a 32 KB body cap as
 // on the free audit form (premium-audit.js), and the server makes the storage key itself. The scoring code below is
 // unchanged: a request with only known fields and normal values is scored exactly as before.
+// Run 15 R15-13 (C-GA-01): the limit counts UTF-8 bytes, as netlify/functions/mcp-sse.js does, so multi-byte text cannot pass 32 KB.
 export const MAX_BODY = 32000;
 const TEXT = { company: 200, company_id: 100, industry: 100, company_stage: 60, business_stage: 60, current_gtm: 200 };
 const FOCUS = { max: 8, len: 40 };
@@ -889,7 +890,7 @@ export default async (req, context) => {
 
   try {
     const text = await req.text();
-    if (text.length > MAX_BODY) {
+    if (Buffer.byteLength(text, "utf8") > MAX_BODY) {
       return new Response(JSON.stringify({ error: 'Request body too large (limit 32 KB)' }), { status: 413, headers });
     }
     let raw;

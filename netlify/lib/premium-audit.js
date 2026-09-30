@@ -78,7 +78,7 @@ function messagePage(status, title, lines) {
 
 async function readInput(req) {
   const text = await req.text();
-  if (text.length > MAX_BODY) return { error: "too_large" };
+  if (Buffer.byteLength(text, "utf8") > MAX_BODY) return { error: "too_large" };
   const type = (req.headers.get("content-type") || "").toLowerCase();
   if (type.includes("application/json")) {
     try {
