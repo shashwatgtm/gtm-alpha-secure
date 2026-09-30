@@ -906,7 +906,8 @@ export default async (req, context) => {
     const inputData = checked.clean;
     
     // Validate required fields
-    if (!inputData.company) {
+    // Run 16 R16-10 (rule B52): a company that is empty or only whitespace counts as missing.
+    if (!inputData.company || !inputData.company.trim()) {
       return new Response(JSON.stringify({
         error: 'Missing required field: company is required'
       }), {

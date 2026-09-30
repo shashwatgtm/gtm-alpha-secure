@@ -191,7 +191,13 @@ function tooLong(args) {
 
 function missingRequired(tool, args) {
   var required = (tool.inputSchema && tool.inputSchema.required) || [];
-  return required.filter(function(key) { return args[key] === undefined || args[key] === null; });
+  var props = (tool.inputSchema && tool.inputSchema.properties) || {};
+  // Run 16 R16-10 (rule B52): a required text (a string with no fixed list of choices) that is empty or only whitespace counts as missing.
+  return required.filter(function(key) {
+    var p = props[key] || {};
+    return args[key] === undefined || args[key] === null ||
+      (typeof args[key] === "string" && args[key].trim() === "" && p.type === "string" && !Array.isArray(p.enum));
+  });
 }
 
 // Decision N2 (run 6): amounts, counts and durations cannot be negative; the schema says which (minimum).
