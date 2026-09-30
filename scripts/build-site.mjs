@@ -16,7 +16,7 @@ const PAGES = ["index.html", "pricing.html", "consultation.html", "integration.h
   "privacy.html", "terms.html", "404.html", "sample-report/index.html"];
 // Run 10 R10-28 (P13): favicon.ico is favicon.svg drawn at 16, 32 and 48 px (work/run10/gtmalpha/favicon_ico.mjs), for
 // browsers and tools that ask for /favicon.ico.
-const FILES = [...PAGES, "favicon.svg", "favicon.ico", "logo.svg", "robots.txt", "sitemap.xml", "llms.txt", "_redirects", "_headers", "openapi.yaml",
+const FILES = [...PAGES, "favicon.svg", "favicon.ico", "apple-touch-icon.png", "logo.svg", "robots.txt", "sitemap.xml", "llms.txt", "_redirects", "_headers", "openapi.yaml",
   "5d1ec46b7e579accde50872ab5aef7a4.txt"];
 const DIRS = ["assets"];
 

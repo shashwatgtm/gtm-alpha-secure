@@ -78,11 +78,19 @@ export async function buildSampleReport() {
     <meta property="og:description" content="${esc(chrome.SAMPLE_DESC)}">
     <meta property="og:url" content="${chrome.SAMPLE_URL}">
     <meta property="og:image" content="https://gtmalpha.gtmhelix.com/assets/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="GTM Alpha by Helix GTM Consulting">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${esc(chrome.SAMPLE_TITLE)}">
+    <meta name="twitter:description" content="${esc(chrome.SAMPLE_DESC)}">
+    <meta name="twitter:image" content="https://gtmalpha.gtmhelix.com/assets/og.png">
+    <meta name="twitter:creator" content="@Shashwat_Ghosh">
     <script type="application/ld+json">
 ${chrome.LD_SAMPLE}
 </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <link rel="preload" href="/assets/fonts/Archivo-latin-1.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/assets/fonts/VT323-latin-400.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="stylesheet" href="/assets/fonts.css?v=${chrome.V_FONTS}">
