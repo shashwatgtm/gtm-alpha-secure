@@ -5,6 +5,7 @@ import { createHash } from "node:crypto";
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { buildSampleReport } from "./build-sample-report.mjs";
+import { directive, hashOf, inlineHandlers, inlineScripts, siteCsp } from "./csp-hashes.mjs";
 
 const ROOT = process.cwd();
 const OUT = join(ROOT, "site");
@@ -88,3 +89,31 @@ for (const [name, file] of [["ARCHIVO", "Archivo-latin-1.woff2"], ["VT323", "VT3
 }
 if (chromeJs !== chromeBefore) writeFileSync(CHROME, chromeJs);
 console.log(`build-site: report-chrome.js V_FONTS, V_BRAND, V_HELIX, V_HELIX_REPORT, V_SITE, V_ARCHIVO, V_VT323 set from site/assets (${chromeJs === chromeBefore ? "unchanged" : "updated"})`);
+
+// Run 15 D40: the site policy allows no 'unsafe-inline' script. Every executable inline script in a published page is allowed by
+// the sha256 hash of its exact text, computed here from the page as served (after the versioning above, which can change a
+// script's text), and written into the built _headers. A page with an inline event handler (onclick=...) or a javascript:
+// address fails the build, because a hash cannot allow those. Today no page has an inline script that runs (the JSON-LD blocks
+// are data), so the hash list is empty and _headers is copied as it is.
+{
+  const headersPath = join(OUT, "_headers");
+  const headers = readFileSync(headersPath, "utf8");
+  const csp = siteCsp(headers);
+  const scriptSrc = directive(csp, "script-src");
+  for (const bad of ["'unsafe-inline'", "'unsafe-eval'"]) {
+    if (scriptSrc.includes(bad)) throw new Error(`build-site: script-src in _headers allows ${bad}`);
+  }
+  const hashes = [];
+  for (const f of walk(OUT).filter((f) => f.endsWith(".html"))) {
+    const html = readFileSync(f, "utf8");
+    const handlers = inlineHandlers(html);
+    if (handlers.length) throw new Error(`build-site: ${f.slice(OUT.length + 1)} has inline handlers (${handlers.join(", ")}); move them to addEventListener in a script file`);
+    for (const sc of inlineScripts(html)) if (sc.executable) hashes.push(hashOf(sc.text));
+  }
+  const missing = [...new Set(hashes)].filter((h) => !scriptSrc.includes(h));
+  if (missing.length) {
+    const newCsp = csp.replace(/script-src([^;]*)/, (all) => all + " " + missing.join(" "));
+    writeFileSync(headersPath, headers.replace(csp, newCsp));
+  }
+  console.log(`build-site: script-src has no 'unsafe-inline'; ${hashes.length} inline scripts run in the published pages, ${missing.length} hashes added to _headers`);
+}
