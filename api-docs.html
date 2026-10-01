@@ -43,6 +43,32 @@
     "@type": "PostalAddress",
     "addressLocality": "Bengaluru"
    },
+   "areaServed": [
+    {
+     "@type": "Place",
+     "name": "India"
+    },
+    {
+     "@type": "Place",
+     "name": "Middle East and Africa"
+    },
+    {
+     "@type": "Place",
+     "name": "Southeast Asia"
+    },
+    {
+     "@type": "Place",
+     "name": "United Kingdom"
+    },
+    {
+     "@type": "Place",
+     "name": "United States"
+    },
+    {
+     "@type": "Place",
+     "name": "Western Europe"
+    }
+   ],
    "sameAs": [
     "https://www.linkedin.com/company/helixgtmconsulting",
     "https://github.com/shashwatgtm"
@@ -56,7 +82,7 @@
    "@id": "https://gtmhelix.com/about/#person",
    "name": "Shashwat Ghosh",
    "jobTitle": "Co-Founder and Fractional CMO",
-   "description": "Co-Founder and Fractional CMO of Helix GTM Consulting, with 24+ years in B2B and 10+ years of fractional experience. Creator of the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology. Has led 6+ rebrands. Results: VP Marketing, Happay: 161% ARR growth. 2x exit: to CRED ($180M+), then MakeMyTrip. VP Performance Marketing, Locus: $4.2M pipeline. Acquired by IKEA (Ingka Group) in Oct 2025. Fractional CMO, FieldAssist: 2.25x growth in mid-market and enterprise qualified leads. Advisor, QuantumStreet AI: rebranded a $7Bn AUM AI investment fund, with Digitas and IBM. 4x business growth, Airtel Data Centers and Managed Services. Rs 2.35 Cr TCV in 6 months with ABM at Seclore, and 225+ sales meetings across Seclore's target accounts.",
+   "description": "Co-Founder and Fractional CMO of Helix GTM Consulting, with 24+ years in B2B and 10+ years of fractional experience. Creator of the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Brand Messaging Methodology. Part of 6+ rebrands. Results: VP Marketing, Happay: 161% ARR growth. 2x exit: to CRED ($180M+), then MakeMyTrip. VP Performance Marketing, Locus: $4.2M pipeline. Acquired by IKEA (Ingka Group) in Oct 2025. Fractional CMO, FieldAssist: 2.25x growth in mid-market and enterprise qualified leads. Advisor, QuantumStreet AI: rebranded a $7Bn AUM AI investment fund, with Digitas and IBM. 4x business growth, Airtel Data Centers and Managed Services. Rs 2.35 Cr TCV in 6 months with ABM at Seclore, and 225+ sales meetings across Seclore's target accounts.",
    "worksFor": {
     "@id": "https://gtmhelix.com/#org"
    },
@@ -73,7 +99,7 @@
     "EPIC",
     "IMPACT",
     "CRAFT",
-    "Hub-Spoke Messaging Methodology"
+    "Hub-Spoke Brand Messaging Methodology"
    ],
    "address": {
     "@type": "PostalAddress",
@@ -699,7 +725,7 @@ platform to mid-market companies (100-1000 employees).</code></pre>
                 </section>
                 <section id="release-history" class="docs-section">
                     <h2>Release history</h2>
-                    <p>History: first commit 13 July 2025, first npm release 8 September 2025, in the MCP Registry since 11 December 2025. Versions and dates below come from the git history of this site's code, from npm and from the MCP Registry (checked 27 September 2026). npm has 1.0.0 to 1.0.5 and 1.2.0, its latest version, published 24 September 2026. Versions 1.1.0, 1.3.0, 1.3.1, 1.3.2, 1.3.3, 1.3.4, 1.3.5, 1.3.6 and 1.3.7 run on this site only and are not on npm, so the npm package can lag behind this site. The MCP Registry lists 1.0.2 and 1.0.5.</p>
+                    <p>History: first commit 13 July 2025, first npm release 8 September 2025, in the MCP Registry since 11 December 2025. Versions and dates below come from the git history of this site's code, from npm and from the MCP Registry (checked 27 September 2026). npm has 1.0.0 to 1.0.5 and 1.2.0, its latest version, published 24 September 2026. Versions 1.1.0, 1.3.0, 1.3.1, 1.3.2, 1.3.3, 1.3.4, 1.3.5, 1.3.6, 1.3.7 and 1.3.8 run on this site only and are not on npm, so the npm package can lag behind this site. The MCP Registry lists 1.0.2 and 1.0.5.</p>
                     <table class="hx10-release">
                         <thead><tr><th>Version</th><th>Date</th><th>Where</th><th>What changed</th></tr></thead>
                         <tbody>
@@ -716,7 +742,8 @@ platform to mid-market companies (100-1000 employees).</code></pre>
                             <tr><td>1.3.4</td><td>29 September 2026</td><td>this site only (not on npm)</td><td>The report page prints or saves as PDF with the browser's own print (the html2pdf library is removed, with its Content-Security-Policy exception); the report head and footer carry the Helix report standard (commit 0b0af61e)</td></tr>
                             <tr><td>1.3.5</td><td>29 September 2026</td><td>this site only (not on npm)</td><td>The reason behind each EPIC score's primary and secondary motion now lists every adjustment after the starting point, raises and cuts alike, in the order applied, and says in plain words when the 1 to 10 scale holds a score at its limit (commit 7f8eb685)</td></tr>
                             <tr><td>1.3.6</td><td>30 September 2026</td><td>this site only (not on npm)</td><td>The 32 KB request limit of the REST API and of the free audit form now counts bytes, not characters, so text in other scripts cannot carry more than 32,000 bytes; the limit and the messages are unchanged (commit 22d66661). The build now checks that no page allows an inline script except by its sha256 hash (commit ca512d7a; the policy was already so, and there is no visible change). The FAQ list of fonts ends without a full stop (commit 2a028c37)</td></tr>
-                            <tr><td>1.3.7</td><td>30 September 2026</td><td>this site only (current; not on npm)</td><td>A required text (gtm_challenge, challenge) that is empty or only spaces is refused with the same message as a missing one, and the audit API refuses an empty or blank company the same way</td></tr>
+                            <tr><td>1.3.7</td><td>30 September 2026</td><td>this site only (not on npm)</td><td>A required text (gtm_challenge, challenge) that is empty or only spaces is refused with the same message as a missing one, and the audit API refuses an empty or blank company the same way</td></tr>
+                            <tr><td>1.3.8</td><td>2 October 2026</td><td>this site only (current; not on npm)</td><td>The bio line in the sample report's search data now says "Part of 6+ rebrands" and gives the method's full name, Hub-Spoke Brand Messaging Methodology</td></tr>
                         </tbody>
                     </table>
                 </section>

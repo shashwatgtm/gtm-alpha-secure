@@ -1,4 +1,4 @@
-# GTM Alpha MCP Server v1.3.7
+# GTM Alpha MCP Server v1.3.8
 
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-Listed-green)](https://registry.modelcontextprotocol.io)
 [![npm version](https://img.shields.io/npm/v/@shashwatgtmalpha/gtm-alpha-mcp-server)](https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server)
@@ -77,7 +77,7 @@ Use the function declarations in gemini-functions.json:
 
 ## Tools and inputs
 
-Generated on 29 September 2026 from the server's own tool list and checked again on 30 September 2026 (`tools/list` of gtm-alpha-mcp-server 1.3.7, the same code as the hosted MCP address), so every tool name, title, description and input below is exactly what the server accepts. Every tool is read-only.
+Generated on 29 September 2026 from the server's own tool list and checked again on 30 September 2026 (`tools/list` of gtm-alpha-mcp-server 1.3.8, the same code as the hosted MCP address), so every tool name, title, description and input below is exactly what the server accepts. Every tool is read-only.
 
 | # | Tool | Title | What it does |
 |---|---|---|---|
@@ -144,7 +144,7 @@ The GTM Alpha methodology is built on the EPIC Framework:
 
 ## About Shashwat Ghosh
 
-Co-Founder and Fractional CMO, Helix GTM Consulting (founded 2022, Bengaluru). 24+ years in B2B and 10+ years of fractional experience. Creator of the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Messaging Methodology.
+Co-Founder and Fractional CMO, Helix GTM Consulting (founded 2022, Bengaluru). 24+ years in B2B and 10+ years of fractional experience. Creator of the EPIC, IMPACT and CRAFT frameworks and the Hub-Spoke Brand Messaging Methodology.
 
 ### Results
 
