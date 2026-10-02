@@ -4,6 +4,7 @@
 import { createHash } from "node:crypto";
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { execFileSync } from "node:child_process";
 import { buildSampleReport } from "./build-sample-report.mjs";
 import { directive, hashOf, inlineHandlers, inlineScripts, siteCsp } from "./csp-hashes.mjs";
 
@@ -35,6 +36,20 @@ for (const f of FILES) {
 for (const d of DIRS) cpSync(join(ROOT, d), join(OUT, d), { recursive: true });
 const count = (dir) => readdirSync(dir, { withFileTypes: true }).reduce((n, e) => n + (e.isDirectory() ? count(join(dir, e.name)) : 1), 0);
 console.log(`build-site: site/ has ${count(OUT)} files (${FILES.length} top-level files plus ${DIRS.join(", ")}/)`);
+
+// Run 19 (owner decision D77): /version.json names the deployed commit. Netlify sets COMMIT_REF on a build of the repo
+// (docs.netlify.com, "Build environment variables": "reference ID (also known as SHA or hash) of the commit we're building");
+// a local build uses git rev-parse HEAD. Four fields only; no secret and no other variable is read.
+{
+  const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8"));
+  let ref = /^[0-9a-f]{40}$/.test(process.env.COMMIT_REF || "") ? process.env.COMMIT_REF : "";
+  if (!ref) {
+    try { ref = execFileSync("git", ["rev-parse", "HEAD"], { cwd: ROOT, stdio: ["ignore", "pipe", "ignore"] }).toString().trim(); } catch { ref = "unknown (not a git checkout)"; }
+  }
+  const built = new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
+  writeFileSync(join(OUT, "version.json"), JSON.stringify({ site: "gtmalpha.gtmhelix.com", version: pkg.version, commit: ref, built_utc: built }, null, 1) + "\n");
+  console.log(`build-site: version.json for ${pkg.version} at ${ref.slice(0, 12)}`);
+}
 
 // Run 9 D4: version every /assets/ address in the published CSS and HTML with ?v=<first 10 hex digits of the file's
 // SHA-256>, the same rule as work/cachebust.py bust(out_dir), so a changed file always gets a new address and _headers can

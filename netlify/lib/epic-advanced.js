@@ -331,7 +331,10 @@ export function scoreEpic(input) {
   }
   clampAndRecord();
 
-  const ranked = ["E", "P", "I", "C"].sort((a, b) => (sc[b] - sc[a]) || (TIE_ORDER.indexOf(a) - TIE_ORDER.indexOf(b)));
+  // Run 19 (D80, problem 4): a motion the inputs rule out never wins a tie. When self_serve is false, Product-Led Growth moves
+  // to the end of the tie-break order (E, C, I, P); its score is unchanged. Before run 19 the order was always E, P, C, I.
+  const tieOrder = selfServe === false ? ["E", "C", "I", "P"] : TIE_ORDER;
+  const ranked = ["E", "P", "I", "C"].sort((a, b) => (sc[b] - sc[a]) || (tieOrder.indexOf(a) - tieOrder.indexOf(b)));
   const vals = Object.values(sc);
   if (Math.max(...vals) - Math.min(...vals) <= 2) {
     // Run 12 R12-20 and R12-43: the note never calls the company early stage (the input may say Series B) and makes no prediction;
@@ -354,7 +357,7 @@ export function scoreEpic(input) {
     return MOTIONS[m] + " scores " + sc[m] + " of 10: " + stageLabel + " starting point " + reasonTimeline[0].change[m] + (parts.length ? "; " + parts.join("; ") : "; no further adjustment changed it") + ".";
   };
   if (sc[ranked[0]] === sc[ranked[1]]) {
-    notes.push("Tie at the top between " + ranked[0] + " and " + ranked[1] + ": the lead goes to the motion with lower execution complexity, in the order E, P, C, I.");
+    notes.push("Tie at the top between " + ranked[0] + " and " + ranked[1] + ": the lead goes to the motion with lower execution complexity, in the order " + tieOrder.join(", ") + "." + (selfServe === false ? " Product-Led Growth comes last in that order because you said there is no self-serve product." : ""));
   }
   const preliminary = skipped.length > 0;
   return {

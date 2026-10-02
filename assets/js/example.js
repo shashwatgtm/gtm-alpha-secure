@@ -2,8 +2,9 @@
 // visitor then presses the submit button. Run 10 R10-A1-5 d: /consultation?example=1 does the same and no longer submits
 // the form by itself: it fills the answers and shows the made-up example note. The address loses ?example=1, so the
 // browser's Back button returns to the form as the visitor left it. Run 10 R10-16: the note hides as soon as the visitor
-// changes any answer. The example matches the one used across the site (Series A legal tech, 120 day sales cycle, $42,000
-// deals), with values taken from the form's own options. scripts/build-sample-report.mjs reads EXAMPLE from this file to
+// changes any answer. The example matches the one used across the site (run 19, D84: Branchwire, a made-up Series B telecom
+// company with a 150 day sales cycle and $240,000 deals, from independent-audit/run19/cloud/examples-new.json), with values
+// taken from the form's own options. scripts/build-sample-report.mjs reads EXAMPLE from this file to
 // build the sample report, so the sample and the form use the same answers.
 (function () {
     var form = document.getElementById('gtmForm');
@@ -14,16 +15,16 @@
     var EXAMPLE = {
         client_name: 'Priya Nair',
         client_designation: 'Head of Marketing',
-        company_name: 'Clausewise (example company)',
-        industry: 'SaaS',
-        company_description: 'Legal tech: contract review software for in-house legal teams at mid-sized companies. Series A, with a 120 day sales cycle and deals of about $42,000 a year.',
-        gtm_challenge: 'Most deals close after long evaluations with legal and procurement teams. We need to know which go-to-market motion to lead with this year.',
-        business_stage: 'Early Traction',   // the form's Series A option
+        company_name: 'Branchwire (example company)',
+        industry: 'Technology',
+        company_description: 'Telecom: managed SD-WAN and business internet for companies with many branches, sold on one contract with uptime credits. Series B, with a 150 day sales cycle and deals of about $240,000 a year.',
+        gtm_challenge: 'Deals close only after a costly outage at the buyer, and procurement compares us line by line with the national operators. We need to know which go-to-market motion to lead with this year.',
+        business_stage: 'Growth',           // the form's Series B option
         team_size: '20',                    // 11 to 20 people
-        monthly_budget: '10000',            // $5,000 to $10,000
-        primary_focus: 'Winning mid-sized customers',
-        acv_band: '5k_to_50k',              // $42,000 deals
-        deal_cycle_band: 'over_90_days'     // 120 day sales cycle
+        monthly_budget: '25000',            // $10,000 to $25,000
+        primary_focus: 'Winning banks and retail chains with 50 or more branches',
+        acv_band: 'over_50k',               // $240,000 deals
+        deal_cycle_band: 'over_90_days'     // 150 day sales cycle
     };
     var NOTE = 'This is a made-up example. Press Get my free EPIC audit report to see the report, or change the answers to your own.';
     var filling = false;

@@ -10,6 +10,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { SAMPLE_REPORT_DATE } from "./sample-report-date.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -55,7 +56,11 @@ export async function buildSampleReport() {
   // name, role and company lines, word for word.
   const HEAD_RE = /\s*<div class="header hxr-head">\s*<p class="hxr-tag">GTM Alpha report<\/p>\s*<h1 class="hxr-title">Sample EPIC audit report<\/h1>\s*([\s\S]*?)\s*<\/div>/;
   one(report, new RegExp(HEAD_RE.source, "g"), "the report header block");
-  const headLines = report.match(HEAD_RE)[1].replace(/\n\s*/g, "\n                ");
+  let headLines = report.match(HEAD_RE)[1].replace(/\n\s*/g, "\n                ");
+  // Run 19 D76: the meta line's date is the pinned literal (scripts/sample-report-date.mjs), not the build day, the same way the
+  // audit ID and "Generated" lines above are replaced, so a rebuild on any day and in any time zone gives the same file.
+  one(headLines, /<p class="hxr-meta"><span>[^<]*<\/span>/g, "the report meta line date");
+  headLines = headLines.replace(/(<p class="hxr-meta"><span>)[^<]*(<\/span>)/, `$1${SAMPLE_REPORT_DATE}$2`);
   report = report.replace(HEAD_RE, "");
   const CM = '<span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span>';
   const style = page.match(/<style>[\s\S]*?<\/style>/);

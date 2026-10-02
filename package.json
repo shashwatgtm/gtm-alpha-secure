@@ -1,12 +1,13 @@
 {
   "name": "@shashwatgtmalpha/gtm-alpha-mcp-server",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "description": "GTM Alpha MCP Server: Free EPIC audit using Shashwat Ghosh's EPIC framework",
   "main": "bin/cli.js",
   "files": [
     "bin/cli.js",
     "netlify/functions/mcp-sse.js",
     "netlify/lib/epic-advanced.js",
+    "netlify/lib/verticals.js",
     "README.md",
     "PRIVACY.md",
     "server.json",

@@ -92,7 +92,7 @@ const FORM = {
 const post = (body) => api(new Request(BASE + "/api/premium-audit", { method: "POST", headers: { "content-type": "application/x-www-form-urlencoded" }, body }), {});
 
 test("report page: no unsafe-inline script, every inline script it emits is allowed by its hash, no inline handlers", async () => {
-  for (const extra of [{}, { company_name: "Clausewise (example company)" }]) {
+  for (const extra of [{}, { company_name: "Branchwire (example company)" }]) {
     const res = await post(new URLSearchParams({ ...FORM, ...extra }).toString());
     assert.equal(res.status, 200);
     const csp = res.headers.get("content-security-policy");

@@ -1,4 +1,17 @@
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
+import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
+
+// Run 19 (D80, problems 3, 4 and 8): the plan steps that only fit a product people can try on their own (a software
+// subscription or hardware plus software). For any other business model they are left out and the answer says so.
+const SELF_SERVE_ONLY = /self-service|self-serve|trial|freemium|viral|in-app|product-qualified|PQL|usage-based engagement|pricing page|conversion funnel/i;
+function stepsFor(letter, model) {
+  const keep = (list) => (model && model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)) : list.slice());
+  return { days_30: keep(ROADMAP_STEPS[letter].days_30), days_60: keep(ROADMAP_STEPS[letter].days_60), first_quarter: keep(ROADMAP_STEPS[letter].first_quarter) };
+}
+function sectorNotes(v) {
+  if (!v) return null;
+  return { sector: v.name, who_decides: v.committee, what_it_measures: v.metrics, usual_objections: v.objections.map((o) => o.objection), proof_that_lands: v.proofShape, sales_motion: v.salesMotion };
+}
 
 const GTM_CONSULTANT = {
   epicFramework: {
@@ -37,23 +50,38 @@ const GTM_CONSULTANT = {
     analysis.warnings.forEach(function(w) { lines.push("Warning: " + w); });
     analysis.notes.forEach(function(n) { lines.push("Note: " + n); });
     if (analysis.preliminary_note) lines.push(analysis.preliminary_note);
+    // Run 19 (D80): the first steps for the lead motion (the report's own plan steps) and the sector's buying committee,
+    // read from what the user typed; nothing is invented about the company.
+    var v = detectVertical(args.industry, args.gtm_challenge, args.current_channels, args.company_description);
+    var m = detectModel(args.business_model, args.industry, args.gtm_challenge, args.current_channels);
+    var steps = stepsFor(analysis.primary.letter, m.model);
+    var first = steps.days_30.length ? steps.days_30 : steps.days_60;
+    lines.push("", "First 30 days for " + analysis.primary.motion + ":");
+    first.forEach(function(t) { lines.push("- " + t); });
+    if (v) lines.push("", "Sector (read from your inputs): " + v.name + ". Who usually decides: " + v.committee);
     return {
       consultation_output: lines.join("\n"),
       epic_scores: analysis.scores,
       primary_focus: analysis.primary.motion,
       secondary_focus: analysis.secondary.motion,
+      first_30_days: first,
+      sector_notes: sectorNotes(v),
+      business_model: m.model ? MODEL_NAME[m.model] + (m.how === "input" ? "" : m.how === "sector" ? " (the usual model in this sector, assumed; set business_model to change it)" : " (read from your inputs)") : "not clear from your inputs; set business_model",
       epic_detail: analysis
     };
   },
 
-  generateRoadmap(focus, timeframe) {
+  generateRoadmap(focus, timeframe, businessModel) {
     var letter = this.epicFramework[focus] ? focus : "P";
     var component = this.epicFramework[letter];
+    var model = BUSINESS_MODELS.indexOf(businessModel) >= 0 ? businessModel : null;
     // Run 12 R12-20: the per-motion steps of the browser report (epic-advanced.js ROADMAP_STEPS, words unchanged), mapped to
     // the timeframe: immediate = the report's first 30 days, short-term = days 31 to 60, medium-term = days 61 to 90.
     // Counts such as "top 50" are examples, labelled the way this tool labels its other example figures.
     var label = function(list) { return list.map(function(t) { return /\btop \d+\b/.test(t) ? t + " (Example figure: replace with your own)" : t; }); };
-    var steps = { days_30: label(ROADMAP_STEPS[letter].days_30), days_60: label(ROADMAP_STEPS[letter].days_60), first_quarter: label(ROADMAP_STEPS[letter].first_quarter) };
+    var kept = stepsFor(letter, model);
+    var steps = { days_30: label(kept.days_30), days_60: label(kept.days_60), first_quarter: label(kept.first_quarter) };
+    var dropped = ROADMAP_STEPS[letter].days_30.length + ROADMAP_STEPS[letter].days_60.length + ROADMAP_STEPS[letter].first_quarter.length - (kept.days_30.length + kept.days_60.length + kept.first_quarter.length);
     // The chosen timeframe sets the day range of each phase (thirds of 30, 60 or 90 days).
     var days = { "30-day": 30, "60-day": 60, "90-day": 90 }[timeframe] || 90;
     var third = days / 3;
@@ -70,7 +98,9 @@ const GTM_CONSULTANT = {
         immediate: steps.days_30.slice(),
         short_term: steps.days_60.slice(),
         medium_term: steps.first_quarter.slice()
-      }
+      },
+      business_model: model ? MODEL_NAME[model] : "not given (the steps assume a software subscription; set business_model to change it)",
+      note: dropped ? dropped + " step" + (dropped === 1 ? "" : "s") + " that need a product people can try on their own (a trial, self-service sign-up or in-app prompts) were left out, because the business model is " + MODEL_NAME[model] + "." : undefined
     };
   }
 };
@@ -79,7 +109,7 @@ var TOOLS = [
   {
     name: "gtm_consultation",
     title: "Free EPIC audit (in your browser and in Claude)",
-    description: "Scores the four motions from 1 to 10 with the documented rubric and names the primary and secondary motion. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary.",
+    description: "Scores the four motions from 1 to 10 with the documented rubric, names the primary and secondary motion, and lists the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary.",
     inputSchema: {
       type: "object",
       properties: {
@@ -94,7 +124,8 @@ var TOOLS = [
         self_serve: { type: "boolean", description: "Optional. true if customers can sign up and get value without talking to sales" },
         deal_source: { type: "string", enum: ["referrals", "outbound", "partnerships", "inbound", "mixed"], description: "Optional. Where the majority of deals come from" },
         geography: { type: "string", enum: ["india", "us_eu", "middle_east", "apac", "global"], description: "Optional. Primary market" },
-        current_channels: { type: "string", description: "Optional. What you do today (content, outbound, events, partnerships, PLG, community)" }
+        current_channels: { type: "string", description: "Optional. What you do today (content, outbound, events, partnerships, PLG, community)" },
+        business_model: { type: "string", enum: ["saas", "services", "connectivity", "transactions", "marketplace", "hardware_software", "investment"], description: "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Read from your other inputs when left out" }
       },
       required: ["gtm_challenge"]
     },
@@ -126,12 +157,13 @@ var TOOLS = [
   {
     name: "generate_roadmap",
     title: "GTM Roadmap (in Claude)",
-    description: "Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps. Builds text from the inputs only.",
+    description: "Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps, without the self-serve steps when your business model is not a software subscription. Builds text from the inputs only.",
     inputSchema: {
       type: "object",
       properties: {
         primary_focus: { type: "string", enum: ["E", "P", "I", "C"], description: "EPIC motion to plan for: E, P, I or C" },
-        timeframe: { type: "string", enum: ["30-day", "60-day", "90-day"], description: "30-day, 60-day or 90-day (default 90-day)" }
+        timeframe: { type: "string", enum: ["30-day", "60-day", "90-day"], description: "30-day, 60-day or 90-day (default 90-day)" },
+        business_model: { type: "string", enum: ["saas", "services", "connectivity", "transactions", "marketplace", "hardware_software", "investment"], description: "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Steps that need a product people can try on their own are left out for a business that is not a software subscription" }
       },
       required: ["primary_focus"]
     },
@@ -145,7 +177,7 @@ function handleToolCall(name, args) {
   } else if (name === "epic_audit") {
     return GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
   } else if (name === "generate_roadmap") {
-    return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe);
+    return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args.business_model);
   } else {
     throw new Error("Unknown tool: " + name);
   }
@@ -277,7 +309,7 @@ export default async function handler(req, context) {
         id: id,
         result: {
           protocolVersion: version,
-          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.8" },
+          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.9" },
           capabilities: { tools: {} }
         }
       });

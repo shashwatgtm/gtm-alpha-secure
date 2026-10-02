@@ -190,7 +190,7 @@ export const ACTIONS = '<nav class="hx10-actions" aria-label="Report actions">' 
 // still in it (nothing is stored anywhere); without that history, or without JavaScript, the link opens the form.
 export const EDIT_SCRIPT = "(function(){var a=document.getElementById('edit-answers');if(!a)return;a.addEventListener('click',function(e){" +
   "try{var r=document.referrer?new URL(document.referrer):null;if(r&&r.origin===location.origin&&(r.pathname==='/consultation'||r.pathname==='/consultation.html')&&history.length>1){e.preventDefault();history.back();}}catch(x){}});})();";
-export const EXAMPLE_NOTE = '<p class="hx10-note"><strong>This report uses the made-up example answers (Clausewise).</strong> ' +
+export const EXAMPLE_NOTE = '<p class="hx10-note"><strong>This report uses the made-up example answers (Branchwire).</strong> ' +
   'Press Edit my answers to change them to your own.</p>';
 export function withChrome(report, example = false) {
   return report

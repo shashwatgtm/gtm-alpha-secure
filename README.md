@@ -1,4 +1,4 @@
-# GTM Alpha MCP Server v1.3.8
+# GTM Alpha MCP Server v1.3.9
 
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-Listed-green)](https://registry.modelcontextprotocol.io)
 [![npm version](https://img.shields.io/npm/v/@shashwatgtmalpha/gtm-alpha-mcp-server)](https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server)
@@ -77,13 +77,13 @@ Use the function declarations in gemini-functions.json:
 
 ## Tools and inputs
 
-Generated on 29 September 2026 from the server's own tool list and checked again on 30 September 2026 (`tools/list` of gtm-alpha-mcp-server 1.3.8, the same code as the hosted MCP address), so every tool name, title, description and input below is exactly what the server accepts. Every tool is read-only.
+Generated on 29 September 2026 from the server's own tool list and checked again on 2 October 2026 (`tools/list` of gtm-alpha-mcp-server 1.3.9, the same code as the hosted MCP address), so every tool name, title, description and input below is exactly what the server accepts. Every tool is read-only.
 
 | # | Tool | Title | What it does |
 |---|---|---|---|
-| 1 | `gtm_consultation` | Free EPIC audit (in your browser and in Claude) | Scores the four motions from 1 to 10 with the documented rubric and names the primary and secondary motion. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary. |
+| 1 | `gtm_consultation` | Free EPIC audit (in your browser and in Claude) | Scores the four motions from 1 to 10 with the documented rubric, names the primary and secondary motion, and lists the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary. |
 | 2 | `epic_audit` | EPIC scores (in Claude) | Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes. Add the optional inputs for a full score; without them the result is marked preliminary. |
-| 3 | `generate_roadmap` | GTM Roadmap (in Claude) | Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps. Builds text from the inputs only. |
+| 3 | `generate_roadmap` | GTM Roadmap (in Claude) | Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps, without the self-serve steps when your business model is not a software subscription. Builds text from the inputs only. |
 
 ### Inputs of each tool
 
@@ -103,6 +103,7 @@ Generated on 29 September 2026 from the server's own tool list and checked again
 | `deal_source` | No | one of: `referrals`, `outbound`, `partnerships`, `inbound`, `mixed` | Optional. Where the majority of deals come from |
 | `geography` | No | one of: `india`, `us_eu`, `middle_east`, `apac`, `global` | Optional. Primary market |
 | `current_channels` | No | string | Optional. What you do today (content, outbound, events, partnerships, PLG, community) |
+| `business_model` | No | one of: `saas`, `services`, `connectivity`, `transactions`, `marketplace`, `hardware_software`, `investment` | Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Read from your other inputs when left out |
 
 #### 2. EPIC scores (in Claude) (`epic_audit`)
 
@@ -126,6 +127,7 @@ Generated on 29 September 2026 from the server's own tool list and checked again
 |---|---|---|---|
 | `primary_focus` | Yes | one of: `E`, `P`, `I`, `C` | EPIC motion to plan for: E, P, I or C |
 | `timeframe` | No | one of: `30-day`, `60-day`, `90-day` | 30-day, 60-day or 90-day (default 90-day) |
+| `business_model` | No | one of: `saas`, `services`, `connectivity`, `transactions`, `marketplace`, `hardware_software`, `investment` | Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Steps that need a product people can try on their own are left out for a business that is not a software subscription |
 
 ---
 
