@@ -62,3 +62,10 @@ test("epic_audit: names the company given and adds sector notes for a telecom co
   assert.deepEqual(j.scores, plain.scores);
   assert.match(JSON.stringify(j.sector_notes || ""), /uptime|site|SD-WAN|CIO/i);
 });
+
+// The consultation's first steps label example counts the way the roadmap does ("top 50" is an example figure).
+test("gtm_consultation: an example count in the first steps is labelled as an example figure", async () => {
+  const j = JSON.parse((await call("gtm_consultation", { gtm_challenge: "We sell managed SD-WAN to enterprises with many branches.", industry: "Telecom", business_stage: "series-b", acv_usd: 240000, deal_cycle_days: 150, tam_accounts: 800 })).text);
+  for (const t of j.first_30_days) if (/\btop \d+\b/.test(t)) assert.match(t, /Example figure: replace with your own/);
+  assert.ok(j.first_30_days.some((t) => /\btop \d+\b/.test(t)), "the E steps include a top-N count");
+});

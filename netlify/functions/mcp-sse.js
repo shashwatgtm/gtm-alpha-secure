@@ -55,7 +55,7 @@ const GTM_CONSULTANT = {
     var v = detectVertical(args.industry, args.gtm_challenge, args.current_channels, args.company_description);
     var m = detectModel(args.business_model, args.industry, args.gtm_challenge, args.current_channels);
     var steps = stepsFor(analysis.primary.letter, m.model);
-    var first = steps.days_30.length ? steps.days_30 : steps.days_60;
+    var first = (steps.days_30.length ? steps.days_30 : steps.days_60).map(function(t) { return /\btop \d+\b/.test(t) ? t + " (Example figure: replace with your own)" : t; });
     lines.push("", "First 30 days for " + analysis.primary.motion + ":");
     first.forEach(function(t) { lines.push("- " + t); });
     if (v) lines.push("", "Sector (read from your inputs): " + v.name + ". Who usually decides: " + v.committee);
