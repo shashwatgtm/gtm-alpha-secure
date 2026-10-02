@@ -134,11 +134,12 @@ var TOOLS = [
   {
     name: "epic_audit",
     title: "EPIC scores (in Claude)",
-    description: "Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes. Add the optional inputs for a full score; without them the result is marked preliminary.",
+    description: "Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Add the optional inputs for a full score; without them the result is marked preliminary.",
     inputSchema: {
       type: "object",
       properties: {
         challenge: { type: "string", description: "Describe your GTM situation" },
+        company_name: { type: "string", description: "Optional. Your company or product name, repeated in the answer" },
         industry: { type: "string", description: "Your industry" },
         business_stage: { type: "string", description: "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B)" },
         acv_usd: { type: "number", minimum: 0, description: "Optional. Average contract value per year in US dollars (for example 42000)" },
@@ -175,7 +176,12 @@ function handleToolCall(name, args) {
   if (name === "gtm_consultation") {
     return GTM_CONSULTANT.generateConsultation(args);
   } else if (name === "epic_audit") {
-    return GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
+    // Run 19 (D80, problem 8): the scores are unchanged; the company name given is echoed and, when the inputs name a
+    // sector clearly, its buying committee and usual objections follow the scores (nothing is invented about the company).
+    var audit = GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
+    var named = typeof args.company_name === "string" ? args.company_name.trim() : "";
+    var sv = detectVertical(args.industry, args.challenge, args.current_channels);
+    return Object.assign(named ? { company: named } : {}, audit, sv ? { sector_notes: sectorNotes(sv) } : {});
   } else if (name === "generate_roadmap") {
     return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args.business_model);
   } else {

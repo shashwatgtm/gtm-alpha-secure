@@ -82,7 +82,7 @@ Generated on 29 September 2026 from the server's own tool list and checked again
 | # | Tool | Title | What it does |
 |---|---|---|---|
 | 1 | `gtm_consultation` | Free EPIC audit (in your browser and in Claude) | Scores the four motions from 1 to 10 with the documented rubric, names the primary and secondary motion, and lists the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary. |
-| 2 | `epic_audit` | EPIC scores (in Claude) | Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes. Add the optional inputs for a full score; without them the result is marked preliminary. |
+| 2 | `epic_audit` | EPIC scores (in Claude) | Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Add the optional inputs for a full score; without them the result is marked preliminary. |
 | 3 | `generate_roadmap` | GTM Roadmap (in Claude) | Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps, without the self-serve steps when your business model is not a software subscription. Builds text from the inputs only. |
 
 ### Inputs of each tool
@@ -110,6 +110,7 @@ Generated on 29 September 2026 from the server's own tool list and checked again
 | Input | Required | Type | Description |
 |---|---|---|---|
 | `challenge` | Yes | string | Describe your GTM situation |
+| `company_name` | No | string | Optional. Your company or product name, repeated in the answer |
 | `industry` | No | string | Your industry |
 | `business_stage` | No | string | Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B) |
 | `acv_usd` | No | number (0 or more) | Optional. Average contract value per year in US dollars (for example 42000) |

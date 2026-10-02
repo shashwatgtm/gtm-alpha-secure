@@ -51,3 +51,14 @@ test("generate_roadmap: a services business gets no self-service trial or viral 
   assert.doesNotMatch(all, /self-service trial|viral|freemium|in-app/i);
   assert.match(JSON.stringify(j), /services/i);
 });
+
+// Problem 8 on the scores tool: the company name given is repeated and the sector notes follow, the scores unchanged.
+test("epic_audit: names the company given and adds sector notes for a telecom company", async () => {
+  const args = { challenge: "We sell managed SD-WAN and business internet to companies with many branches; deals wait for an outage at the buyer.",
+    industry: "Telecom: managed SD-WAN and business internet", business_stage: "series-b", acv_usd: 240000, deal_cycle_days: 150 };
+  const plain = JSON.parse((await call("epic_audit", args)).text);
+  const j = JSON.parse((await call("epic_audit", { ...args, company_name: "Branchwire (example company)" })).text);
+  assert.equal(j.company, "Branchwire (example company)");
+  assert.deepEqual(j.scores, plain.scores);
+  assert.match(JSON.stringify(j.sector_notes || ""), /uptime|site|SD-WAN|CIO/i);
+});
