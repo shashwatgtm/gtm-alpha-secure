@@ -180,22 +180,27 @@ export const BUYER_FUNCTIONS = [
   { id: "finance", re: /\b(billing|invoic\w*|revenue recognition|collections|reconcil\w*|accounts (?:payable|receivable)|finance|cfo|controller|payments?)\b/gi,
     name: "finance", committee: "The Chief Financial Officer or VP Finance signs; the head of billing, finance operations or revenue operations champions; finance operations use it daily; IT and security check the ERP, CRM and payment integrations; audit reviews how revenue is recognised.",
     roles: ["Chief Financial Officer", "VP Finance", "Head of Billing or Revenue Operations", "Finance Controller"],
+    terms: ["billing", "invoicing", "revenue recognition", "collections", "reconciliation", "month-end close", "dunning", "ERP", "days sales outstanding"],
     metrics: ["days to close the books", "billing errors and credit notes", "days sales outstanding", "failed payment recovery", "time spent reconciling"] },
   { id: "revenue", re: /\b(pipeline|sales team|sales reps?|quota|revenue operations|revops|crm|forecast\w*|sales cycle|sellers)\b/gi,
     name: "revenue", committee: "The Chief Revenue Officer signs; the head of sales operations or revenue operations champions; sales managers and reps use it daily; IT and security check the CRM integration; finance checks the cost per seat or per user.",
     roles: ["Chief Revenue Officer", "Head of Sales Operations", "Head of Revenue Operations", "Sales Manager"],
+    terms: ["pipeline", "forecast", "quota", "win rate", "CRM", "sales cycle", "ramp time"],
     metrics: ["pipeline coverage", "win rate", "sales cycle length", "forecast accuracy", "rep ramp time"] },
   { id: "customer", re: /\b(customer success|support|churn|renewals?|onboarding|tickets?|customer experience|nps)\b/gi,
     name: "customer", committee: "The Chief Customer Officer or Head of Customer Success signs; a support or success operations lead champions; success managers and agents use it daily; IT and security check data access.",
     roles: ["Chief Customer Officer", "Head of Customer Success", "Head of Support", "Support Operations Lead"],
+    terms: ["churn", "renewal", "health score", "onboarding", "first response time", "tickets", "net revenue retention"],
     metrics: ["net revenue retention", "logo churn", "time to first value", "first response time", "renewal rate"] },
   { id: "marketing", re: /\b(marketing|campaigns?|leads?|demand gen\w*|content|seo|brand)\b/gi,
     name: "marketing", committee: "The Chief Marketing Officer or VP Marketing signs; the head of demand generation or marketing operations champions; marketers use it daily; sales operations and IT check the CRM and data flows.",
     roles: ["Chief Marketing Officer", "VP Marketing", "Head of Demand Generation", "Marketing Operations Lead"],
+    terms: ["pipeline sourced", "cost per qualified lead", "campaign", "attribution", "lead scoring", "marketing automation"],
     metrics: ["pipeline sourced by marketing", "cost per qualified lead", "lead to meeting conversion", "campaign cycle time"] },
   { id: "people", re: /\b(hiring|recruit\w*|employees?|payroll|hr|people team|talent|onboarding new hires)\b/gi,
     name: "people", committee: "The Chief People Officer or Head of HR signs; the head of HR operations or talent champions; HR and managers use it daily; IT and security check employee data access; finance checks cost per employee.",
     roles: ["Chief People Officer", "Head of HR Operations", "Head of Talent", "HR Business Partner"],
+    terms: ["time to hire", "offer acceptance", "onboarding", "payroll", "HR administration", "employee records"],
     metrics: ["time to hire", "offer acceptance", "time spent on HR administration", "employee onboarding time"] },
 ];
 
@@ -281,7 +286,7 @@ export function planContext({ vertical, model, args }) {
   const inv = model === "investment";
   const sp = inv ? INVESTMENT_BLOCK : vertical ? SECTOR_PLAN[vertical.id] : null;
   const roles = inv ? INVESTMENT_BLOCK.roles : fn ? fn.roles : vertical ? vertical.buyerRoles : ["the person who signs", "the champion who feels the problem", "the daily user"];
-  const metrics = inv ? INVESTMENT_BLOCK.metrics : fn ? fn.metrics : vertical ? vertical.metrics : ["the one number your buyer already reports on", "the cost of the problem today"];
+  const metrics = inv ? INVESTMENT_BLOCK.metrics : fn ? fn.metrics : vertical ? vertical.metrics : ["the number your buyer already reports on", "the cost of the problem today"];
   const objections = inv ? INVESTMENT_BLOCK.objections : vertical ? vertical.objections : [];
   const proofShape = inv ? INVESTMENT_BLOCK.proofShape : vertical ? vertical.proofShape : "a before and after of one measure your buyer already tracks, at one customer, signed off by that customer";
   const vocab = inv ? INVESTMENT_BLOCK.vocabulary : vertical ? vertical.vocabulary : [];
@@ -316,8 +321,9 @@ const neutral = {
 const sp = (c, k) => (c.sp && c.sp[k]) || neutral[k];
 
 // What the user already does, quoted in their own words (the text was made inert before it got here).
+const deciders = (c) => (c.vertical || c.model === "investment" ? joinList(c.roles.slice(0, 2)) : "the person who signs and the champion who feels the problem");
 const channelStep = (c) => c.channels
-  ? "Start from what you do today. You said: \"" + c.channels + "\". For each channel, count the meetings it produced with the people who sign or champion (" + c.signer + " or " + c.champion + "), and keep the one or two that reach them."
+  ? "Start from what you do today. You said: \"" + c.channels + "\". For each channel, count the meetings it produced with the roles that decide (" + deciders(c) + "), and keep the one or two that reach them."
   : null;
 
 function objectionStep(c) {
@@ -358,14 +364,15 @@ function planE(c) {
 
 // I: Inbound and Outbound
 function planI(c) {
-  const words = c.vocab.length ? joinList(c.vocab.slice(0, 5)) : "the words your buyers use for the problem";
+  const words = c.vocab.length ? joinList(c.vocab.slice(0, 5)) : "";
   const d30 = [
-    "Write down the words your buyers use for the problem (" + words + ") next to the words you use. Keep the buyer's version for search terms, subject lines and headlines.",
-    c.channels ? channelStep(c) : "List what you do today to reach buyers, count the meetings each channel produced with the people who sign or champion (" + c.signer + " or " + c.champion + "), and keep the one or two that reach them.",
-    "Build the outbound list by role, " + joinList(c.roles.slice(0, 3)) + (c.tam ? ", at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : ", at accounts that show a trigger") + ". One message per role, never one message for all.",
+    words ? "Write down the words your buyers use for the problem (" + words + ") next to the words you use. Keep the buyer's version for search terms, subject lines and headlines."
+      : "Interview five customers and write down, in their exact words, how they describe the problem before they buy" + EXAMPLE + ". Keep their version for search terms, subject lines and headlines, and drop yours where the two differ.",
+    c.channels ? channelStep(c) : "List what you do today to reach buyers, count the meetings each channel produced with the roles that decide (" + deciders(c) + "), and keep the one or two that reach them.",
+    "Build the outbound list by role (" + joinList(c.roles.slice(0, 3)) + ")" + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
   ];
   const d60 = [
-    "Publish the proof in the forms these buyers read: " + joinLong(sp(c, "reads")) + ". Build each piece on one number the buyer already watches (" + metricsText(c, 2) + ").",
+    "Publish the proof in the forms these buyers read: " + joinLong(sp(c, "reads")) + ". Build each piece on the numbers the buyer already watches (" + metricsText(c, 2) + ").",
     "Start a short outbound sequence to the list. Each message opens with a problem in the buyer's words and ends with one ask: " + c.mp.entry + ".",
     c.longCycle ? "Agree with sales which signals mean a call is worth booking (a reply, a second reader at the same account, a request for the reference). With " + c.cycleText + ", expect several people to engage before anyone asks for a meeting." : "Agree with sales which signals mean a call is worth booking (a reply, a second reader at the same account, a request for the reference) and how fast each is followed up.",
   ];
@@ -492,35 +499,36 @@ export function sectorBlock(vertical, model, args) {
     usual_objections: v.objections.map((o) => o.objection),
     proof_that_lands: v.proofShape,
     sales_motion: v.salesMotion,
-    buyer_words: [...new Set([...v.vocabulary, ...((SECTOR_PLAN[v.id] || {}).terms || [])])],
+    buyer_words: [...new Set([...(c.fn ? c.fn.terms : v.vocabulary), ...((SECTOR_PLAN[v.id] || {}).terms || [])])],
   }, fnBlock);
 }
 
 /** One paragraph that says how the lead motion sits with the way this sector (or this kind of business) usually buys. */
-export function sectorFit({ vertical, model, letter, motionName, scores, args, reason }) {
+export function sectorFit({ vertical, model, letter, motionName, scores, selfServeGiven }) {
   const inv = model === "investment";
   const spx = inv ? INVESTMENT_BLOCK : vertical ? SECTOR_PLAN[vertical.id] : null;
   if (!spx) return null;
   const typical = inv ? ["E"] : spx.typical;
   const name = inv ? "investment management" : vertical.name;
   const own = spx.fit[letter];
-  const a = args || {};
   const tie = scores && ["E", "P", "I", "C"].every((k) => scores[k] === scores[letter]);
+  const selfCapable = (MODEL_PLAN[model] || MODEL_PLAN.unknown).selfServe !== false;
   let text;
   if (tie) {
     text = "No input separated the four motions, so the scores tie and " + motionName + " leads only by the tie-break. Use the " + name + " pattern to choose: " + spx.fit[typical[0]] + ".";
   } else if (typical.includes(letter)) {
     text = "The lead motion, " + motionName + ", matches how " + name + " is usually bought: " + own + ".";
   } else {
-    text = "The lead motion, " + motionName + ", differs from the usual " + name + " pattern, where " + lowerFirst(spx.fit[typical[0]]) + ". Your inputs decided it" + (reason ? " (" + reason + ")" : "") + ". " + own.charAt(0).toUpperCase() + own.slice(1) + ".";
+    text = "The lead motion, " + motionName + ", differs from the usual " + name + " pattern (" + lowerFirst(spx.fit[typical[0]]) + "). Your numbers decided it, so test the gap: " + own + ".";
   }
-  // The sector's other side of the pattern, when the lead differs: where the second route fits.
-  if (!tie && typical.includes(letter) && typical.length === 1 && model !== "investment" && vertical && vertical.id === "saas") text += "";
-  if (!tie && letter === "E" && vertical && (vertical.id === "saas" || vertical.id === "software" || vertical.id === "ai-native" || vertical.id === "vertical-saas") && spx.fit.P) {
-    text += " The product-led route still fits where it applies: " + spx.fit.P + ".";
+  // Where the sector's usual route is product-led but the score is low because self_serve was not given, say so.
+  if (!tie && letter !== "P" && typical.includes("P") && selfCapable && !selfServeGiven && scores) {
+    text += " In this sector the product-led route is common; its score is " + scores.P + " and no lift was applied because self_serve was not given (see the self-serve check).";
+  }
+  // A large-account lead in a sector that also sells to small accounts self-serve.
+  if (!tie && letter === "E" && selfCapable && spx.fit.P && !typical.includes("P") && vertical && ["saas", "software", "ai-native", "vertical-saas"].includes(vertical.id)) {
+    text += " The product-led route still fits smaller accounts: " + spx.fit.P + ".";
   }
   return text.replace(/\.\./g, ".");
 }
 
-/** Lines that read back each number the user gave and what it did, and each one not given. Wording only; the scores come from epic-advanced.js. */
-export function inputsRead(applied) { return applied; }

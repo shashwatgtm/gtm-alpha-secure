@@ -38,7 +38,7 @@ function selfServeCheck(input, analysis, model, text) {
   var lead = alt.primary.letter === analysis.primary.letter ? "the lead would stay " + analysis.primary.motion : "the lead would move to " + (alt.primary.letter === "P" ? "the product-led motion" : alt.primary.motion);
   var seen = /(?:\b[\w'-]+\s+){0,5}\d{1,3}(?:,\d{3})+\+?\s+(?:companies|businesses|organi[sz]ations|teams|developers|customers|users|accounts)\b/i.exec(text || "");
   return "self_serve was not given, so the Product-Led score got no lift. If people can sign up and get value without talking to sales, set self_serve to true: the Product-Led score would go from " + analysis.scores.P + " to " + alt.scores.P + " and " + lead + "."
-    + (seen ? " Your text mentions \"" + seen[0].trim() + "\"; that is the case for setting it if that adoption happens without a sales call." : "");
+    + (seen ? " Your text says \"" + seen[0].trim() + "\". If that adoption happens without a sales call, self_serve is the input to change." : "");
 }
 // The answer both scoring tools share: scores, inputs read back, model, sector block, fit, the first 30 days.
 function describe(args) {
@@ -48,7 +48,7 @@ function describe(args) {
   var v = rc.v, m = rc.m;
   var plan = buildPlan({ letter: analysis.primary.letter, vertical: v, model: m.model, args: input });
   var notes = sectorBlock(v, m.model, input);
-  var fit = sectorFit({ vertical: v, model: m.model, letter: analysis.primary.letter, motionName: analysis.primary.motion, scores: analysis.scores, args: input, reason: null });
+  var fit = sectorFit({ vertical: v, model: m.model, letter: analysis.primary.letter, motionName: analysis.primary.motion, scores: analysis.scores, args: input, selfServeGiven: input.self_serve === true || input.self_serve === false });
   return { analysis: analysis, v: v, m: m, first: plan.days_30, notes: notes, fit: fit, check: selfServeCheck(input, analysis, m.model, input.gtm_challenge), input: input };
 }
 
