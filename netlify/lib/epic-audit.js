@@ -3,6 +3,7 @@
 
 import { randomUUID } from 'node:crypto';
 import { allowedOrigin } from './site-origin.js';
+import { detectVertical } from './verticals.js';
 
 // Run 10 R10-09: the API accepts only the fields it reads (the same ones openapi.yaml documents), with a 32 KB body cap as
 // on the free audit form (premium-audit.js), and the server makes the storage key itself. The scoring code below is
@@ -664,26 +665,60 @@ const EPIC_AUDIT_ENGINE = {
   },
 
   getIndustryOpportunities(industry, scores) {
+    // Run 21b: the typed industry is read by the shared sector reader. The SaaS, fintech and logistics entries below were each written for
+    // one kind of company, so their stock lines are shown only when the reader names that kind (vertical.subtype); every other company of
+    // the vertical gets the neutral lines. Words the reader does not place in one of those three verticals use the table by the typed word.
+    const byVertical = {
+      'saas': {
+        generic: [
+          'Integration ecosystem for platform extensibility',
+          'Customer proof content written for each buyer role',
+          'Customer community and user groups'
+        ],
+        kinds: ['product-growth'],
+        stock: [
+          'Product-led growth through freemium model implementation',
+          'Developer community building for API adoption',
+          'Integration ecosystem for platform extensibility'
+        ]
+      },
+      'fintech': {
+        generic: [
+          'Regulatory compliance partnership ecosystem',
+          'Trust-building through thought leadership content',
+          'Partner channel with the firms that already serve your buyers'
+        ],
+        kinds: ['wealth-investment', 'insurance'],
+        stock: [
+          'Regulatory compliance partnership ecosystem',
+          'Trust-building through thought leadership content',
+          'Financial advisor and broker channel development'
+        ]
+      },
+      'logistics-tech': {
+        generic: [
+          'Integration partner ecosystem with the systems your buyers already run',
+          'Operations-focused inbound content strategy',
+          'Supply chain professional community'
+        ],
+        kinds: ['freight-marketplace', 'warehousing', 'transport-management'],
+        stock: [
+          'Carrier and fulfillment partner ecosystem',
+          'Operations-focused inbound content strategy',
+          'Supply chain professional community'
+        ]
+      }
+    };
+    const word = String(industry || '').toLowerCase().trim();
+    const read = detectVertical({ seller: [String(industry || '')] });
+    const entry = byVertical[(read && read.id) || (word === 'logistics' ? 'logistics-tech' : word)];
+    if (entry) return read && read.subtype && entry.kinds.includes(read.subtype) ? entry.stock : entry.generic;
+
     const industryOpportunities = {
-      'saas': [
-        'Product-led growth through freemium model implementation',
-        'Developer community building for API adoption',
-        'Integration ecosystem for platform extensibility'
-      ],
-      'fintech': [
-        'Regulatory compliance partnership ecosystem',
-        'Trust-building through thought leadership content',
-        'Financial advisor and broker channel development'
-      ],
       'healthcare': [
         'Healthcare provider partnership network',
         'Compliance-focused content marketing',
         'Medical professional community engagement'
-      ],
-      'logistics': [
-        'Carrier and fulfillment partner ecosystem',
-        'Operations-focused inbound content strategy',
-        'Supply chain professional community'
       ],
       'technology': [
         'Developer ecosystem and API partnerships',
@@ -697,7 +732,7 @@ const EPIC_AUDIT_ENGINE = {
       ]
     };
 
-    return industryOpportunities[industry?.toLowerCase()] || [
+    return industryOpportunities[word] || [
       'Partnership ecosystem development',
       'Industry-specific content marketing',
       'Professional community engagement'
