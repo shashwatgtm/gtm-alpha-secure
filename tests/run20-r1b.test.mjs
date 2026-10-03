@@ -398,3 +398,46 @@ test("round 3: the sector named in industry decides the usual model, whatever th
   assert.match(j.business_model, /services/);
   assert.doesNotMatch(flat(j), /software subscription/);
 });
+
+// ---- Round 4 (fresh judge on f89b054f: Airtel-like roadmap at 3, and smaller points) ----
+test("round 4: the telecom objection is worded neutrally, for a challenger and for an incumbent alike", async () => {
+  const r = await call("generate_roadmap", { primary_focus: "E", industry: "telecom", company_name: "Linkspan", acv_usd: 120000, deal_cycle_days: 120 });
+  const s = plan(r);
+  assert.doesNotMatch(s, /higher than the national operator/i);
+  assert.match(s, /price per site compared with the incumbent operator the buyer uses today/i);
+  const c = await call("gtm_consultation", CASES.telecom);
+  assert.doesNotMatch(flat(c.sector_notes), /higher than the national operator/i);
+  assert.match(flat(c.sector_notes.usual_objections), /incumbent operator/i);
+});
+
+test("round 4: no 'first two partners' wording; partners already held are reviewed before new ones are added", async () => {
+  for (const industry of ["telecom", "SaaS", "cybersecurity", "ITeS"]) {
+    const r = await call("generate_roadmap", { primary_focus: "E", industry, acv_usd: 120000, deal_cycle_days: 120 });
+    const s = plan(r);
+    assert.doesNotMatch(s, /first two partners|Sign the first/i, industry);
+    assert.match(s, /partners you already (have|work with)/i, industry);
+  }
+});
+
+test("round 4: inbound and outbound at a large ACV or a long cycle gets a fit line and starts with partner and referral steps", async () => {
+  const r = await call("generate_roadmap", { primary_focus: "I", industry: "ITeS", acv_usd: 400000, deal_cycle_days: 180 });
+  assert.equal(Object.keys(r)[0], "read_this_first");
+  assert.match(r.read_this_first, /400,000/);
+  assert.match(r.read_this_first, /partner|referral/i);
+  assert.match(plan(r), /introductions/i);
+  const small = await call("generate_roadmap", { primary_focus: "I", industry: "SaaS", acv_usd: 20000, deal_cycle_days: 45 });
+  assert.equal(small.read_this_first, undefined);
+});
+
+test("round 4: buyer words for a finance buyer are finance and billing words, not lead scoring, CRM or marketing automation", async () => {
+  const j = await call("gtm_consultation", CASES.saas);
+  const w = j.sector_notes.buyer_words.join(", ");
+  assert.match(w, /billing|invoicing|revenue recognition|dunning/);
+  assert.doesNotMatch(w, /lead scoring|CRM|marketing automation|pipeline|activation/i);
+});
+
+test("round 4: the MSSP partner line does not call the buyers mid-size", async () => {
+  const j = await call("gtm_consultation", CASES.cyber);
+  assert.doesNotMatch(plan(j), /mid-size/i);
+  assert.match(plan(j), /MSSPs/);
+});

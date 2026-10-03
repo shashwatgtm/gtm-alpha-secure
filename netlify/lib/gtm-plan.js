@@ -118,6 +118,16 @@ export const SECTOR_PLAN = {
   },
   telecom: {
     plg: { user: "a network manager looking at a site survey", signer: "the CIO" },
+    over: {
+      // The shared file words this objection for a challenger ("higher than the national operator"). Whether the seller is the incumbent
+      // or a challenger is not known here, so it is worded from the buyer's side.
+      objections: [
+        { objection: "Price per site compared with the incumbent operator the buyer uses today", response: "Compare the total cost per site, including outages, repair time and the IT team's time spent managing links." },
+        { objection: "Migration risk across many sites", response: "Propose a wave plan by region with fallback links and a rollback rule for each wave." },
+        { objection: "A long relationship with the current operator", response: "Start with the sites where service is worst and let the results make the case." },
+        { objection: "Security overlay", response: "Show how the network and the security controls are managed together and who responds to an incident." },
+      ],
+    },
     terms: ["underlay", "overlay", "private 5G", "IoT connectivity", "leased line", "SIM", "roaming", "CPaaS", "DDoS protection", "colocation", "VPN", "WAN", "bandwidth", "managed SD-WAN"],
     partners: ["device, firewall and SD-WAN technology vendors you build on", "systems integrators and managed service providers that run enterprise networks", "data centre and cloud providers whose customers need connectivity", "channel partners and resellers that already hold enterprise accounts"],
     accounts: "number of branch sites, sites with repeated outages, contract end dates and the incumbent operator",
@@ -139,7 +149,7 @@ export const SECTOR_PLAN = {
     entry: "a time-boxed proof of value on the buyer's own environment, with success criteria agreed in writing",
     plg: { user: "a security engineer running a scan on a small scope", signer: "the CISO" },
     terms: ["threat intelligence", "attack path", "dark web", "phishing", "takedown", "brand impersonation", "leaked credentials", "vulnerability", "SIEM", "XDR", "EDR", "zero trust", "third-party risk", "digital risk protection"],
-    partners: ["managed security service providers (MSSPs) that run security for mid-size buyers", "SIEM, ticketing and cloud platform vendors you integrate with", "cloud marketplaces your buyers buy through", "audit and risk advisory firms that recommend tools after a finding"],
+    partners: ["managed security service providers (MSSPs) that run or extend security operations for their clients", "SIEM, ticketing and cloud platform vendors you integrate with", "cloud marketplaces your buyers buy through", "audit and risk advisory firms that recommend tools after a finding"],
     accounts: "recent audit findings or incidents, the cloud and security tools in use, regulatory pressure and the size of the security team",
     reviews: "security architecture, risk and compliance, and a proof of value",
     reads: ["exposure and attack path write-ups", "alert fatigue and prioritisation papers", "SIEM and ticketing integration notes", "audit evidence guides"],
@@ -209,7 +219,7 @@ export const BUYER_FUNCTIONS = [
   { id: "finance", plg: { user: "a finance operations user or an engineer evaluating the integration", signer: "the CFO or VP Finance" }, re: /\b(billing|invoic\w*|revenue recognition|collections|reconcil\w*|accounts (?:payable|receivable)|finance|cfo|controller|payments?)\b/gi,
     name: "finance", committee: "The Chief Financial Officer or VP Finance signs; the head of billing, finance operations or revenue operations champions; finance operations use it daily; IT and security check the ERP, CRM and payment integrations; audit reviews how revenue is recognised.",
     roles: ["Chief Financial Officer", "VP Finance", "Head of Billing or Revenue Operations", "Finance Controller"],
-    terms: ["billing", "invoicing", "revenue recognition", "collections", "reconciliation", "month-end close", "dunning", "ERP", "days sales outstanding"],
+    terms: ["billing", "subscription billing", "usage-based billing", "invoicing", "revenue recognition", "proration", "dunning", "collections", "payment gateway", "reconciliation", "month-end close", "ERP", "days sales outstanding"],
     metrics: ["days to close the books", "billing errors and credit notes", "days sales outstanding", "failed payment recovery", "time spent reconciling"] },
   { id: "revenue", plg: { user: "a sales operations user or a rep", signer: "the Chief Revenue Officer" }, re: /\b(pipeline|sales team|sales reps?|quota|revenue operations|revops|crm|forecast\w*|sales cycle|sellers)\b/gi,
     name: "revenue", committee: "The Chief Revenue Officer signs; the head of sales operations or revenue operations champions; sales managers and reps use it daily; IT and security check the CRM integration; finance checks the cost per seat or per user.",
@@ -332,7 +342,7 @@ export function planContext({ vertical, model, args }) {
   const over = !inv ? sectorOver(vertical, a) : {};
   const roles = inv ? INVESTMENT_BLOCK.roles : fn ? fn.roles : over.buyerRoles || (vertical ? vertical.buyerRoles : ["the person who signs", "the champion who feels the problem", "the daily user"]);
   const metrics = inv ? INVESTMENT_BLOCK.metrics : fn ? fn.metrics : over.metrics || (vertical ? vertical.metrics : ["the number your buyer already reports on", "the cost of the problem today"]);
-  const objections = inv ? INVESTMENT_BLOCK.objections : vertical ? vertical.objections : [];
+  const objections = inv ? INVESTMENT_BLOCK.objections : over.objections || (vertical ? vertical.objections : []);
   const proofShape = inv ? INVESTMENT_BLOCK.proofShape : over.proofShape || (vertical ? vertical.proofShape : "a before and after of one measure your buyer already tracks, at one customer, signed off by that customer");
   const vocab = inv ? INVESTMENT_BLOCK.vocabulary : over.vocabulary || (vertical ? vertical.vocabulary : []);
   const mp = MODEL_PLAN[model] || MODEL_PLAN.unknown;
@@ -400,11 +410,11 @@ function planE(c) {
   const d30 = [
     list,
     reviewStep(c),
-    "List who already sits in your buyers' stack and could introduce or connect with you: " + joinLong(sp(c, "partners")) + ". Pick the two that touch the most accounts on your list and ask each what a joint account plan would need.",
+    "List the partners you already have and who else sits in your buyers' stack and could introduce or connect with you: " + joinLong(sp(c, "partners")) + ". Pick the two or three that touch the most accounts on your list, existing partners first, and ask each what a joint account plan would need.",
   ];
   const d60 = [
     "Run a first ABM wave on the top 20 accounts" + EXAMPLE + ". Open with the numbers this buyer already watches (" + metricsText(c, 3) + ") and offer " + c.entry + ".",
-    "Sign the first two partners with a one-page agreement: what each brings (introductions, integration or resale), how an introduced account is tracked from first meeting to closed won, and who answers the buyer's technical questions.",
+    "Put each partner you will work with on one page, renewing the agreements you already have and adding new ones where the list shows a gap: what each brings (introductions, integration or resale), how an introduced account is tracked from first meeting to closed won, and who answers the buyer's technical questions.",
     objectionStep(c),
   ];
   const d90 = [
@@ -416,6 +426,7 @@ function planE(c) {
 }
 
 // I: Inbound and Outbound
+function iNeedsPartners(c) { return (c.acv !== null && c.acv > 50000) || (c.cycle !== null && c.cycle > 90); }
 function planI(c) {
   const words = c.vocab.length ? joinList(c.vocab.slice(0, 5)) : "";
   const d30 = [
@@ -434,6 +445,10 @@ function planI(c) {
     "Track every opportunity from first touch to closed won, so you can see which channel starts the deals that close and how long each takes" + (c.acv ? " at your ACV of " + num(c.acv) + " US dollars a year." : "."),
     "Add the assets this buyer asks for before buying: " + joinLong(sp(c, "assets")) + ".",
   ];
+  if (iNeedsPartners(c)) {
+    d30.unshift("Start with the partners and references that already reach these buyers: " + joinLong(sp(c, "partners")) + ". Ask each for introductions to accounts on your list before any cold outreach.");
+    d60.unshift("Turn the first introductions into meetings and ask every satisfied client or partner for one more introduction, so referrals bring the first conversations and the content and outbound below support them.");
+  }
   return { d30, d60, d90 };
 }
 
@@ -502,6 +517,9 @@ export function fitWarning(c, letter) {
   }
   if (mode === "pilot") {
     return "With " + both + ", a sale like yours rarely starts with a self-serve sign-up: buyers go through a pilot and reviews (" + reviews + "). The steps below are the nearest fitting version of the product-led motion: a pilot-led first step that a user can start without a long contract. Ecosystem and ABM usually leads at this size; run gtm_consultation to score it on your numbers.";
+  }
+  if (letter === "I" && iNeedsPartners(c)) {
+    return "With " + both + ", inbound and outbound alone rarely start a sale this size: buyers shortlist through partners, advisers and references before they answer a cold message. The steps below begin with partner and referral-led steps, then build content and outbound on top of them. Ecosystem and ABM usually leads at this size; run gtm_consultation to score it on your numbers.";
   }
   if (letter === "E" && ((c.acv !== null && c.acv < 5000) || (c.cycle !== null && c.cycle < 14))) {
     return "With " + both + ", account-based selling usually costs more per deal than it returns: a small, fast sale is normally won with product-led or inbound motions. The steps below still follow the motion you asked for; run gtm_consultation to score it on your numbers.";
@@ -638,10 +656,10 @@ export function sectorBlock(vertical, model, args) {
     sector: v.name,
     who_decides: over.committee || v.committee,
     what_it_measures: over.metrics || v.metrics,
-    usual_objections: v.objections.map((o) => o.objection),
+    usual_objections: (over.objections || v.objections).map((o) => o.objection),
     proof_that_lands: over.proofShape || v.proofShape,
     sales_motion: v.salesMotion,
-    buyer_words: [...new Set([...(c.fn ? c.fn.terms : over.vocabulary || v.vocabulary), ...((SECTOR_PLAN[v.id] || {}).terms || [])])],
+    buyer_words: c.fn ? c.fn.terms : [...new Set([...(over.vocabulary || v.vocabulary), ...((SECTOR_PLAN[v.id] || {}).terms || [])])],
   }, fnBlock);
 }
 
