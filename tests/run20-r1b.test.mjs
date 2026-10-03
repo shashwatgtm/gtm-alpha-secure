@@ -266,3 +266,10 @@ test("tools/list: generate_roadmap takes optional industry, company_name, acv_us
   for (const k of ["industry", "company_name", "acv_usd", "deal_cycle_days", "tam_accounts", "current_channels"]) assert.ok(t.inputSchema.properties[k], k);
   assert.deepEqual(t.inputSchema.required, ["primary_focus"]);
 });
+
+test("an acronym at the start of the proof shape is kept in capitals (SLA, not sLA)", async () => {
+  const j = await call("generate_roadmap", { primary_focus: "P", industry: "ITeS" });
+  assert.match(plan(j), /: SLA and cost outcomes/);
+  assert.doesNotMatch(flat(j), /sLA/);
+  assert.doesNotMatch(flat(j), /self-serve sign-up/i);
+});

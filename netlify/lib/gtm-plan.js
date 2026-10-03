@@ -250,7 +250,8 @@ export const INVESTMENT_BLOCK = {
 };
 
 // ---------- small helpers ----------
-const lowerFirst = (t) => (t ? t.charAt(0).toLowerCase() + t.slice(1) : t);
+// Lower-case the first letter of a phrase, but not an acronym such as "SLA" or "TMS".
+const lowerFirst = (t) => (t && !/^[A-Z]{2,}/.test(t) ? t.charAt(0).toLowerCase() + t.slice(1) : t);
 const stripEnd = (t) => String(t || "").replace(/[.\s]+$/, "");
 const num = (n) => Number(n).toLocaleString("en-US");
 export function joinList(items) {

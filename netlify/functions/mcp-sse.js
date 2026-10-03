@@ -143,7 +143,7 @@ const GTM_CONSULTANT = {
     if (!clean(args.current_channels)) missing.push("current_channels, so the first step starts from what you already do");
     var note;
     if (letter === "P" && model && MODEL_PLAN[model] && MODEL_PLAN[model].selfServe === false) {
-      note = "Product-Led Growth for a " + MODEL_NAME[model].replace(/ \(.*$/, "") + " business means a low-risk first step the buyer can take without a full project, not a self-serve sign-up. The steps describe that version.";
+      note = "Product-Led Growth for a " + MODEL_NAME[model].replace(/ \(.*$/, "") + " business means a low-risk first step the buyer can take without a full project, not a product the buyer starts alone. The steps describe that version.";
     }
     var out = {
       // A timeframe the user did not choose is shown as the default, not as their choice.
