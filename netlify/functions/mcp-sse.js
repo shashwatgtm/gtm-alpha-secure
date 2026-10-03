@@ -1,5 +1,5 @@
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
-import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
+import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS, SECTOR_MODEL } from "../lib/verticals.js";
 
 // Run 19 (D80, problems 3, 4 and 8): the plan steps that only fit a product people can try on their own (a software
 // subscription or hardware plus software). For any other business model they are left out and the answer says so.
@@ -52,8 +52,11 @@ const GTM_CONSULTANT = {
     if (analysis.preliminary_note) lines.push(analysis.preliminary_note);
     // Run 19 (D80): the first steps for the lead motion (the report's own plan steps) and the sector's buying committee,
     // read from what the user typed; nothing is invented about the company.
-    var v = detectVertical(args.industry, args.gtm_challenge, args.current_channels, args.company_description);
-    var m = detectModel(args.business_model, args.industry, args.gtm_challenge, args.current_channels);
+    // Run 20 (D92): the user's own description of the company and its industry are read first; the challenge and the channels are
+    // free text and need a second sector word. The business model is read from everything the user wrote about their own company.
+    var v = detectVertical({ seller: [args.company_description, args.industry], context: [args.gtm_challenge, args.current_channels] });
+    var m = detectModel(args.business_model, { seller: [args.company_description, args.industry, args.gtm_challenge, args.current_channels] });
+    if (m.how === "sector") m = v ? { model: SECTOR_MODEL[v.id], how: "sector" } : { model: null, how: "unknown" };
     var steps = stepsFor(analysis.primary.letter, m.model);
     var first = (steps.days_30.length ? steps.days_30 : steps.days_60).map(function(t) { return /\btop \d+\b/.test(t) ? t + " (Example figure: replace with your own)" : t; });
     lines.push("", "First 30 days for " + analysis.primary.motion + ":");
@@ -180,7 +183,7 @@ function handleToolCall(name, args) {
     // sector clearly, its buying committee and usual objections follow the scores (nothing is invented about the company).
     var audit = GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
     var named = typeof args.company_name === "string" ? args.company_name.trim() : "";
-    var sv = detectVertical(args.industry, args.challenge, args.current_channels);
+    var sv = detectVertical({ seller: [args.industry], context: [args.challenge, args.current_channels] });
     return Object.assign(named ? { company: named } : {}, audit, sv ? { sector_notes: sectorNotes(sv) } : {});
   } else if (name === "generate_roadmap") {
     return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args.business_model);
