@@ -341,9 +341,12 @@ function reviewStep(c) {
 
 // ---------- the plans: three steps in each of three phases, for each motion ----------
 // E: Ecosystem and ABM
+const acvNote = (c) => c.acv === null ? "One person should be able to research each account properly."
+  : c.acv > 50000 ? "At " + num(c.acv) + " US dollars a year per account, each account is worth its own researched plan."
+  : "At " + num(c.acv) + " US dollars a year per account, keep the research per account short enough to repeat across the whole list.";
 function planE(c) {
-  const list = c.tam ? "Rank your " + num(c.tam) + " addressable accounts by " + sp(c, "accounts") + ", and take the top 50" + EXAMPLE + ". One person should be able to research each account properly."
-    : "Build the account list: rank accounts by " + sp(c, "accounts") + ", and take the top 50" + EXAMPLE + ". One person should be able to research each account properly.";
+  const list = c.tam ? "Rank your " + num(c.tam) + " addressable accounts by " + sp(c, "accounts") + ", and take the top 50" + EXAMPLE + ". " + acvNote(c)
+    : "Build the account list: rank accounts by " + sp(c, "accounts") + ", and take the top 50" + EXAMPLE + ". " + acvNote(c);
   const d30 = [
     list,
     reviewStep(c),
@@ -453,7 +456,7 @@ function planC(c) {
   const d90 = [
     "Turn the sessions into proof in the shape this buyer trusts: " + lowerFirst(stripEnd(c.proofShape)) + ".",
     c.nrr ? "Your NRR is " + c.nrr + " percent. Track whether members renew and expand more than customers who do not join, and use the answer to decide how much to invest next quarter." : "Track whether members renew and expand more than customers who do not join, and use the answer to decide how much to invest next quarter.",
-    "Open a session to selected prospects, hosted by a customer, and count how many of them reach a sales conversation in the next 30 days.",
+    "Open a session to selected prospects, hosted by a customer, and count how many of them reach a sales conversation afterwards.",
   ];
   return { d30, d60, d90 };
 }

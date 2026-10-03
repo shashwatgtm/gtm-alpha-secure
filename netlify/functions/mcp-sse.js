@@ -174,7 +174,7 @@ var TOOLS = [
   {
     name: "gtm_consultation",
     title: "Free EPIC audit (in your browser and in Claude)",
-    description: "Scores the four motions from 1 to 10 with the documented rubric, names the primary and secondary motion, and lists the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary.",
+    description: "Scores the four motions from 1 to 10 with the documented rubric, names the primary and secondary motion, reads back every input you gave and what it did to the scores, and lists the first 30 days of steps for the primary motion, written from your sector, business model, channels, ACV and deal cycle, with sector notes when your inputs name the sector. Add the optional inputs (stage, ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary and no stage is assumed.",
     inputSchema: {
       type: "object",
       properties: {
@@ -199,7 +199,7 @@ var TOOLS = [
   {
     name: "epic_audit",
     title: "EPIC scores (in Claude)",
-    description: "Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Add the optional inputs for a full score; without them the result is marked preliminary.",
+    description: "Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes, every input read back with what it did, the first 30 days for the lead motion, and the sector's buying committee and usual objections when your inputs name the sector. Add the optional inputs for a full score; without them the result is marked preliminary and no stage is assumed.",
     inputSchema: {
       type: "object",
       properties: {
@@ -223,13 +223,13 @@ var TOOLS = [
   {
     name: "generate_roadmap",
     title: "GTM Roadmap (in Claude)",
-    description: "Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps, without the self-serve steps when your business model is not a software subscription. Builds text from the inputs only.",
+    description: "Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps. Give industry, business_model, deal cycle and current channels to make the steps specific to your sector and buyers; without them the steps are written for any business and each says when it applies. Builds text from the inputs only.",
     inputSchema: {
       type: "object",
       properties: {
         primary_focus: { type: "string", enum: ["E", "P", "I", "C"], description: "EPIC motion to plan for: E, P, I or C" },
         timeframe: { type: "string", enum: ["30-day", "60-day", "90-day"], description: "30-day, 60-day or 90-day (default 90-day)" },
-        business_model: { type: "string", enum: ["saas", "services", "connectivity", "transactions", "marketplace", "hardware_software", "investment"], description: "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Steps that need a product people can try on their own are left out for a business that is not a software subscription" },
+        business_model: { type: "string", enum: ["saas", "services", "connectivity", "transactions", "marketplace", "hardware_software", "investment"], description: "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. For a business that is not a software subscription, the product-led steps become a low-risk first step the buyer can take without a full project, and no trial or sign-up steps are given" },
         industry: { type: "string", description: "Optional. Your industry or what you sell (for example logistics tech, fintech, telecom, cybersecurity). Names your buyers' roles, partner types and measures in the steps" },
         company_name: { type: "string", description: "Optional. Your company or product name, repeated in the answer" },
         acv_usd: { type: "number", minimum: 0, description: "Optional. Average contract value per year in US dollars (for example 42000)" },
