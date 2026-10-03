@@ -271,6 +271,16 @@ function belowMinimum(tool, args) {
   return problems;
 }
 
+// Run 20 round 1: the media type is the part before the first semicolon, compared without regard to letter case, so
+// "application/json; charset=utf-8" passes. A header that joins two values (a comma after the media type) does not pass.
+// This is the rule of the SDK transport that the other connectors use.
+function isJsonContentType(header) {
+  if (!header) return false;
+  var cut = header.indexOf(";");
+  var essence = (cut < 0 ? header : header.slice(0, cut)).trim().toLowerCase();
+  return essence === "application/json" && (cut < 0 || header.slice(cut).indexOf(",") === -1);
+}
+
 export default async function handler(req, context) {
   if (req.method === "OPTIONS") {
     return new Response(null, { status: 204, headers: CORS_HEADERS });
@@ -278,6 +288,12 @@ export default async function handler(req, context) {
 
   if (req.method !== "POST") {
     return rpcError(null, -32000, "Method not allowed. This MCP endpoint accepts POST requests only (Streamable HTTP, stateless). Setup: https://gtmalpha.gtmhelix.com/integration", 405, { "Allow": "POST, OPTIONS" });
+  }
+
+  // Run 20 round 1 (ledger): a request whose Content-Type is missing or is not application/json is refused, with the status,
+  // code and message the other five connectors answer (415, -32000). Checked before the body is read.
+  if (!isJsonContentType(req.headers.get("content-type"))) {
+    return rpcError(null, -32000, "Unsupported Media Type: Content-Type must be application/json", 415);
   }
 
   // Run 12 R12-12 a (A5-4 c): a declared body size over the limit is refused before the body is read.
