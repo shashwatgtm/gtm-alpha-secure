@@ -76,6 +76,54 @@
               "90-day"
             ],
             "description": "Timeframe"
+          },
+          "business_model": {
+            "type": "string",
+            "description": "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. For a business that is not a software subscription, the product-led steps become a low-risk first step the buyer can take without a full project, and no trial or sign-up steps are given",
+            "enum": [
+              "saas",
+              "services",
+              "connectivity",
+              "transactions",
+              "marketplace",
+              "hardware_software",
+              "investment"
+            ]
+          },
+          "product_description": {
+            "type": "string",
+            "description": "Optional. One or two sentences on what you sell and to whom. Read for the sector, the business model and the buyer's function, so the steps fit your product"
+          },
+          "industry": {
+            "type": "string",
+            "description": "Optional. Your industry or what you sell (for example logistics tech, fintech, telecom, cybersecurity). Names your buyers' roles, partner types and measures in the steps"
+          },
+          "company_name": {
+            "type": "string",
+            "description": "Optional. Your company or product name, repeated in the answer"
+          },
+          "acv_usd": {
+            "type": "number",
+            "description": "Optional. Average contract value per year in US dollars (for example 42000)",
+            "minimum": 0
+          },
+          "deal_cycle_days": {
+            "type": "number",
+            "description": "Optional. Days from first touch to closed-won (for example 120). A long cycle adds the review steps to the plan",
+            "minimum": 0
+          },
+          "tam_accounts": {
+            "type": "number",
+            "description": "Optional. Number of addressable accounts (for example 2500)",
+            "minimum": 0
+          },
+          "nrr_percent": {
+            "type": "number",
+            "description": "Optional. Net revenue retention in percent (for example 108)"
+          },
+          "current_channels": {
+            "type": "string",
+            "description": "Optional. What you do today (content, outbound, events, partnerships, PLG, community). The first steps start from it"
           }
         },
         "required": [

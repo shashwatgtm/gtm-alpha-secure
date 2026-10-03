@@ -14,7 +14,7 @@
 
 - Free EPIC audit (in your browser and in Claude) (gtm_consultation): EPIC scores from 1 to 10, primary and secondary motion, warnings.
 - EPIC scores (in Claude) (epic_audit): EPIC scores from 1 to 10 with the rules that set each score. Optional inputs: ACV, deal cycle, NRR, TAM, self-serve, deal source, geography.
-- GTM Roadmap (in Claude) (generate_roadmap): a 30, 60 or 90 day plan for one EPIC motion.
+- GTM Roadmap (in Claude) (generate_roadmap): a 30, 60 or 90 day plan for one EPIC motion. Optional inputs (industry, product_description, business_model, ACV, deal cycle, channels) make the steps specific to your sector.
 
 ## Questions and answers
 
