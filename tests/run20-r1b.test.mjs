@@ -2,7 +2,7 @@
 // fixes. Companies are invented (rule B81), every figure is an example. Run: node --test tests/run20-r1b.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { scoreEpic } from "../netlify/lib/epic-advanced.js";
+import { scoreEpic, stageRow } from "../netlify/lib/epic-advanced.js";
 
 const mcp = (await import("../netlify/functions/mcp-sse.js")).default;
 let id = 1;
@@ -29,16 +29,15 @@ const CASES = {
   cyber: { company_name: "Threadguard", industry: "cybersecurity", gtm_challenge: "We sell attack surface monitoring and threat intelligence to security teams at large enterprises. Teams get thousands of isolated findings.", acv_usd: 80000, deal_cycle_days: 120, nrr_percent: 115, tam_accounts: 5000 },
 };
 
-test("a missing stage is not turned into Series B: the answer says the stage was not given and starts every motion at 5", async () => {
+test("a missing stage keeps the old Series B starting row (D80) but says plainly that the stage was not given", async () => {
   const j = await call("gtm_consultation", CASES.fintech);
-  assert.doesNotMatch(flat(j), /Series B/);
-  assert.match(j.epic_detail.stage_used, /not given/i);
-  assert.match(j.consultation_output, /stage not given/i);
-  assert.deepEqual(j.epic_scores, { E: 5, P: 5, I: 5, C: 5 }); // ACV 30,000, cycle 90, NRR 110 and TAM 8,000 all fall in the middle bands
+  assert.match(j.epic_detail.stage_used, /Stage not given: the Series B starting row is used as a neutral default/);
+  assert.match(j.consultation_output, /Stage not given: the Series B starting row/);
+  assert.deepEqual(j.epic_scores, { E: 7, P: 5, I: 6, C: 6 }); // the preset is unchanged; ACV 30,000, cycle 90, NRR 110 and TAM 8,000 are all in the middle bands
   const big = await call("epic_audit", { ...CASES.ainative, challenge: CASES.ainative.gtm_challenge });
-  assert.deepEqual(big.scores, { E: 9, P: 4, I: 4, C: 5 }); // 5 + ACV above 50,000 (+2 E, -1 P) + cycle above 90 (+2 E, -1 I)
-  assert.doesNotMatch(flat(big), /Series B/);
-  assert.match(big.primary.reason, /no stage given|stage not given/i);
+  assert.deepEqual(big.scores, { E: 10, P: 4, I: 5, C: 6 }); // Series B row + ACV above 50,000 (+2 E, -1 P) + cycle above 90 (+2 E, -1 I), E held at 10
+  assert.match(big.primary.reason, /stage not given, the Series B starting row is used as a neutral default: starting point 7/);
+  assert.doesNotMatch(flat(big), /used because the stage was missing/);
 });
 
 test("a stage that is given keeps the documented scores", () => {
@@ -47,13 +46,14 @@ test("a stage that is given keeps the documented scores", () => {
   assert.match(r.stage_used, /Series B/);
   const pub = scoreEpic({ business_stage: "listed company", acv_usd: 30000 });
   assert.match(pub.stage_used, /Series C/); // "listed" is read as a late stage
+  assert.equal(stageRow("Nasdaq listed"), "series_c");
+  assert.equal(stageRow("NYSE"), "series_c");
 });
 
-test("a stage the tool cannot read is said so, not replaced by Series B", () => {
+test("a stage the tool cannot read is said so, with the same neutral default row", () => {
   const r = scoreEpic({ business_stage: "somewhere in between" });
-  assert.deepEqual(r.scores, { E: 5, P: 5, I: 5, C: 5 });
-  assert.match(r.stage_used, /not recognised/i);
-  assert.doesNotMatch(r.stage_used, /Series B/);
+  assert.deepEqual(r.scores, { E: 7, P: 5, I: 6, C: 6 });
+  assert.match(r.stage_used, /Stage not recognised: the Series B starting row is used as a neutral default/);
 });
 
 test("every number given is read back with its band and what it did (NRR and TAM included)", async () => {
@@ -170,11 +170,26 @@ test("scores are not changed by the new text (D80): the same inputs with a stage
   assert.deepEqual(j.epic_scores, { E: 10, P: 4, I: 5, C: 6 });
 });
 
-test("a tie among all four motions says so and names the sector pattern, not just the tie-break order", async () => {
-  const j = await call("gtm_consultation", CASES.fintech);
-  const notes = j.epic_detail.notes.join(" | ");
-  assert.match(notes, /Tie at the top between E, P, I and C|all four motions tie|four motions/i);
-  assert.match(j.sector_fit, /CFO|finance/i);
+test("a tie at the top names every tied motion, and Product-Led Growth loses a tie unless self_serve is true (D80 item)", () => {
+  const base = { business_stage: "series-c", tam_accounts: 20000 }; // E 8-1, P 4, I 5+2, C 7: E, I and C tie at 7
+  const r = scoreEpic(base);
+  assert.deepEqual(r.scores, { E: 7, P: 4, I: 7, C: 7 });
+  assert.equal(r.primary.letter, "E");
+  assert.match(r.notes.join(" | "), /Tie at the top between E, C and I[^|]*order E, C, I, P/);
+  // P and I tie at 7 only when self_serve is true (series-a 5/5/6/4, self-serve +2 for P, US or EU +1 for I): then P wins the tie
+  const tie = scoreEpic({ business_stage: "series-a", self_serve: true, geography: "us_eu" });
+  assert.deepEqual([tie.scores.P, tie.scores.I], [7, 7]);
+  assert.equal(tie.primary.letter, "P");
+  assert.match(tie.notes.join(" | "), /order E, P, C, I/);
+});
+
+test("the sector fit paragraph for a four-way tie names the sector pattern", async () => {
+  const { sectorFit } = await import("../netlify/lib/gtm-plan.js");
+  const { VERTICALS } = await import("../netlify/lib/verticals.js");
+  const fin = VERTICALS.find((v) => v.id === "fintech");
+  const text = sectorFit({ vertical: fin, model: "saas", letter: "E", motionName: "Ecosystem and ABM", scores: { E: 5, P: 5, I: 5, C: 5 }, selfServeGiven: false });
+  assert.match(text, /tie/);
+  assert.match(text, /CFO/);
 });
 
 test("generate_roadmap without a business model does not assume a software subscription", async () => {

@@ -247,11 +247,10 @@ export function scoreEpic(input) {
     sc = { ...STAGE_DEFAULTS[row].scores };
     stageLabel = STAGE_DEFAULTS[row].label;
   } else {
-    // Run 20 round 1b (D92): before, a missing or unreadable stage was scored as Series B (E 7, P 5, I 6, C 6) and called Series B,
-    // which is wrong for a listed company or a bootstrapped one. Now no stage is assumed: every motion starts at the middle of the
-    // scale (5) and only the inputs given move it. The answer says the stage was not given.
-    sc = { E: 5, P: 5, I: 5, C: 5 };
-    stageLabel = stageGiven ? "Stage not recognised (no stage assumed; every motion starts at 5 of 10)" : "Stage not given (no stage assumed; every motion starts at 5 of 10)";
+    // Run 20 round 1b (D80): the starting row for a missing or unreadable stage stays the Series B row (a preset, unchanged). Only the
+    // wording changed: the answer says the stage was not given and that this row is a neutral default, not a claim about the company.
+    sc = { ...STAGE_DEFAULTS.series_b.scores };
+    stageLabel = stageGiven ? "Stage not recognised: the Series B starting row is used as a neutral default" : "Stage not given: the Series B starting row is used as a neutral default";
     skipped.push("business stage");
   }
   // Run 14 D31a: `applied` (returned as adjustments_applied, and used by the browser report's "why these scores"
@@ -361,7 +360,7 @@ export function scoreEpic(input) {
       else parts.push(a.rule + " (" + m + " " + (a.change[m] > 0 ? "+" : "") + a.change[m] + ")");
     }
     const start = row ? stageLabel + " starting point " + reasonTimeline[0].change[m]
-      : (stageGiven ? "stage not recognised, so no stage is assumed: starting point " : "stage not given, so no stage is assumed: starting point ") + reasonTimeline[0].change[m];
+      : (stageGiven ? "stage not recognised, the Series B starting row is used as a neutral default: starting point " : "stage not given, the Series B starting row is used as a neutral default: starting point ") + reasonTimeline[0].change[m];
     return MOTIONS[m] + " scores " + sc[m] + " of 10: " + start + (parts.length ? "; " + parts.join("; ") : "; no further adjustment changed it") + ".";
   };
   if (sc[ranked[0]] === sc[ranked[1]]) {
@@ -379,7 +378,7 @@ export function scoreEpic(input) {
   const nrrRaw = inp.nrr_percent != null ? inp.nrr_percent : inp.nrr;
   const tamRaw = inp.tam_accounts != null ? inp.tam_accounts : inp.tam;
   const inputsRead = [];
-  inputsRead.push(row ? "Stage: " + stageLabel + ", the documented starting row." : stageGiven ? "Stage not recognised: no stage is assumed and every motion starts at 5 of 10. Use pre-seed, seed, series-a, series-b, series-c, bootstrapped or a word such as listed to set it." : "Stage not given: no stage is assumed and every motion starts at 5 of 10. Giving it (pre-seed, seed, series-a, series-b, series-c, bootstrapped) sets the documented starting row.");
+  inputsRead.push(row ? "Stage: " + stageLabel + ", the documented starting row." : stageGiven ? "Stage not recognised: the Series B starting row (E 7, P 5, I 6, C 6) is used as a neutral default, not as a claim about the company. Use pre-seed, seed, series-a, series-b, series-c, bootstrapped or a word such as listed to set it." : "Stage not given: the Series B starting row (E 7, P 5, I 6, C 6) is used as a neutral default, not as a claim about the company. Giving it (pre-seed, seed, series-a, series-b, series-c, bootstrapped) sets the documented starting row.");
   inputsRead.push(!given(acvRaw) ? "ACV: not given, no adjustment. Above 50,000 US dollars adds 2 to Ecosystem and ABM; below 5,000 adds 2 to Product-Led."
     : acv === "high" ? "ACV " + shown(acvRaw) + " US dollars is above 50,000: Ecosystem and ABM +2, Product-Led -1 (applied)."
     : acv === "low" ? "ACV " + shown(acvRaw) + " US dollars is below 5,000: Product-Led +2, Ecosystem and ABM -1 (applied)."
