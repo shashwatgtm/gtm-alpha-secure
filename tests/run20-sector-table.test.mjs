@@ -1,5 +1,5 @@
 // Run 20 round 1 fix (a), step 1 (written before the fix): the table of seller descriptions read by detectVertical and
-// detectModel (netlify/lib/verticals.js, the JavaScript copy of the Revenue src/verticals.ts). Rows are in tests/fixtures/run20-sector-table.json: 5 per vertical for the 9 verticals
+// detectModel (src/verticals.ts). Rows are in tests/fixtures/run20-sector-table.json: 5 per vertical for the 9 verticals
 // (45 rows, the owner's ten among them, word for word) plus extra hard cases, and a second table of tool-call style
 // cases (the seller's fields first, the buyer's fields second, as the tools pass them).
 // The rules under test (owner decision D92): the seller's own words decide the sector; the buyer's words only when the
@@ -205,14 +205,15 @@ const { BILLING_PROFILE, isBillingSeller } = mod;
 const CHALLENGER = /national operator|offshore-only|incumbent|higher than|cheaper than us|than the (?:big|large|national)|challenger|underdog|start-?up|small(?:er)? (?:vendor|firm|player)/i;
 
 test("every objection is worded as what the buyer says, never assuming the seller is a challenger or a large operator", () => {
-  const all = [...VERTICALS, { id: "investment", name: "investment", ...INVESTMENT_PROFILE }, { id: "billing", name: "billing", ...BILLING_PROFILE }, { id: "ai-support", name: "ai support", ...AI_SUPPORT_PROFILE }];
+  const all = [...VERTICALS, ...mod.SUBTYPES.map((t) => ({ id: t.id, name: t.name, ...t.notes })), { id: "investment", name: "investment", ...INVESTMENT_PROFILE }, { id: "billing", name: "billing", ...BILLING_PROFILE }, { id: "ai-support", name: "ai support", ...AI_SUPPORT_PROFILE }];
   for (const v of all) for (const o of v.objections) {
     assert.doesNotMatch(o.objection, CHALLENGER, `${v.id}: ${o.objection}`);
     assert.doesNotMatch(o.response, CHALLENGER, `${v.id}: ${o.response}`);
   }
-  const tel = VERTICALS.find((v) => v.id === "telecom").objections.map((o) => o.objection);
+  // run 21b: the stock objections moved from the vertical's entry into its sub-types
+  const tel = detectVertical("Managed SD-WAN and leased lines for enterprise branches").objections.map((o) => o.objection);
   assert.ok(tel.includes("Price per site compared with the operator we use today"), tel.join("; "));
-  const ites = VERTICALS.find((v) => v.id === "ites").objections.map((o) => o.objection);
+  const ites = detectVertical("IT services provider that builds and runs application portfolios").objections.map((o) => o.objection);
   assert.ok(ites.includes("The offshore alternative is cheaper"), ites.join("; "));
 });
 

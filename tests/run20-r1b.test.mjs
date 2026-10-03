@@ -268,7 +268,7 @@ test("tools/list: generate_roadmap takes optional industry, company_name, acv_us
 });
 
 test("an acronym at the start of the proof shape is kept in capitals (SLA, not sLA)", async () => {
-  const j = await call("generate_roadmap", { primary_focus: "P", industry: "ITeS" });
+  const j = await call("generate_roadmap", { primary_focus: "P", industry: "ITeS", product_description: "IT services provider that builds and runs application portfolios" });   // run 21b: the stock ITeS proof shape belongs to the IT services sub-type
   assert.match(plan(j), /: SLA and cost outcomes/);
   assert.doesNotMatch(flat(j), /sLA/);
   assert.doesNotMatch(flat(j), /self-serve sign-up/i);
@@ -401,7 +401,7 @@ test("round 3: the sector named in industry decides the usual model, whatever th
 
 // ---- Round 4 (fresh judge on f89b054f: Airtel-like roadmap at 3, and smaller points) ----
 test("round 4: the telecom objection is worded neutrally, for a challenger and for an incumbent alike", async () => {
-  const r = await call("generate_roadmap", { primary_focus: "E", industry: "telecom", company_name: "Linkspan", acv_usd: 120000, deal_cycle_days: 120 });
+  const r = await call("generate_roadmap", { primary_focus: "E", industry: "telecom", product_description: "Managed SD-WAN and internet leased lines for enterprise branches", company_name: "Linkspan", acv_usd: 120000, deal_cycle_days: 120 });   // run 21b: operator notes belong to the connectivity sub-type
   const s = plan(r);
   assert.doesNotMatch(s, /higher than the national operator/i);
   assert.match(s, /price per site compared with the operator we use today/i);

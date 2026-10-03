@@ -120,6 +120,8 @@ const GTM_CONSULTANT = {
     // alone says so. Nothing is assumed about the business model.
     var industry = clean(args.industry), what = clean(args.product_description);
     var v = (industry ? (detectVertical({ seller: [industry] }) || sectorByName(industry)) : null) || (what ? detectVertical({ seller: [what] }) : null);
+    // Run 21b: when a product description is given and names the same vertical (or the industry named none), it also names the sub-type (a managed network seller is not read as every telecom company).
+    if (what) { var vw = detectVertical({ seller: [what] }); if (vw && (!v || vw.id === v.id)) v = vw; }
     var model = given, how = given ? "input" : null;
     if (!model && (v || what)) { var rm = detectModel(undefined, { seller: [what, industry] }); if (rm.how === "read") { model = rm.model; how = "read"; } else if (v) { model = SECTOR_MODEL[v.id]; how = "sector"; } }
     var input = { company_name: args.company_name, industry: industry, product_description: what, acv_usd: args.acv_usd, deal_cycle_days: args.deal_cycle_days, tam_accounts: args.tam_accounts, nrr_percent: args.nrr_percent, current_channels: args.current_channels };
