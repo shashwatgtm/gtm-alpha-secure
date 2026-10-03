@@ -341,3 +341,60 @@ test("round 2: tools/list lists product_description as an optional roadmap input
   const t = (await r.json()).result.tools.find((x) => x.name === "generate_roadmap");
   assert.ok(t.inputSchema.properties.product_description);
 });
+
+// ---- Round 3 (fresh judge on cfcd6a85: two roadmaps at 3) ----
+test("round 3 (a): an investment manager asking for the community or product-led motion gets a fit line and consultant, due diligence and compliance steps", async () => {
+  const PEER = /customers to be founding members|act as a reference for the prospects|founding members/i;
+  for (const f of ["C", "P"]) {
+    const j = await call("generate_roadmap", { primary_focus: f, industry: "AI native", business_model: "investment", acv_usd: 250000, deal_cycle_days: 180, tam_accounts: 1500 });
+    assert.equal(Object.keys(j)[0], "read_this_first", f);
+    assert.match(j.read_this_first, /250,000/, f);
+    assert.match(j.read_this_first, /consultant|due diligence/i, f);
+    const s = plan(j);
+    assert.doesNotMatch(s, PEER, f);
+    assert.match(s, /consultant/i, f);
+    assert.match(s, /due diligence/i, f);
+    assert.match(s, /compliance/i, f);
+    assert.match(s, /back-tested|track record/i, f);
+    assert.doesNotMatch(s, /\d\s?%/, f);
+  }
+  const e = await call("generate_roadmap", { primary_focus: "E", industry: "AI native", business_model: "investment" });
+  assert.equal(e.read_this_first, undefined);
+  const noNumbers = await call("generate_roadmap", { primary_focus: "C", business_model: "investment" });
+  assert.match(noNumbers.read_this_first, /consultant|due diligence/i);
+});
+
+test("round 3 (b): a software subscription asking for the product-led motion keeps the product-led steps and adds a sales-assist layer for a large ACV", async () => {
+  const j = await call("generate_roadmap", { primary_focus: "P", industry: "SaaS", acv_usd: 60000, deal_cycle_days: 75 });
+  const s = plan(j);
+  assert.match(j.read_this_first, /60,000/);
+  assert.match(j.read_this_first, /sales-assist|handed to sales/i);
+  assert.doesNotMatch(j.read_this_first, /nearest fitting version/);
+  assert.match(s, /first moment of value/);
+  assert.match(s, /hand(ed)? (it |them |accounts )?(over )?to sales|sales-assist/i);
+  assert.match(s, /activation|usage/i);
+  assert.ok(j.action_plan.short_term.length >= 3 && j.action_plan.medium_term.length >= 3);
+  // sectors where a self-serve start is not usual keep the pilot-led replacement (Locus-like), and so does hardware plus software
+  const logi = await call("generate_roadmap", { primary_focus: "P", industry: "logistics tech", acv_usd: 150000, deal_cycle_days: 150 });
+  assert.match(logi.read_this_first, /nearest fitting version/);
+  assert.doesNotMatch(plan(logi), /first moment of value/);
+  const hw = await call("generate_roadmap", { primary_focus: "P", industry: "SaaS", business_model: "hardware_software", acv_usd: 90000 });
+  assert.match(hw.read_this_first, /nearest fitting version/);
+});
+
+test("round 3 (c): the community steps scale to a large TAM instead of five to ten founding customers and a peer group", async () => {
+  const big = await call("generate_roadmap", { primary_focus: "C", industry: "software", acv_usd: 30000, deal_cycle_days: 60, tam_accounts: 20000 });
+  const s = plan(big);
+  assert.doesNotMatch(s, /five to ten customers/);
+  assert.match(s, /20,000/);
+  assert.match(s, /moderat|ambassador|champions/i);
+  assert.match(s, /open|public/i);
+  const small = await call("generate_roadmap", { primary_focus: "C", industry: "cybersecurity", acv_usd: 80000, tam_accounts: 800 });
+  assert.match(plan(small), /five to ten customers/);
+});
+
+test("round 3: the sector named in industry decides the usual model, whatever the description says about itself", async () => {
+  const j = await call("generate_roadmap", { primary_focus: "P", industry: "ITeS", product_description: "AI-native business operations: we design, build and run customer experience, collections and back office services under one contract, on our own operating system", acv_usd: 400000, deal_cycle_days: 150 });
+  assert.match(j.business_model, /services/);
+  assert.doesNotMatch(flat(j), /software subscription/);
+});

@@ -478,12 +478,29 @@ function planPAssisted(c, prefix = "") {
     ],
   };
 }
+// How the product-led motion fits a large or slow sale: "assist" keeps the product-led steps and adds a sales-assist layer (a software
+// subscription in a sector where a self-serve start is usual); "pilot" replaces them with the pilot-led version (a sector or a model
+// where a product is not tried alone); null when the numbers do not contradict the motion.
+function plgMode(c, letter) {
+  if (letter !== "P" || c.mp.selfServe === false) return null;
+  const big = (c.acv !== null && c.acv > 50000) || (c.cycle !== null && c.cycle > 90);
+  if (!big) return null;
+  const usual = c.model !== "hardware_software" && (!c.vertical || (SECTOR_PLAN[c.vertical.id] && SECTOR_PLAN[c.vertical.id].typical.includes("P")));
+  return usual ? "assist" : "pilot";
+}
 export function fitWarning(c, letter) {
   const acvTxt = c.acv !== null ? "an ACV of " + num(c.acv) + " US dollars a year" : null;
   const cycTxt = c.cycle !== null ? "a " + num(c.cycle) + "-day cycle" : null;
   const both = joinList([acvTxt, cycTxt]);
   const reviews = sp(c, "reviews");
-  if (letter === "P" && c.mp.selfServe !== false && ((c.acv !== null && c.acv > 50000) || (c.cycle !== null && c.cycle > 90))) {
+  if (c.model === "investment" && (letter === "C" || letter === "P")) {
+    return (both ? "With " + both + ", " : "") + "an institutional buyer chooses a manager through consultants and due diligence, and a " + (letter === "C" ? "peer community" : "product-led start") + " cannot produce the verified track record they ask for. The steps below are the nearest fitting version: consultant and platform research, investor roundtables, and trial allocations or model portfolios, with compliance reviewing every performance claim and client reference before use. Ecosystem and ABM usually leads here; run gtm_consultation to score it on your numbers.";
+  }
+  const mode = plgMode(c, letter);
+  if (mode === "assist") {
+    return "With " + both + ", product-led alone rarely closes a sale this size: the buyer's reviews (" + reviews + ") still come before a contract. The steps below keep the product-led start (the first moment of value, a trial or sandbox, usage signals) and add a sales-assist layer: accounts that reach the activation signal are handed to sales. Ecosystem and ABM may lead at this size; run gtm_consultation to score it on your numbers.";
+  }
+  if (mode === "pilot") {
     return "With " + both + ", a sale like yours rarely starts with a self-serve sign-up: buyers go through a pilot and reviews (" + reviews + "). The steps below are the nearest fitting version of the product-led motion: a pilot-led first step that a user can start without a long contract. Ecosystem and ABM usually leads at this size; run gtm_consultation to score it on your numbers.";
   }
   if (letter === "E" && ((c.acv !== null && c.acv < 5000) || (c.cycle !== null && c.cycle < 14))) {
@@ -491,9 +508,40 @@ export function fitWarning(c, letter) {
   }
   return null;
 }
+function planPInvestment(c) {
+  return {
+    d30: [
+      "Choose the low-risk first look a buyer can take without a full allocation: " + c.assisted + ". Write the scope on one page, with what the buyer gets to keep.",
+      "Prepare the due diligence pack before the first look: " + joinLong(INVESTMENT_BLOCK.assets) + ".",
+      "Agree with compliance what may be shown. Every performance claim, back-tested result and client reference needs compliance review before use, and back-tested results are always labelled as back-tested.",
+    ],
+    d60: [
+      "Offer the first look to the consultants and platforms that shortlist managers for your buyers, and to the accounts you already talk to. Run the first two and record what the research teams and committees asked for that you did not expect.",
+      "Build the hand-off from the first look to a due diligence stage and a trial allocation: the findings, a proposal that follows from them and a date for the investment committee.",
+      "Write the questions asked into your due diligence answers and your list of objections to answer.",
+    ],
+    d90: [
+      "Measure how many first looks moved to due diligence and to a trial allocation, and how long that took" + (c.cycle ? " against " + c.cycleText : "") + ".",
+      "Write the first result up in the shape this buyer trusts: " + lowerFirst(stripEnd(c.proofShape)) + ". Have compliance review any performance claim, back-tested result or client reference before it is used.",
+      "Keep the version of the first look that moves managers onto shortlists and drop the rest.",
+    ],
+  };
+}
+function salesAssist(c) {
+  return [
+    "Add a sales-assist layer for the larger accounts: when an account reaches the first moment of value or " + sp(c, "expansionSignal") + ", hand it to sales with its usage history, so the first call is about the reviews (" + sp(c, "reviews") + ") and not about what the product does.",
+    "Agree with sales which usage signal triggers the hand-off, how fast they reach out, and which accounts stay self-serve; review the hand-offs every month against " + c.cycleText + ".",
+  ];
+}
 function planP(c) {
-  if (c.mp.selfServe === true && fitWarning(c, "P")) return planPAssisted(c);
-  if (c.mp.selfServe === true) return planPSelf(c);
+  const mode = plgMode(c, "P");
+  if (mode === "pilot") return planPAssisted(c);
+  if (c.mp.selfServe === true) {
+    const p = planPSelf(c);
+    if (mode === "assist") { const sa = salesAssist(c); p.d60 = [...p.d60, sa[0]]; p.d90 = [...p.d90, sa[1]]; }
+    return p;
+  }
+  if (c.model === "investment") return planPInvestment(c);
   if (c.mp.selfServe === false) return planPAssisted(c);
   // The business model is not known: give both versions, each marked with the condition under which it applies.
   const s = planPSelf(c, "If buyers can start without a sales call: ");
@@ -506,21 +554,47 @@ function planP(c) {
 }
 
 // C: Community-Led
+function planCInvestment(c) {
+  return {
+    d30: [
+      "Map the consultants and platforms that shortlist managers for your buyers, and the investor roundtables and conferences where asset owners and consultants meet: " + joinLong(INVESTMENT_BLOCK.venues) + ". Pick two to attend or host.",
+      "Prepare the due diligence pack before any meeting: " + joinLong(INVESTMENT_BLOCK.assets) + ".",
+      "Agree with compliance what may be said in public and to buyers. Every performance claim, back-tested result and client reference needs compliance review before use, and back-tested results are always labelled as back-tested.",
+    ],
+    d60: [
+      "Meet the research teams of two consultants or platforms and walk them through the process and risk controls, so they can describe you accurately to their clients.",
+      "Host or speak at one investor roundtable on a question buyers ask (" + joinLong(INVESTMENT_BLOCK.reads.slice(0, 2)) + "), without presenting performance numbers that compliance has not cleared.",
+      "Offer the accounts that asked for more after the roundtable " + c.entry + ".",
+    ],
+    d90: [
+      "Collect the questions the investment committees and consultants asked. They become your due diligence answers and your list of objections to answer.",
+      "Ask a client for a reference only with their written consent and after compliance has reviewed the wording; do not offer a reference as proof of performance.",
+      "Measure how many consultant meetings led to a due diligence stage and how far each got" + (c.cycle ? " against " + c.cycleText : "") + ", so next quarter's effort follows the route that moves managers onto shortlists.",
+    ],
+  };
+}
 function planC(c) {
+  if (c.model === "investment") return planCInvestment(c);
+  const big = c.tam !== null && c.tam > 10000;
+  const topic = (c.sp && c.sp.communityTopics) || metricsText(c, 2);
   const d30 = [
     "Choose where your buyers already talk: " + joinLong(sp(c, "venues")) + ". Join two and listen before you launch your own.",
-    "Invite five to ten customers who got a result" + EXAMPLE + " to be founding members, and ask each what they would want to discuss with peers in their role (" + c.champion + ").",
-    "Agree what the community is for: peer answers on " + ((c.sp && c.sp.communityTopics) || metricsText(c, 2)) + ", not product announcements.",
+    big
+      ? "Recruit a first group of active customers as community champions (start with a few dozen, Example figure: replace with your own), and ask each what they would want help with from other practitioners (" + c.plgUser + "). With " + num(c.tam) + " addressable accounts the community has to run at scale: an open, public forum with moderators and an ambassador programme, not hand-picked peer sessions."
+      : "Invite five to ten customers who got a result" + EXAMPLE + " to be founding members, and ask each what they would want to discuss with peers in their role (" + c.champion + ").",
+    "Agree what the community is for: peer answers on " + topic + ", not product announcements.",
   ];
   const d60 = [
-    "Run the first two sessions led by customers, not by you. Each member shows " + ((c.sp && c.sp.communityTopics) ? "how they handle " + c.sp.communityTopics : "how they measure " + c.metrics[0]) + " and what they changed.",
-    "Record the questions members ask. They become your content and your list of objections to answer.",
+    big
+      ? "Open the forum to everyone and run recurring open sessions and office hours led by champions, not by you. Each champion shows " + ((c.sp && c.sp.communityTopics) ? "how they handle " + c.sp.communityTopics : "how they measure " + c.metrics[0]) + " and what they changed."
+      : "Run the first two sessions led by customers, not by you. Each member shows " + ((c.sp && c.sp.communityTopics) ? "how they handle " + c.sp.communityTopics : "how they measure " + c.metrics[0]) + " and what they changed.",
+    big ? "Answer new posts within a day, tag the questions that repeat, and turn the top ones into documentation and content. They are also your list of objections to answer." : "Record the questions members ask. They become your content and your list of objections to answer.",
     c.channels ? "Connect the community to what you already do (" + c.channels + "): invite the people you meet there to a session, and note which ones come back." : "Ask members who got a result to act as a reference for the prospects you are talking to now.",
   ];
   const d90 = [
     "Turn the sessions into proof in the shape this buyer trusts: " + lowerFirst(stripEnd(c.proofShape)) + ".",
     c.nrr ? "Your NRR is " + c.nrr + " percent. Track whether members renew and expand more than customers who do not join, and use the answer to decide how much to invest next quarter." : "Track whether members renew and expand more than customers who do not join, and use the answer to decide how much to invest next quarter.",
-    "Open a session to selected prospects, hosted by a customer, and count how many of them reach a sales conversation afterwards.",
+    big ? "Count how many community members come from accounts that are not yet customers, and how many of those reach a sales conversation afterwards." : "Open a session to selected prospects, hosted by a customer, and count how many of them reach a sales conversation afterwards.",
   ];
   return { d30, d60, d90 };
 }

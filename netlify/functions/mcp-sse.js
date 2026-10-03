@@ -121,7 +121,7 @@ const GTM_CONSULTANT = {
     var industry = clean(args.industry), what = clean(args.product_description);
     var v = (industry ? (detectVertical({ seller: [industry] }) || sectorByName(industry)) : null) || (what ? detectVertical({ seller: [what] }) : null);
     var model = given, how = given ? "input" : null;
-    if (!model && (v || what)) { var rm = detectModel(undefined, { seller: [what, industry] }); model = rm.model || (v ? SECTOR_MODEL[v.id] : null); how = rm.how === "read" ? "read" : model ? "sector" : null; }
+    if (!model && (v || what)) { var rm = detectModel(undefined, { seller: [what, industry] }); if (rm.how === "read") { model = rm.model; how = "read"; } else if (v) { model = SECTOR_MODEL[v.id]; how = "sector"; } }
     var input = { company_name: args.company_name, industry: industry, product_description: what, acv_usd: args.acv_usd, deal_cycle_days: args.deal_cycle_days, tam_accounts: args.tam_accounts, nrr_percent: args.nrr_percent, current_channels: args.current_channels };
     var plan = buildPlan({ letter: letter, vertical: v, model: model, args: input });
     // The chosen timeframe sets the day range of each phase (thirds of 30, 60 or 90 days).
@@ -145,7 +145,8 @@ const GTM_CONSULTANT = {
     if (!clean(args.current_channels)) missing.push("current_channels, so the first step starts from what you already do");
     var note;
     if (letter === "P" && model && MODEL_PLAN[model] && MODEL_PLAN[model].selfServe === false) {
-      note = "Product-Led Growth for a " + MODEL_NAME[model].replace(/ \(.*$/, "") + " business means a low-risk first step the buyer can take without a full project, not a product the buyer starts alone. The steps describe that version.";
+      var short = MODEL_NAME[model].replace(/ \(.*$/, "");
+      note = "Product-Led Growth for " + (/^[aeiou]/i.test(short) ? "an " : "a ") + short + " business means a low-risk first step the buyer can take without a full project, not a product the buyer starts alone. The steps describe that version.";
     }
     var out = {};
     // When the ACV and cycle given contradict the motion asked for, one line says so before anything else.
