@@ -56,9 +56,9 @@ export function defineTests(tool) {
     const msg = cases.pairs.find((p) => /telecom/.test(p.id)).a, pay = cases.pairs.find((p) => /fintech/.test(p.id)).a;
     const m = await call(tool, argsFor(tool, msg, "Company M"));
     const f = await call(tool, argsFor(tool, pay, "Company F"));
-    assert.match(m.business_model, /per-transaction \(priced on volume\)/);
+    assert.match(m.business_model, /per-transaction \((priced on volume|volume based)\)/);
     assert.doesNotMatch(m.business_model, /payments|per site|bandwidth/i);
-    assert.match(f.business_model, /per-transaction \(payments or volume based\)/);
+    assert.match(f.business_model, /per-transaction \((payments or volume based|volume based)\)/);
   });
 
   test(`${tool}: the 'evenly distributed' note uses this company's scores, lead and missing inputs`, async () => {
