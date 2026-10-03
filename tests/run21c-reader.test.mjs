@@ -60,6 +60,10 @@ test("an enterprise network, cloud and security provider is a connectivity busin
   assert.equal(m.model, "connectivity");
 });
 
+test("a retail intelligence platform for route to market reads as vertical SaaS even though the text is cut at 'for'", () => {
+  assert.equal(read({ seller: ["retail intelligence platform for route to market (RTM) from the vendor"] }).id, "vertical-saas");
+});
+
 // generate_roadmap read the usual model of the whole sector (connectivity for telecom) and ignored the model of the kind the reader named.
 const mcpSse = (await import("../netlify/functions/mcp-sse.js")).default;
 test("generate_roadmap: a messaging platform in telecom gets no site survey or wave plan", async () => {
