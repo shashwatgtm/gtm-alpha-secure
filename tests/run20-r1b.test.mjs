@@ -404,10 +404,10 @@ test("round 4: the telecom objection is worded neutrally, for a challenger and f
   const r = await call("generate_roadmap", { primary_focus: "E", industry: "telecom", company_name: "Linkspan", acv_usd: 120000, deal_cycle_days: 120 });
   const s = plan(r);
   assert.doesNotMatch(s, /higher than the national operator/i);
-  assert.match(s, /price per site compared with the incumbent operator the buyer uses today/i);
+  assert.match(s, /price per site compared with the operator we use today/i);
   const c = await call("gtm_consultation", CASES.telecom);
   assert.doesNotMatch(flat(c.sector_notes), /higher than the national operator/i);
-  assert.match(flat(c.sector_notes.usual_objections), /incumbent operator/i);
+  assert.match(flat(c.sector_notes.usual_objections), /operator we use today/i);
 });
 
 test("round 4: no 'first two partners' wording; partners already held are reviewed before new ones are added", async () => {

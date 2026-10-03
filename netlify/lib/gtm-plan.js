@@ -7,6 +7,8 @@
 // places buyers meet, what they read) is vocabulary and buyer roles, kept here so the shared verticals.js stays a byte copy of
 // the Revenue Enablement file.
 
+import { INVESTMENT_PROFILE } from "./verticals.js";
+
 export const EXAMPLE = " (Example figure: replace with your own)";
 
 // What sits next to the seller in the buyer's stack, where buyers meet, what they read and what they ask for before buying.
@@ -74,12 +76,6 @@ export const SECTOR_PLAN = {
   "ai-native": {
     entry: "a proof of concept on the buyer's own data, with a person checking the results",
     plg: { user: "a data or product lead trying it on their own data", signer: "the owner of the workflow it would serve" },
-    over: {
-      buyerRoles: ["Owner of the workflow the AI serves", "Head of Data and AI", "Chief Technology Officer", "CISO", "Legal Counsel"],
-      metrics: ["accuracy on the buyer's own data", "cost per decision or case against today", "how often a person has to step in", "time saved per case"],
-      vocabulary: ["accuracy", "guardrails", "explainability", "data privacy", "model risk", "inference cost", "human oversight"],
-      proofShape: "A result on the buyer's own data, shown as a test result first and as live results later, with the cost per decision or case against today.",
-    },
     terms: ["agents", "copilot", "LLM", "fine-tuning", "evaluation", "prompt", "retrieval", "forecasting", "model risk", "explainability", "voice", "latency", "confidence scores", "grounding"],
     partners: ["cloud and model platform providers your buyers already use", "data and integration vendors that hold the data your product needs", "systems integrators that build the workflow around an AI product", "industry bodies that publish guidance on AI use"],
     accounts: "the workflow you automate, the volume of cases or decisions, the data available and a leader who owns that workflow",
@@ -118,16 +114,6 @@ export const SECTOR_PLAN = {
   },
   telecom: {
     plg: { user: "a network manager looking at a site survey", signer: "the CIO" },
-    over: {
-      // The shared file words this objection for a challenger ("higher than the national operator"). Whether the seller is the incumbent
-      // or a challenger is not known here, so it is worded from the buyer's side.
-      objections: [
-        { objection: "Price per site compared with the incumbent operator the buyer uses today", response: "Compare the total cost per site, including outages, repair time and the IT team's time spent managing links." },
-        { objection: "Migration risk across many sites", response: "Propose a wave plan by region with fallback links and a rollback rule for each wave." },
-        { objection: "A long relationship with the current operator", response: "Start with the sites where service is worst and let the results make the case." },
-        { objection: "Security overlay", response: "Show how the network and the security controls are managed together and who responds to an incident." },
-      ],
-    },
     terms: ["underlay", "overlay", "private 5G", "IoT connectivity", "leased line", "SIM", "roaming", "CPaaS", "DDoS protection", "colocation", "VPN", "WAN", "bandwidth", "managed SD-WAN"],
     partners: ["device, firewall and SD-WAN technology vendors you build on", "systems integrators and managed service providers that run enterprise networks", "data centre and cloud providers whose customers need connectivity", "channel partners and resellers that already hold enterprise accounts"],
     accounts: "number of branch sites, sites with repeated outages, contract end dates and the incumbent operator",
@@ -259,18 +245,6 @@ export const MODEL_PLAN = {
 // The buying committee, measures, objections and proof for a business that manages investments. Used instead of the sector's block
 // whatever sector word the seller used (an AI native firm that sells investment strategies is bought like a manager, not like an AI help desk).
 export const INVESTMENT_BLOCK = {
-  committee: "The chief investment officer or the investment committee signs and carries the fiduciary duty; the head of manager research or portfolio construction champions; risk, compliance and operational due diligence review the manager; investment consultants often shape the shortlist; the operations team checks reporting and custody.",
-  metrics: ["tracking error against the benchmark", "risk-adjusted return over a full market cycle", "drawdown in stressed periods", "turnover and capacity", "fee against value added", "reporting timeliness"],
-  objections: [
-    { objection: "The track record is too short", response: "Show the research process, how the strategy behaves in different market conditions and the risk controls; label any back-tested result as back-tested, never as live performance." },
-    { objection: "We cannot explain a black box to our committee", response: "Offer an explanation of what drives each position and an independent review of the model for the committee." },
-    { objection: "Capacity and fees", response: "State capacity limits and the fee basis plainly, and compare the fee with the value added over the benchmark the buyer uses." },
-    { objection: "Operational due diligence", response: "Prepare the due diligence questionnaire answers, custody and reporting details before they are asked for." },
-  ],
-  proofShape: "A live or independently verified track record over a full market cycle, with the investment process and risk controls documented for due diligence.",
-  salesMotion: "Consultant and relationship led; a long due diligence cycle with research, risk and operational reviews before a first allocation, often a small one that grows.",
-  roles: ["Chief Investment Officer", "Head of Manager Research", "Head of Risk", "Head of Operational Due Diligence"],
-  vocabulary: ["due diligence", "track record", "investment committee", "mandate", "tracking error", "allocation"],
   terms: ["securities", "fiduciary duty", "benchmark", "drawdown", "factor exposure", "explainability", "back-test", "capacity", "custody", "consultant rating", "rebalancing", "risk model"],
   partners: ["investment consultants and platforms that shortlist managers", "custodians and fund administrators", "data and research providers your buyers already use", "placement agents and distribution partners"],
   accounts: "mandate type, assets under oversight, the consultant that advises them and a review of managers that is coming up",
@@ -288,18 +262,18 @@ export const INVESTMENT_BLOCK = {
     C: "allocators ask peers and consultants about managers, so references and investor roundtables carry weight",
   },
 };
+// The buying committee, measures, objections, proof shape, sales motion, roles and vocabulary of a seller that manages money come from the
+// shared sector file (INVESTMENT_PROFILE); only the plan details above (partners, venues, reads, assets) live here.
+Object.assign(INVESTMENT_BLOCK, {
+  committee: INVESTMENT_PROFILE.committee, metrics: INVESTMENT_PROFILE.metrics, objections: INVESTMENT_PROFILE.objections,
+  proofShape: INVESTMENT_PROFILE.proofShape, salesMotion: INVESTMENT_PROFILE.salesMotion, roles: INVESTMENT_PROFILE.buyerRoles, vocabulary: INVESTMENT_PROFILE.vocabulary,
+});
 
-// The sector's own overrides (see SECTOR_PLAN .over). The AI native override is the neutral one for an AI product of unknown use;
-// when the seller's own words say it automates customer support, the sector file's support wording (resolution rate and so on) fits.
-const SUPPORT_AI = /\b(support|tickets?|help ?desk|customer service|contact cent(?:re|er)s?|call cent(?:re|er)s?|resolution)\b/i;
-export function sectorOver(vertical, args) {
+// The sector's own overrides (see SECTOR_PLAN .over). The AI native, investment, billing and telecom wording now lives in the shared
+// sector file; only the software override stays here.
+export function sectorOver(vertical) {
   const spx = vertical ? SECTOR_PLAN[vertical.id] : null;
-  if (!spx || !spx.over) return {};
-  if (vertical.id === "ai-native") {
-    const a = args || {};
-    if (SUPPORT_AI.test([a.product_description, a.company_description, a.gtm_challenge, a.challenge, a.industry].filter((t) => typeof t === "string").join(" "))) return {};
-  }
-  return spx.over;
+  return spx && spx.over ? spx.over : {};
 }
 
 // ---------- small helpers ----------
@@ -339,7 +313,7 @@ export function planContext({ vertical, model, args }) {
   const fn = vertical && vertical.id === "saas" ? buyerFunction(a.product_description, a.company_description, a.gtm_challenge, a.challenge, a.industry) : null;
   const inv = model === "investment";
   const sp = inv ? INVESTMENT_BLOCK : vertical ? SECTOR_PLAN[vertical.id] : null;
-  const over = !inv ? sectorOver(vertical, a) : {};
+  const over = !inv ? sectorOver(vertical) : {};
   const roles = inv ? INVESTMENT_BLOCK.roles : fn ? fn.roles : over.buyerRoles || (vertical ? vertical.buyerRoles : ["the person who signs", "the champion who feels the problem", "the daily user"]);
   const metrics = inv ? INVESTMENT_BLOCK.metrics : fn ? fn.metrics : over.metrics || (vertical ? vertical.metrics : ["the number your buyer already reports on", "the cost of the problem today"]);
   const objections = inv ? INVESTMENT_BLOCK.objections : over.objections || (vertical ? vertical.objections : []);
@@ -646,7 +620,7 @@ export function sectorBlock(vertical, model, args) {
     };
   }
   const v = vertical;
-  const over = sectorOver(v, args);
+  const over = sectorOver(v);
   const fnBlock = c.fn ? {
     who_decides: c.fn.committee,
     what_it_measures: [...c.fn.metrics, ...v.metrics.filter((m) => /retention|churn/.test(m))],
