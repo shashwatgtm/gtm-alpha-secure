@@ -1,5 +1,5 @@
 import { scoreEpic, MOTIONS } from "../lib/epic-advanced.js";
-import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS, SECTOR_MODEL, VERTICALS } from "../lib/verticals.js";
+import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS, SECTOR_MODEL, VERTICALS, SUBTYPES } from "../lib/verticals.js";
 import { buildPlan, sectorBlock, sectorFit, joinList, MODEL_PLAN } from "../lib/gtm-plan.js";
 import { neutraliseDeep } from "../lib/echo-safe.js";
 
@@ -22,11 +22,17 @@ function readCompany(args) {
   var challenge = plain(args.gtm_challenge);
   var v = detectVertical({ seller: seller, context: [challenge, args.current_channels] }) || sectorByName(args.industry);
   var m = detectModel(args.business_model, { seller: [plain(args.company_description), args.industry, challenge, args.current_channels] });
-  if (m.how === "sector") m = v ? { model: SECTOR_MODEL[v.id], how: "sector" } : { model: null, how: "unknown" };
+  // Run 21b: the usual model of the sub-type the reader named (a messaging API is per message, a marketplace takes a rate) beats the vertical's usual model.
+  var st = v && v.subtype ? SUBTYPES.find(function(x) { return x.id === v.subtype; }) : null;
+  if (m.how === "sector") m = v ? { model: (st && st.model) || SECTOR_MODEL[v.id], how: "sector" } : { model: null, how: "unknown" };
   return { v: v, m: m };
 }
-function modelLine(m) {
-  return m.model ? MODEL_NAME[m.model] + (m.how === "input" ? "" : m.how === "sector" ? " (the usual model in this sector, assumed; set business_model to change it)" : " (read from your inputs)") : "not clear from your inputs; set business_model";
+// Run 21b: the shared name of the per-transaction model says "payments"; for a seller outside fintech (a messaging API, say) it says volume only.
+function modelName(model, v) {
+  return model === "transactions" && v && v.id !== "fintech" ? "per-transaction (priced on volume)" : MODEL_NAME[model];
+}
+function modelLine(m, v) {
+  return m.model ? modelName(m.model, v) + (m.how === "input" ? "" : m.how === "sector" ? " (the usual model in this sector, assumed; set business_model to change it)" : " (read from your inputs)") : "not clear from your inputs; set business_model";
 }
 // self_serve was not given: show what giving it would do, by running the same scoring with it set. Only for a business whose
 // product can be tried alone. The scores shown above are not changed by this.
@@ -90,7 +96,7 @@ const GTM_CONSULTANT = {
     lines.push("", "First 30 days for " + analysis.primary.motion + ":");
     d.first.forEach(function(t) { lines.push("- " + t); });
     if (d.notes) {
-      lines.push("", "Sector (read from your inputs): " + d.notes.sector + ". Business model: " + modelLine(d.m) + ".", "Who usually decides: " + d.notes.who_decides);
+      lines.push("", "Sector (read from your inputs): " + d.notes.sector + ". Business model: " + modelLine(d.m, d.v) + ".", "Who usually decides: " + d.notes.who_decides);
       if (d.notes.buyer_words && d.notes.buyer_words.length) lines.push("Words this buyer uses: " + d.notes.buyer_words.join(", ") + ".");
       if (d.notes.read_as) lines.push(d.notes.read_as);
     }
@@ -104,7 +110,7 @@ const GTM_CONSULTANT = {
       first_30_days: d.first,
       sector_notes: d.notes,
       sector_fit: d.fit,
-      business_model: modelLine(d.m),
+      business_model: modelLine(d.m, d.v),
       epic_detail: analysis
     };
     if (d.check) out.self_serve_check = d.check;
@@ -133,7 +139,7 @@ const GTM_CONSULTANT = {
     if (what) used.push("product description: read for the sector, the business model and the buyer's function");
     if (v) used.push("industry: sector notes, partner types and measures for " + v.name);
     else if (industry) used.push("industry: " + industry + " (the words did not name one of the nine sectors, so the steps are written for any sector)");
-    if (model) used.push("business model: " + MODEL_NAME[model] + (how === "input" ? "" : how === "read" ? " (read from the industry)" : " (the usual model in this sector, assumed)"));
+    if (model) used.push("business model: " + modelName(model, v) + (how === "input" ? "" : how === "read" ? " (read from the industry)" : " (the usual model in this sector, assumed)"));
     if (typeof args.acv_usd === "number") used.push("ACV: " + args.acv_usd.toLocaleString("en-US") + " US dollars a year");
     if (typeof args.deal_cycle_days === "number") used.push("deal cycle: " + args.deal_cycle_days.toLocaleString("en-US") + " days");
     if (typeof args.tam_accounts === "number") used.push("TAM: " + args.tam_accounts.toLocaleString("en-US") + " accounts");
@@ -167,7 +173,7 @@ const GTM_CONSULTANT = {
         short_term: plan.days_60,
         medium_term: plan.first_quarter
       },
-      business_model: model ? MODEL_NAME[model] + (how === "input" ? "" : how === "read" ? " (read from your industry)" : " (the usual model in this sector, assumed; set business_model to change it)") : "not given (each step that needs a product people can try alone says so; set business_model to narrow the steps)",
+      business_model: model ? modelName(model, v) + (how === "input" ? "" : how === "read" ? " (read from your industry)" : " (the usual model in this sector, assumed; set business_model to change it)") : "not given (each step that needs a product people can try alone says so; set business_model to narrow the steps)",
       inputs_used: used
     });
     if (clean(args.company_name)) out.company = clean(args.company_name);
@@ -268,7 +274,7 @@ function handleToolCall(name, rawArgs) {
     var named = typeof args.company_name === "string" ? args.company_name.trim() : "";
     var audit = Object.assign({ scores: d.analysis.scores, primaryFocus: d.analysis.primary.letter, recommendation: d.analysis.primary.motion }, d.analysis);
     if (audit.preliminary_note === null) delete audit.preliminary_note;
-    var extra = { business_model: modelLine(d.m), first_30_days: d.first };
+    var extra = { business_model: modelLine(d.m, d.v), first_30_days: d.first };
     if (d.notes) extra.sector_notes = d.notes;
     if (d.fit) extra.sector_fit = d.fit;
     if (d.check) extra.self_serve_check = d.check;

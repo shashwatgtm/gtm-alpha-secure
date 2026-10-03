@@ -344,7 +344,11 @@ export function scoreEpic(input) {
   if (Math.max(...vals) - Math.min(...vals) <= 2) {
     // Run 12 R12-20 and R12-43: the note never calls the company early stage (the input may say Series B) and makes no prediction;
     // the rule and the scores are unchanged.
-    notes.push("Your scores are evenly distributed. " + "This usually means no motion has pulled ahead yet." + " Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own). Measure pipeline contribution, then score again after a quarter to see whether that motion pulls ahead.");
+    // Run 21b: the note carries this company's own scores, the current lead and the inputs not given (words only; the rule and the scores are unchanged).
+    const gap = Math.max(...vals) - Math.min(...vals);
+    notes.push("Your scores are evenly distributed (E " + sc.E + ", P " + sc.P + ", I " + sc.I + ", C " + sc.C + "; the highest and the lowest are " + gap + " apart). " + "This usually means no motion has pulled ahead yet."
+      + (skipped.length ? " Not given: " + skipped.join(", ") + ". Each one you add can separate the motions." : "")
+      + " Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own); the current lead is " + MOTIONS[ranked[0]] + ". Measure pipeline contribution, then score again after a quarter to see whether that motion pulls ahead.");
   }
   // Run 14 D31a: list every adjustment applied to this motion after the starting point, raises and cuts alike, in the
   // order they happened (the industry cap and the two overrides are already in `reasonTimeline` in that order;

@@ -11,9 +11,171 @@ import { INVESTMENT_PROFILE } from "./verticals.js";
 
 export const EXAMPLE = " (Example figure: replace with your own)";
 
-// What sits next to the seller in the buyer's stack, where buyers meet, what they read and what they ask for before buying.
-export const SECTOR_PLAN = {
+// Run 21b (rule B82): what sits next to the seller in the buyer's stack, where buyers meet, what they read and what they ask for before
+// buying, in two layers. SECTOR_BASE holds only wording that is true for every company of the vertical; it is used for a company whose
+// sub-type is not named and for a sub-type without a block of its own. KIND_PLAN holds the wording written for one kind of company and is
+// used only when the sub-type the shared reader returned (vertical.subtype) is one of its `kinds`. Everything else about a sub-type
+// (roles, committee, measures, objections, proof shape, vocabulary) comes from the shared sector file, and the rest from the user's inputs.
+export const SECTOR_BASE = {
   "logistics-tech": {
+    entry: "a pilot at one site, lane or region, with the measures agreed before it starts",
+    partners: ["TMS, WMS and ERP vendors whose customers already run the systems you connect to", "3PLs and freight forwarders that serve several shippers", "systems integrators that roll out supply chain systems", "industry associations and analysts that cover supply chain operations"],
+    accounts: "the volume your buyer moves, the systems already in place, exposure to peak periods and a visible trigger such as a new operations leader, a network change or a service failure",
+    reviews: "IT integration, finance and an operations pilot sign-off",
+    venues: ["supply chain and logistics associations", "roundtables for operations heads", "industry events where shippers and logistics providers meet"],
+    assets: ["an integration guide for the order, transport and warehouse systems", "a pilot plan with the measures agreed before it starts", "a reference from a similar operation"],
+    typical: ["E"],
+    fit: {
+      E: "this sector is usually bought by operations heads after a pilot at one site, lane or region, so account-based selling with integration partners is a common way in",
+      P: "a self-serve start rarely fits a system tied to transport, warehouse and order data, so it works only as a small-operation entry route",
+      I: "operations heads search for cost, delay and exception problems, so content built on those reaches them before a vendor list exists",
+      C: "operations peers share lessons and vouch for vendors, which suits a long, pilot-led sale",
+    },
+  },
+  fintech: {
+    entry: "a pilot on one flow, team or entity, with the success criteria agreed in writing first",
+    partners: ["technology vendors and systems integrators whose customers already run the systems you connect to", "banks and regulated institutions your buyers already work with", "audit, risk and advisory firms that review controls", "industry bodies and analysts that cover financial technology"],
+    accounts: "the volume or value of money your buyer handles, the systems already in place, regulatory exposure and a visible trigger such as a new finance or product leader, an audit finding or a launch",
+    reviews: "security, compliance and risk",
+    venues: ["peer groups for finance and risk leaders", "industry association and regulator events", "financial technology conferences"],
+    assets: ["a security and data handling pack", "an integration guide for the systems the buyer runs", "a reference from a pilot on one flow, team or entity"],
+    typical: ["E"],
+    fit: {
+      E: "this sector is usually bought with a security, compliance and risk review inside the cycle, so account-based selling with technology and advisory partners is a common way in",
+      P: "financial buyers expect a controlled rollout, so self-serve fits only small companies or a single team before a risk review",
+      I: "buyers search for the problems their finance or product teams own, so content built on those problems reaches them early",
+      C: "finance and risk leaders trust their peers, so references and peer groups carry weight at the review stage",
+    },
+  },
+  "vertical-saas": {
+    entry: "a pilot in one region or team, with the measures agreed before it starts",
+    partners: ["system and ERP vendors your buyers already run", "industry associations, data providers and analysts in your buyers' trade", "device, connectivity and implementation partners that roll out software to the people who use it", "consultancies that run change programmes in your buyers' trade"],
+    accounts: "the size of the buying business, the teams and sites that would use the product, the systems already in place and a visible trigger such as a reorganisation, a new region or a new leader",
+    reviews: "IT integration, finance and a pilot sign-off",
+    venues: ["association events for your buyers' trade", "trade conferences and sector forums", "peer groups of the business heads who buy"],
+    assets: ["an integration guide for the systems the buyer already runs", "a pilot plan with the measures agreed before it starts", "a reference from a comparable business in the same trade"],
+    typical: ["E", "I"],
+    fit: {
+      E: "software built for one trade is usually bought by the business function it serves after a pilot, so account-based selling with trade partners fits",
+      P: "users adopt a trade-specific tool only when their manager backs it, so self-serve is an entry route for smaller buyers at most",
+      I: "buyers search for the daily problems of their trade, so content on those reaches them before any vendor list exists",
+      C: "buyers ask peers in the same trade what worked, so references are strong here",
+    },
+  },
+  "ai-native": {
+    entry: "a proof of concept on the buyer's own data, with a person checking the results",
+    plg: { user: "a data or product lead trying it on their own data", signer: "the owner of the workflow it would serve" },
+    partners: ["cloud and model platform providers your buyers already use", "data and integration vendors that hold the data your product needs", "systems integrators that build the workflow around an AI product", "industry bodies that publish guidance on AI use"],
+    accounts: "the workflow you automate, the volume of cases or decisions, the data available and a leader who owns that workflow",
+    reviews: "data privacy, security and legal review",
+    reads: ["accuracy write-ups on a buyer's own data", "guardrail and human oversight designs", "data handling and privacy notes", "cost per case comparisons"],
+    venues: ["AI and data leader communities", "workflow owner forums in your buyers' industry", "responsible AI and risk working groups"],
+    assets: ["an accuracy test plan on the buyer's own data", "a data handling and privacy note", "a human oversight and guardrail design"],
+    firstValue: "the buyer sees the AI handle a sample of their own cases",
+    expansionSignal: "a second workflow or team asks for the same agent",
+    typical: ["E", "I"],
+    fit: {
+      E: "AI products are usually sold to a workflow owner after a proof of concept on their own data, so account-based selling with integration partners fits",
+      P: "a hands-on trial helps when buyers can test on their own data, but production use still needs security and legal review",
+      I: "buyers look for evidence on accuracy and cost per case, so content built on evaluations reaches them while they compare options",
+      C: "buyers trust peers who run the same kind of AI in production, so practitioner communities carry weight",
+    },
+  },
+  ites: {
+    plg: { user: "a delivery or operations lead looking at a sample assessment" },
+    partners: ["technology platform vendors whose partner programmes include services firms", "sourcing and advisory firms that run vendor shortlists", "cloud and software providers that fund or co-sell services work", "analyst firms that rate service providers"],
+    accounts: "contract renewal dates, the incumbent provider, a stated cost or transformation programme and the size of the work in scope",
+    reviews: "procurement, vendor management, finance and security",
+    reads: ["transition plans and governance models", "service level reporting examples", "cost and quality trade-off papers", "client references in the same industry"],
+    venues: ["roundtables for the executives who buy the service", "sourcing and vendor management forums", "technology partner summits"],
+    assets: ["a staged transition plan with exit criteria", "a governance model and a sample service level report", "references from clients of a similar size"],
+    firstValue: "a client sees a short assessment or proof of concept on one of their own processes or applications",
+    expansionSignal: "the client asks for a second workstream or a wider scope",
+    typical: ["E", "C"],
+    fit: {
+      E: "services are bought through RFPs and relationships, so account-based selling with technology and advisory partners is the usual way in",
+      P: "a service has no product to try alone, so the product-led idea shows up as a short assessment the client can use without a full contract",
+      I: "buyers and sourcing leads search on cost, quality and transformation topics, so content and analyst coverage help you get onto shortlists",
+      C: "clients trust references from similar clients, so client forums and reference programmes carry weight",
+    },
+  },
+  telecom: {
+    entry: "a pilot at small scope, with quality and uptime measured against the current supplier's record",
+    plg: { user: "a technical lead looking at a survey or a sandbox" },
+    partners: ["device and network technology vendors you build on", "systems integrators and managed service providers that serve enterprise customers", "cloud and data centre providers whose customers need your service", "channel partners and resellers that already hold enterprise accounts"],
+    accounts: "the number of sites, users or flows that depend on the service, contract end dates, the incumbent supplier and a visible trigger such as repeated service problems or a platform change",
+    reviews: "security review, procurement price comparison and a technical pilot",
+    venues: ["IT infrastructure and network leader forums", "enterprise technology and telecom events", "operator and channel partner events"],
+    assets: ["a pilot plan with the quality and uptime measures agreed first", "an integration and security note", "a rate card with a cost comparison view"],
+    typical: ["E"],
+    fit: {
+      E: "enterprise telecom services are usually bought through price comparisons and pilots, so account-based selling with channel partners is a common way in",
+      P: "a network or messaging service often cannot be tried alone at full scale, so the product-led idea shows up as a sandbox, a survey or a pilot at small scope",
+      I: "technology leads search for reliability and cost problems, so content built on those reaches them before a tender",
+      C: "technology leads ask peers which supplier held up, so references and peer groups carry weight",
+    },
+  },
+  cybersecurity: {
+    entry: "a time-boxed proof of value on the buyer's own environment, with success criteria agreed in writing",
+    plg: { user: "a security engineer running a scan on a small scope", signer: "the CISO" },
+    partners: ["managed security service providers (MSSPs) that run or extend security operations for their clients", "security, ticketing and cloud platform vendors you integrate with", "cloud marketplaces your buyers buy through", "audit and risk advisory firms that recommend tools after a finding"],
+    accounts: "recent audit findings or incidents, the cloud and security tools in use, regulatory pressure and the size of the security team",
+    reviews: "security architecture, risk and compliance, and a proof of value",
+    venues: ["CISO peer groups", "security operations and security engineering communities", "regulatory and audit working groups"],
+    assets: ["a time-boxed proof of value plan with success criteria in writing", "an integration list for the security and ticketing tools the buyer runs", "an evidence pack for audit and risk reviewers"],
+    firstValue: "a security engineer sees real findings in their own environment",
+    expansionSignal: "another team, cloud account or business unit asks to be covered",
+    typical: ["E"],
+    fit: {
+      E: "security is CISO-led with a proof of value, often after an audit finding or incident, so account-based selling with MSSPs and marketplaces is the usual way in",
+      P: "security teams will run a free scan or trial on a small scope, but a production deal still needs the CISO, risk and compliance",
+      I: "security leaders search on threats, exposure and audit topics, so research content builds trust before a proof of value",
+      C: "CISOs trust peer CISOs more than vendors, so peer groups and references carry weight",
+    },
+  },
+  software: {
+    entry: "a team trial on a real project, with the integration set up in the first week",
+    plg: { user: "a developer trying it on their own project", signer: "the VP Engineering or CTO" },
+    partners: ["cloud platform marketplaces your developers already use", "tooling and editor ecosystems you integrate with", "open-source projects and maintainers near your product", "consultancies and agencies that build on your platform"],
+    accounts: "engineering team size, tools in the pipeline, number of developers already active in your product and an engineering leader who owns the tooling budget",
+    reviews: "security review of code and data access, and procurement",
+    reads: ["documentation, SDK references and tutorials", "migration guides from the tool a team uses today", "benchmark write-ups on the team's own pipeline", "integration recipes for the tools a team already uses"],
+    venues: ["developer communities and meetups", "open-source projects and forums", "platform engineering and developer experience communities"],
+    assets: ["a security documentation pack that says what the product reads and stores", "a migration guide for existing scripts and tests", "a team pricing and usage explanation"],
+    firstValue: "a developer gets a working result in their own project, such as a first test run or a first API call",
+    expansionSignal: "several developers in one company are active and a team lead asks for shared workspaces",
+    typical: ["P", "I", "C"],
+    fit: {
+      E: "once developers are active inside a company, an enterprise deal led by engineering leadership needs account-based selling and platform partners",
+      P: "developers usually try a tool on their own first, so a product-led start suits this sector when the product can be used without a call",
+      I: "developers search for answers and tutorials, so documentation and content bring them in",
+      C: "developers trust other developers, so communities and open-source presence carry weight",
+    },
+  },
+  saas: {
+    plg: { user: "the person who feels the problem day to day and tries the product", signer: "the budget owner of the function" },
+    partners: ["platform and marketplace vendors your buyers already use", "implementation and consulting partners that set up tools like yours", "complementary tools your buyers connect yours to", "associations and analysts in your buyers' function"],
+    accounts: "the function that owns the problem, tools in use today, team size and a visible trigger such as a new leader or a change of system",
+    reviews: "finance, IT and security",
+    reads: ["how-to guides for the function's daily problem", "comparisons with building it in-house", "migration and integration guides", "customer before and after write-ups"],
+    venues: ["peer communities for the function you sell to", "association events for that function", "customer advisory groups"],
+    assets: ["a migration plan and time-to-first-value outline", "an integration list", "a customer before and after write-up"],
+    firstValue: "a new user completes the task the product exists for, on their own data",
+    expansionSignal: "a second team or function in the account starts using it",
+    typical: ["P", "I"],
+    fit: {
+      E: "larger deals in this sector go through finance, IT and security, so account-based selling suits the bigger accounts",
+      P: "buyers often expect to try the product before talking to sales, so a product-led start suits smaller accounts",
+      I: "buyers search for the function's daily problem, so content and outbound to the function bring them in",
+      C: "customers vouch for tools in peer groups, which helps renewals and expansion",
+    },
+  },
+};
+
+// Wording written for one kind of company (a sub-type of the shared sector file). Used only when vertical.subtype is one of `kinds`.
+export const KIND_PLAN = {
+  "logistics-tech": {
+    kinds: ["last-mile", "transport-management"],
     entry: "a pilot at one hub or city, with cost per delivery and first-attempt delivery measured before and after",
     plg: { user: "a planner or dispatcher trying the route plan on their own orders", signer: "the COO or Head of Supply Chain" },
     terms: ["carrier allocation", "hub and spoke", "line haul", "courier", "returns", "cash on delivery", "failed delivery", "rate card", "freight audit", "control tower", "order tracking", "ecommerce shipping", "warehouse", "cut-off times"],
@@ -34,9 +196,10 @@ export const SECTOR_PLAN = {
     },
   },
   fintech: {
+    kinds: ["spend-expense"],
     entry: "a pilot on one entity or department, with the finance controller signing off the result",
     plg: { user: "a finance operations user trying it on one batch of their own transactions", signer: "the CFO" },
-    terms: ["payment gateway", "settlement", "payouts", "chargebacks", "KYC", "fraud", "spend controls", "reimbursement", "treasury", "payment success rate", "lending", "credit decisioning", "cards", "invoice matching"],
+    terms: ["spend controls", "reimbursement", "treasury", "cards", "invoice matching"],
     partners: ["ERP and accounting system vendors and their implementation partners", "banks and card networks that issue or settle for your buyers", "audit and advisory firms that review finance controls", "payroll, travel and procurement systems that feed the same ledger"],
     accounts: "number of employees who claim or spend, ERP in use, entities and countries, and a visible trigger such as an audit finding, a new finance leader or finance teams still working in spreadsheets",
     reviews: "security, compliance and internal audit",
@@ -54,6 +217,7 @@ export const SECTOR_PLAN = {
     },
   },
   "vertical-saas": {
+    kinds: ["fmcg-retail-execution"],
     entry: "a pilot in one region with a set of distributors, measured on productive calls and secondary sales",
     plg: { user: "a field rep or sales manager trying the app on their own beat", signer: "the National Sales Head" },
     terms: ["van sales", "route to market", "retail execution", "sales force automation", "trade promotion", "merchandising", "planogram", "order fill rate", "distributor claims", "field force", "outlet audit", "scheme"],
@@ -73,48 +237,10 @@ export const SECTOR_PLAN = {
       C: "sales heads ask peers at other brands what worked in the field, so references are strong here",
     },
   },
-  "ai-native": {
-    entry: "a proof of concept on the buyer's own data, with a person checking the results",
-    plg: { user: "a data or product lead trying it on their own data", signer: "the owner of the workflow it would serve" },
-    terms: ["agents", "copilot", "LLM", "fine-tuning", "evaluation", "prompt", "retrieval", "forecasting", "model risk", "explainability", "voice", "latency", "confidence scores", "grounding"],
-    partners: ["cloud and model platform providers your buyers already use", "data and integration vendors that hold the data your product needs", "systems integrators that build the workflow around an AI product", "industry bodies that publish guidance on AI use"],
-    accounts: "the workflow you automate, the volume of cases or decisions, the data available and a leader who owns that workflow",
-    reviews: "data privacy, security and legal review",
-    reads: ["accuracy write-ups on a buyer's own data", "guardrail and human oversight designs", "data handling and privacy notes", "cost per case comparisons"],
-    venues: ["AI and data leader communities", "workflow owner forums in your buyers' industry", "responsible AI and risk working groups"],
-    assets: ["an accuracy test plan on the buyer's own data", "a data handling and privacy note", "a human oversight and guardrail design"],
-    firstValue: "the buyer sees the AI handle a sample of their own cases",
-    expansionSignal: "a second workflow or team asks for the same agent",
-    typical: ["E", "I"],
-    fit: {
-      E: "AI products are usually sold to a workflow owner after a proof of concept on their own data, so account-based selling with integration partners fits",
-      P: "a hands-on trial helps when buyers can test on their own data, but production use still needs security and legal review",
-      I: "buyers look for evidence on accuracy and cost per case, so content built on evaluations reaches them while they compare options",
-      C: "buyers trust peers who run the same kind of AI in production, so practitioner communities carry weight",
-    },
-  },
-  ites: {
-    plg: { user: "a delivery or IT operations lead looking at a sample assessment", signer: "the CIO or business unit head" },
-    terms: ["modernization", "migration", "digital transformation", "contact centre", "RPA", "automation", "cloud", "platform engineering", "offshore", "nearshore", "service desk", "run and change", "digital engineering", "centre of excellence"],
-    partners: ["technology platform vendors whose partner programmes include services firms", "sourcing and advisory firms that run vendor shortlists", "cloud providers that fund or co-sell modernization work", "analyst firms that rate service providers"],
-    accounts: "contract renewal dates, the incumbent provider, a stated cost or modernization programme, applications waiting for migration and the size of the IT estate",
-    reviews: "procurement, vendor management, finance and security",
-    reads: ["transition plans and governance models", "SLA reporting examples", "cost-versus-modernization trade-off papers", "client references in the same industry"],
-    venues: ["CIO and IT leader roundtables", "sourcing and vendor management forums", "technology partner summits"],
-    assets: ["a staged transition plan with exit criteria", "a governance model and a sample SLA report", "references from clients of a similar size"],
-    firstValue: "a client sees a short assessment or proof of concept on one of their own applications",
-    expansionSignal: "the client asks for a second workstream or a wider scope",
-    typical: ["E", "C"],
-    fit: {
-      E: "services are bought through RFPs and relationships, so account-based selling with technology and advisory partners is the usual way in",
-      P: "a service has no product to try alone, so the product-led idea shows up as a short assessment the client can use without a full contract",
-      I: "CIOs and sourcing leads search on modernization and cost topics, so content and analyst coverage help you get onto shortlists",
-      C: "clients trust references from similar clients, so client forums and reference programmes carry weight",
-    },
-  },
   telecom: {
+    kinds: ["operators-connectivity"],
     plg: { user: "a network manager looking at a site survey", signer: "the CIO" },
-    terms: ["underlay", "overlay", "private 5G", "IoT connectivity", "leased line", "SIM", "roaming", "CPaaS", "DDoS protection", "colocation", "VPN", "WAN", "bandwidth", "managed SD-WAN"],
+    terms: ["underlay", "overlay", "private 5G", "IoT connectivity", "leased line", "SIM", "roaming", "DDoS protection", "colocation", "VPN", "WAN", "bandwidth", "managed SD-WAN"],
     partners: ["device, firewall and SD-WAN technology vendors you build on", "systems integrators and managed service providers that run enterprise networks", "data centre and cloud providers whose customers need connectivity", "channel partners and resellers that already hold enterprise accounts"],
     accounts: "number of branch sites, sites with repeated outages, contract end dates and the incumbent operator",
     reviews: "security review of the overlay, procurement rate-card comparison and a site survey",
@@ -131,73 +257,20 @@ export const SECTOR_PLAN = {
       C: "network leads ask peers at other multi-site companies which operator held up, so references and peer groups carry weight",
     },
   },
-  cybersecurity: {
-    entry: "a time-boxed proof of value on the buyer's own environment, with success criteria agreed in writing",
-    plg: { user: "a security engineer running a scan on a small scope", signer: "the CISO" },
-    terms: ["threat intelligence", "attack path", "dark web", "phishing", "takedown", "brand impersonation", "leaked credentials", "vulnerability", "SIEM", "XDR", "EDR", "zero trust", "third-party risk", "digital risk protection"],
-    partners: ["managed security service providers (MSSPs) that run or extend security operations for their clients", "SIEM, ticketing and cloud platform vendors you integrate with", "cloud marketplaces your buyers buy through", "audit and risk advisory firms that recommend tools after a finding"],
-    accounts: "recent audit findings or incidents, the cloud and security tools in use, regulatory pressure and the size of the security team",
-    reviews: "security architecture, risk and compliance, and a proof of value",
-    reads: ["exposure and attack path write-ups", "alert fatigue and prioritisation papers", "SIEM and ticketing integration notes", "audit evidence guides"],
-    venues: ["CISO peer groups", "security operations and cloud security communities", "regulatory and audit working groups"],
-    assets: ["a time-boxed proof of value plan with success criteria in writing", "an integration list for the SIEM and ticketing tools", "an evidence pack for audit and risk reviewers"],
-    firstValue: "a security engineer sees real exposures found in their own environment",
-    expansionSignal: "another team, cloud account or business unit asks to be covered",
-    typical: ["E"],
-    fit: {
-      E: "security is CISO-led with a proof of value, often after an audit finding or incident, so account-based selling with MSSPs and marketplaces is the usual way in",
-      P: "security teams will run a free scan or trial on a small scope, but a production deal still needs the CISO, risk and compliance",
-      I: "security leaders search on threats, exposure and audit topics, so research content builds trust before a proof of value",
-      C: "CISOs trust peer CISOs more than vendors, so peer groups and references carry weight",
-    },
+};
+
+// Software sold to developers: the API platform wording applies only when the seller's own words name APIs as the product and the shared
+// reader named no software sub-type (a developer platform or a testing tool gets its sub-type's notes instead).
+export const API_PLATFORM = {
+  communityTopics: "API design, documentation, governance and how APIs fit into developer workflows",
+  over: {
+    buyerRoles: ["VP Engineering", "Chief Technology Officer", "Platform Engineering Lead", "Head of API or Developer Experience", "Engineering Manager"],
+    committee: "The VP Engineering or CTO signs; a platform or developer experience lead champions; developers use it daily and often adopt it first; security reviews code and data access; procurement handles licences or usage.",
+    metrics: ["active developers per team", "time to first working result", "integrations in use", "specs and documentation kept in sync", "issues caught by governance rules before release"],
+    vocabulary: ["developer experience", "APIs", "SDKs", "documentation", "integrations", "governance", "developer adoption", "API lifecycle"],
+    proofShape: "Developer adoption or time to first working result on one team before and after, from the team's own usage data.",
   },
-  software: {
-    entry: "a team trial on a real project, with the integration set up in the first week",
-    communityTopics: "API design, documentation, governance and how APIs fit into developer workflows",
-    plg: { user: "a developer trying it on their own project", signer: "the VP Engineering or CTO" },
-    over: {
-      buyerRoles: ["VP Engineering", "Chief Technology Officer", "Platform Engineering Lead", "Head of API or Developer Experience", "Engineering Manager"],
-      committee: "The VP Engineering or CTO signs; a platform or developer experience lead champions; developers use it daily and often adopt it first; security reviews code and data access; procurement handles licences or usage.",
-      metrics: ["active developers per team", "time to first working result", "integrations in use", "specs and documentation kept in sync", "issues caught by governance rules before release"],
-      vocabulary: ["developer experience", "APIs", "SDKs", "documentation", "integrations", "governance", "developer adoption", "API lifecycle"],
-      proofShape: "Developer adoption or time to first working result on one team before and after, from the team's own usage data.",
-    },
-    terms: ["CI/CD", "sandbox", "API keys", "webhooks", "monitoring", "API design", "versioning", "test automation", "observability", "open source", "developer portal", "OpenAPI", "rate limits", "API governance"],
-    partners: ["cloud platform marketplaces your developers already use", "CI/CD, source control and IDE ecosystems you integrate with", "open-source projects and maintainers near your product", "consultancies and agencies that build on your platform"],
-    accounts: "engineering team size, tools in the pipeline, number of developers already active in your product and an engineering leader who owns the tooling budget",
-    reviews: "security review of code and data access, and procurement",
-    reads: ["documentation, SDK references and tutorials", "migration guides from the tool a team uses today", "benchmark write-ups on the team's own pipeline", "integration recipes for CI and source control"],
-    venues: ["developer communities and meetups", "open-source projects and forums", "API, platform engineering and developer experience communities"],
-    assets: ["a security documentation pack that says what the product reads and stores", "a migration guide for existing scripts and tests", "a team pricing and usage explanation"],
-    firstValue: "a developer gets a working result in their own project, such as a first test run or a first API call",
-    expansionSignal: "several developers in one company are active and a team lead asks for shared workspaces",
-    typical: ["P", "I", "C"],
-    fit: {
-      E: "once developers are active inside a company, an enterprise deal led by engineering leadership needs account-based selling and platform partners",
-      P: "developers usually try a tool on their own first, so a product-led start suits this sector when the product can be used without a call",
-      I: "developers search for answers and tutorials, so documentation and content bring them in",
-      C: "developers trust other developers, so communities and open-source presence carry weight",
-    },
-  },
-  saas: {
-    plg: { user: "the person who feels the problem day to day and tries the product", signer: "the budget owner of the function" },
-    terms: ["subscription", "pricing plans", "usage-based billing", "invoicing", "dunning", "churn", "entitlements", "revenue recognition", "CPQ", "integration", "lead scoring", "CRM", "pipeline", "marketing automation"],
-    partners: ["platform and marketplace vendors your buyers already use", "implementation and consulting partners that set up tools like yours", "complementary tools your buyers connect yours to", "associations and analysts in your buyers' function"],
-    accounts: "the function that owns the problem, tools in use today, team size and a visible trigger such as a new leader or a change of system",
-    reviews: "finance, IT and security",
-    reads: ["how-to guides for the function's daily problem", "comparisons with building it in-house", "migration and integration guides", "customer before and after write-ups"],
-    venues: ["peer communities for the function you sell to", "association events for that function", "customer advisory groups"],
-    assets: ["a migration plan and time-to-first-value outline", "an integration list", "a customer before and after write-up"],
-    firstValue: "a new user completes the task the product exists for, on their own data",
-    expansionSignal: "a second team or function in the account starts using it",
-    typical: ["P", "I"],
-    fit: {
-      E: "larger deals in this sector go through finance, IT and security, so account-based selling suits the bigger accounts",
-      P: "buyers often expect to try the product before talking to sales, so a product-led start suits smaller accounts",
-      I: "buyers search for the function's daily problem, so content and outbound to the function bring them in",
-      C: "customers vouch for tools in peer groups, which helps renewals and expansion",
-    },
-  },
+  terms: ["API design", "versioning", "OpenAPI", "API governance", "developer portal", "rate limits", "webhooks", "API keys"],
 };
 
 // A generic SaaS seller sells to some function. The seller's own text says which; this table is only used for the generic SaaS sector.
@@ -269,11 +342,18 @@ Object.assign(INVESTMENT_BLOCK, {
   proofShape: INVESTMENT_PROFILE.proofShape, salesMotion: INVESTMENT_PROFILE.salesMotion, roles: INVESTMENT_PROFILE.buyerRoles, vocabulary: INVESTMENT_PROFILE.vocabulary,
 });
 
-// The sector's own overrides (see SECTOR_PLAN .over). The AI native, investment, billing and telecom wording now lives in the shared
-// sector file; only the software override stays here.
-export function sectorOver(vertical) {
-  const spx = vertical ? SECTOR_PLAN[vertical.id] : null;
-  return spx && spx.over ? spx.over : {};
+// The plan details for this company: the block written for its kind when the shared reader returned one of that block's sub-types,
+// otherwise the vertical's base block (wording true for every company of the vertical).
+export function planDetails(vertical) {
+  if (!vertical) return null;
+  const kind = KIND_PLAN[vertical.id];
+  if (kind && vertical.subtype && kind.kinds.includes(vertical.subtype)) return kind;
+  return SECTOR_BASE[vertical.id] || null;
+}
+// The API platform notes: only for a software seller whose own words name APIs as what it sells, when the reader named no sub-type.
+const API_WORDS = /\bAPI (?:platform|design|development|lifecycle|management|governance|tool\w*|testing|documentation)\b|\b(?:designing|documenting|testing|building) APIs\b/i;
+export function apiPlatform(vertical, ...texts) {
+  return vertical && vertical.id === "software" && !vertical.subtype && API_WORDS.test(texts.filter((t) => typeof t === "string").join(" \n ")) ? API_PLATFORM : null;
 }
 
 // ---------- small helpers ----------
@@ -310,10 +390,13 @@ export function buyerFunction(...texts) {
 // Everything the plan needs, in one place: the sector record, the business model, the motion and the user's numbers.
 export function planContext({ vertical, model, args }) {
   const a = args || {};
-  const fn = vertical && vertical.id === "saas" ? buyerFunction(a.product_description, a.company_description, a.gtm_challenge, a.challenge, a.industry) : null;
+  // Run 21b: a sub-type named by the reader brings its own roles, committee and measures; the buyer function read from the words is for generic SaaS only.
+  const fn = vertical && vertical.id === "saas" && !vertical.subtype ? buyerFunction(a.product_description, a.company_description, a.gtm_challenge, a.challenge, a.industry) : null;
   const inv = model === "investment";
-  const sp = inv ? INVESTMENT_BLOCK : vertical ? SECTOR_PLAN[vertical.id] : null;
-  const over = !inv ? sectorOver(vertical) : {};
+  const details = planDetails(vertical);
+  const sp = inv ? INVESTMENT_BLOCK : details;
+  const api = !inv ? apiPlatform(vertical, a.product_description, a.company_description, a.gtm_challenge, a.challenge, a.industry) : null;
+  const over = api ? api.over : {};
   const roles = inv ? INVESTMENT_BLOCK.roles : fn ? fn.roles : over.buyerRoles || (vertical ? vertical.buyerRoles : ["the person who signs", "the champion who feels the problem", "the daily user"]);
   const metrics = inv ? INVESTMENT_BLOCK.metrics : fn ? fn.metrics : over.metrics || (vertical ? vertical.metrics : ["the number your buyer already reports on", "the cost of the problem today"]);
   const objections = inv ? INVESTMENT_BLOCK.objections : over.objections || (vertical ? vertical.objections : []);
@@ -324,14 +407,18 @@ export function planContext({ vertical, model, args }) {
   const sectorEntry = sp && sp.entry && !inv && (model === "saas" || model === "hardware_software" || !model) ? sp.entry : null;
   const entry = sectorEntry || mp.entry;
   const assisted = sectorEntry || mp.assisted;
-  const plg = fn ? fn.plg : sp && sp.plg ? sp.plg : { user: "the person who feels the problem day to day and tries the product", signer: "the budget owner of the function" };
+  const plgGiven = fn ? fn.plg : sp && sp.plg ? sp.plg : {};
+  const plg = {
+    user: plgGiven.user || "the person who feels the problem day to day and tries the product",
+    signer: plgGiven.signer || (vertical ? "the " + roles[0] : "the budget owner of the function"),
+  };
   const acv = typeof a.acv_usd === "number" && isFinite(a.acv_usd) ? a.acv_usd : null;
   const cycle = typeof a.deal_cycle_days === "number" && isFinite(a.deal_cycle_days) ? a.deal_cycle_days : null;
   const tam = typeof a.tam_accounts === "number" && isFinite(a.tam_accounts) ? a.tam_accounts : null;
   const nrr = typeof a.nrr_percent === "number" && isFinite(a.nrr_percent) ? a.nrr_percent : null;
   const channels = clean(a.current_channels);
   return {
-    vertical, model, sp, fn, roles, metrics, objections, proofShape, vocab, mp, entry, assisted, plgUser: plg.user, plgSigner: plg.signer, acv, cycle, tam, nrr, channels,
+    vertical, model, sp, fn, api, over, communityTopics: api ? api.communityTopics : null, terms: (details && details.terms) || (api ? api.terms : []), typical: details ? details.typical : null, roles, metrics, objections, proofShape, vocab, mp, entry, assisted, plgUser: plg.user, plgSigner: plg.signer, acv, cycle, tam, nrr, channels,
     signer: roles[0], champion: roles[1] || roles[0], user: roles[roles.length - 1],
     cycleText: cycle ? "your " + num(cycle) + "-day cycle" : "your sales cycle",
     longCycle: cycle !== null && cycle > 90,
@@ -352,7 +439,10 @@ const neutral = {
   firstValue: "a new user completes the task the product exists for, on their own data",
   expansionSignal: "a second team in the account starts using it",
 };
-const sp = (c, k) => (c.sp && c.sp[k]) || neutral[k];
+// Run 21b: without a block written for this company's kind, the reading list is built from the measures of its own sector or sub-type.
+const derived = (c, k) => (k === "reads" && c.vertical && c.metrics.length
+  ? ["a write-up of one customer's before and after on " + joinList(c.metrics.slice(0, 2)), "how-to guides for the daily problem", "comparisons with the way buyers solve it today"] : null);
+const sp = (c, k) => (c.sp && c.sp[k]) || derived(c, k) || neutral[k];
 
 // What the user already does, quoted in their own words (the text was made inert before it got here).
 const deciders = (c) => (c.vertical || c.model === "investment" ? joinList(c.roles.slice(0, 2)) : "the person who signs and the champion who feels the problem");
@@ -474,7 +564,7 @@ function plgMode(c, letter) {
   if (letter !== "P" || c.mp.selfServe === false) return null;
   const big = (c.acv !== null && c.acv > 50000) || (c.cycle !== null && c.cycle > 90);
   if (!big) return null;
-  const usual = c.model !== "hardware_software" && (!c.vertical || (SECTOR_PLAN[c.vertical.id] && SECTOR_PLAN[c.vertical.id].typical.includes("P")));
+  const usual = c.model !== "hardware_software" && (!c.vertical || (c.typical && c.typical.includes("P")));
   return usual ? "assist" : "pilot";
 }
 export function fitWarning(c, letter) {
@@ -568,7 +658,7 @@ function planCInvestment(c) {
 function planC(c) {
   if (c.model === "investment") return planCInvestment(c);
   const big = c.tam !== null && c.tam > 10000;
-  const topic = (c.sp && c.sp.communityTopics) || metricsText(c, 2);
+  const topic = c.communityTopics || metricsText(c, 2);
   const d30 = [
     "Choose where your buyers already talk: " + joinLong(sp(c, "venues")) + ". Join two and listen before you launch your own.",
     big
@@ -578,8 +668,8 @@ function planC(c) {
   ];
   const d60 = [
     big
-      ? "Open the forum to everyone and run recurring open sessions and office hours led by champions, not by you. Each champion shows " + ((c.sp && c.sp.communityTopics) ? "how they handle " + c.sp.communityTopics : "how they measure " + c.metrics[0]) + " and what they changed."
-      : "Run the first two sessions led by customers, not by you. Each member shows " + ((c.sp && c.sp.communityTopics) ? "how they handle " + c.sp.communityTopics : "how they measure " + c.metrics[0]) + " and what they changed.",
+      ? "Open the forum to everyone and run recurring open sessions and office hours led by champions, not by you. Each champion shows " + (c.communityTopics ? "how they handle " + c.communityTopics : "how they measure " + c.metrics[0]) + " and what they changed."
+      : "Run the first two sessions led by customers, not by you. Each member shows " + (c.communityTopics ? "how they handle " + c.communityTopics : "how they measure " + c.metrics[0]) + " and what they changed.",
     big ? "Answer new posts within a day, tag the questions that repeat, and turn the top ones into documentation and content. They are also your list of objections to answer." : "Record the questions members ask. They become your content and your list of objections to answer.",
     c.channels ? "Connect the community to what you already do (" + c.channels + "): invite the people you meet there to a session, and note which ones come back." : "Ask members who got a result to act as a reference for the prospects you are talking to now.",
   ];
@@ -620,7 +710,7 @@ export function sectorBlock(vertical, model, args) {
     };
   }
   const v = vertical;
-  const over = sectorOver(v);
+  const over = c.over;
   const fnBlock = c.fn ? {
     who_decides: c.fn.committee,
     what_it_measures: [...c.fn.metrics, ...v.metrics.filter((m) => /retention|churn/.test(m))],
@@ -633,14 +723,14 @@ export function sectorBlock(vertical, model, args) {
     usual_objections: (over.objections || v.objections).map((o) => o.objection),
     proof_that_lands: over.proofShape || v.proofShape,
     sales_motion: v.salesMotion,
-    buyer_words: c.fn ? c.fn.terms : [...new Set([...(over.vocabulary || v.vocabulary), ...((SECTOR_PLAN[v.id] || {}).terms || [])])],
+    buyer_words: c.fn ? c.fn.terms : [...new Set([...(over.vocabulary || v.vocabulary), ...c.terms])],
   }, fnBlock);
 }
 
 /** One paragraph that says how the lead motion sits with the way this sector (or this kind of business) usually buys. */
 export function sectorFit({ vertical, model, letter, motionName, scores, selfServeGiven }) {
   const inv = model === "investment";
-  const spx = inv ? INVESTMENT_BLOCK : vertical ? SECTOR_PLAN[vertical.id] : null;
+  const spx = inv ? INVESTMENT_BLOCK : planDetails(vertical);
   if (!spx) return null;
   const typical = inv ? ["E"] : spx.typical;
   const name = inv ? "investment management" : vertical.name;

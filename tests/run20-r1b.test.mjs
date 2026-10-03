@@ -189,7 +189,7 @@ test("the sector fit paragraph for a four-way tie names the sector pattern", asy
   const fin = VERTICALS.find((v) => v.id === "fintech");
   const text = sectorFit({ vertical: fin, model: "saas", letter: "E", motionName: "Ecosystem and ABM", scores: { E: 5, P: 5, I: 5, C: 5 }, selfServeGiven: false });
   assert.match(text, /tie/);
-  assert.match(text, /CFO/);
+  assert.match(text, /security, compliance and risk review/); // run 21b: the bare fintech pattern no longer says CFO-led (that is the spend and expense sub-type's wording)
 });
 
 test("generate_roadmap without a business model does not assume a software subscription", async () => {
@@ -209,7 +209,7 @@ test("generate_roadmap with an industry and a business model names the sector's 
   const j = await call("generate_roadmap", { primary_focus: "E", timeframe: "60-day", industry: "logistics tech", business_model: "saas", acv_usd: 90000, deal_cycle_days: 120, current_channels: "outbound and two events" });
   const s = plan(j);
   assert.match(s, /TMS|WMS|3PL/);
-  assert.match(s, /cost per delivery|first-attempt/i);
+  assert.match(s, /on time delivery|cost per shipment/i); // run 21b: cost per delivery and first-attempt are last-mile wording; a bare logistics industry gets the sector's own measures
   assert.match(s, /outbound and two events/);
   assert.match(s, /120-day/);
   assert.equal(j.sector, "logistics tech");
@@ -284,11 +284,14 @@ test("round 2 (1, 5): the software sector fits developer platforms in general, n
     assert.match(plan(j), /developer/i, tool);
     assert.match(flat(j.sector_notes), /developer experience|documentation|integrations|governance/i, tool);
   }
+  // run 21b: the bare software sector now prints the shared neutral entry, which names release frequency and lead time for changes; the testing-tool wording stays out
+  const QA_ONLY = /Head of QA|test coverage|CI pipeline|cross-browser|escaped defects|regression testing/i;
   for (const f of ["E", "P", "I", "C"]) {
     const j = await call("generate_roadmap", { primary_focus: f, industry: "software" });
-    assert.doesNotMatch(plan(j), QA, f);
+    assert.doesNotMatch(plan(j), QA_ONLY, f);
   }
-  const c = await call("generate_roadmap", { primary_focus: "C", industry: "software", company_name: "Specdrop" });
+  // run 21b: the API wording is built from the seller's own words (a bare "software" industry no longer gets it)
+  const c = await call("generate_roadmap", { primary_focus: "C", industry: "software", company_name: "Specdrop", product_description: "An API platform for designing, documenting and testing APIs." });
   assert.match(plan(c), /API design|governance|developer workflows|documentation/i);
 });
 
@@ -316,7 +319,7 @@ test("round 2 (3): a requested motion that the ACV and cycle contradict is said 
   assert.match(j.read_this_first, /pilot/i);
   assert.ok(!/\n/.test(j.read_this_first));
   assert.doesNotMatch(plan(j), /invitations|sign-up|plan and price page|first-use path/i);
-  assert.match(plan(j), /hub|cost per delivery/i);
+  assert.match(plan(j), /pilot|on time delivery|cost per shipment/i); // run 21b: hub and cost per delivery are last-mile wording
   const small = await call("generate_roadmap", { primary_focus: "P", industry: "logistics tech", acv_usd: 3000, deal_cycle_days: 10 });
   assert.equal(small.read_this_first, undefined);
   const e = await call("generate_roadmap", { primary_focus: "E", industry: "SaaS", acv_usd: 2000, deal_cycle_days: 10 });

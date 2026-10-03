@@ -1,0 +1,48 @@
+{
+  "_about": "Run 21b step 2: pairs of companies described in plain words (no real names, rule B81). Each side lists words that belong to the other side's kind of company (forbid) and words that fit its own (want). All figures are examples.",
+  "pairs": [
+    {
+      "id": "vertical-saas: construction vs consumer goods field sales",
+      "a": { "industry": "vertical SaaS", "text": "We sell construction management software for general contractors: job costing, change orders, submittals and pay applications. Our buyers' pain is late change orders and disconnected spreadsheets.",
+             "forbid": "distributor|secondary sales|route.to.market|van sales|outlet|\\bDMS\\b|field reps?|retail audit|\\bbeat\\b|national sales head|sales reorganisation|planogram", "want": "contractor|job cost|change order|project" },
+      "b": { "industry": "vertical SaaS", "text": "We sell field sales and distributor management software to consumer goods brands. Reps miss outlet visits and distributor claims are slow.",
+             "forbid": "job cost|change order|submittal|contractor|retainage|punch list|pay application", "want": "distributor|outlet|field" }
+    },
+    {
+      "id": "fintech: payments data API vs expense management",
+      "a": { "industry": "fintech", "text": "We sell an API platform that lets apps connect to users' bank accounts and verify payments. Teams struggle with failed payments and slow onboarding.",
+             "forbid": "month-end|reimburs|employees who claim or spend|payroll, travel|finance controller|spend controls|close the books|invoice matching|accounts payable|CFO-led|expense", "want": "payment|settlement|sandbox|bank" },
+      "b": { "industry": "fintech", "text": "We sell an expense management and reimbursement platform to midsize companies. Claims take weeks and policy breaches go unseen.",
+             "forbid": "sandbox|chargeback|authori[sz]ation|sponsor bank|tokeni[sz]ation|credit decisioning|\\bKYC\\b", "want": "reimburs|expense|policy|controller|month.end|ERP" }
+    },
+    {
+      "id": "logistics tech: freight marketplace vs last mile delivery",
+      "a": { "industry": "logistics tech", "text": "We sell a freight marketplace that matches shippers with truck capacity. Shippers struggle to find carriers on short notice.",
+             "forbid": "cost per delivery|first-attempt|failed.delivery|courier|route plan|cash on delivery|pilot at one hub|\\bhub\\b|cut-off times", "want": "load|capacity|carrier|lane" },
+      "b": { "industry": "logistics tech", "text": "We sell last mile delivery software with route planning and proof of delivery for retailers with their own drivers. Failed deliveries are costly.",
+             "forbid": "load fill rate|spot and contract|carrier network|empty return|rate quote", "want": "delivery|route|driver|dispatch|failed" }
+    },
+    {
+      "id": "software: developer platform vs API design platform",
+      "a": { "industry": "software", "text": "We sell a DevOps platform with source control and CI/CD pipelines for engineering teams. Releases are slow and tools are scattered.",
+             "forbid": "API design|API governance|governance rules|specs and documentation|API lifecycle|OpenAPI|rate limits|how APIs fit", "want": "pipeline|release|CI|developer" },
+      "b": { "industry": "software", "text": "We sell an API platform for designing, documenting and testing APIs. Specs and docs drift apart in large teams.",
+             "forbid": "lead time for changes|deployment frequency|change failure rate|source control", "want": "API|documentation|governance" }
+    },
+    {
+      "id": "telecom: messaging platform vs enterprise connectivity",
+      "a": { "industry": "telecom", "text": "We sell a CPaaS messaging platform with SMS and voice APIs for businesses. Delivery rates vary by route.",
+             "forbid": "SD-WAN|branch|site survey|leased line|per site|wave plan|bandwidth|repair time|multi-site", "want": "message|SMS|delivery|route|sender|API" },
+      "b": { "industry": "telecom", "text": "We sell managed SD-WAN and leased lines to enterprises with many branches. Outages hit branch sales.",
+             "forbid": "sender id|\\bSMS\\b|messaging|CPaaS|\\bOTP\\b", "want": "site|branch|uptime|link" }
+    }
+  ],
+  "generic": [
+    { "id": "fintech with no sub-type named", "industry": "fintech", "text": "We want to choose our go-to-market motion. We sell to teams in financial companies.", "forbid": "employees who claim or spend|payroll, travel|month-end|reimburs|spend controls|finance controller|\\bERP\\b|sandbox|chargeback" },
+    { "id": "logistics tech with no sub-type named", "industry": "logistics tech", "text": "We want to choose our go-to-market motion. We sell to operations teams.", "forbid": "cost per delivery|first-attempt|courier|\\bhub\\b|route plan|dispatch|failed.delivery|cash on delivery" },
+    { "id": "vertical SaaS with no sub-type named", "industry": "vertical SaaS", "text": "We want to choose our go-to-market motion. We sell to businesses in one trade.", "forbid": "distributor|secondary sales|route.to.market|outlet|\\bDMS\\b|field reps?|van sales" },
+    { "id": "telecom with no sub-type named", "industry": "telecom", "text": "We want to choose our go-to-market motion. We sell to enterprise technology teams.", "forbid": "SD-WAN|branch|site survey|leased line|per site|wave plan" },
+    { "id": "software with no sub-type named", "industry": "software", "text": "We want to choose our go-to-market motion. We sell tools to engineering teams.", "forbid": "API design|API governance|governance rules|specs and documentation|API lifecycle|how APIs fit" },
+    { "id": "cybersecurity with no sub-type named", "industry": "cybersecurity", "text": "We want to choose our go-to-market motion. We sell to security teams.", "forbid": "dark web|takedown|brand impersonation|leaked credentials|attack path" }
+  ]
+}
