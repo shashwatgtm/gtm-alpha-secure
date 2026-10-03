@@ -137,7 +137,7 @@ export function stageRow(stage) {
   if (/bootstrap/.test(s)) return "bootstrapped";
   if (/pre[\s_-]?seed|preseed|\bseed\b|\bidea\b|pre[\s_-]?launch|\bmvp\b|pre[\s_-]?revenue/.test(s)) return "seed";
   if (/series[\s_-]?a\b|early[\s_-]?traction/.test(s)) return "series_a";
-  if (/series[\s_-]?[c-z]\b|series[\s_-]?c\+|\bscale|enterprise|mature|late[\s_-]?stage|\bipo\b|public/.test(s)) return "series_c";
+  if (/series[\s_-]?[c-z]\b|series[\s_-]?c\+|\bscale|enterprise|mature|late[\s_-]?stage|\bipo\b|public|\blisted\b|\bnasdaq\b|\bnyse\b/.test(s)) return "series_c";
   if (/series[\s_-]?b\b|\bgrowth\b/.test(s)) return "series_b";
   return null;
 }
@@ -239,6 +239,7 @@ export function scoreEpic(input) {
   const notes = [];
   const warnings = [];
 
+  const stageGiven = String(inp.business_stage || inp.stage || "").trim() !== "";
   const row = stageRow(inp.business_stage || inp.stage);
   let stageLabel;
   let sc;
@@ -246,8 +247,11 @@ export function scoreEpic(input) {
     sc = { ...STAGE_DEFAULTS[row].scores };
     stageLabel = STAGE_DEFAULTS[row].label;
   } else {
-    sc = { ...STAGE_DEFAULTS.series_b.scores };
-    stageLabel = "Series B (used because the stage was missing or not recognised)";
+    // Run 20 round 1b (D92): before, a missing or unreadable stage was scored as Series B (E 7, P 5, I 6, C 6) and called Series B,
+    // which is wrong for a listed company or a bootstrapped one. Now no stage is assumed: every motion starts at the middle of the
+    // scale (5) and only the inputs given move it. The answer says the stage was not given.
+    sc = { E: 5, P: 5, I: 5, C: 5 };
+    stageLabel = stageGiven ? "Stage not recognised (no stage assumed; every motion starts at 5 of 10)" : "Stage not given (no stage assumed; every motion starts at 5 of 10)";
     skipped.push("business stage");
   }
   // Run 14 D31a: `applied` (returned as adjustments_applied, and used by the browser report's "why these scores"
@@ -333,7 +337,9 @@ export function scoreEpic(input) {
 
   // Run 19 (D80, problem 4): a motion the inputs rule out never wins a tie. When self_serve is false, Product-Led Growth moves
   // to the end of the tie-break order (E, C, I, P); its score is unchanged. Before run 19 the order was always E, P, C, I.
-  const tieOrder = selfServe === false ? ["E", "C", "I", "P"] : TIE_ORDER;
+  // Run 20 round 1b (D92): the same holds when self_serve is not given. Product-Led Growth needs a product people can use alone, which
+  // is the one thing the inputs have not shown, so it wins a tie only when self_serve is true. Scores are unchanged.
+  const tieOrder = selfServe === true ? TIE_ORDER : ["E", "C", "I", "P"];
   const ranked = ["E", "P", "I", "C"].sort((a, b) => (sc[b] - sc[a]) || (tieOrder.indexOf(a) - tieOrder.indexOf(b)));
   const vals = Object.values(sc);
   if (Math.max(...vals) - Math.min(...vals) <= 2) {
@@ -354,12 +360,49 @@ export function scoreEpic(input) {
       if (a.isClamp) parts.push("held at " + a.clampValue + ", the " + (a.clampValue === 10 ? "top" : "bottom") + " of the scale");
       else parts.push(a.rule + " (" + m + " " + (a.change[m] > 0 ? "+" : "") + a.change[m] + ")");
     }
-    return MOTIONS[m] + " scores " + sc[m] + " of 10: " + stageLabel + " starting point " + reasonTimeline[0].change[m] + (parts.length ? "; " + parts.join("; ") : "; no further adjustment changed it") + ".";
+    const start = row ? stageLabel + " starting point " + reasonTimeline[0].change[m]
+      : (stageGiven ? "stage not recognised, so no stage is assumed: starting point " : "stage not given, so no stage is assumed: starting point ") + reasonTimeline[0].change[m];
+    return MOTIONS[m] + " scores " + sc[m] + " of 10: " + start + (parts.length ? "; " + parts.join("; ") : "; no further adjustment changed it") + ".";
   };
   if (sc[ranked[0]] === sc[ranked[1]]) {
-    notes.push("Tie at the top between " + ranked[0] + " and " + ranked[1] + ": the lead goes to the motion with lower execution complexity, in the order " + tieOrder.join(", ") + "." + (selfServe === false ? " Product-Led Growth comes last in that order because you said there is no self-serve product." : ""));
+    const tied = ranked.filter((k) => sc[k] === sc[ranked[0]]);
+    const tiedText = tied.length === 2 ? tied[0] + " and " + tied[1] : tied.slice(0, -1).join(", ") + " and " + tied[tied.length - 1];
+    notes.push("Tie at the top between " + tiedText + (tied.length === 4 ? " (all four motions tie, so nothing in the inputs given separated them)" : "") + ": the lead goes to the motion with lower execution complexity, in the order " + tieOrder.join(", ") + "." + (selfServe === false ? " Product-Led Growth comes last in that order because you said there is no self-serve product." : selfServe === null ? " The product-led motion comes last in that order because self_serve was not given." : ""));
   }
   const preliminary = skipped.length > 0;
+  // Run 20 round 1b (D92): every input is read back with the band it fell in and what it did to the scores (or why it did nothing),
+  // so no input given is silently unused. Wording only: the scores above are not touched by this.
+  const shown = (v) => (typeof v === "number" ? v.toLocaleString("en-US") : String(v).trim());
+  const given = (v) => v !== null && v !== undefined && v !== "";
+  const acvRaw = inp.acv_usd != null ? inp.acv_usd : inp.acv;
+  const cycRaw = inp.deal_cycle_days != null ? inp.deal_cycle_days : inp.deal_cycle;
+  const nrrRaw = inp.nrr_percent != null ? inp.nrr_percent : inp.nrr;
+  const tamRaw = inp.tam_accounts != null ? inp.tam_accounts : inp.tam;
+  const inputsRead = [];
+  inputsRead.push(row ? "Stage: " + stageLabel + ", the documented starting row." : stageGiven ? "Stage not recognised: no stage is assumed and every motion starts at 5 of 10. Use pre-seed, seed, series-a, series-b, series-c, bootstrapped or a word such as listed to set it." : "Stage not given: no stage is assumed and every motion starts at 5 of 10. Giving it (pre-seed, seed, series-a, series-b, series-c, bootstrapped) sets the documented starting row.");
+  inputsRead.push(!given(acvRaw) ? "ACV: not given, no adjustment. Above 50,000 US dollars adds 2 to Ecosystem and ABM; below 5,000 adds 2 to Product-Led."
+    : acv === "high" ? "ACV " + shown(acvRaw) + " US dollars is above 50,000: Ecosystem and ABM +2, Product-Led -1 (applied)."
+    : acv === "low" ? "ACV " + shown(acvRaw) + " US dollars is below 5,000: Product-Led +2, Ecosystem and ABM -1 (applied)."
+    : acv === "mid" ? "ACV " + shown(acvRaw) + " US dollars is between 5,000 and 50,000: no adjustment (the rubric moves scores only above 50,000 or below 5,000)."
+    : "ACV: \"" + shown(acvRaw) + "\" could not be read as an amount, no adjustment.");
+  inputsRead.push(!given(cycRaw) ? "Deal cycle: not given, no adjustment. Above 90 days adds 2 to Ecosystem and ABM; below 14 days adds 2 to Product-Led."
+    : cyc === "high" ? "Deal cycle " + shown(cycRaw) + " days is above 90: Ecosystem and ABM +2, Inbound and Outbound -1 (applied)."
+    : cyc === "low" ? "Deal cycle " + shown(cycRaw) + " days is below 14: Product-Led +2, Ecosystem and ABM -1 (applied)."
+    : cyc === "mid" ? "Deal cycle " + shown(cycRaw) + " days is between 14 and 90: no adjustment (the rubric moves scores only above 90 or below 14 days)."
+    : "Deal cycle: \"" + shown(cycRaw) + "\" could not be read as days, no adjustment.");
+  inputsRead.push(!given(nrrRaw) ? "NRR: not given, no adjustment. Below 100 percent adds 2 to Community-Led; above 120 adds 1 each to Community-Led and Product-Led."
+    : nrr === "low" ? "NRR " + shown(nrrRaw) + " percent is below 100: Community-Led +2, Inbound and Outbound -1 (applied; fix retention before scaling acquisition)."
+    : nrr === "high" ? "NRR " + shown(nrrRaw) + " percent is above 120: Community-Led +1, Product-Led +1 (applied; expansion is working)."
+    : nrr === "mid" ? "NRR " + shown(nrrRaw) + " percent is between 100 and 120: no adjustment (the rubric moves scores only below 100 or above 120)."
+    : "NRR: \"" + shown(nrrRaw) + "\" could not be read as a percent, no adjustment.");
+  inputsRead.push(!given(tamRaw) ? "TAM: not given, no adjustment. Below 500 accounts adds 2 to Ecosystem and ABM; above 10,000 adds 2 to Inbound and Outbound."
+    : tam === "high" ? "TAM " + shown(tamRaw) + " accounts is above 10,000: Inbound and Outbound +2, Ecosystem and ABM -1 (applied)."
+    : tam === "low" ? "TAM " + shown(tamRaw) + " accounts is below 500: Ecosystem and ABM +2, Inbound and Outbound -1 (applied)."
+    : tam === "mid" ? "TAM " + shown(tamRaw) + " accounts is between 500 and 10,000: no adjustment (the rubric moves scores only below 500 or above 10,000 accounts)."
+    : "TAM: \"" + shown(tamRaw) + "\" could not be read as a count, no adjustment.");
+  inputsRead.push(selfServe === true ? "Self-serve: yes, Product-Led +2 (applied)." : selfServe === false ? "Self-serve: no, no adjustment, and Product-Led comes last in the tie-break." : "Self-serve: not given, no adjustment. True adds 2 to Product-Led.");
+  inputsRead.push(source === null ? "Deal source: not given, no adjustment. Referrals add 3 to Community-Led, outbound 2 to Inbound and Outbound, partnerships 2 to Ecosystem and ABM." : source === "mixed" ? "Deal source: mixed, no adjustment (no dominant channel)." : "Deal source: " + source + " (applied, see the reasons).");
+  inputsRead.push(geo === null ? "Geography: not given, no adjustment. India, the Middle East and APAC lift Ecosystem and ABM; the US or EU lifts Inbound and Outbound by 1." : geo === "global" ? "Geography: global, no adjustment." : "Geography: " + geo.replace("_", " or ").replace("us or eu", "US or EU") + " (applied, see the reasons).");
   return {
     method: "EPIC motion scoring, advanced version (epic-motion-diagnostic rubric, Helix GTM Consulting)",
     scale: "1 to 10 per motion",
@@ -372,6 +415,7 @@ export function scoreEpic(input) {
     skipped_adjustments: skipped,
     preliminary_note: preliminary ? "Preliminary: rerun when you have " + skipped.join(", ") + "." : null,
     stage_used: stageLabel,
+    inputs_read: inputsRead,
     adjustments_applied: applied
   };
 }

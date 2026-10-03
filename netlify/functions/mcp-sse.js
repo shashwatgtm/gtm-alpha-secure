@@ -1,17 +1,55 @@
-import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
-import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS, SECTOR_MODEL } from "../lib/verticals.js";
+import { scoreEpic, MOTIONS } from "../lib/epic-advanced.js";
+import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS, SECTOR_MODEL, VERTICALS } from "../lib/verticals.js";
+import { buildPlan, sectorBlock, sectorFit, joinList, MODEL_PLAN } from "../lib/gtm-plan.js";
 import { neutraliseDeep } from "../lib/echo-safe.js";
 
-// Run 19 (D80, problems 3, 4 and 8): the plan steps that only fit a product people can try on their own (a software
-// subscription or hardware plus software). For any other business model they are left out and the answer says so.
-const SELF_SERVE_ONLY = /self-service|self-serve|trial|freemium|viral|in-app|product-qualified|PQL|usage-based engagement|pricing page|conversion funnel/i;
-function stepsFor(letter, model) {
-  const keep = (list) => (model && model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)) : list.slice());
-  return { days_30: keep(ROADMAP_STEPS[letter].days_30), days_60: keep(ROADMAP_STEPS[letter].days_60), first_quarter: keep(ROADMAP_STEPS[letter].first_quarter) };
+// Run 20 quality round 1b (D92): the plan steps and the sector text come from netlify/lib/gtm-plan.js, written from the sector
+// file, the business model and the user's own inputs. The scores still come from netlify/lib/epic-advanced.js.
+const clean = function(v) { return typeof v === "string" ? v.trim() : ""; };
+// The owner's nine verticals by their own name ("software", "ITeS", "AI native"): used only when the words of the text name no sector.
+function sectorByName(text) {
+  var t = clean(text).toLowerCase();
+  if (!t) return null;
+  for (var i = 0; i < VERTICALS.length; i++) if (VERTICALS[i].name.toLowerCase() === t) return VERTICALS[i];
+  return null;
 }
-function sectorNotes(v) {
-  if (!v) return null;
-  return { sector: v.name, who_decides: v.committee, what_it_measures: v.metrics, usual_objections: v.objections.map((o) => o.objection), proof_that_lands: v.proofShape, sales_motion: v.salesMotion };
+// What the user typed about their company, read once for all three tools: the sector (the seller's own words first), the business model.
+function readCompany(args) {
+  // The company's own name is not a word about what it sells ("Acme Software sells services"): it is taken out before reading.
+  var name = clean(args.company_name);
+  var plain = function(t) { return typeof t === "string" && name.length > 1 ? t.split(name).join(" ") : t; };
+  var seller = [plain(args.company_description), args.industry];
+  var challenge = plain(args.gtm_challenge);
+  var v = detectVertical({ seller: seller, context: [challenge, args.current_channels] }) || sectorByName(args.industry);
+  var m = detectModel(args.business_model, { seller: [plain(args.company_description), args.industry, challenge, args.current_channels] });
+  if (m.how === "sector") m = v ? { model: SECTOR_MODEL[v.id], how: "sector" } : { model: null, how: "unknown" };
+  return { v: v, m: m };
+}
+function modelLine(m) {
+  return m.model ? MODEL_NAME[m.model] + (m.how === "input" ? "" : m.how === "sector" ? " (the usual model in this sector, assumed; set business_model to change it)" : " (read from your inputs)") : "not clear from your inputs; set business_model";
+}
+// self_serve was not given: show what giving it would do, by running the same scoring with it set. Only for a business whose
+// product can be tried alone. The scores shown above are not changed by this.
+function selfServeCheck(input, analysis, model, text) {
+  if (input.self_serve === true || input.self_serve === false) return null;
+  if (model !== "saas" && model !== "hardware_software") return null;
+  var alt = scoreEpic(Object.assign({}, input, { self_serve: true }));
+  if (alt.scores.P === analysis.scores.P) return null;
+  var lead = alt.primary.letter === analysis.primary.letter ? "the lead would stay " + analysis.primary.motion : "the lead would move to " + (alt.primary.letter === "P" ? "the product-led motion" : alt.primary.motion);
+  var seen = /(?:\b[\w'-]+\s+){0,5}\d{1,3}(?:,\d{3})+\+?\s+(?:companies|businesses|organi[sz]ations|teams|developers|customers|users|accounts)\b/i.exec(text || "");
+  return "self_serve was not given, so the Product-Led score got no lift. If people can sign up and get value without talking to sales, set self_serve to true: the Product-Led score would go from " + analysis.scores.P + " to " + alt.scores.P + " and " + lead + "."
+    + (seen ? " Your text mentions \"" + seen[0].trim() + "\"; that is the case for setting it if that adoption happens without a sales call." : "");
+}
+// The answer both scoring tools share: scores, inputs read back, model, sector block, fit, the first 30 days.
+function describe(args) {
+  var input = Object.assign({}, args, { gtm_challenge: args.gtm_challenge || args.challenge || "", business_stage: args.business_stage, industry: args.industry || "" });
+  var analysis = GTM_CONSULTANT.analyzeEPIC(input);
+  var rc = readCompany(Object.assign({}, args, { gtm_challenge: input.gtm_challenge }));
+  var v = rc.v, m = rc.m;
+  var plan = buildPlan({ letter: analysis.primary.letter, vertical: v, model: m.model, args: input });
+  var notes = sectorBlock(v, m.model, input);
+  var fit = sectorFit({ vertical: v, model: m.model, letter: analysis.primary.letter, motionName: analysis.primary.motion, scores: analysis.scores, args: input, reason: null });
+  return { analysis: analysis, v: v, m: m, first: plan.days_30, notes: notes, fit: fit, check: selfServeCheck(input, analysis, m.model, input.gtm_challenge), input: input };
 }
 
 const GTM_CONSULTANT = {
@@ -33,14 +71,9 @@ const GTM_CONSULTANT = {
   generateConsultation(args) {
     // Run 12 R12-20: the heading is "GTM Alpha Free EPIC audit"; "Company: <name>" follows only when a company name is given
     // (older clients may send client_name, shown as "Name: <name>" when no company name is given). Never an invented name.
-    var clean = function(v) { return typeof v === "string" ? v.trim() : ""; };
     var company = clean(args.company_name), person = clean(args.client_name);
-    var input = Object.assign({}, args, {
-      gtm_challenge: args.gtm_challenge || "",
-      business_stage: args.business_stage,
-      industry: args.industry || ""
-    });
-    var analysis = this.analyzeEPIC(input);
+    var d = describe(args);
+    var analysis = d.analysis;
     var lines = ["GTM Alpha Free EPIC audit"].concat(company ? ["Company: " + company] : person ? ["Name: " + person] : []).concat([
       "Challenge: " + (args.gtm_challenge ? String(args.gtm_challenge) : "not supplied"),
       "",
@@ -51,45 +84,68 @@ const GTM_CONSULTANT = {
     analysis.warnings.forEach(function(w) { lines.push("Warning: " + w); });
     analysis.notes.forEach(function(n) { lines.push("Note: " + n); });
     if (analysis.preliminary_note) lines.push(analysis.preliminary_note);
-    // Run 19 (D80): the first steps for the lead motion (the report's own plan steps) and the sector's buying committee,
-    // read from what the user typed; nothing is invented about the company.
-    // Run 20 (D92): the user's own description of the company and its industry are read first; the challenge and the channels are
-    // free text and need a second sector word. The business model is read from everything the user wrote about their own company.
-    var v = detectVertical({ seller: [args.company_description, args.industry], context: [args.gtm_challenge, args.current_channels] });
-    var m = detectModel(args.business_model, { seller: [args.company_description, args.industry, args.gtm_challenge, args.current_channels] });
-    if (m.how === "sector") m = v ? { model: SECTOR_MODEL[v.id], how: "sector" } : { model: null, how: "unknown" };
-    var steps = stepsFor(analysis.primary.letter, m.model);
-    var first = (steps.days_30.length ? steps.days_30 : steps.days_60).map(function(t) { return /\btop \d+\b/.test(t) ? t + " (Example figure: replace with your own)" : t; });
+    lines.push("", "Your inputs, read:");
+    analysis.inputs_read.forEach(function(t) { lines.push("- " + t); });
+    if (d.check) lines.push("", "Self-serve check: " + d.check);
     lines.push("", "First 30 days for " + analysis.primary.motion + ":");
-    first.forEach(function(t) { lines.push("- " + t); });
-    if (v) lines.push("", "Sector (read from your inputs): " + v.name + ". Who usually decides: " + v.committee);
-    return {
+    d.first.forEach(function(t) { lines.push("- " + t); });
+    if (d.notes) {
+      lines.push("", "Sector (read from your inputs): " + d.notes.sector + ". Business model: " + modelLine(d.m) + ".", "Who usually decides: " + d.notes.who_decides);
+      if (d.notes.buyer_words && d.notes.buyer_words.length) lines.push("Words this buyer uses: " + d.notes.buyer_words.join(", ") + ".");
+      if (d.notes.read_as) lines.push(d.notes.read_as);
+    }
+    if (d.fit) lines.push("", "How this fits the sector: " + d.fit);
+    var out = {
       consultation_output: lines.join("\n"),
       epic_scores: analysis.scores,
       primary_focus: analysis.primary.motion,
       secondary_focus: analysis.secondary.motion,
-      first_30_days: first,
-      sector_notes: sectorNotes(v),
-      business_model: m.model ? MODEL_NAME[m.model] + (m.how === "input" ? "" : m.how === "sector" ? " (the usual model in this sector, assumed; set business_model to change it)" : " (read from your inputs)") : "not clear from your inputs; set business_model",
+      inputs_read: analysis.inputs_read,
+      first_30_days: d.first,
+      sector_notes: d.notes,
+      sector_fit: d.fit,
+      business_model: modelLine(d.m),
       epic_detail: analysis
     };
+    if (d.check) out.self_serve_check = d.check;
+    return out;
   },
 
-  generateRoadmap(focus, timeframe, businessModel) {
+  generateRoadmap(focus, timeframe, args) {
     var letter = this.epicFramework[focus] ? focus : "P";
     var component = this.epicFramework[letter];
-    var model = BUSINESS_MODELS.indexOf(businessModel) >= 0 ? businessModel : null;
-    // Run 12 R12-20: the per-motion steps of the browser report (epic-advanced.js ROADMAP_STEPS, words unchanged), mapped to
-    // the timeframe: immediate = the report's first 30 days, short-term = days 31 to 60, medium-term = days 61 to 90.
-    // Counts such as "top 50" are examples, labelled the way this tool labels its other example figures.
-    var label = function(list) { return list.map(function(t) { return /\btop \d+\b/.test(t) ? t + " (Example figure: replace with your own)" : t; }); };
-    var kept = stepsFor(letter, model);
-    var steps = { days_30: label(kept.days_30), days_60: label(kept.days_60), first_quarter: label(kept.first_quarter) };
-    var dropped = ROADMAP_STEPS[letter].days_30.length + ROADMAP_STEPS[letter].days_60.length + ROADMAP_STEPS[letter].first_quarter.length - (kept.days_30.length + kept.days_60.length + kept.first_quarter.length);
+    var given = BUSINESS_MODELS.indexOf(args.business_model) >= 0 ? args.business_model : null;
+    // Run 20 round 1b (D92): the steps are written from the sector (when an industry is given), the business model and the user's own
+    // numbers and channels. Without them the steps are written for any business, and each one that needs a product people can try
+    // alone says so. Nothing is assumed about the business model.
+    var industry = clean(args.industry);
+    var v = industry ? (detectVertical({ seller: [industry] }) || sectorByName(industry)) : null;
+    var model = given, how = given ? "input" : null;
+    if (!model && v) { var rm = detectModel(undefined, { seller: [industry] }); model = rm.model || SECTOR_MODEL[v.id]; how = rm.how === "read" ? "read" : "sector"; }
+    var input = { company_name: args.company_name, industry: industry, acv_usd: args.acv_usd, deal_cycle_days: args.deal_cycle_days, tam_accounts: args.tam_accounts, nrr_percent: args.nrr_percent, current_channels: args.current_channels };
+    var plan = buildPlan({ letter: letter, vertical: v, model: model, args: input });
     // The chosen timeframe sets the day range of each phase (thirds of 30, 60 or 90 days).
     var days = { "30-day": 30, "60-day": 60, "90-day": 90 }[timeframe] || 90;
     var third = days / 3;
-    return {
+    var used = [];
+    if (v) used.push("industry: sector notes, partner types and measures for " + v.name);
+    else if (industry) used.push("industry: " + industry + " (the words did not name one of the nine sectors, so the steps are written for any sector)");
+    if (model) used.push("business model: " + MODEL_NAME[model] + (how === "input" ? "" : how === "read" ? " (read from the industry)" : " (the usual model in this sector, assumed)"));
+    if (typeof args.acv_usd === "number") used.push("ACV: " + args.acv_usd.toLocaleString("en-US") + " US dollars a year");
+    if (typeof args.deal_cycle_days === "number") used.push("deal cycle: " + args.deal_cycle_days.toLocaleString("en-US") + " days");
+    if (typeof args.tam_accounts === "number") used.push("TAM: " + args.tam_accounts.toLocaleString("en-US") + " accounts");
+    if (typeof args.nrr_percent === "number") used.push("NRR: " + args.nrr_percent + " percent");
+    if (clean(args.current_channels)) used.push("current channels: quoted in the first steps");
+    var missing = [];
+    if (!v) missing.push("industry (one of logistics tech, fintech, SaaS, vertical SaaS, AI native, ITeS, telecom, software, cybersecurity, or your own words), so the steps name your buyers' roles, partner types and measures");
+    if (!model) missing.push("business_model, so the steps drop the ones that need a product people can try alone");
+    if (typeof args.deal_cycle_days !== "number") missing.push("deal_cycle_days, so the steps account for your review stages");
+    if (!clean(args.current_channels)) missing.push("current_channels, so the first step starts from what you already do");
+    var note;
+    if (letter === "P" && model && MODEL_PLAN[model] && MODEL_PLAN[model].selfServe === false) {
+      note = "Product-Led Growth for a " + MODEL_NAME[model].replace(/ \(.*$/, "") + " business means a low-risk first step the buyer can take without a full project, not a self-serve sign-up. The steps describe that version.";
+    }
+    var out = {
       // A timeframe the user did not choose is shown as the default, not as their choice.
       timeframe: timeframe || "90-day (default, not supplied; Example figure: replace with your own)",
       primary_focus: component.name,
@@ -99,13 +155,18 @@ const GTM_CONSULTANT = {
         medium_term: "Days " + (2 * third + 1) + " to " + days
       },
       action_plan: {
-        immediate: steps.days_30.slice(),
-        short_term: steps.days_60.slice(),
-        medium_term: steps.first_quarter.slice()
+        immediate: plan.days_30,
+        short_term: plan.days_60,
+        medium_term: plan.first_quarter
       },
-      business_model: model ? MODEL_NAME[model] : "not given (the steps assume a software subscription; set business_model to change it)",
-      note: dropped ? dropped + " step" + (dropped === 1 ? "" : "s") + " that need a product people can try on their own (a trial, self-service sign-up or in-app prompts) were left out, because the business model is " + MODEL_NAME[model] + "." : undefined
+      business_model: model ? MODEL_NAME[model] + (how === "input" ? "" : how === "read" ? " (read from your industry)" : " (the usual model in this sector, assumed; set business_model to change it)") : "not given (each step that needs a product people can try alone says so; set business_model to narrow the steps)",
+      inputs_used: used
     };
+    if (clean(args.company_name)) out.company = clean(args.company_name);
+    if (v) out.sector = v.name;
+    if (note) out.note = note;
+    if (missing.length) out.what_would_make_this_specific = missing.map(function(t) { return "Give " + t + "."; });
+    return out;
   }
 };
 
@@ -168,7 +229,14 @@ var TOOLS = [
       properties: {
         primary_focus: { type: "string", enum: ["E", "P", "I", "C"], description: "EPIC motion to plan for: E, P, I or C" },
         timeframe: { type: "string", enum: ["30-day", "60-day", "90-day"], description: "30-day, 60-day or 90-day (default 90-day)" },
-        business_model: { type: "string", enum: ["saas", "services", "connectivity", "transactions", "marketplace", "hardware_software", "investment"], description: "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Steps that need a product people can try on their own are left out for a business that is not a software subscription" }
+        business_model: { type: "string", enum: ["saas", "services", "connectivity", "transactions", "marketplace", "hardware_software", "investment"], description: "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Steps that need a product people can try on their own are left out for a business that is not a software subscription" },
+        industry: { type: "string", description: "Optional. Your industry or what you sell (for example logistics tech, fintech, telecom, cybersecurity). Names your buyers' roles, partner types and measures in the steps" },
+        company_name: { type: "string", description: "Optional. Your company or product name, repeated in the answer" },
+        acv_usd: { type: "number", minimum: 0, description: "Optional. Average contract value per year in US dollars (for example 42000)" },
+        deal_cycle_days: { type: "number", minimum: 0, description: "Optional. Days from first touch to closed-won (for example 120). A long cycle adds the review steps to the plan" },
+        tam_accounts: { type: "number", minimum: 0, description: "Optional. Number of addressable accounts (for example 2500)" },
+        nrr_percent: { type: "number", description: "Optional. Net revenue retention in percent (for example 108)" },
+        current_channels: { type: "string", description: "Optional. What you do today (content, outbound, events, partnerships, PLG, community). The first steps start from it" }
       },
       required: ["primary_focus"]
     },
@@ -186,12 +254,18 @@ function handleToolCall(name, rawArgs) {
   } else if (name === "epic_audit") {
     // Run 19 (D80, problem 8): the scores are unchanged; the company name given is echoed and, when the inputs name a
     // sector clearly, its buying committee and usual objections follow the scores (nothing is invented about the company).
-    var audit = GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
+    // Run 20 round 1b (D92): the same inputs read-back, business model, first 30 days and sector fit as the consultation.
+    var d = describe(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
     var named = typeof args.company_name === "string" ? args.company_name.trim() : "";
-    var sv = detectVertical({ seller: [args.industry], context: [args.challenge, args.current_channels] });
-    return Object.assign(named ? { company: named } : {}, audit, sv ? { sector_notes: sectorNotes(sv) } : {});
+    var audit = Object.assign({ scores: d.analysis.scores, primaryFocus: d.analysis.primary.letter, recommendation: d.analysis.primary.motion }, d.analysis);
+    if (audit.preliminary_note === null) delete audit.preliminary_note;
+    var extra = { business_model: modelLine(d.m), first_30_days: d.first };
+    if (d.notes) extra.sector_notes = d.notes;
+    if (d.fit) extra.sector_fit = d.fit;
+    if (d.check) extra.self_serve_check = d.check;
+    return Object.assign(named ? { company: named } : {}, audit, extra);
   } else if (name === "generate_roadmap") {
-    return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args.business_model);
+    return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args);
   } else {
     throw new Error("Unknown tool: " + name);
   }
