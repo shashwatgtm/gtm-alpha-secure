@@ -55,6 +55,11 @@ test("the telecom vocabulary spells SD-WAN with a hyphen", () => {
   assert.ok(!t.notes.vocabulary.includes("SD WAN"));
 });
 
+test("an enterprise network, cloud and security provider is a connectivity business, not a software subscription", () => {
+  const m = detectModel(undefined, { seller: ["global digital ecosystem enabler: enterprise network, cloud, security, interactions and IoT services"] });
+  assert.equal(m.model, "connectivity");
+});
+
 // generate_roadmap read the usual model of the whole sector (connectivity for telecom) and ignored the model of the kind the reader named.
 const mcpSse = (await import("../netlify/functions/mcp-sse.js")).default;
 test("generate_roadmap: a messaging platform in telecom gets no site survey or wave plan", async () => {
