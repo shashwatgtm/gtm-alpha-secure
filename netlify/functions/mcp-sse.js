@@ -118,16 +118,17 @@ const GTM_CONSULTANT = {
     // Run 20 round 1b (D92): the steps are written from the sector (when an industry is given), the business model and the user's own
     // numbers and channels. Without them the steps are written for any business, and each one that needs a product people can try
     // alone says so. Nothing is assumed about the business model.
-    var industry = clean(args.industry);
-    var v = industry ? (detectVertical({ seller: [industry] }) || sectorByName(industry)) : null;
+    var industry = clean(args.industry), what = clean(args.product_description);
+    var v = (industry ? (detectVertical({ seller: [industry] }) || sectorByName(industry)) : null) || (what ? detectVertical({ seller: [what] }) : null);
     var model = given, how = given ? "input" : null;
-    if (!model && v) { var rm = detectModel(undefined, { seller: [industry] }); model = rm.model || SECTOR_MODEL[v.id]; how = rm.how === "read" ? "read" : "sector"; }
-    var input = { company_name: args.company_name, industry: industry, acv_usd: args.acv_usd, deal_cycle_days: args.deal_cycle_days, tam_accounts: args.tam_accounts, nrr_percent: args.nrr_percent, current_channels: args.current_channels };
+    if (!model && (v || what)) { var rm = detectModel(undefined, { seller: [what, industry] }); model = rm.model || (v ? SECTOR_MODEL[v.id] : null); how = rm.how === "read" ? "read" : model ? "sector" : null; }
+    var input = { company_name: args.company_name, industry: industry, product_description: what, acv_usd: args.acv_usd, deal_cycle_days: args.deal_cycle_days, tam_accounts: args.tam_accounts, nrr_percent: args.nrr_percent, current_channels: args.current_channels };
     var plan = buildPlan({ letter: letter, vertical: v, model: model, args: input });
     // The chosen timeframe sets the day range of each phase (thirds of 30, 60 or 90 days).
     var days = { "30-day": 30, "60-day": 60, "90-day": 90 }[timeframe] || 90;
     var third = days / 3;
     var used = [];
+    if (what) used.push("product description: read for the sector, the business model and the buyer's function");
     if (v) used.push("industry: sector notes, partner types and measures for " + v.name);
     else if (industry) used.push("industry: " + industry + " (the words did not name one of the nine sectors, so the steps are written for any sector)");
     if (model) used.push("business model: " + MODEL_NAME[model] + (how === "input" ? "" : how === "read" ? " (read from the industry)" : " (the usual model in this sector, assumed)"));
@@ -139,13 +140,17 @@ const GTM_CONSULTANT = {
     var missing = [];
     if (!v) missing.push("industry (one of logistics tech, fintech, SaaS, vertical SaaS, AI native, ITeS, telecom, software, cybersecurity, or your own words), so the steps name your buyers' roles, partner types and measures");
     if (!model) missing.push("business_model, so the steps drop the ones that need a product people can try alone");
+    if (v && v.id === "ai-native" && how !== "input" && model !== "investment") missing.push("business_model or product_description: AI native covers very different products (an agent that automates a workflow, a forecasting tool, investment strategies built with AI). If you sell investment strategies, set business_model to investment and the steps change to due diligence, consultants and track record");
     if (typeof args.deal_cycle_days !== "number") missing.push("deal_cycle_days, so the steps account for your review stages");
     if (!clean(args.current_channels)) missing.push("current_channels, so the first step starts from what you already do");
     var note;
     if (letter === "P" && model && MODEL_PLAN[model] && MODEL_PLAN[model].selfServe === false) {
       note = "Product-Led Growth for a " + MODEL_NAME[model].replace(/ \(.*$/, "") + " business means a low-risk first step the buyer can take without a full project, not a product the buyer starts alone. The steps describe that version.";
     }
-    var out = {
+    var out = {};
+    // When the ACV and cycle given contradict the motion asked for, one line says so before anything else.
+    if (plan.warning) out.read_this_first = plan.warning;
+    Object.assign(out, {
       // A timeframe the user did not choose is shown as the default, not as their choice.
       timeframe: timeframe || "90-day (default, not supplied; Example figure: replace with your own)",
       primary_focus: component.name,
@@ -161,7 +166,7 @@ const GTM_CONSULTANT = {
       },
       business_model: model ? MODEL_NAME[model] + (how === "input" ? "" : how === "read" ? " (read from your industry)" : " (the usual model in this sector, assumed; set business_model to change it)") : "not given (each step that needs a product people can try alone says so; set business_model to narrow the steps)",
       inputs_used: used
-    };
+    });
     if (clean(args.company_name)) out.company = clean(args.company_name);
     if (v) out.sector = v.name;
     if (note) out.note = note;
@@ -230,6 +235,7 @@ var TOOLS = [
         primary_focus: { type: "string", enum: ["E", "P", "I", "C"], description: "EPIC motion to plan for: E, P, I or C" },
         timeframe: { type: "string", enum: ["30-day", "60-day", "90-day"], description: "30-day, 60-day or 90-day (default 90-day)" },
         business_model: { type: "string", enum: ["saas", "services", "connectivity", "transactions", "marketplace", "hardware_software", "investment"], description: "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. For a business that is not a software subscription, the product-led steps become a low-risk first step the buyer can take without a full project, and no trial or sign-up steps are given" },
+        product_description: { type: "string", description: "Optional. One or two sentences on what you sell and to whom. Read for the sector, the business model and the buyer's function, so the steps fit your product" },
         industry: { type: "string", description: "Optional. Your industry or what you sell (for example logistics tech, fintech, telecom, cybersecurity). Names your buyers' roles, partner types and measures in the steps" },
         company_name: { type: "string", description: "Optional. Your company or product name, repeated in the answer" },
         acv_usd: { type: "number", minimum: 0, description: "Optional. Average contract value per year in US dollars (for example 42000)" },

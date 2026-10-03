@@ -12,6 +12,8 @@ export const EXAMPLE = " (Example figure: replace with your own)";
 // What sits next to the seller in the buyer's stack, where buyers meet, what they read and what they ask for before buying.
 export const SECTOR_PLAN = {
   "logistics-tech": {
+    entry: "a pilot at one hub or city, with cost per delivery and first-attempt delivery measured before and after",
+    plg: { user: "a planner or dispatcher trying the route plan on their own orders", signer: "the COO or Head of Supply Chain" },
     terms: ["carrier allocation", "hub and spoke", "line haul", "courier", "returns", "cash on delivery", "failed delivery", "rate card", "freight audit", "control tower", "order tracking", "ecommerce shipping", "warehouse", "cut-off times"],
     partners: ["TMS, WMS and ERP vendors whose customers already run the systems you connect to", "3PLs and freight forwarders that run fleets for several shippers", "telematics, GPS and mapping providers", "systems integrators that roll out supply chain systems"],
     accounts: "fleet size, daily delivery volume, exposure to peak season and whether a TMS is already in place",
@@ -30,6 +32,8 @@ export const SECTOR_PLAN = {
     },
   },
   fintech: {
+    entry: "a pilot on one entity or department, with the finance controller signing off the result",
+    plg: { user: "a finance operations user trying it on one batch of their own transactions", signer: "the CFO" },
     terms: ["payment gateway", "settlement", "payouts", "chargebacks", "KYC", "fraud", "spend controls", "reimbursement", "treasury", "payment success rate", "lending", "credit decisioning", "cards", "invoice matching"],
     partners: ["ERP and accounting system vendors and their implementation partners", "banks and card networks that issue or settle for your buyers", "audit and advisory firms that review finance controls", "payroll, travel and procurement systems that feed the same ledger"],
     accounts: "number of employees who claim or spend, ERP in use, entities and countries, and a visible trigger such as an audit finding, a new finance leader or finance teams still working in spreadsheets",
@@ -48,6 +52,8 @@ export const SECTOR_PLAN = {
     },
   },
   "vertical-saas": {
+    entry: "a pilot in one region with a set of distributors, measured on productive calls and secondary sales",
+    plg: { user: "a field rep or sales manager trying the app on their own beat", signer: "the National Sales Head" },
     terms: ["van sales", "route to market", "retail execution", "sales force automation", "trade promotion", "merchandising", "planogram", "order fill rate", "distributor claims", "field force", "outlet audit", "scheme"],
     partners: ["distributor management and ERP vendors used by the brands' distributors", "retail audit and trade data providers", "mobile device and connectivity providers used by field teams", "consultancies that run route-to-market programmes"],
     accounts: "number of field reps, distributors and outlets covered, the DMS and ERP in use, and a planned sales reorganisation or a new region launch",
@@ -66,14 +72,22 @@ export const SECTOR_PLAN = {
     },
   },
   "ai-native": {
+    entry: "a proof of concept on the buyer's own data, with a person checking the results",
+    plg: { user: "a data or product lead trying it on their own data", signer: "the owner of the workflow it would serve" },
+    over: {
+      buyerRoles: ["Owner of the workflow the AI serves", "Head of Data and AI", "Chief Technology Officer", "CISO", "Legal Counsel"],
+      metrics: ["accuracy on the buyer's own data", "cost per decision or case against today", "how often a person has to step in", "time saved per case"],
+      vocabulary: ["accuracy", "guardrails", "explainability", "data privacy", "model risk", "inference cost", "human oversight"],
+      proofShape: "A result on the buyer's own data, shown as a test result first and as live results later, with the cost per decision or case against today.",
+    },
     terms: ["agents", "copilot", "LLM", "fine-tuning", "evaluation", "prompt", "retrieval", "forecasting", "model risk", "explainability", "voice", "latency", "confidence scores", "grounding"],
     partners: ["cloud and model platform providers your buyers already use", "data and integration vendors that hold the data your product needs", "systems integrators that build the workflow around an AI product", "industry bodies that publish guidance on AI use"],
     accounts: "the workflow you automate, the volume of cases or decisions, the data available and a leader who owns that workflow",
     reviews: "data privacy, security and legal review",
-    reads: ["evaluation write-ups on a buyer's own history", "guardrail and human review designs", "data handling and privacy notes", "cost per resolved case comparisons"],
+    reads: ["accuracy write-ups on a buyer's own data", "guardrail and human oversight designs", "data handling and privacy notes", "cost per case comparisons"],
     venues: ["AI and data leader communities", "workflow owner forums in your buyers' industry", "responsible AI and risk working groups"],
-    assets: ["an evaluation plan on the buyer's own data", "a data handling and privacy note", "a human-review and guardrail design"],
-    firstValue: "the buyer sees the AI handle their own cases on an evaluation set",
+    assets: ["an accuracy test plan on the buyer's own data", "a data handling and privacy note", "a human oversight and guardrail design"],
+    firstValue: "the buyer sees the AI handle a sample of their own cases",
     expansionSignal: "a second workflow or team asks for the same agent",
     typical: ["E", "I"],
     fit: {
@@ -84,6 +98,7 @@ export const SECTOR_PLAN = {
     },
   },
   ites: {
+    plg: { user: "a delivery or IT operations lead looking at a sample assessment", signer: "the CIO or business unit head" },
     terms: ["modernization", "migration", "digital transformation", "contact centre", "RPA", "automation", "cloud", "platform engineering", "offshore", "nearshore", "service desk", "run and change", "digital engineering", "centre of excellence"],
     partners: ["technology platform vendors whose partner programmes include services firms", "sourcing and advisory firms that run vendor shortlists", "cloud providers that fund or co-sell modernization work", "analyst firms that rate service providers"],
     accounts: "contract renewal dates, the incumbent provider, a stated cost or modernization programme, applications waiting for migration and the size of the IT estate",
@@ -102,6 +117,7 @@ export const SECTOR_PLAN = {
     },
   },
   telecom: {
+    plg: { user: "a network manager looking at a site survey", signer: "the CIO" },
     terms: ["underlay", "overlay", "private 5G", "IoT connectivity", "leased line", "SIM", "roaming", "CPaaS", "DDoS protection", "colocation", "VPN", "WAN", "bandwidth", "managed SD-WAN"],
     partners: ["device, firewall and SD-WAN technology vendors you build on", "systems integrators and managed service providers that run enterprise networks", "data centre and cloud providers whose customers need connectivity", "channel partners and resellers that already hold enterprise accounts"],
     accounts: "number of branch sites, sites with repeated outages, contract end dates and the incumbent operator",
@@ -120,6 +136,8 @@ export const SECTOR_PLAN = {
     },
   },
   cybersecurity: {
+    entry: "a time-boxed proof of value on the buyer's own environment, with success criteria agreed in writing",
+    plg: { user: "a security engineer running a scan on a small scope", signer: "the CISO" },
     terms: ["threat intelligence", "attack path", "dark web", "phishing", "takedown", "brand impersonation", "leaked credentials", "vulnerability", "SIEM", "XDR", "EDR", "zero trust", "third-party risk", "digital risk protection"],
     partners: ["managed security service providers (MSSPs) that run security for mid-size buyers", "SIEM, ticketing and cloud platform vendors you integrate with", "cloud marketplaces your buyers buy through", "audit and risk advisory firms that recommend tools after a finding"],
     accounts: "recent audit findings or incidents, the cloud and security tools in use, regulatory pressure and the size of the security team",
@@ -138,12 +156,22 @@ export const SECTOR_PLAN = {
     },
   },
   software: {
-    terms: ["CI/CD", "SDK", "collections", "mock servers", "monitoring", "regression testing", "cross-browser testing", "test automation", "observability", "open source", "developer portal", "OpenAPI", "workspaces", "API governance"],
+    entry: "a team trial on a real project, with the integration set up in the first week",
+    communityTopics: "API design, documentation, governance and how APIs fit into developer workflows",
+    plg: { user: "a developer trying it on their own project", signer: "the VP Engineering or CTO" },
+    over: {
+      buyerRoles: ["VP Engineering", "Chief Technology Officer", "Platform Engineering Lead", "Head of API or Developer Experience", "Engineering Manager"],
+      committee: "The VP Engineering or CTO signs; a platform or developer experience lead champions; developers use it daily and often adopt it first; security reviews code and data access; procurement handles licences or usage.",
+      metrics: ["active developers per team", "time to first working result", "integrations in use", "specs and documentation kept in sync", "issues caught by governance rules before release"],
+      vocabulary: ["developer experience", "APIs", "SDKs", "documentation", "integrations", "governance", "developer adoption", "API lifecycle"],
+      proofShape: "Developer adoption or time to first working result on one team before and after, from the team's own usage data.",
+    },
+    terms: ["CI/CD", "sandbox", "API keys", "webhooks", "monitoring", "API design", "versioning", "test automation", "observability", "open source", "developer portal", "OpenAPI", "rate limits", "API governance"],
     partners: ["cloud platform marketplaces your developers already use", "CI/CD, source control and IDE ecosystems you integrate with", "open-source projects and maintainers near your product", "consultancies and agencies that build on your platform"],
     accounts: "engineering team size, tools in the pipeline, number of developers already active in your product and an engineering leader who owns the tooling budget",
     reviews: "security review of code and data access, and procurement",
     reads: ["documentation, SDK references and tutorials", "migration guides from the tool a team uses today", "benchmark write-ups on the team's own pipeline", "integration recipes for CI and source control"],
-    venues: ["developer communities and meetups", "open-source projects and forums", "platform engineering and QA communities"],
+    venues: ["developer communities and meetups", "open-source projects and forums", "API, platform engineering and developer experience communities"],
     assets: ["a security documentation pack that says what the product reads and stores", "a migration guide for existing scripts and tests", "a team pricing and usage explanation"],
     firstValue: "a developer gets a working result in their own project, such as a first test run or a first API call",
     expansionSignal: "several developers in one company are active and a team lead asks for shared workspaces",
@@ -156,6 +184,7 @@ export const SECTOR_PLAN = {
     },
   },
   saas: {
+    plg: { user: "the person who feels the problem day to day and tries the product", signer: "the budget owner of the function" },
     terms: ["subscription", "pricing plans", "usage-based billing", "invoicing", "dunning", "churn", "entitlements", "revenue recognition", "CPQ", "integration", "lead scoring", "CRM", "pipeline", "marketing automation"],
     partners: ["platform and marketplace vendors your buyers already use", "implementation and consulting partners that set up tools like yours", "complementary tools your buyers connect yours to", "associations and analysts in your buyers' function"],
     accounts: "the function that owns the problem, tools in use today, team size and a visible trigger such as a new leader or a change of system",
@@ -177,27 +206,27 @@ export const SECTOR_PLAN = {
 
 // A generic SaaS seller sells to some function. The seller's own text says which; this table is only used for the generic SaaS sector.
 export const BUYER_FUNCTIONS = [
-  { id: "finance", re: /\b(billing|invoic\w*|revenue recognition|collections|reconcil\w*|accounts (?:payable|receivable)|finance|cfo|controller|payments?)\b/gi,
+  { id: "finance", plg: { user: "a finance operations user or an engineer evaluating the integration", signer: "the CFO or VP Finance" }, re: /\b(billing|invoic\w*|revenue recognition|collections|reconcil\w*|accounts (?:payable|receivable)|finance|cfo|controller|payments?)\b/gi,
     name: "finance", committee: "The Chief Financial Officer or VP Finance signs; the head of billing, finance operations or revenue operations champions; finance operations use it daily; IT and security check the ERP, CRM and payment integrations; audit reviews how revenue is recognised.",
     roles: ["Chief Financial Officer", "VP Finance", "Head of Billing or Revenue Operations", "Finance Controller"],
     terms: ["billing", "invoicing", "revenue recognition", "collections", "reconciliation", "month-end close", "dunning", "ERP", "days sales outstanding"],
     metrics: ["days to close the books", "billing errors and credit notes", "days sales outstanding", "failed payment recovery", "time spent reconciling"] },
-  { id: "revenue", re: /\b(pipeline|sales team|sales reps?|quota|revenue operations|revops|crm|forecast\w*|sales cycle|sellers)\b/gi,
+  { id: "revenue", plg: { user: "a sales operations user or a rep", signer: "the Chief Revenue Officer" }, re: /\b(pipeline|sales team|sales reps?|quota|revenue operations|revops|crm|forecast\w*|sales cycle|sellers)\b/gi,
     name: "revenue", committee: "The Chief Revenue Officer signs; the head of sales operations or revenue operations champions; sales managers and reps use it daily; IT and security check the CRM integration; finance checks the cost per seat or per user.",
     roles: ["Chief Revenue Officer", "Head of Sales Operations", "Head of Revenue Operations", "Sales Manager"],
     terms: ["pipeline", "forecast", "quota", "win rate", "CRM", "sales cycle", "ramp time"],
     metrics: ["pipeline coverage", "win rate", "sales cycle length", "forecast accuracy", "rep ramp time"] },
-  { id: "customer", re: /\b(customer success|support|churn|renewals?|onboarding|tickets?|customer experience|nps)\b/gi,
+  { id: "customer", plg: { user: "a support or success operations user", signer: "the Head of Customer Success" }, re: /\b(customer success|support|churn|renewals?|onboarding|tickets?|customer experience|nps)\b/gi,
     name: "customer", committee: "The Chief Customer Officer or Head of Customer Success signs; a support or success operations lead champions; success managers and agents use it daily; IT and security check data access.",
     roles: ["Chief Customer Officer", "Head of Customer Success", "Head of Support", "Support Operations Lead"],
     terms: ["churn", "renewal", "health score", "onboarding", "first response time", "tickets", "net revenue retention"],
     metrics: ["net revenue retention", "logo churn", "time to first value", "first response time", "renewal rate"] },
-  { id: "marketing", re: /\b(marketing|campaigns?|leads?|demand gen\w*|content|seo|brand)\b/gi,
+  { id: "marketing", plg: { user: "a marketer or marketing operations user", signer: "the VP Marketing" }, re: /\b(marketing|campaigns?|leads?|demand gen\w*|content|seo|brand)\b/gi,
     name: "marketing", committee: "The Chief Marketing Officer or VP Marketing signs; the head of demand generation or marketing operations champions; marketers use it daily; sales operations and IT check the CRM and data flows.",
     roles: ["Chief Marketing Officer", "VP Marketing", "Head of Demand Generation", "Marketing Operations Lead"],
     terms: ["pipeline sourced", "cost per qualified lead", "campaign", "attribution", "lead scoring", "marketing automation"],
     metrics: ["pipeline sourced by marketing", "cost per qualified lead", "lead to meeting conversion", "campaign cycle time"] },
-  { id: "people", re: /\b(hiring|recruit\w*|employees?|payroll|hr|people team|talent|onboarding new hires)\b/gi,
+  { id: "people", plg: { user: "an HR operations user", signer: "the Head of HR" }, re: /\b(hiring|recruit\w*|employees?|payroll|hr|people team|talent|onboarding new hires)\b/gi,
     name: "people", committee: "The Chief People Officer or Head of HR signs; the head of HR operations or talent champions; HR and managers use it daily; IT and security check employee data access; finance checks cost per employee.",
     roles: ["Chief People Officer", "Head of HR Operations", "Head of Talent", "HR Business Partner"],
     terms: ["time to hire", "offer acceptance", "onboarding", "payroll", "HR administration", "employee records"],
@@ -239,6 +268,7 @@ export const INVESTMENT_BLOCK = {
   reads: ["process and risk control papers, including how securities are selected and sized", "explainability notes for the investment committee", "behaviour in different market conditions", "due diligence questionnaire answers"],
   venues: ["asset owner and consultant conferences", "institutional investor roundtables", "investment committee education sessions"],
   assets: ["a due diligence questionnaire pack", "a documented investment process and risk controls", "a reporting sample and custody details"],
+  plg: { user: "a member of the buyer's research team", signer: "the chief investment officer or investment committee" },
   firstValue: "the buyer's research team sees the strategy's positions and drivers on their own mandate",
   expansionSignal: "a first allocation is topped up or a second mandate is discussed",
   fit: {
@@ -248,6 +278,19 @@ export const INVESTMENT_BLOCK = {
     C: "allocators ask peers and consultants about managers, so references and investor roundtables carry weight",
   },
 };
+
+// The sector's own overrides (see SECTOR_PLAN .over). The AI native override is the neutral one for an AI product of unknown use;
+// when the seller's own words say it automates customer support, the sector file's support wording (resolution rate and so on) fits.
+const SUPPORT_AI = /\b(support|tickets?|help ?desk|customer service|contact cent(?:re|er)s?|call cent(?:re|er)s?|resolution)\b/i;
+export function sectorOver(vertical, args) {
+  const spx = vertical ? SECTOR_PLAN[vertical.id] : null;
+  if (!spx || !spx.over) return {};
+  if (vertical.id === "ai-native") {
+    const a = args || {};
+    if (SUPPORT_AI.test([a.product_description, a.company_description, a.gtm_challenge, a.challenge, a.industry].filter((t) => typeof t === "string").join(" "))) return {};
+  }
+  return spx.over;
+}
 
 // ---------- small helpers ----------
 // Lower-case the first letter of a phrase, but not an acronym such as "SLA" or "TMS".
@@ -283,22 +326,28 @@ export function buyerFunction(...texts) {
 // Everything the plan needs, in one place: the sector record, the business model, the motion and the user's numbers.
 export function planContext({ vertical, model, args }) {
   const a = args || {};
-  const fn = vertical && vertical.id === "saas" ? buyerFunction(a.company_description, a.gtm_challenge, a.challenge, a.industry) : null;
+  const fn = vertical && vertical.id === "saas" ? buyerFunction(a.product_description, a.company_description, a.gtm_challenge, a.challenge, a.industry) : null;
   const inv = model === "investment";
   const sp = inv ? INVESTMENT_BLOCK : vertical ? SECTOR_PLAN[vertical.id] : null;
-  const roles = inv ? INVESTMENT_BLOCK.roles : fn ? fn.roles : vertical ? vertical.buyerRoles : ["the person who signs", "the champion who feels the problem", "the daily user"];
-  const metrics = inv ? INVESTMENT_BLOCK.metrics : fn ? fn.metrics : vertical ? vertical.metrics : ["the number your buyer already reports on", "the cost of the problem today"];
+  const over = !inv ? sectorOver(vertical, a) : {};
+  const roles = inv ? INVESTMENT_BLOCK.roles : fn ? fn.roles : over.buyerRoles || (vertical ? vertical.buyerRoles : ["the person who signs", "the champion who feels the problem", "the daily user"]);
+  const metrics = inv ? INVESTMENT_BLOCK.metrics : fn ? fn.metrics : over.metrics || (vertical ? vertical.metrics : ["the number your buyer already reports on", "the cost of the problem today"]);
   const objections = inv ? INVESTMENT_BLOCK.objections : vertical ? vertical.objections : [];
-  const proofShape = inv ? INVESTMENT_BLOCK.proofShape : vertical ? vertical.proofShape : "a before and after of one measure your buyer already tracks, at one customer, signed off by that customer";
-  const vocab = inv ? INVESTMENT_BLOCK.vocabulary : vertical ? vertical.vocabulary : [];
+  const proofShape = inv ? INVESTMENT_BLOCK.proofShape : over.proofShape || (vertical ? vertical.proofShape : "a before and after of one measure your buyer already tracks, at one customer, signed off by that customer");
+  const vocab = inv ? INVESTMENT_BLOCK.vocabulary : over.vocabulary || (vertical ? vertical.vocabulary : []);
   const mp = MODEL_PLAN[model] || MODEL_PLAN.unknown;
+  // A sector's own first offer (a hub pilot, a proof of value) replaces the generic one for a business that can be tried alone.
+  const sectorEntry = sp && sp.entry && !inv && (model === "saas" || model === "hardware_software" || !model) ? sp.entry : null;
+  const entry = sectorEntry || mp.entry;
+  const assisted = sectorEntry || mp.assisted;
+  const plg = fn ? fn.plg : sp && sp.plg ? sp.plg : { user: "the person who feels the problem day to day and tries the product", signer: "the budget owner of the function" };
   const acv = typeof a.acv_usd === "number" && isFinite(a.acv_usd) ? a.acv_usd : null;
   const cycle = typeof a.deal_cycle_days === "number" && isFinite(a.deal_cycle_days) ? a.deal_cycle_days : null;
   const tam = typeof a.tam_accounts === "number" && isFinite(a.tam_accounts) ? a.tam_accounts : null;
   const nrr = typeof a.nrr_percent === "number" && isFinite(a.nrr_percent) ? a.nrr_percent : null;
   const channels = clean(a.current_channels);
   return {
-    vertical, model, sp, fn, roles, metrics, objections, proofShape, vocab, mp, acv, cycle, tam, nrr, channels,
+    vertical, model, sp, fn, roles, metrics, objections, proofShape, vocab, mp, entry, assisted, plgUser: plg.user, plgSigner: plg.signer, acv, cycle, tam, nrr, channels,
     signer: roles[0], champion: roles[1] || roles[0], user: roles[roles.length - 1],
     cycleText: cycle ? "your " + num(cycle) + "-day cycle" : "your sales cycle",
     longCycle: cycle !== null && cycle > 90,
@@ -354,7 +403,7 @@ function planE(c) {
     "List who already sits in your buyers' stack and could introduce or connect with you: " + joinLong(sp(c, "partners")) + ". Pick the two that touch the most accounts on your list and ask each what a joint account plan would need.",
   ];
   const d60 = [
-    "Run a first ABM wave on the top 20 accounts" + EXAMPLE + ". Open with the numbers this buyer already watches (" + metricsText(c, 3) + ") and offer " + c.mp.entry + ".",
+    "Run a first ABM wave on the top 20 accounts" + EXAMPLE + ". Open with the numbers this buyer already watches (" + metricsText(c, 3) + ") and offer " + c.entry + ".",
     "Sign the first two partners with a one-page agreement: what each brings (introductions, integration or resale), how an introduced account is tracked from first meeting to closed won, and who answers the buyer's technical questions.",
     objectionStep(c),
   ];
@@ -377,7 +426,7 @@ function planI(c) {
   ];
   const d60 = [
     "Publish the proof in the forms these buyers read: " + joinLong(sp(c, "reads")) + ". Build each piece on the numbers the buyer already watches (" + metricsText(c, 2) + ").",
-    "Start a short outbound sequence to the list. Each message opens with a problem in the buyer's words and ends with one ask: " + c.mp.entry + ".",
+    "Start a short outbound sequence to the list. Each message opens with a problem in the buyer's words and ends with one ask: " + c.entry + ".",
     c.longCycle ? "Agree with sales which signals mean a call is worth booking (a reply, a second reader at the same account, a request for the reference). With " + c.cycleText + ", expect several people to engage before anyone asks for a meeting." : "Agree with sales which signals mean a call is worth booking (a reply, a second reader at the same account, a request for the reference) and how fast each is followed up.",
   ];
   const d90 = [
@@ -395,12 +444,12 @@ function planPSelf(c, prefix = "") {
     d30: [
       p("Define the first moment of value: " + sp(c, "firstValue") + ". Measure how many new users reach it and how long it takes."),
       p("Remove the steps between sign-up and that moment, and record where people stop."),
-      p("Decide who the product-led user is (" + c.user + ") and who still has to say yes (" + c.signer + "). The sales conversation starts when the second person appears in an account."),
+      p("Decide who the product-led user is (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + "). The sales conversation starts when the second person appears in an account."),
     ],
     d60: [
-      p("Launch the improved first-use path and offer " + c.mp.entry + " to accounts that ask for more."),
+      p("Launch the improved first-use path and offer " + c.entry + " to accounts that ask for more."),
       p("Build the hand-off from usage to a sales conversation: flag accounts where " + sp(c, "expansionSignal") + ", and have a person reach out within a day."),
-      p("Test the plan and price page for the buyer who signs" + (c.vertical || c.model === "investment" ? " (" + c.signer + ")" : "") + ", not only for the user who tried the product."),
+      p("Test the plan and price page for the buyer who signs (" + c.plgSigner + "), not only for the user who tried the product."),
     ],
     d90: [
       p("Measure the share of new accounts that started in the product, the share that reached the first moment of value and the share that moved to a sales conversation." + (c.nrr ? " Compare with your NRR of " + c.nrr + " percent to see whether product-led accounts expand as much as sales-led ones." : "")),
@@ -413,9 +462,9 @@ function planPAssisted(c, prefix = "") {
   const p = (t) => prefix + t;
   return {
     d30: [
-      p("Choose the one low-risk way a buyer can see value without a full project: " + c.mp.assisted + ". Write the scope on one page, with what the buyer gets to keep."),
+      p("Choose the one low-risk way a buyer can see value without a full project: " + c.assisted + ". Write the scope on one page, with what the buyer gets to keep."),
       p("Agree the measure that shows value in that step (" + metricsText(c, 2) + ") and who on the buyer's side signs it off."),
-      p("Decide who starts it (" + c.champion + ") and who still has to say yes (" + c.signer + "), and give the starter a short pack they can forward."),
+      p("Decide who starts it (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + "), and give the starter a short pack they can forward."),
     ],
     d60: [
       p("Offer the step to the accounts you already talk to and run the first two, recording what the buyer asked for that you did not expect."),
@@ -429,7 +478,21 @@ function planPAssisted(c, prefix = "") {
     ],
   };
 }
+export function fitWarning(c, letter) {
+  const acvTxt = c.acv !== null ? "an ACV of " + num(c.acv) + " US dollars a year" : null;
+  const cycTxt = c.cycle !== null ? "a " + num(c.cycle) + "-day cycle" : null;
+  const both = joinList([acvTxt, cycTxt]);
+  const reviews = sp(c, "reviews");
+  if (letter === "P" && c.mp.selfServe !== false && ((c.acv !== null && c.acv > 50000) || (c.cycle !== null && c.cycle > 90))) {
+    return "With " + both + ", a sale like yours rarely starts with a self-serve sign-up: buyers go through a pilot and reviews (" + reviews + "). The steps below are the nearest fitting version of the product-led motion: a pilot-led first step that a user can start without a long contract. Ecosystem and ABM usually leads at this size; run gtm_consultation to score it on your numbers.";
+  }
+  if (letter === "E" && ((c.acv !== null && c.acv < 5000) || (c.cycle !== null && c.cycle < 14))) {
+    return "With " + both + ", account-based selling usually costs more per deal than it returns: a small, fast sale is normally won with product-led or inbound motions. The steps below still follow the motion you asked for; run gtm_consultation to score it on your numbers.";
+  }
+  return null;
+}
 function planP(c) {
+  if (c.mp.selfServe === true && fitWarning(c, "P")) return planPAssisted(c);
   if (c.mp.selfServe === true) return planPSelf(c);
   if (c.mp.selfServe === false) return planPAssisted(c);
   // The business model is not known: give both versions, each marked with the condition under which it applies.
@@ -447,10 +510,10 @@ function planC(c) {
   const d30 = [
     "Choose where your buyers already talk: " + joinLong(sp(c, "venues")) + ". Join two and listen before you launch your own.",
     "Invite five to ten customers who got a result" + EXAMPLE + " to be founding members, and ask each what they would want to discuss with peers in their role (" + c.champion + ").",
-    "Agree what the community is for: peer answers on " + metricsText(c, 2) + ", not product announcements.",
+    "Agree what the community is for: peer answers on " + ((c.sp && c.sp.communityTopics) || metricsText(c, 2)) + ", not product announcements.",
   ];
   const d60 = [
-    "Run the first two sessions led by customers, not by you. Each member shows how they measure " + c.metrics[0] + " and what they changed.",
+    "Run the first two sessions led by customers, not by you. Each member shows " + ((c.sp && c.sp.communityTopics) ? "how they handle " + c.sp.communityTopics : "how they measure " + c.metrics[0]) + " and what they changed.",
     "Record the questions members ask. They become your content and your list of objections to answer.",
     c.channels ? "Connect the community to what you already do (" + c.channels + "): invite the people you meet there to a session, and note which ones come back." : "Ask members who got a result to act as a reference for the prospects you are talking to now.",
   ];
@@ -470,7 +533,7 @@ export function buildPlan({ letter, vertical, model, args }) {
   const planner = PLANNERS[letter] || planP;
   const p = planner(c);
   const fix = (list) => list.filter(Boolean).map((t) => t.replace(/\s+/g, " ").replace(/\.\./g, "."));
-  return { days_30: fix(p.d30), days_60: fix(p.d60), first_quarter: fix(p.d90), context: c };
+  return { days_30: fix(p.d30), days_60: fix(p.d60), first_quarter: fix(p.d90), context: c, warning: fitWarning(c, letter) };
 }
 
 /** The block of notes for a business that manages investments, or the sector's own block, with the buyer function for generic SaaS. */
@@ -491,6 +554,7 @@ export function sectorBlock(vertical, model, args) {
     };
   }
   const v = vertical;
+  const over = sectorOver(v, args);
   const fnBlock = c.fn ? {
     who_decides: c.fn.committee,
     what_it_measures: [...c.fn.metrics, ...v.metrics.filter((m) => /retention|churn/.test(m))],
@@ -498,12 +562,12 @@ export function sectorBlock(vertical, model, args) {
   } : {};
   return Object.assign({
     sector: v.name,
-    who_decides: v.committee,
-    what_it_measures: v.metrics,
+    who_decides: over.committee || v.committee,
+    what_it_measures: over.metrics || v.metrics,
     usual_objections: v.objections.map((o) => o.objection),
-    proof_that_lands: v.proofShape,
+    proof_that_lands: over.proofShape || v.proofShape,
     sales_motion: v.salesMotion,
-    buyer_words: [...new Set([...(c.fn ? c.fn.terms : v.vocabulary), ...((SECTOR_PLAN[v.id] || {}).terms || [])])],
+    buyer_words: [...new Set([...(c.fn ? c.fn.terms : over.vocabulary || v.vocabulary), ...((SECTOR_PLAN[v.id] || {}).terms || [])])],
   }, fnBlock);
 }
 

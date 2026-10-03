@@ -59,8 +59,8 @@ test("the three tools and their text fields are the ones this test covers", () =
   assert.deepEqual(TOOLS.map((t) => t.name).sort(), ["epic_audit", "generate_roadmap", "gtm_consultation"]);
   assert.deepEqual(textFields(TOOLS.find((t) => t.name === "gtm_consultation")), ["company_name", "gtm_challenge", "business_stage", "industry", "current_channels"]);
   assert.deepEqual(textFields(TOOLS.find((t) => t.name === "epic_audit")), ["challenge", "company_name", "industry", "business_stage", "current_channels"]);
-  // Run 20 round 1b: the roadmap takes optional industry, company name and current channels; the loop below sends the hostile strings into each.
-  assert.deepEqual(textFields(TOOLS.find((t) => t.name === "generate_roadmap")), ["industry", "company_name", "current_channels"]);
+  // Run 20 round 1b: the roadmap takes optional product description, industry, company name and current channels; the loop below sends the hostile strings into each.
+  assert.deepEqual(textFields(TOOLS.find((t) => t.name === "generate_roadmap")), ["product_description", "industry", "company_name", "current_channels"]);
 });
 
 for (const tool of TOOLS) {

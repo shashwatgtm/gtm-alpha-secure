@@ -273,3 +273,71 @@ test("an acronym at the start of the proof shape is kept in capitals (SLA, not s
   assert.doesNotMatch(flat(j), /sLA/);
   assert.doesNotMatch(flat(j), /self-serve sign-up/i);
 });
+
+// ---- Round 2 (fresh judge, 6 lines below 4) ----
+test("round 2 (1, 5): the software sector fits developer platforms in general, not only testing tools", async () => {
+  const QA = /Head of QA|test coverage|CI pipeline|cross-browser|escaped defects|release frequency|lead time for changes|regression testing/i;
+  for (const tool of ["gtm_consultation", "epic_audit"]) {
+    const args = tool === "epic_audit" ? { ...CASES.software, challenge: CASES.software.gtm_challenge } : CASES.software;
+    const j = await call(tool, args);
+    assert.doesNotMatch(plan(j) + flat(j.sector_notes), QA, tool);
+    assert.match(plan(j), /developer/i, tool);
+    assert.match(flat(j.sector_notes), /developer experience|documentation|integrations|governance/i, tool);
+  }
+  for (const f of ["E", "P", "I", "C"]) {
+    const j = await call("generate_roadmap", { primary_focus: f, industry: "software" });
+    assert.doesNotMatch(plan(j), QA, f);
+  }
+  const c = await call("generate_roadmap", { primary_focus: "C", industry: "software", company_name: "Specdrop" });
+  assert.match(plan(c), /API design|governance|developer workflows|documentation/i);
+});
+
+test("round 2 (2): an AI native seller of investment strategies gets investment steps, and an unknown AI native model gets neutral wording and a question", async () => {
+  const SUPPORT = /resolution rate|evaluation set|human review|handling time|escalation rate|customer satisfaction on automated/i;
+  for (const f of ["E", "P", "I", "C"]) {
+    const inv = await call("generate_roadmap", { primary_focus: f, industry: "AI native", business_model: "investment" });
+    assert.doesNotMatch(plan(inv), SUPPORT, f);
+    assert.match(plan(inv), /due diligence|consultant|track record|model portfolio|allocation|mandate|investment committee/i, f);
+    const unknown = await call("generate_roadmap", { primary_focus: f, industry: "AI native" });
+    assert.doesNotMatch(plan(unknown), SUPPORT, f + " unknown");
+    assert.match(flat(unknown.what_would_make_this_specific), /investment/i, f);
+  }
+  const read = await call("generate_roadmap", { primary_focus: "C", industry: "AI native", product_description: "We sell systematic investment strategies powered by adaptive AI to asset allocators and banks." });
+  assert.match(read.business_model, /investment management/);
+  assert.doesNotMatch(plan(read), SUPPORT);
+  assert.match(plan(read), /track record|due diligence|consultant/i);
+});
+
+test("round 2 (3): a requested motion that the ACV and cycle contradict is said so in one line at the top, with the nearest fitting steps", async () => {
+  const j = await call("generate_roadmap", { primary_focus: "P", timeframe: "90-day", industry: "logistics tech", company_name: "Routewise", acv_usd: 150000, deal_cycle_days: 150 });
+  assert.equal(Object.keys(j)[0], "read_this_first");
+  assert.match(j.read_this_first, /150,000/);
+  assert.match(j.read_this_first, /150-day/);
+  assert.match(j.read_this_first, /pilot/i);
+  assert.ok(!/\n/.test(j.read_this_first));
+  assert.doesNotMatch(plan(j), /invitations|sign-up|plan and price page|first-use path/i);
+  assert.match(plan(j), /hub|cost per delivery/i);
+  const small = await call("generate_roadmap", { primary_focus: "P", industry: "logistics tech", acv_usd: 3000, deal_cycle_days: 10 });
+  assert.equal(small.read_this_first, undefined);
+  const e = await call("generate_roadmap", { primary_focus: "E", industry: "SaaS", acv_usd: 2000, deal_cycle_days: 10 });
+  assert.match(e.read_this_first, /2,000/);
+  const fine = await call("generate_roadmap", { primary_focus: "E", industry: "SaaS", acv_usd: 90000, deal_cycle_days: 120 });
+  assert.equal(fine.read_this_first, undefined);
+});
+
+test("round 2 (4): the product-led user and the signer are different people, right for the sector", async () => {
+  const generic = await call("generate_roadmap", { primary_focus: "P", industry: "SaaS" });
+  assert.match(plan(generic), /who the product-led user is \(the person who feels the problem day to day[^)]*\) and who still has to say yes \(the budget owner/);
+  assert.doesNotMatch(plan(generic), /user is \(Chief Financial Officer\)|VP Product\)/);
+  const fin = await call("generate_roadmap", { primary_focus: "P", industry: "SaaS", product_description: "We sell a billing platform with invoicing, revenue recognition and collections to software companies." });
+  assert.match(plan(fin), /finance operations user or an engineer evaluating the integration/);
+  assert.match(plan(fin), /still has to say yes \(the CFO or VP Finance\)/);
+  const dev = await call("generate_roadmap", { primary_focus: "P", industry: "software" });
+  assert.match(plan(dev), /product-led user is \(a developer[^)]*\) and who still has to say yes \(the VP Engineering or CTO\)/);
+});
+
+test("round 2: tools/list lists product_description as an optional roadmap input", async () => {
+  const r = await mcp(new Request("https://gtmalpha.gtmhelix.com/mcp", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ jsonrpc: "2.0", id: 98, method: "tools/list" }) }), {});
+  const t = (await r.json()).result.tools.find((x) => x.name === "generate_roadmap");
+  assert.ok(t.inputSchema.properties.product_description);
+});
