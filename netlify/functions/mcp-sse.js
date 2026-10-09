@@ -37,7 +37,7 @@ function selfServeCheck(input, analysis, model, text) {
     + (seen ? " Your text says \"" + seen[0].trim() + "\". If that adoption happens without a sales call, self_serve is the input to change." : "");
 }
 // The same effect, worded for the closing list (the name of the input is the list's own label, so it is not repeated).
-function selfServeEffect(input, analysis, model, text) {
+function selfServeEffect(input, analysis, model, text, quoteAdoption) {
   if (input.self_serve === true || input.self_serve === false) return null;
   if (model !== "saas" && model !== "hardware_software") return null;
   var alt = scoreEpic(Object.assign({}, input, { self_serve: true }));
@@ -45,7 +45,7 @@ function selfServeEffect(input, analysis, model, text) {
   var lead = alt.primary.letter === analysis.primary.letter ? "the lead would stay " + analysis.primary.motion : "the lead would move to " + alt.primary.motion;
   var seen = (text || "").match(/(?:\b[\w'-]+\s+){0,5}\d{1,3}(?:,\d{3})+\+?\s+(?:companies|businesses|organi[sz]ations|teams|developers|customers|users|accounts)\b/i);
   return "if people can sign up and get value without talking to sales, setting it to true would change the Product-Led score from " + analysis.scores.P + " to " + alt.scores.P + " and " + lead + "."
-    + (seen ? " Your text says \"" + seen[0].trim() + "\"; if that adoption happens without a sales call, this is the input to change." : "");
+    + (seen && quoteAdoption !== false ? " Your text says \"" + seen[0].trim() + "\"; if that adoption happens without a sales call, this is the input to change." : "");
 }
 // The country in the text is shown, never applied (D80: the scores follow the inputs given). What setting geography would do is worked out with the same scoring.
 function geographyEffect(input, analysis, read) {
@@ -81,6 +81,17 @@ function leadNote(analysis, input) {
   var given = [["acv_usd", "ACV"], ["deal_cycle_days", "deal cycle"], ["nrr_percent", "NRR"], ["tam_accounts", "TAM"]].filter(function(k) { return typeof input[k[0]] === "number"; }).map(function(k) { return k[1]; });
   return "No input you gave moved a score" + (given.length ? " (your " + given.join(", ") + " fell in the middle bands of the rubric)" : "") + ": all four scores are the untouched Series B starting row (E 7, P 5, I 6, C 6), which is an assumed stage. So the lead, " + lead.motion + ", rests on the order rule that breaks ties and on a " + (gap === 1 ? "one point" : gap + " point") + " gap over " + MOTIONS[second] + ", not on your company. Giving business_stage, or an ACV, deal cycle, NRR or TAM outside the middle bands, would change it.";
 }
+// A developer adopted product with a very large base of adopting companies, when self_serve was not given: say that self-serve is the lever, who the
+// outbound steps aim at, and what changes the lead. The scores are not changed (D80).
+function adoptionNote(input, analysis, text, signers) {
+  if (input.self_serve === true || input.self_serve === false) return null;
+  var seen = (text || "").match(/(?:\b[\w'-]+\s+){0,5}\d{1,3}(?:,\d{3})+\+?\s+(?:companies|businesses|organi[sz]ations|teams|developers|customers|users|accounts)\b/i);
+  if (!seen || !/\b(?:developers?|apis?|sdks?|cli|engineers?|engineering)\b/i.test(text || "")) return null;
+  var alt = scoreEpic(Object.assign({}, input, { self_serve: true }));
+  if (alt.scores.P === analysis.scores.P) return null;
+  var lead = alt.primary.letter === analysis.primary.letter ? "the lead would stay " + analysis.primary.motion : "the lead would move to " + alt.primary.motion;
+  return "Your text says \"" + seen[0].trim() + "\". Developers who adopt a product on their own are reached by the product, its documentation and its examples, not by an outbound list, so the outbound steps aim at the people who sign (" + signers.join(" and ") + "). If that adoption needs no sales call, self_serve is the lever: setting it to true would change the Product-Led score from " + analysis.scores.P + " to " + alt.scores.P + " and " + lead + ".";
+}
 // The answer both scoring tools share: scores, inputs read back, what was read from the text, model, sector block, fit, the first 30 days, what to give next.
 function describe(args, tool) {
   var input = Object.assign({}, args, { gtm_challenge: args.gtm_challenge || args.challenge || "", business_stage: args.business_stage, industry: args.industry || "" });
@@ -90,11 +101,13 @@ function describe(args, tool) {
   var pargs = Object.assign({}, input, { read: read });
   var plan = buildPlan({ letter: analysis.primary.letter, vertical: v, model: m.model, args: pargs });
   var notes = sectorBlock(v, m.model, pargs);
-  var fit = sectorFit({ vertical: v, model: m.model, letter: analysis.primary.letter, motionName: analysis.primary.motion, scores: analysis.scores, args: input, selfServeGiven: input.self_serve === true || input.self_serve === false });
+  var adoption = adoptionNote(input, analysis, input.gtm_challenge, plan.context.roles.slice(0, 2));
+  var ssEffect = selfServeEffect(input, analysis, m.model, input.gtm_challenge, !adoption);
+  var fit = sectorFit({ vertical: v, model: m.model, letter: analysis.primary.letter, motionName: analysis.primary.motion, scores: analysis.scores, args: input, selfServeGiven: input.self_serve === true || input.self_serve === false, selfServeLine: !!ssEffect });
   var nameOf = function(model) { return modelName(model, v); };
   var seen = readLines(read, input, nameOf);
-  var sharpen = sharpenLines(read, input, { selfServe: selfServeEffect(input, analysis, m.model, input.gtm_challenge), geography: geographyEffect(input, analysis, read), askBatch: analysis.primary.letter === "E" });
-  return { analysis: analysis, read: read, v: v, m: m, first: plan.days_30, notes: notes, fit: fit, leadNote: leadNote(analysis, input), check: selfServeCheck(input, analysis, m.model, input.gtm_challenge), input: input, seen: seen, sharpen: sharpen };
+  var sharpen = sharpenLines(read, input, { selfServe: ssEffect, geography: geographyEffect(input, analysis, read), askBatch: analysis.primary.letter === "E" });
+  return { analysis: analysis, read: read, v: v, m: m, first: plan.days_30, notes: notes, fit: fit, leadNote: leadNote(analysis, input), adoptionNote: adoption, check: selfServeCheck(input, analysis, m.model, input.gtm_challenge), input: input, seen: seen, sharpen: sharpen };
 }
 
 const GTM_CONSULTANT = {
@@ -130,6 +143,7 @@ const GTM_CONSULTANT = {
     analysis.notes.forEach(function(n) { lines.push("Note: " + n); });
     if (analysis.preliminary_note) lines.push(analysis.preliminary_note);
     if (d.leadNote) lines.push(d.leadNote);
+    if (d.adoptionNote) lines.push(d.adoptionNote);
     lines.push("", "What I read from your text:");
     d.seen.forEach(function(t) { lines.push("- " + t); });
     lines.push("", "Your inputs, read:");
@@ -164,6 +178,7 @@ const GTM_CONSULTANT = {
     };
     if (analysis.preliminary_note) out.preliminary_note = analysis.preliminary_note;
     if (d.leadNote) out.lead_note = d.leadNote;
+    if (d.adoptionNote) out.adoption_note = d.adoptionNote;
     if (d.check) out.self_serve_check = d.check;
     return out;
   },
@@ -325,6 +340,7 @@ function handleToolCall(name, rawArgs) {
     if (d.check) extra.self_serve_check = d.check;
     extra.to_sharpen_this = d.sharpen;
     if (d.leadNote) extra.lead_note = d.leadNote;
+    if (d.adoptionNote) extra.adoption_note = d.adoptionNote;
     return Object.assign(named ? { company: named } : {}, audit, extra);
   } else if (name === "generate_roadmap") {
     return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args);
