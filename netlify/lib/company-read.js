@@ -79,12 +79,14 @@ const TRANSFER_NOUN = /(?:payouts?|payments?|messages?|emails?|notifications?|ac
 const FEATURE_NOUN = /\b(?:payouts?|payments?|messages?|emails?|notifications?|reports?|updates?|loans?|refunds?|transfers?|credits?|discounts?|links?|answers?|routes?|orders?|invoices?|statements?|settlements?|data|content|insights?|recommendations?|alerts?|quotes?|bills?|funds?|money|requests?|tickets?)\b/i;
 const nounGroupEndsInBuyer = (t) => {
   const g = t.split(/\s(?:in|at|with|across|that|who|which|from)\s|[,;.(:]/)[0].trim();
-  return g.split(/\s+/).length >= 2 && BUYER_LEX.test(g) && !FEATURE_NOUN.test(g);
+  return g.split(/\s+/).length >= 2 && BUYER_LEX.test(noBankAccounts(g)) && !FEATURE_NOUN.test(g);
 };
 
 // A buyer phrase must name somebody who buys: one of these words within its first eight words. Anything else is not read as a buyer.
-const BUYER_LEX = /\b(?:merchants?|marketplaces?|retailers?|brands?|compan(?:y|ies)|businesses|business|enterprises?|banks?|insurers?|lenders?|fintechs?|teams?|developers?|engineers?|operators?|providers?|shippers?|carriers?|fleets?|manufacturers?|sellers?|startups?|scale-?ups?|organi[sz]ations?|agencies|institutions?|customers?|clients?|leaders?|heads?|CIOs?|CTOs?|CFOs?|COOs?|CISOs?|CMOs?|CROs?|professionals?|owners?|managers?|directors?|founders?|consumers?|shoppers?|students?|schools?|farmers?|drivers?|hotels?|restaurants?|stores?|shops?|outlets?|distributors?|wholesalers?|dealers?|contractors?|builders?|landlords?|publishers?|creators?|firms?|studios?|factories|utilities|telcos?|governments?|ministries|SMBs?|SMEs?|mid-market|Fortune \d+|users?|people|accounts?|individuals?|freelancers?|partners?|resellers?|integrators?|vendors?|suppliers?|buyers?|practitioners?|specialists?|analysts?|marketers?|recruiters?|employers?|workers?|staff|organisations?|institutions?)\b/i;
-const looksLikeBuyers = (t) => !/^(?:company|the company|your company|the tools|its|their|our|your|each|every|all|any)\b/i.test(t) && BUYER_LEX.test(t.split(/\s+/).slice(0, 11).join(" "));
+const BUYER_LEX = /\b(?:merchants?|marketplaces?|retailers?|brands?|compan(?:y|ies)|businesses|business|enterprises?|banks?|insurers?|lenders?|fintechs?|teams?|developers?|engineers?|operators?|providers?|shippers?|carriers?|fleets?|manufacturers?|sellers?|startups?|scale-?ups?|organi[sz]ations?|agencies|institutions?|customers?|clients?|leaders?|heads?|CIOs?|CTOs?|CFOs?|COOs?|CISOs?|CMOs?|CROs?|professionals?|owners?|managers?|directors?|founders?|consumers?|shoppers?|students?|schools?|farmers?|drivers?|hotels?|restaurants?|stores?|shops?|outlets?|distributors?|wholesalers?|dealers?|contractors?|builders?|landlords?|publishers?|creators?|firms?|studios?|factories|utilities|telcos?|governments?|ministries|SMBs?|SMEs?|mid-market|Fortune \d+|users?|people|(?:enterprise|key|strategic|target|named|existing) accounts?|individuals?|freelancers?|partners?|resellers?|integrators?|vendors?|suppliers?|buyers?|practitioners?|specialists?|analysts?|marketers?|recruiters?|employers?|workers?|staff|organisations?|institutions?)\b/i;
+// "bank accounts" are where money goes, not who buys
+const noBankAccounts = (t) => String(t).replace(/\bbank (?:accounts?|transfers?|details|statements?|rails?)\b/gi, "");
+const looksLikeBuyers = (t) => !/^(?:company|the company|your company|the tools|its|their|our|your|each|every|all|any)\b/i.test(t) && BUYER_LEX.test(noBankAccounts(t.split(/\s+/).slice(0, 11).join(" ")));
 const cleanPhrase = (t) => !/\b(?:so|that|which|who|whose|can|will|where|when|while|because|using|by|via|with)\b/i.test(t);
 function candidatesTo(s) {
   const d = depths(s);
@@ -164,6 +166,8 @@ function chunkList(text) {
     if (nx !== undefined && /^[a-z]+$/.test(p) && /^[a-z]+\s+and\s+\S+\s+\S/i.test(nx)) { p = p + ", " + nx; i++; }
     // a lone modifier ("AI-personalized", "gamified") belongs to the phrase that follows it
     else if (nx !== undefined && /^[A-Za-z]+(?:-[A-Za-z]+)*(?:ed|ized|ised|ive)$/.test(p)) { p = p + ", " + nx; i++; }
+    // "one setup for local, regional and global payment methods": a list of adjectives after a preposition is one phrase
+    else if (nx !== undefined && /\b(?:for|of|in|with|across)\s+[a-z]+$/i.test(p) && /^[a-z]+\s+and\s+[a-z]+\s+\S/i.test(nx)) { p = p + ", " + nx; i++; }
     out.push(withs[i] ? Object.assign(new String(p), { rawWith: true }) : p);
   }
   // "delivered across email, SMS, phone calls and Teams": a list of channels after across, via or through stays in the phrase that opened it
@@ -225,7 +229,8 @@ function readGeography(args, fields) {
   for (const [field, text] of fields) {
     for (const g of GEO) {
       const m = text.match(g.re);
-      if (m && !hits.some((h) => h.label === g.label)) hits.push({ label: g.label, code: g.code, word: m[0], field });
+      const label = g.code === "middle_east" && m && /^MENA$/.test(m[0]) ? "the Middle East and North Africa" : g.label;
+      if (m && !hits.some((h) => h.label === label)) hits.push({ label, code: g.code, word: m[0], field });
     }
   }
   // the same code reached through two labels (the US and Europe both score as US or EU) is two places named, one scored region
@@ -235,7 +240,7 @@ function readGeography(args, fields) {
 
 // ---------------------------------------------------------------- business model
 const PRICED = [
-  { model: "saas", re: /\b(?:per[- ]seat|per[- ]user|seat[- ]based|monthly plans?|annual plans?)\b/i, weak: /\b(?:subscriptions?|saas|licen[cs]es?)\b/i },
+  { model: "saas", re: /\b(?:per[- ]seat|per[- ]user|seat[- ]based|monthly plans?|annual plans?)\b/i, weak: /\b(?:subscriptions?(?!\s+(?:payments?|billing|management|commerce|boxes|businesses|plans? (?:for|of)))|saas|licen[cs]es?)\b/i },
   { model: "transactions", re: /\b(?:per[- ]transaction|transaction fees?|per[- ]message|per[- ]sms|per[- ]api call|merchant discount rate|interchange)\b/i },
   { model: "services", re: /\b(?:per[- ]fte|per[- ]ticket|fixed[- ]price|time and materials|statements? of work|retainers?)\b/i },
   { model: "connectivity", re: /\b(?:per[- ]site|per[- ]link|per[- ]mbps|bandwidth plans?)\b/i },
@@ -402,7 +407,9 @@ function readSector(args, name, texts, product, pain, buyers, whole) {
       if (w.length >= 2 && mine.length >= 1 && w.length >= 0.7 * mine.length && w.length >= (otherVertical ? otherVertical.words.length : 0)) otherVertical = { v: o, words: w };
     }
   }
-  return { v, source: from, words: [...new Set(strong)].slice(0, 4), close, why, dropped, otherVertical, mine: distinct(base.match, product || whole) };
+  // a kind of product the sector file has no notes for: the sector-level notes would drift to another kind (developer tooling measures for managed data infrastructure)
+  const gap = !dropped && v && v.id === "software" && !v.subtype && /\b(?:data platform|managed data|databases?|kafka|postgres\w*|clickhouse|opensearch|mysql|redis|valkey)\b/i.test(product || "") ? "managed data infrastructure" : null;
+  return { v, source: from, gap, words: [...new Set(strong)].slice(0, 4), close, why, dropped, otherVertical, mine: distinct(base.match, product || whole) };
 }
 
 // ---------------------------------------------------------------- the whole reading
@@ -488,12 +495,16 @@ export function readCompany(args, tool) {
       const pool = [out.buyers || "", mainText].join(" ");
       out.roles = rolesIn(out.buyersShort || "");
       out.teams = teamsIn(mainText);
-      if (out.pain && (out.pain.length > 170 || /[“”<>{}]/.test(out.pain))) out.pain = null;
+      if (out.pain && /[“”<>{}]/.test(out.pain)) out.pain = null;
       if (out.pain) {
         // the first clause of the problem, whole: up to a semicolon, ", so" or, when that is long, the last comma that keeps it under 110 characters
-        let first = stripEnd(out.pain.split(/;\s*|,\s+so\s/)[0]);
-        if (first.length > 110) { const k = first.slice(0, 110).lastIndexOf(", "); first = k > 30 ? first.slice(0, k) : ""; }
+        const clauses = out.pain.split(/;\s*|,\s+(?:so|while|but)\s/).map(stripEnd).filter(Boolean);
+        let first = clauses[0] || "";
+        const balanced = (t) => (t.match(/\(/g) || []).length === (t.match(/\)/g) || []).length;
+        if (first.length > 110 || !balanced(first)) { const k = first.slice(0, 110).lastIndexOf(", "); const cut = k > 30 ? first.slice(0, k) : ""; first = cut && balanced(cut) ? cut : (clauses.slice(1).find((x) => x.length >= 20 && x.length <= 110 && balanced(x)) || ""); }
         out.painShort = first && first.length <= 110 && !/[“”<>{}]/.test(first) ? first : null;
+        // a long problem text is read back as the clause that was used, not pasted whole
+        if (out.pain.length > 170) out.pain = out.painShort;
       }
     }
   }
@@ -501,6 +512,15 @@ export function readCompany(args, tool) {
   const productForReader = out.quoted ? "" : (mainText ? (sentencesOf(mainText).find((s) => !PAIN_START.test(s) && !ASK_WORDS.test(s)) || mainText) : "");
   const whole = [mainText, industry, channels].filter(Boolean).join(" \n ");
   // owners of the problem named by the user's own words (a phishing problem belongs to fraud or risk as well as to the product owner)
+  // the small and the large end of the market, in the user's own words (one ACV cannot describe both), and signs of a product-led end
+  out.sizeSplit = null; out.ledSignals = [];
+  if (!out.quoted && mainText) {
+    const uniq = (re) => [...new Set([...mainText.matchAll(new RegExp(re.source, "gi"))].map((m) => m[0].trim()))];
+    const small = uniq(/\b(?:small business(?:es)?(?: owners)?|single stores?|sole traders?|micro businesses|fewer than \w+ [a-z]+(?: [a-z]+)?)\b/);
+    const large = uniq(/\b(?:enterprise(?:s| quote| editions?)?|multi-(?:chain|outlet|site|location)(?: businesses)?|large (?:enterprises|chains|brands))\b/).sort((a, b) => Number(/enterprise/i.test(b)) - Number(/enterprise/i.test(a)));
+    if (small.length && large.length) out.sizeSplit = { small: small.slice(0, 2), large: large.slice(0, 2) };
+    out.ledSignals = uniq(/\b(?:solo developers?|students?|free (?:tier|plan)s?|hobby\w*|startup credits?|credits? for \d+ months|credits)\b/).slice(0, 3);
+  }
   out.owners = [];
   if (!out.quoted && /\b(?:fraud|phishing|scams?|spam|abuse)\b/i.test([out.pain || "", productForReader].join(" "))) out.owners.push("fraud or risk");
   // sector
@@ -576,6 +596,7 @@ function sectorLine(read, args) {
   else if (sec.why) t += " I chose the kind of company because " + sec.why + ".";
   else if (sec.dropped) t += " Your words do not single out one kind of company, so I used the sector-level notes that hold for every " + read.v.name + " company.";
   else if (sec.otherVertical && ind) t += " Some of your words (" + joinList(sec.otherVertical.words.slice(0, 3)) + ") also point to another sector; I kept the sector you named in industry.";
+  if (sec.gap) t += " Your product looks like " + sec.gap + ", which the sector file has no notes for yet, so only who decides is shown for the sector and the measures and objections of other kinds of product are left out.";
   return t;
 }
 
