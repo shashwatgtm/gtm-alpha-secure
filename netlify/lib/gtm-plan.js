@@ -521,11 +521,12 @@ export function planContext({ vertical, model, args }) {
   const sp = inv ? INVESTMENT_BLOCK : details;
   const api = !inv ? apiPlatform(vertical, a.product_description, a.company_description, a.gtm_challenge, a.challenge, a.industry) : null;
   const over = api ? api.over : {};
+  const gapKind = a.read && a.read.sector ? a.read.sector.gap : null;
   const roles = inv ? INVESTMENT_BLOCK.roles : fn ? fn.roles : over.buyerRoles || (vertical ? vertical.buyerRoles : ["the person who signs", "the champion who feels the problem", "the daily user"]);
-  const metrics = inv ? INVESTMENT_BLOCK.metrics : fn ? fn.metrics : over.metrics || (vertical ? vertical.metrics : ["the number your buyer already reports on", "the cost of the problem today"]);
-  const objections = inv ? INVESTMENT_BLOCK.objections : over.objections || (vertical ? vertical.objections : []);
-  const proofShape = inv ? INVESTMENT_BLOCK.proofShape : over.proofShape || (vertical ? vertical.proofShape : "a before and after of one measure your buyer already tracks, at one customer, signed off by that customer");
-  const vocab = inv ? INVESTMENT_BLOCK.vocabulary : over.vocabulary || (vertical ? vertical.vocabulary : []);
+  const metrics = gapKind ? ["the cost and time your buyer spends on the problem today", "how often the problem recurs"] : inv ? INVESTMENT_BLOCK.metrics : fn ? fn.metrics : over.metrics || (vertical ? vertical.metrics : ["the number your buyer already reports on", "the cost of the problem today"]);
+  const objections = gapKind ? [] : inv ? INVESTMENT_BLOCK.objections : over.objections || (vertical ? vertical.objections : []);
+  const proofShape = gapKind ? "a before and after of one measure your buyer already tracks, at one customer, signed off by that customer" : inv ? INVESTMENT_BLOCK.proofShape : over.proofShape || (vertical ? vertical.proofShape : "a before and after of one measure your buyer already tracks, at one customer, signed off by that customer");
+  const vocab = gapKind ? (over.vocabulary || (vertical ? vertical.vocabulary : [])).filter((w) => !/release|seat|pipeline|recovery|trial|alternative/i.test(w)) : inv ? INVESTMENT_BLOCK.vocabulary : over.vocabulary || (vertical ? vertical.vocabulary : []);
   const mp = MODEL_PLAN[model] || MODEL_PLAN.unknown;
   // A sector's own first offer (a hub pilot, a proof of value) replaces the generic one for a business that can be tried alone.
   const sectorEntry = sp && sp.entry && !inv && (model === "saas" || model === "hardware_software" || !model) ? sp.entry : null;
@@ -544,12 +545,15 @@ export function planContext({ vertical, model, args }) {
   // Run 22: what was read from the user's text (netlify/lib/company-read.js): use cases, buyers, roles, teams and the problem, in their own words.
   const rd = a.read || null;
   const uses = rd ? rd.uses.filter(Boolean).slice(0, 3) : [];
-  const geoOne = rd && rd.geo && rd.geo.hits.length === 1 && rd.geo.hits[0].label ? rd.geo.hits[0].label : null;
+  const geoHit = rd && rd.geo && rd.geo.hits.length === 1 && rd.geo.hits[0].label ? rd.geo.hits[0] : null;
+  // the place is added to a sentence only when the buyer phrase does not already hold it ("businesses in MENA")
+  const geoOne = geoHit && !(rd.buyersShort && rd.buyersShort.toLowerCase().includes(String(geoHit.word).toLowerCase())) ? geoHit.label : null;
   return {
     read: rd, uses, head: rd ? rd.head : null, use0: uses[0] || (rd && rd.head) || null, useOr: uses.length ? orList(uses) : rd && rd.head ? rd.head : null,
     seg: rd ? rd.buyersShort : null, segShort: rd && rd.buyersShort ? (rd.buyersShort.length > 60 ? rd.buyersShort.split(/,\s+|\s+and\s+/)[0] : rd.buyersShort) : null, signRoles: rd && rd.roles ? rd.roles.filter((x) => !USER_ROLE.test(x)) : [], userRoles: rd && rd.roles ? rd.roles.filter((x) => USER_ROLE.test(x)) : [],
     textRoles: rd && rd.roles && rd.roles.filter((x) => !USER_ROLE.test(x)).length ? joinList(rd.roles.filter((x) => !USER_ROLE.test(x))) : null, owners: rd && rd.owners ? rd.owners : [], teams: rd ? rd.teams : null,
     staffing: rd && rd.how ? ((rd.how.find((x) => /engineer|team|consult|specialist|success|manager/i.test(x)) || null)) : null,
+    broad: a.tam_accounts >= 100000, smallEnd: (acv !== null && acv < 5000) || /\b(?:startups?|freelancers?|small business\w*|solo|single stores?|shop owners?|owners?|D2C|sole traders?|micro)\b/i.test(rd ? [rd.segmentsText, rd.buyersShort, rd.head].filter(Boolean).join(" ") : ""),
     painQ: rd && rd.painShort ? "\"" + stripEnd(rd.painShort) + "\"" : null, place: geoOne,
     vertical, model, sp, fn, api, over, communityTopics: api ? api.communityTopics : null, terms: (details && details.terms) || (api ? api.terms : []), typical: details ? details.typical : null, roles, metrics, objections, proofShape, vocab, mp, entry, assisted, plgUser: plg.user, plgSigner: plg.signer, acv, cycle, tam, nrr, channels,
     signer: roles[0], champion: roles[1] || roles[0], user: roles[roles.length - 1],
@@ -604,6 +608,7 @@ function reviewStep(c) {
 // ---------- the plans: three steps in each of three phases, for each motion ----------
 // E: Ecosystem and ABM
 const acvNote = (c) => c.acv === null ? "One person should be able to research each account properly."
+  : c.acv > 50000 && c.tam !== null && c.tam > 5000 ? "At " + num(c.acv) + " US dollars a year per account, the best-scoring accounts are worth their own researched plan; with " + num(c.tam) + " accounts the rest get shorter research."
   : c.acv > 50000 ? "At " + num(c.acv) + " US dollars a year per account, each account is worth its own researched plan."
   : "At " + num(c.acv) + " US dollars a year per account, keep the research per account short enough to repeat across the whole list.";
 function planE(c) {
@@ -635,8 +640,8 @@ function planI(c) {
   const d30 = [
     words ? "Write down the words your buyers use for the problem" + (c.painQ ? " you describe (" + c.painQ + ") and for this sector (" : " (") + words + ") next to the words you use. Keep the buyer's version for search terms, subject lines and headlines."
       : "Interview your customers and write down, in their exact words, how they describe the problem before they buy. Keep their version for search terms, subject lines and headlines, and drop yours where the two differ.",
-    c.channels ? channelStep(c) : "List what you do today to reach buyers, count the meetings each channel produced with the roles that decide (" + deciders(c) + "), and keep the one or two that reach them.",
-    "Build the outbound list by role (" + joinList(c.textRoles ? [...new Set([...c.signRoles, ...c.roles.slice(0, 2)])].slice(0, 4) : c.roles.slice(0, 3)) + ")" + (c.teams ? ", plus the leader of each team your text names (" + c.teams + ")" : "") + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
+    c.channels ? channelStep(c) : c.userRoles.length && c.signRoles.length + c.roles.length ? "List what you do today to reach buyers, count the sign-ups or developers each channel brought and the meetings with " + joinList((c.signRoles.length ? c.signRoles : c.roles).slice(0, 2)) + " that followed, and keep the one or two that reach them." : "List what you do today to reach buyers, count the meetings each channel produced with the roles that decide (" + (c.broad && c.smallEnd ? "the founder or owner who decides at the small end" : deciders(c)) + "), and keep the one or two that reach them.",
+    c.broad ? "Do not build a role by role list for " + num(c.tam) + " accounts. Pick one segment from your text (" + (c.read && c.read.segmentsText ? c.read.segmentsText : c.seg || "your best customers") + ") and one trigger, write one message for the person who decides there (" + (c.smallEnd ? "the founder or owner, or whoever runs finance" : joinList(c.roles.slice(0, 2))) + "), and let content on the problem and the product itself reach the rest." : "Build the outbound list by role (" + joinList(c.textRoles ? [...new Set([...c.signRoles, ...c.roles.slice(0, 2)])].slice(0, 4) : c.roles.slice(0, 3)) + ")" + (c.teams ? ", plus the leader of each team your text names (" + c.teams + ")" : "") + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
   ];
   const d60 = [
     "Publish the proof in the forms these buyers read: " + joinLong(sp(c, "reads")) + ". Build each piece on the numbers the buyer already watches (" + metricsText(c, 2) + ").",
@@ -658,20 +663,24 @@ function planI(c) {
 // P: Product-Led Growth, in its self-serve form (a product people can try alone) and its assisted form (everything else)
 function planPSelf(c, prefix = "") {
   const p = (t) => prefix + t;
+  // a payment or marketplace business grows by volume and by methods or markets switched on, not by seats: its first value and its growth signal say so
+  const pay = (c.model === "transactions" || c.model === "marketplace") && !(c.sp && c.sp.firstValue);
+  const firstValue = pay ? (c.model === "transactions" ? "the first real transaction is processed end to end and the merchant sees it settled" : "the first real order or listing goes through end to end") : sp(c, "firstValue");
+  const growth = pay ? (c.model === "transactions" ? "a second payment method or market is switched on, or monthly volume grows" : "a second batch of listings or orders is added") : sp(c, "expansionSignal");
   return {
     d30: [
-      p("Define the first moment of value: " + sp(c, "firstValue") + "." + (c.use0 ? " Check with your first users whether, for " + (c.seg || "them") + ", it comes from " + c.use0 + "." : "") + " Measure how many new users reach it and how long it takes."),
+      p("Define the first moment of value: " + firstValue + "." + (c.use0 ? " Check with your first users whether, for " + (c.seg || "them") + ", it comes from " + c.use0 + "." : "") + " Measure how many new users reach it and how long it takes."),
       p("Remove the steps between sign-up and that moment, and record where people stop."),
-      p("Decide who the product-led user is (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + "). The sales conversation starts when the second person appears in an account."),
+      p("Decide who the product-led user is (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + ")." + (pay ? " The sales conversation starts when volume or the number of methods grows." : " The sales conversation starts when the second person appears in an account.")),
     ],
     d60: [
       p("Launch the improved first-use path and, for accounts that ask for more, offer " + c.entry + "."),
-      p("Build the hand-off from usage to a sales conversation: flag accounts where " + sp(c, "expansionSignal") + ", and have a person reach out within a day."),
+      p("Build the hand-off from usage to a sales conversation: flag accounts where " + growth + ", and have a person reach out within a day."),
       p("Test how the plan and the price are put to the buyer who signs (" + c.plgSigner + "), not only to the user who tried the product."),
     ],
     d90: [
       p("Measure the share of new accounts that started in the product, the share that reached the first moment of value and the share that moved to a sales conversation." + (c.nrr ? " Compare with your NRR of " + c.nrr + " percent to see whether product-led accounts expand as much as sales-led ones." : "")),
-      p("Add invitations inside accounts, so one user can bring in a teammate, and watch whether the second user reaches the first moment of value."),
+      p(pay ? "Track how many new accounts reach a second live payment method or market, and what the accounts that stopped after the first transaction had in common." : "Add invitations inside accounts, so one user can bring in a teammate, and watch whether the second user reaches the first moment of value."),
       p("Write the first customer story from a product-led account in the shape this buyer trusts: " + lowerFirst(stripEnd(c.proofShape)) + "."),
     ],
   };
@@ -877,6 +886,7 @@ export function sectorBlock(vertical, model, args) {
   }
   const v = vertical;
   const over = c.over;
+  if (c.read && c.read.sector && c.read.sector.gap) return { sector: v.name, who_decides: v.committee, buyer_words: c.vocab, read_as: "Your product looks like " + c.read.sector.gap + ", which the sector file has no notes for yet, so only who decides is shown; the measures, objections and proof lines of other kinds of " + v.name + " product are left out." };
   const fnBlock = c.fn ? {
     who_decides: c.fn.committee,
     what_it_measures: [...c.fn.metrics, ...v.metrics.filter((m) => /retention|churn/.test(m))],

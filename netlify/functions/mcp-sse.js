@@ -39,7 +39,7 @@ function selfServeCheck(input, analysis, model, text) {
 // The same effect, worded for the closing list (the name of the input is the list's own label, so it is not repeated).
 function selfServeEffect(input, analysis, model, text, quoteAdoption) {
   if (input.self_serve === true || input.self_serve === false) return null;
-  if (model !== "saas" && model !== "hardware_software") return null;
+  if (model !== "saas" && model !== "hardware_software" && model !== "transactions" && model !== "marketplace") return null;
   var alt = scoreEpic(Object.assign({}, input, { self_serve: true }));
   if (alt.scores.P === analysis.scores.P) return null;
   var lead = alt.primary.letter === analysis.primary.letter ? "the lead would stay " + analysis.primary.motion : "the lead would move to " + alt.primary.motion;
@@ -83,14 +83,35 @@ function leadNote(analysis, input) {
 }
 // A developer adopted product with a very large base of adopting companies, when self_serve was not given: say that self-serve is the lever, who the
 // outbound steps aim at, and what changes the lead. The scores are not changed (D80).
-function adoptionNote(input, analysis, text, signers) {
+function adoptionNote(input, analysis, text, signers, read) {
   if (input.self_serve === true || input.self_serve === false) return null;
   var seen = (text || "").match(/(?:\b[\w'-]+\s+){0,5}\d{1,3}(?:,\d{3})+\+?\s+(?:companies|businesses|organi[sz]ations|teams|developers|customers|users|accounts)\b/i);
-  if (!seen || !/\b(?:developers?|apis?|sdks?|cli|engineers?|engineering)\b/i.test(text || "")) return null;
+  var led = read && read.ledSignals && read.ledSignals.length ? read.ledSignals : [];
+  var devSide = /\b(?:developers?|apis?|sdks?|cli|engineers?|engineering)\b/i.test(text || "");
+  if (!devSide || (!seen && !led.length)) return null;
   var alt = scoreEpic(Object.assign({}, input, { self_serve: true }));
   if (alt.scores.P === analysis.scores.P) return null;
   var lead = alt.primary.letter === analysis.primary.letter ? "the lead would stay " + analysis.primary.motion : "the lead would move to " + alt.primary.motion;
-  return "Your text says \"" + seen[0].trim() + "\". Developers who adopt a product on their own are reached by the product, its documentation and its examples, not by an outbound list, so the outbound steps aim at the people who sign (" + signers.join(" and ") + "). If that adoption needs no sales call, self_serve is the lever: setting it to true would change the Product-Led score from " + analysis.scores.P + " to " + alt.scores.P + " and " + lead + ".";
+  var what = led.length ? "Your text names " + joinWords(led) + ": that is the product-led end of your market." : "Your text says \"" + seen[0].trim() + "\".";
+  return what + " Developers who start on their own are reached by the product, its documentation and free access, not by an outbound list, so the outbound steps aim at the people who sign (" + signers.join(" and ") + "). If that start needs no sales call, self_serve is the lever: setting it to true would change the Product-Led score from " + analysis.scores.P + " to " + alt.scores.P + " and " + lead + ".";
+}
+function joinWords(a) { return a.length <= 1 ? a.join("") : a.slice(0, -1).join(", ") + " and " + a[a.length - 1]; }
+// A very wide market or a small ticket: a role by role outbound list cannot cover it, the person who decides at the small end is different, and self-serve is the lever to test.
+function scaleNote(input, analysis, read, signers, ssEffect, withLever) {
+  var tam = typeof input.tam_accounts === "number" ? input.tam_accounts : null, acv = typeof input.acv_usd === "number" ? input.acv_usd : null;
+  if (!((tam !== null && tam >= 100000) || (acv !== null && acv < 5000))) return null;
+  var small = /\b(?:startups?|freelancers?|small business\w*|solo|single stores?|shop owners?|owners?|D2C|sole traders?|micro)\b/i.test([read.segmentsText, read.buyersShort, read.head].filter(Boolean).join(" ")) || (acv !== null && acv < 5000);
+  var who = !withLever ? "the developer who starts on their own, and the signer only once a team adopts it" : small ? "the founder or owner, with whoever runs finance" : signers.join(" and ");
+  var parts = ["With " + (tam !== null && tam >= 100000 ? tam.toLocaleString("en-US") + " addressable accounts" : "an ACV of " + acv.toLocaleString("en-US") + " US dollars a year") + (tam !== null && tam >= 100000 && acv !== null && acv < 20000 ? " and an ACV of " + acv.toLocaleString("en-US") + " US dollars a year" : "") + ", a role by role outbound list cannot cover your market and does not pay back at the small end."];
+  parts.push("Reach the small accounts through the product itself, content on the problem and partners that already serve them" + (read.segmentsText ? " (your text names " + read.segmentsText + ")" : "") + ", and keep role by role outbound for the larger accounts.");
+  parts.push("At the small end the person who decides is " + who + ".");
+  if (withLever && ssEffect) parts.push("self_serve is the lever to test: " + ssEffect.replace(/^if people can sign up and get value without talking to sales, setting it to true/, "if people can start without talking to sales, setting it to true").replace(/ Your text says[\s\S]*$/, ""));
+  return parts.join(" ");
+}
+// The small and the large end named in the text: one ACV cannot describe both.
+function tierNote(read) {
+  if (!read.sizeSplit) return null;
+  return "Your text names small buyers (" + read.sizeSplit.small.join(", ") + ") and larger ones (" + read.sizeSplit.large.join(", ") + "). One ACV, one cycle and one account count cannot describe both: run the scoring once for each tier, with the ACV, deal cycle and account count of that tier, and read the lead for each.";
 }
 // The answer both scoring tools share: scores, inputs read back, what was read from the text, model, sector block, fit, the first 30 days, what to give next.
 function describe(args, tool) {
@@ -101,13 +122,16 @@ function describe(args, tool) {
   var pargs = Object.assign({}, input, { read: read });
   var plan = buildPlan({ letter: analysis.primary.letter, vertical: v, model: m.model, args: pargs });
   var notes = sectorBlock(v, m.model, pargs);
-  var adoption = adoptionNote(input, analysis, input.gtm_challenge, plan.context.roles.slice(0, 2));
+  var signers = (plan.context.signRoles && plan.context.signRoles.length ? plan.context.signRoles : plan.context.roles).slice(0, 2);
+  var adoption = adoptionNote(input, analysis, input.gtm_challenge, signers, read);
   var ssEffect = selfServeEffect(input, analysis, m.model, input.gtm_challenge, !adoption);
+  var scale = scaleNote(input, analysis, read, plan.context.roles.slice(0, 2), ssEffect, !adoption);
+  var tier = tierNote(read);
   var fit = sectorFit({ vertical: v, model: m.model, letter: analysis.primary.letter, motionName: analysis.primary.motion, scores: analysis.scores, args: input, selfServeGiven: input.self_serve === true || input.self_serve === false, selfServeLine: !!ssEffect });
   var nameOf = function(model) { return modelName(model, v); };
   var seen = readLines(read, input, nameOf);
   var sharpen = sharpenLines(read, input, { selfServe: ssEffect, geography: geographyEffect(input, analysis, read), askBatch: analysis.primary.letter === "E" });
-  return { analysis: analysis, read: read, v: v, m: m, first: plan.days_30, notes: notes, fit: fit, leadNote: leadNote(analysis, input), adoptionNote: adoption, check: selfServeCheck(input, analysis, m.model, input.gtm_challenge), input: input, seen: seen, sharpen: sharpen };
+  return { analysis: analysis, read: read, v: v, m: m, first: plan.days_30, notes: notes, fit: fit, leadNote: leadNote(analysis, input), adoptionNote: adoption, scaleNote: scale, tierNote: tier, check: selfServeCheck(input, analysis, m.model, input.gtm_challenge), input: input, seen: seen, sharpen: sharpen };
 }
 
 const GTM_CONSULTANT = {
@@ -144,6 +168,8 @@ const GTM_CONSULTANT = {
     if (analysis.preliminary_note) lines.push(analysis.preliminary_note);
     if (d.leadNote) lines.push(d.leadNote);
     if (d.adoptionNote) lines.push(d.adoptionNote);
+    if (d.scaleNote) lines.push(d.scaleNote);
+    if (d.tierNote) lines.push(d.tierNote);
     lines.push("", "What I read from your text:");
     d.seen.forEach(function(t) { lines.push("- " + t); });
     lines.push("", "Your inputs, read:");
@@ -179,6 +205,8 @@ const GTM_CONSULTANT = {
     if (analysis.preliminary_note) out.preliminary_note = analysis.preliminary_note;
     if (d.leadNote) out.lead_note = d.leadNote;
     if (d.adoptionNote) out.adoption_note = d.adoptionNote;
+    if (d.scaleNote) out.scale_note = d.scaleNote;
+    if (d.tierNote) out.tier_note = d.tierNote;
     if (d.check) out.self_serve_check = d.check;
     return out;
   },
@@ -341,6 +369,8 @@ function handleToolCall(name, rawArgs) {
     extra.to_sharpen_this = d.sharpen;
     if (d.leadNote) extra.lead_note = d.leadNote;
     if (d.adoptionNote) extra.adoption_note = d.adoptionNote;
+    if (d.scaleNote) extra.scale_note = d.scaleNote;
+    if (d.tierNote) extra.tier_note = d.tierNote;
     return Object.assign(named ? { company: named } : {}, audit, extra);
   } else if (name === "generate_roadmap") {
     return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args);
