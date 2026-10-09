@@ -272,8 +272,8 @@ function readModel(args, product, sentence, whole, v) {
   return { model: null, how: "unknown", words: null };
 }
 const REASON = {
-  services: /\b(?:managed (?:(?:it|network|cloud|security) )?services?|consulting|consultancy|outsourc\w*|bpo|bpm|it services|business services?|contact cent(?:re|er)s?|engineering services|services)\b/i,
-  connectivity: /\b(?:connectivity|sd-?wan|mpls|leased lines?|bandwidth|broadband|network)\b/i,
+  services: /\b(?:managed (?:(?:it|network|cloud|security) )?services?|consulting|consultancy|outsourc\w*|bpo|bpm|it services|business services?|contact cent(?:re|er)s?|engineering services|freight forward\w*|third[- ]party logistics|customs (?:brokers?|brokerage|clearance)|(?:express|parcel|freight|cargo|shipping|transport|courier|logistics|professional|technology|software development) (?:compan(?:y|ies)|firms?|providers?)|designs?,? builds?,? and runs?|moves? freight|services)\b/i,
+  connectivity: /\b(?:connectivity|sd-?wan|mpls|leased lines?|bandwidth|broadband|network|e?sims?|satellite (?:internet|connectivity))\b/i,
   transactions: /\b(?:per[- ]transaction|payments?|sms|messaging|payouts?|checkout)\b/i,
   marketplace: /\bmarketplace\b/i,
   hardware_software: /\b(?:hardware|devices?|sensors?|scanners?|robots?|terminals?)\b/i,
@@ -557,7 +557,7 @@ function modelLine(read, nameOf, field) {
   const n = nameOf(m.model);
   if (m.how === "input") return "How you charge: " + n + ", as you set it in the business model input.";
   if (m.how === "priced") return "How you charge: " + n + ", read from " + quoted(m.words) + fieldNote(field) + ".";
-  if (m.how === "product") return "How you charge: " + n + ", read from the product words " + quoted(m.words) + fieldNote(field) + ".";
+  if (m.how === "product") return "How you charge: " + n + ", read from " + (m.words ? "the product words " + quoted(m.words) : "the words you used for what you sell") + fieldNote(field) + ".";
   if (m.how === "assumed") return "How you charge: " + n + ", assumed: the text describes a software product but does not say how you charge.";
   return "How you charge: " + n + ", the usual model in this sector, assumed: the text does not say how you charge.";
 }
