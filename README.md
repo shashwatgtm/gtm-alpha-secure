@@ -159,8 +159,8 @@ Co-Founder and Fractional CMO, Helix GTM Consulting (founded 2022, Bengaluru). 2
 
 ### Results
 
-- VP Marketing, Happay: 161% ARR growth. 2x exit: to CRED ($180M+), then MakeMyTrip.
-- VP Performance Marketing, Locus: $4.2M pipeline. Acquired by IKEA (Ingka Group) in Oct 2025.
+- VP Marketing, Happay: 161% ARR growth. 2x exit: to CRED ($180M), then MakeMyTrip.
+- VP Global Performance Marketing, Locus: $4.2M pipeline. Acquired by IKEA (Ingka Group) in Oct 2025.
 - Fractional CMO, FieldAssist: 2.25x growth in mid-market and enterprise qualified leads.
 - Advisor, QuantumStreet AI: rebranded a $7Bn AUM AI investment fund, with Digitas and IBM.
 - 4x business growth, Airtel Data Centers and Managed Services.
@@ -169,7 +169,7 @@ Co-Founder and Fractional CMO, Helix GTM Consulting (founded 2022, Bengaluru). 2
 ### Recognition
 
 - LinkedIn Top Product Marketing Voice: #10 India, #52 worldwide (Favikon verified)
-- #14 in AI Research and Innovation on LinkedIn India
+- Top 15 AI Research and Innovation (India)
 - Most Admired Marketing Leaders 2025 (CMO Asia)
 - B2B Marketer of the Year 2020, Fintech (CMO Asia)
 
