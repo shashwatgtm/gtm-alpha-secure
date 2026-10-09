@@ -180,6 +180,8 @@ function chunkList(text) {
   return merged;
 }
 
+// a service that comes with the product ("with implementation services") says how it is delivered, not what it is for
+const SERVICE_ADDON = /^(?:(?:implementation|onboarding|training|installation|migration|integration|managed|professional|consulting|support|customer support|deployment)(?:\s+and\s+\w+)?\s+services?|(?:\w+\s+)?(?:support|training|onboarding|implementation))$/i;
 const HOW_DELIVERED = /^(?:delivered|run|sold|available|powered|built|deployed|offered|priced|billed|hosted)\b/i;
 const goodChunk = (c) => c.length >= 3 && c.length <= 90 && !/[“”<>{}\[\]]/.test(c) && (c.match(/\(/g) || []).length === (c.match(/\)/g) || []).length;
 
@@ -421,6 +423,7 @@ export function readCompany(args, tool) {
   const desc = clean(args.product_description);
   const mainField = desc ? "product_description" : challenge ? (isRoadmap ? "product_description" : tool === "epic_audit" ? "challenge" : "gtm_challenge") : null;
   const mainText = desc || challenge;
+  let sell0 = "";
   const out = { name, tool, field: mainField, segmentsText: null, painShort: null, quoted: false, head: null, uses: [], how: [], buyers: null, buyersShort: null, roles: [], teams: null, pain: null, asked: null };
   const industry = clean(args.industry);
   const channels = clean(args.current_channels);
@@ -439,6 +442,7 @@ export function readCompany(args, tool) {
         if (!sell && !PAIN_WORDS.test(s)) sell = s;
         else if (!out.pain && PAIN_WORDS.test(s) && sell) out.pain = stripEnd(s);
       }
+      sell0 = sell || "";
       if (!sell && sents.length) { const f = sents.find((s) => !PAIN_START.test(s) && !ASK_WORDS.test(s)); if (f) sell = f; }
       // a text that only asks ("We need more pipeline from mid-market freight buyers") holds no product statement
       const looksLikeProduct = sell && (/\b(?:sells?|offers?|provides?|builds?|makes?|delivers?|platform|software|service|services|app|api|tool|product|solution|system)\b/i.test(sell) || desc);
@@ -448,7 +452,7 @@ export function readCompany(args, tool) {
         let moreFeatures = "";
         if (head.length > 40 && / (?:that|which) /.test(head) && !/[“”]/.test(head)) {
           const c2 = firstTop(head, /\s(?:that|which)\s+/i);
-          if (c2 && c2.index >= 12) { const rest = head.slice(c2.end); head = head.slice(0, c2.index); moreFeatures = /^(?:joins|combines|covers|includes|offers)\s/i.test(rest) ? rest.replace(/^\w+\s+/, "") : ""; }
+          if (c2 && c2.index >= 12) { const rest = head.slice(c2.end); head = head.slice(0, c2.index); moreFeatures = /^(?:joins|combines|covers|includes|offers)\s/i.test(rest) ? rest.replace(/^\w+\s+/, "") : ""; if (!moreFeatures) { const dm = rest.match(/,\s+(?:delivering|offering|providing|featuring)\s+(.+)$/i); if (dm) moreFeatures = dm[1]; } }
         }
         if (head.length > 90) {
           const cut = firstTop(head, /\s(?:that|which|joins|combines|covers|covering|including|with|built|powered|made of|and its)\s+(?:(?:joins|combines|covers|connects|offers|includes)\s+)?/i);
@@ -462,13 +466,24 @@ export function readCompany(args, tool) {
           if (pieces.length >= 2 && !/^[A-Z][\w.'-]*$/.test(pieces[0].trim()) && !/^(?:a|an|the)\s+[\w-]+$/i.test(pieces[0].trim()) && pieces.every((x) => x.trim().split(/\s+/).length <= 9)) { featureText = out.head; out.head = null; }
         }
         const chunks = featureText ? chunkList(featureText) : [];
+        // a list that ends "as add-ons" names extras, not what the product is for: only the features said before it count as uses
+        const addonList = /\badd-?ons?\b/i.test(sp.features || "");
+        const coreChunks = new Set(moreFeatures ? chunkList(moreFeatures).map((x) => stripEnd(String(x))) : []);
         const extraBuyers = [];
         for (const c0 of chunks) {
           const c = stripEnd(String(c0));
           if (/^to\s+/i.test(c) && looksLikeBuyers(c.replace(/^to\s+/i, ""))) { extraBuyers.push(c.replace(/^to\s+/i, "")); continue; }
-          if (/^\d[\d,.]*\+?(?:\s|%)/.test(c) || (/\d/.test(c) && /\b(?:customers?|enterprises|clients|companies|brands|users|organi[sz]ations|banks)\b/i.test(c))) continue;   // "300+ enterprises including 60+ in banking", "275+ app connectors": claims, not uses
+          if (addonList && !coreChunks.has(c) && !/^to\s+/i.test(c)) continue;
+          if (/^\d[\d,.]*\+?(?:\s|%)/.test(c) || (/\d/.test(c) && /\b(?:customers?|enterprises|clients|companies|brands|users|organi[sz]ations|banks)\b/i.test(c))) {
+            const inc = c.match(/\bincluding\s+(.+)$/i);
+            if (inc && !out.segmentsText) {
+              const groups = inc[1].split(/\s*,\s*|\s+and\s+(?=\d)/).map((x) => stripEnd(x.replace(/^\d[\d,.]*\+?\s*(?:in\s+)?/, ""))).filter((x) => x.length >= 3);
+              if (groups.length && groups.length <= 4) out.segmentsText = groups.join(" and ");
+            }
+            continue;
+          }   // "300+ enterprises including 60+ in banking", "275+ app connectors": claims, not uses
           if (!goodChunk(c) || /^(?:in|on|at|by|from|under|across|over|as|it|its|that|which|where|when|via|so|but|moves|runs|connects|offers|provides|helps|lets|gives|makes|handles|covers|joins|builds|delivers|automates|designs)\b/i.test(c)) continue;
-          if (HOW_DELIVERED.test(c) || c0.rawWith) { out.how.push(c); continue; }
+          if (HOW_DELIVERED.test(c) || c0.rawWith || (out.head && SERVICE_ADDON.test(c))) { out.how.push(c); continue; }
           if (!out.uses.includes(c)) out.uses.push(c);
         }
         out.uses = out.uses.slice(0, 6);
@@ -480,14 +495,20 @@ export function readCompany(args, tool) {
           if (bc) { const seg = stripEnd(sp.buyers.slice(bc.end)); if (seg.length >= 6 && seg.length <= 170 && !/[“”<>{}\[\]]/.test(seg)) out.segmentsText = seg; sp.buyers = sp.buyers.slice(0, bc.index); }
           // the buyers end where a clause about what they do begins ("security teams collaborating with developers": the buyers are the security teams)
           const inc = sp.buyers.match(/,?\s+(?:including|especially|such as)\s+([^;]+)$/i);
-          if (inc && !out.segmentsText) { const seg = stripEnd(inc[1]); if (!/^\d/.test(seg) && seg.length >= 6 && seg.length <= 170 && !/[“”<>{}\[\]]/.test(seg)) out.segmentsText = seg; }
+          if (inc && !out.segmentsText) { const seg = stripEnd(inc[1].replace(/^\d[\d,.]*%\s+of\s+/i, "")); if (!/^\d/.test(seg) && seg.length >= 6 && seg.length <= 170 && !/[“”<>{}\[\]]/.test(seg)) out.segmentsText = seg; }
           let b0 = stripEnd(sp.buyers.trim().split(/,\s+(?:from|including|especially|such as|plus|with)\s/i)[0]);
           b0 = b0.split(/\s+(?:collaborating|working|building|responsible|looking|trying|needing|wanting|seeking|who|that|whose|which|where|including|especially)\b/i)[0];
           if (b0.length > 160) { const k = b0.match(/\s+(?:at|in|across|within)\s+/i); if (k && k.index >= 12) b0 = b0.slice(0, k.index); }
           const b = stripEnd(b0.replace(/\s*\([^)]*\)?\s*$/, ""));
           if (b && b.length >= 4 && b.length <= 160 && !/[“”<>{}]/.test(b)) {
             out.buyers = b;
-            out.buyersShort = stripEnd(b.replace(/\s*\([^)]*\)?/g, "").replace(/\s+(?:at|in|across)\s+(?:the\s+)?(?:companies|enterprises|organi[sz]ations|businesses|firms|large enterprises|India|\w+)\b.*$/i, (m) => (/\b(?:companies|enterprises|organi[sz]ations|businesses|firms)\b/i.test(m) ? "" : m)));
+            const plainB = b.replace(/\s*\([^)]*\)?/g, "");
+            const tm = plainB.match(/^(.*?)\s+(?:at|in|across)\s+(?:the\s+)?(\S.*)$/i);
+            if (tm && tm[1].length >= 4 && /\b(?:companies|enterprises|organi[sz]ations|businesses|firms)\b/i.test(tm[2])) {
+              out.buyersShort = stripEnd(tm[1]);
+              // "cybersecurity teams at global enterprises and Fortune 500 companies": the groups after "at" are customer groups, kept; "at companies with several thousand employees" is not
+              if (!out.segmentsText && !/^(?:\d|companies|organi[sz]ations|businesses|firms)/i.test(tm[2]) && tm[2].length <= 120) out.segmentsText = stripEnd(tm[2]);
+            } else out.buyersShort = stripEnd(plainB);
             if (out.buyersShort.length < 4) out.buyersShort = b;
           }
         }
@@ -498,10 +519,21 @@ export function readCompany(args, tool) {
       if (out.pain && /[“”<>{}]/.test(out.pain)) out.pain = null;
       if (out.pain) {
         // the first clause of the problem, whole: up to a semicolon, ", so" or, when that is long, the last comma that keeps it under 110 characters
-        const clauses = out.pain.split(/;\s*|,\s+(?:so|while|but)\s/).map(stripEnd).filter(Boolean);
-        let first = clauses[0] || "";
+        // a colon after a claim of some length ("outdated tools leave apps exposed: scanners miss issues ...") ends the claim; a short word before a colon ("Three problems: ...") does not
+        const clauses = out.pain.split(/;\s*|,\s+(?:so|while|but)\s/).flatMap((x) => { const k = x.indexOf(": "); return k >= 20 ? [x.slice(0, k), x.slice(k + 2)] : [x]; }).map(stripEnd).filter(Boolean);
         const balanced = (t) => (t.match(/\(/g) || []).length === (t.match(/\)/g) || []).length;
-        if (first.length > 110 || !balanced(first)) { const k = first.slice(0, 110).lastIndexOf(", "); const cut = k > 30 ? first.slice(0, k) : ""; first = cut && balanced(cut) ? cut : (clauses.slice(1).find((x) => x.length >= 20 && x.length <= 110 && balanced(x)) || ""); }
+        // words of the product's core (before any "as add-ons" part) and of its add-ons, to keep the headline on the core
+        const stop = /^(?:with|that|this|have|from|their|your|also|into|such|more|than|when|what|which|them|they|will|can)$/i;
+        const toks = (t) => String(t || "").toLowerCase().match(/[a-z]{4,}/g)?.filter((w) => !stop.test(w)).map((w) => w.slice(0, 5)) || [];
+        const ai = sell ? sell.search(/add-?ons?\b/i) : -1;
+        let addonText = "", coreText = sell || "";
+        if (ai > 0) { const before = sell.slice(0, ai); const k = Math.max(before.lastIndexOf(", with "), before.lastIndexOf(" with "), before.lastIndexOf(", plus ")); if (k > 0) { addonText = before.slice(k); coreText = before.slice(0, k); } }
+        const coreSet = new Set(toks(coreText)), addSet = new Set(toks(addonText));
+        // each clause as a headline: whole when it fits, else cut at the last comma under 110 characters (the first clause may be any length, as before)
+        const asHead = (x, i) => { if (i > 0 && x.length < 20) return ""; if (x.length <= 110 && balanced(x)) return x; const k = x.slice(0, 110).lastIndexOf(", "); const cut = k > 30 ? x.slice(0, k) : ""; return cut && balanced(cut) ? cut : ""; };
+        const fits = clauses.map(asHead).filter(Boolean);
+        const addonish = (x) => { const w = toks(x); return w.filter((t) => addSet.has(t) && !coreSet.has(t)).length > w.filter((t) => coreSet.has(t)).length; };
+        let first = fits.find((x) => !addonish(x)) || fits[0] || "";
         out.painShort = first && first.length <= 110 && !/[“”<>{}]/.test(first) ? first : null;
         // a long problem text is read back as the clause that was used, not pasted whole
         if (out.pain.length > 170) out.pain = out.painShort;
@@ -526,6 +558,16 @@ export function readCompany(args, tool) {
   // sector
   const sec = readSector(args, name, { challenge: mainText, isRoadmap }, productForReader, out.pain || "", out.buyers || "", whole);
   out.sector = sec;
+  if (!sec.gap && sec.dropped && out.head && !out.quoted) {
+    // the sector file has no kind for this product: its vocabulary is the user's own nouns (the product's head noun, the acronyms and what it scans), never another kind's words
+    const bareHead = out.head.replace(/^(?:a|an|the)\s+/i, "");
+    const core = (sell0 || productForReader).split(/\s+as\s+add-?ons?\b/i)[0];
+    const acr = [...new Set((core.match(/\b[A-Z]{3,6}\b/g) || []))].slice(0, 5);
+    const scans = core.match(/\bscans?\s+(?:compiled\s+)?([A-Za-z ]{3,40}?)(?=\s+rather|,|\s+with|\s+and\s+deliver|$)/i);
+    sec.gap = (/^[aeiou]/i.test(bareHead) ? "an " : "a ") + bareHead;
+    const scanPhrase = scans ? scans[1].trim() : "";
+    sec.gapTerms = [...new Set([bareHead, ...(scanPhrase ? [scanPhrase] : []), ...acr.filter((x) => !new RegExp("\\b" + x + "\\b").test(scanPhrase)), ...out.uses.slice(0, 3)])];
+  }
   out.v = sec.v;
   // model
   const mtext = out.quoted ? "" : whole;
@@ -594,7 +636,7 @@ function sectorLine(read, args) {
   if (c && c.tie) t += " Close call: your words (" + c.chosenWords + ") and your words (" + c.otherWords + ") point to different kinds of company about equally, so I used the sector-level notes that hold for every " + c.chosen + " company, not the notes of one kind.";
   else if (c) t += " Close call: your words (" + c.chosenWords + ") point to one kind of company and your words (" + c.otherWords + ") to another; I chose the first because " + c.reason + ".";
   else if (sec.why) t += " I chose the kind of company because " + sec.why + ".";
-  else if (sec.dropped) t += " Your words do not single out one kind of company, so I used the sector-level notes that hold for every " + read.v.name + " company.";
+  else if (sec.dropped && !sec.gap) t += " Your words do not single out one kind of company, so I used the sector-level notes that hold for every " + read.v.name + " company.";
   else if (sec.otherVertical && ind) t += " Some of your words (" + joinList(sec.otherVertical.words.slice(0, 3)) + ") also point to another sector; I kept the sector you named in industry.";
   if (sec.gap) t += " Your product looks like " + sec.gap + ", which the sector file has no notes for yet, so only who decides is shown for the sector and the measures and objections of other kinds of product are left out.";
   return t;
