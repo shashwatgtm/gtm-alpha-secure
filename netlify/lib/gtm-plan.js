@@ -458,6 +458,8 @@ export function joinList(items) {
 // A noun phrase without its leading article, for "your X offer" (the phrase may already be "a cloud-native platform").
 export const bare = (t) => String(t || "").replace(/^(?:a|an|the|our|your)\s+/i, "");
 // Developers and engineers use a product; they rarely sign for it. Roles the text names are split so that an outbound list aims at the people who sign.
+const SENIOR_ROLE = /^(?:head|chief|vp|vice|director|president|owner|founder|ceo|cto|cfo|coo|cio|ciso|cmo|cro|cpo|general|managing|svp|evp|national|business owner)\b|\bofficer\b/i;
+const GENERIC_TOP_ROLE = /^(?:chief executive officer|ceo|head of product)$/i;
 const USER_ROLE = /^(?:developers?|software engineers?|engineers?|platform engineers?|security engineers?)$/i;
 // "A, B or C": a choice between the user's own use cases (a phrase may hold its own "and").
 export function orList(items) {
@@ -522,11 +524,20 @@ export function planContext({ vertical, model, args }) {
   const api = !inv ? apiPlatform(vertical, a.product_description, a.company_description, a.gtm_challenge, a.challenge, a.industry) : null;
   const over = api ? api.over : {};
   const gapKind = a.read && a.read.sector ? a.read.sector.gap : null;
-  const roles = inv ? INVESTMENT_BLOCK.roles : fn ? fn.roles : over.buyerRoles || (vertical ? vertical.buyerRoles : ["the person who signs", "the champion who feels the problem", "the daily user"]);
+  const roles0 = inv ? INVESTMENT_BLOCK.roles : fn ? fn.roles : over.buyerRoles || (vertical ? vertical.buyerRoles : ["the person who signs", "the champion who feels the problem", "the daily user"]);
+  // Run 22 round 5: a deal of this size is signed by a head or an officer, so the role lists lead with those; the daily user stays the last role of the sector's own list
+  const acvBig = typeof a.acv_usd === "number" && isFinite(a.acv_usd) && a.acv_usd > 100000;
+  const seniorOnly = acvBig ? roles0.filter((x) => SENIOR_ROLE.test(x)) : roles0;
+  const seniorRoles = seniorOnly.length >= 2 ? seniorOnly : roles0;
+  // buyers that are banks, insurers or the like pick a vendor through technology, risk and compliance: when the sector's list opens with the chief executive, the owner level roles (the chief executive, the product head) go last
+  const bankBuyers = !inv && a.read && GENERIC_TOP_ROLE.test(seniorRoles[0] || "") && /\b(?:banks?|credit unions?|insurers?|insurance (?:companies|carriers)|financial institutions|building societies)\b/i.test([a.read.buyersShort, a.read.buyers, a.read.segmentsText].filter(Boolean).join(" "));
+  const lastRoles = bankBuyers ? seniorRoles.filter((x) => GENERIC_TOP_ROLE.test(x)) : [];
+  const roles = lastRoles.length && seniorRoles.length - lastRoles.length >= 3 ? [...seniorRoles.filter((x) => !GENERIC_TOP_ROLE.test(x)), ...lastRoles] : seniorRoles;
   const metrics = gapKind ? ["the cost and time your buyer spends on the problem today", "how often the problem recurs"] : inv ? INVESTMENT_BLOCK.metrics : fn ? fn.metrics : over.metrics || (vertical ? vertical.metrics : ["the number your buyer already reports on", "the cost of the problem today"]);
   const objections = gapKind ? [] : inv ? INVESTMENT_BLOCK.objections : over.objections || (vertical ? vertical.objections : []);
   const proofShape = gapKind ? "a before and after of one measure your buyer already tracks, at one customer, signed off by that customer" : inv ? INVESTMENT_BLOCK.proofShape : over.proofShape || (vertical ? vertical.proofShape : "a before and after of one measure your buyer already tracks, at one customer, signed off by that customer");
-  const vocab = gapKind ? (over.vocabulary || (vertical ? vertical.vocabulary : [])).filter((w) => !/release|seat|pipeline|recovery|trial|alternative/i.test(w)) : inv ? INVESTMENT_BLOCK.vocabulary : over.vocabulary || (vertical ? vertical.vocabulary : []);
+  const gapTerms = gapKind && a.read.sector.gapTerms && a.read.sector.gapTerms.length ? a.read.sector.gapTerms : null;
+  const vocab = gapTerms ? gapTerms : gapKind ? (over.vocabulary || (vertical ? vertical.vocabulary : [])).filter((w) => !/release|seat|pipeline|recovery|trial|alternative/i.test(w)) : inv ? INVESTMENT_BLOCK.vocabulary : over.vocabulary || (vertical ? vertical.vocabulary : []);
   const mp = MODEL_PLAN[model] || MODEL_PLAN.unknown;
   // A sector's own first offer (a hub pilot, a proof of value) replaces the generic one for a business that can be tried alone.
   const sectorEntry = sp && sp.entry && !inv && (model === "saas" || model === "hardware_software" || !model) ? sp.entry : null;
@@ -556,7 +567,7 @@ export function planContext({ vertical, model, args }) {
     broad: a.tam_accounts >= 100000, smallEnd: (acv !== null && acv < 5000) || /\b(?:startups?|freelancers?|small business\w*|solo|single stores?|shop owners?|owners?|D2C|sole traders?|micro)\b/i.test(rd ? [rd.segmentsText, rd.buyersShort, rd.head].filter(Boolean).join(" ") : ""),
     painQ: rd && rd.painShort ? "\"" + stripEnd(rd.painShort) + "\"" : null, place: geoOne,
     vertical, model, sp, fn, api, over, communityTopics: api ? api.communityTopics : null, terms: (details && details.terms) || (api ? api.terms : []), typical: details ? details.typical : null, roles, metrics, objections, proofShape, vocab, mp, entry, assisted, plgUser: plg.user, plgSigner: plg.signer, acv, cycle, tam, nrr, channels,
-    signer: roles[0], champion: roles[1] || roles[0], user: roles[roles.length - 1],
+    signer: roles[0], champion: roles[1] || roles[0], user: roles0[roles0.length - 1],
     cycleText: cycle ? "your " + num(cycle) + "-day cycle" : "your sales cycle",
     longCycle: cycle !== null && cycle > 90,
     shortCycle: cycle !== null && cycle < 14,
@@ -669,7 +680,7 @@ function planPSelf(c, prefix = "") {
   const growth = pay ? (c.model === "transactions" ? "a second payment method or market is switched on, or monthly volume grows" : "a second batch of listings or orders is added") : sp(c, "expansionSignal");
   return {
     d30: [
-      p("Define the first moment of value: " + firstValue + "." + (c.use0 ? " Check with your first users whether, for " + (c.seg || "them") + ", it comes from " + c.use0 + "." : "") + " Measure how many new users reach it and how long it takes."),
+      p("Define the first moment of value: " + firstValue + "." + (c.use0 ? (c.use0.length <= 60 && !/[()]/.test(c.use0) ? " Check with your first users whether, for " + (c.seg || "them") + ", it comes from " + c.use0 + "." : " Check with your first users which of your use cases brings them to it first.") : "") + " Measure how many new users reach it and how long it takes."),
       p("Remove the steps between sign-up and that moment, and record where people stop."),
       p("Decide who the product-led user is (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + ")." + (pay ? " The sales conversation starts when volume or the number of methods grows." : " The sales conversation starts when the second person appears in an account.")),
     ],
@@ -738,6 +749,9 @@ export function fitWarning(c, letter) {
   }
   if (mode === "pilot") {
     return "With " + both + ", a sale like yours rarely starts with a self-serve sign-up: buyers go through a pilot and reviews (" + reviews + "). The steps below are the nearest fitting version of the product-led motion: a pilot-led first step that a user can start without a long contract. Ecosystem and ABM usually leads at this size; run gtm_consultation to score it on your numbers.";
+  }
+  if (letter === "C" && c.model !== "investment" && c.acv !== null && c.acv > 50000 && c.cycle !== null && c.cycle > 90) {
+    return "With " + both + ", community alone rarely starts a sale this size: buyers go through reviews (" + reviews + ") and a long evaluation before they sign. The steps below still follow the Community-Led motion you asked for; they build the peer proof and the trust that those reviews ask for, and a named account list with direct outreach should run beside them. Run gtm_consultation to score it on your numbers.";
   }
   if (letter === "I" && iNeedsPartners(c)) {
     return "With " + both + ", inbound and outbound alone rarely start a sale this size: buyers shortlist through partners, advisers and references before they answer a cold message. The steps below begin with partner and referral-led steps, then build content and outbound on top of them. Ecosystem and ABM usually leads at this size; run gtm_consultation to score it on your numbers.";
