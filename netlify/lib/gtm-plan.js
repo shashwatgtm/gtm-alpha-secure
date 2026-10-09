@@ -259,6 +259,94 @@ export const KIND_PLAN = {
   },
 };
 
+
+// Run 22 (alpha-w1): wording for three more kinds of company that the plan text got wrong with the vertical's base block: enterprise search and work
+// assistants, voice and language models (both AI native) and CRM for sales, marketing and service teams (SaaS). Same rules as above: vocabulary,
+// places and document types only; no statistic, no named company (B82). Proposed for the shared sector file in the run 22 report.
+KIND_PLAN["ai-native"] = [
+  {
+    kinds: ["enterprise-search"],
+    entry: "a pilot on a few connected sources and one or two departments, measured on answers found and answers trusted",
+    plg: { user: "an employee or team lead trying it on their own questions", signer: "the CIO or the head of the digital workplace" },
+    partners: ["productivity suite, cloud storage and identity vendors whose apps you connect to", "systems integrators that roll out digital workplace programmes", "cloud and model platform providers your buyers already use", "analyst firms that cover work assistants and enterprise search"],
+    accounts: "the number of employees and departments, the tools and sources to connect, the identity and permission set-up already in place and an IT or digital workplace leader who owns the programme",
+    reviews: "a security and data protection review of permissions and of where content is processed, IT integration and a department pilot",
+    reads: ["answer accuracy write-ups on a buyer's own questions", "permission and access control notes", "lists of the sources and connectors covered", "adoption write-ups from a pilot department"],
+    venues: ["CIO and IT leader communities", "digital workplace and knowledge management forums", "security and data protection working groups"],
+    assets: ["a permissions and data handling note", "a list of connectors for the tools the buyer runs", "a department pilot plan with the measures agreed before it starts"],
+    firstValue: "an employee asks a real question and gets a sourced answer from the company's own tools",
+    expansionSignal: "a second department asks for the same assistant",
+    typical: ["E", "I"],
+    fit: {
+      E: "a search and assistant platform is usually bought by IT or the digital workplace owner after a pilot in a few departments, so account-based selling with integration partners is a common way in",
+      P: "employees can try an assistant on their own questions, but connecting company sources needs IT and a permissions review, so a hands-on start works for one team before the wider rollout",
+      I: "buyers look for evidence on answer quality and permissions, so content built on those reaches IT and workplace leaders while they compare options",
+      C: "IT and workplace leaders ask peers which assistant people kept using, so references and practitioner groups carry weight",
+    },
+  },
+  {
+    kinds: ["voice-language-models"],
+    entry: "an evaluation on the buyer's own audio or text samples, with the languages and accents that matter agreed first",
+    plg: { user: "a developer testing the API on their own samples", signer: "the CTO or the head of product" },
+    partners: ["contact centre and telephony platform vendors that embed speech", "cloud platform marketplaces your developers already use", "systems integrators that build voice workflows for enterprises", "data and model hosting providers your buyers already work with"],
+    accounts: "call or document volume, the languages and accents involved, the contact centre or telephony platform in place and a product or engineering leader who owns the voice workflow",
+    reviews: "a data handling and residency review, a security review and an evaluation on the buyer's own samples",
+    reads: ["quality results on a buyer's own samples", "latency and uptime write-ups", "language and accent coverage notes", "integration guides for telephony and contact centre platforms"],
+    venues: ["developer communities for speech and language", "contact centre and customer engagement forums", "AI and data leader communities"],
+    assets: ["an evaluation plan on the buyer's own samples", "a data handling and residency note", "an integration guide for telephony and contact centre platforms"],
+    firstValue: "a developer gets a transcript or a voice reply on their own sample within minutes",
+    expansionSignal: "a second language, line of business or team asks for the same models",
+    typical: ["E", "P", "I"],
+    fit: {
+      E: "enterprises buy speech and language models after an evaluation on their own samples and a data review, so account-based selling with integration partners is a common way in",
+      P: "developers try an API on their own samples before anyone signs, so a hands-on start fits when the product can be tested without a call",
+      I: "engineering and product leaders search for quality on their languages and accents, so evaluation write-ups and documentation bring them in",
+      C: "developers trust other developers, so communities and open evaluation results carry weight",
+    },
+  },
+];
+KIND_PLAN.saas = {
+  kinds: ["crm-marketing"],
+  entry: "a pilot with one sales team and one marketing team on a real pipeline, with the measures agreed first",
+  plg: { user: "a rep or marketer trying it on their own leads", signer: "the head of sales, marketing or revenue operations" },
+  partners: ["email, calendar and website tool vendors your buyers already run", "implementation consultancies and agencies that set up CRM", "app marketplaces where your buyers look for tools", "associations and analyst firms in sales and marketing"],
+  accounts: "the size of the sales, marketing and service teams, the CRM or spreadsheets in place and a visible trigger such as a new revenue leader or a plan to cut the number of tools",
+  reviews: "IT and data migration review, finance and security",
+  reads: ["migration guides from the CRM or spreadsheets a team uses today", "lead to opportunity and pipeline write-ups", "comparisons of one tool with the stack it replaces", "adoption write-ups from reps"],
+  venues: ["peer communities for sales and marketing leaders", "revenue operations forums", "customer advisory groups"],
+  assets: ["a migration plan from the current CRM or spreadsheets", "an integration list for email, calendar, website and billing tools", "a before and after write-up from one sales team"],
+  firstValue: "a rep logs a lead and sees the pipeline update without a spreadsheet",
+  expansionSignal: "the marketing or service team in the same account asks to join",
+  typical: ["P", "I"],
+  fit: {
+    E: "larger deals go through the revenue leader, IT and finance, so account-based selling suits the bigger accounts",
+    P: "reps and marketers often try a CRM on their own leads first, so a product-led start suits smaller teams",
+    I: "buyers search for the daily problems of pipeline and campaigns, so content and outbound to sales and marketing leaders bring them in",
+    C: "sales leaders ask peers which tool reps kept using, so references and peer groups are strong here",
+  },
+};
+
+KIND_PLAN.telecom = [KIND_PLAN.telecom, {
+  kinds: ["cpaas-messaging"],
+  entry: "a sandbox and a pilot on one message flow, with delivery rate and sender registration checked on the buyer's own traffic",
+  plg: { user: "a developer sending a first batch of messages through the sandbox", signer: "the head of product or customer engagement" },
+  partners: ["cloud communications and messaging platform vendors you build on or resell", "mobile operators and aggregators that carry your messages", "systems integrators and agencies that build customer messaging into apps and journeys", "channel partners and resellers that already hold enterprise accounts"],
+  accounts: "message volume, the channels in use, the current provider and a visible trigger such as repeated delivery problems, abuse of the buyer's brand or a new consent or sender rule",
+  reviews: "security, sender registration and consent review, a price per message comparison and a technical pilot",
+  reads: ["delivery rate and latency write-ups on a buyer's own routes", "sender registration and consent guides", "cost per message comparisons", "API and integration guides"],
+  venues: ["developer communities", "customer engagement and product leader forums", "fraud and risk working groups"],
+  assets: ["an API guide and a sandbox", "a sender registration and consent note", "a rate card with a cost per message view"],
+  firstValue: "a developer sends a first message through the sandbox and sees it delivered",
+  expansionSignal: "a second channel or business unit asks to send through the same platform",
+  typical: ["E", "P"],
+  fit: {
+    E: "messaging platforms are bought by product and customer engagement owners after a price comparison and a pilot on one flow, so account-based selling with channel partners is a common way in",
+    P: "developers can try an API in a sandbox before anyone signs, so a hands-on start fits the first flow; volume deals still go through price and sender reviews",
+    I: "product and engineering leaders search for delivery and sender rules, so content built on those reaches them before a price comparison",
+    C: "developers and customer engagement leaders ask peers which provider delivered, so references and developer communities carry weight",
+  },
+}];
+
 // Software sold to developers: the API platform wording applies only when the seller's own words name APIs as the product and the shared
 // reader named no software sub-type (a developer platform or a testing tool gets its sub-type's notes instead).
 export const API_PLATFORM = {
@@ -346,8 +434,8 @@ Object.assign(INVESTMENT_BLOCK, {
 // otherwise the vertical's base block (wording true for every company of the vertical).
 export function planDetails(vertical) {
   if (!vertical) return null;
-  const kind = KIND_PLAN[vertical.id];
-  if (kind && vertical.subtype && kind.kinds.includes(vertical.subtype)) return kind;
+  const kind = [].concat(KIND_PLAN[vertical.id] || []).find((k) => vertical.subtype && k.kinds.includes(vertical.subtype));
+  if (kind) return kind;
   return SECTOR_BASE[vertical.id] || null;
 }
 // The API platform notes: only for a software seller whose own words name APIs as what it sells, when the reader named no sub-type.
@@ -367,6 +455,15 @@ export function joinList(items) {
   if (a.length === 2) return a[0] + " and " + a[1];
   return a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
 }
+// "A, B or C": a choice between the user's own use cases (a phrase may hold its own "and").
+export function orList(items) {
+  const a = (items || []).filter(Boolean);
+  if (a.length <= 1) return a.join("");
+  // phrases that hold their own "and" or commas are separated with semicolons, so each stays one choice
+  if (a.length > 2 && a.some((x) => /,|\band\b/.test(x))) return a.slice(0, -1).join("; ") + "; or " + a[a.length - 1];
+  if (a.length === 2) return a[0] + " or " + a[1];
+  return a.slice(0, -1).join(", ") + " or " + a[a.length - 1];
+}
 // Items that hold their own "and" or commas are joined with semicolons, so the list can still be read.
 export function joinLong(items) {
   const a = (items || []).filter(Boolean);
@@ -376,15 +473,34 @@ export function joinLong(items) {
 }
 const clean = (t) => (typeof t === "string" ? t.trim() : "");
 
-// The function a generic SaaS seller sells to, read from the seller's own words: the one with the most hits, at least two.
+// The function a generic SaaS seller sells to, read from the seller's own words: the one with the most hits, at least two. Run 22: when the text
+// names more than one function with a real share of the hits ("CRM for sales, marketing and service teams"), the buyers are all of them, not
+// the one that happens to be counted most.
+const FUNCTION_LABEL = { finance: "finance", revenue: "sales", customer: "customer service", marketing: "marketing", people: "HR" };
 export function buyerFunction(...texts) {
   const text = texts.filter((t) => typeof t === "string").join(" \n ");
-  let best = null;
+  const scored = [];
   for (const f of BUYER_FUNCTIONS) {
     const hits = (text.match(f.re) || []).length;
-    if (hits >= 2 && (!best || hits > best.hits)) best = { f, hits };
+    if (hits >= 2) scored.push({ f, hits });
   }
-  return best ? best.f : null;
+  if (!scored.length) return null;
+  scored.sort((a, b) => b.hits - a.hits);
+  const top = scored[0];
+  const group = scored.filter((x) => x.hits >= Math.max(2, 0.5 * top.hits));
+  if (group.length < 2) return top.f;
+  const fs = group.map((x) => x.f);
+  const names = fs.map((f) => FUNCTION_LABEL[f.id] || f.name);
+  const signers = fs.map((f) => f.roles[0]);
+  const uniq = (list) => [...new Set(list)];
+  return {
+    id: fs.map((f) => f.id).join("+"), name: joinList(names),
+    plg: { user: "a user in the team that feels the problem day to day", signer: "the leader of the team that owns the purchase (" + joinList(fs.map((f) => f.plg.signer.replace(/^the /, ""))) + ")" },
+    committee: "Which leader signs depends on the team that owns the purchase: " + joinList(signers) + ". The operations lead of that team champions it, its users work in it daily, and IT and security check the integrations and the data.",
+    roles: uniq(fs.flatMap((f) => f.roles.slice(0, 2))),
+    terms: uniq(fs.flatMap((f) => f.terms.slice(0, 4))),
+    metrics: uniq(fs.flatMap((f) => f.metrics.slice(0, 2))),
+  };
 }
 
 // Everything the plan needs, in one place: the sector record, the business model, the motion and the user's numbers.
@@ -417,7 +533,15 @@ export function planContext({ vertical, model, args }) {
   const tam = typeof a.tam_accounts === "number" && isFinite(a.tam_accounts) ? a.tam_accounts : null;
   const nrr = typeof a.nrr_percent === "number" && isFinite(a.nrr_percent) ? a.nrr_percent : null;
   const channels = clean(a.current_channels);
+  // Run 22: what was read from the user's text (netlify/lib/company-read.js): use cases, buyers, roles, teams and the problem, in their own words.
+  const rd = a.read || null;
+  const uses = rd ? rd.uses.filter(Boolean).slice(0, 3) : [];
+  const geoOne = rd && rd.geo && rd.geo.hits.length === 1 && rd.geo.hits[0].label ? rd.geo.hits[0].label : null;
   return {
+    read: rd, uses, head: rd ? rd.head : null, use0: uses[0] || (rd && rd.head) || null, useOr: uses.length ? orList(uses) : rd && rd.head ? rd.head : null,
+    seg: rd ? rd.buyersShort : null, segShort: rd && rd.buyersShort ? (rd.buyersShort.length > 60 ? rd.buyersShort.split(/,\s+|\s+and\s+/)[0] : rd.buyersShort) : null, textRoles: rd && rd.roles && rd.roles.length ? joinList(rd.roles) : null, teams: rd ? rd.teams : null,
+    staffing: rd && rd.how ? ((rd.how.find((x) => /engineer|team|consult|specialist|success|manager/i.test(x)) || null)) : null,
+    painQ: rd && rd.painShort ? "\"" + stripEnd(rd.painShort) + "\"" : null, place: geoOne,
     vertical, model, sp, fn, api, over, communityTopics: api ? api.communityTopics : null, terms: (details && details.terms) || (api ? api.terms : []), typical: details ? details.typical : null, roles, metrics, objections, proofShape, vocab, mp, entry, assisted, plgUser: plg.user, plgSigner: plg.signer, acv, cycle, tam, nrr, channels,
     signer: roles[0], champion: roles[1] || roles[0], user: roles[roles.length - 1],
     cycleText: cycle ? "your " + num(cycle) + "-day cycle" : "your sales cycle",
@@ -458,9 +582,12 @@ function objectionStep(c) {
 
 function reviewStep(c) {
   const r = sp(c, "reviews");
-  return c.longCycle
-    ? "For every account name the people on the buying side: " + joinList(c.roles.slice(0, 4)) + ". Write down who signs, who champions and who can block. With " + c.cycleText + ", add the review steps (" + r + ") to the same sheet and book their dates before the first meeting, so no review surprises you late."
-    : "For every account name the people on the buying side: " + joinList(c.roles.slice(0, 4)) + ". Write down who signs, who champions and who can block, and which reviews come before a decision (" + r + ").";
+  const named = c.textRoles ? "Your text names " + c.textRoles + " as the buyers, so start with them. " : "";
+  const teams = c.teams ? " Your text says the product serves " + c.teams + " teams, so add the leader of each of those teams to the sheet, since they use it or pay for it." : "";
+  const ppl = c.textRoles ? joinList([...new Set([...(c.read.roles || []), ...c.roles.slice(0, 2)])].slice(0, 4)) : joinList(c.roles.slice(0, 4));
+  return named + (c.longCycle
+    ? "For every account name the people on the buying side: " + ppl + ". Write down who signs, who champions and who can block. With " + c.cycleText + ", add the review steps (" + r + ") to the same sheet and book their dates before the first meeting, so no review surprises you late."
+    : "For every account name the people on the buying side: " + ppl + ". Write down who signs, who champions and who can block, and which reviews come before a decision (" + r + ").") + teams;
 }
 
 // ---------- the plans: three steps in each of three phases, for each motion ----------
@@ -469,20 +596,21 @@ const acvNote = (c) => c.acv === null ? "One person should be able to research e
   : c.acv > 50000 ? "At " + num(c.acv) + " US dollars a year per account, each account is worth its own researched plan."
   : "At " + num(c.acv) + " US dollars a year per account, keep the research per account short enough to repeat across the whole list.";
 function planE(c) {
-  const list = c.tam ? "Rank your " + num(c.tam) + " addressable accounts by " + sp(c, "accounts") + ", and take the top 50" + EXAMPLE + ". " + acvNote(c)
-    : "Build the account list: rank accounts by " + sp(c, "accounts") + ", and take the top 50" + EXAMPLE + ". " + acvNote(c);
+  const among = (c.seg ? " among " + c.seg : "") + (c.place && !(c.seg || "").includes(c.place) ? " in " + c.place : "");
+  const list = c.tam ? "Rank your " + num(c.tam) + " addressable accounts" + among + " by " + sp(c, "accounts") + ", and take the top 50" + EXAMPLE + ". " + acvNote(c)
+    : "Build the account list" + among + ": rank accounts by " + sp(c, "accounts") + ", and take the top 50" + EXAMPLE + ". " + acvNote(c);
   const d30 = [
     list,
     reviewStep(c),
-    "List the partners you already have and who else sits in your buyers' stack and could introduce or connect with you: " + joinLong(sp(c, "partners")) + ". Pick the two or three that touch the most accounts on your list, existing partners first, and ask each what a joint account plan would need.",
+    "List the partners you already have and who else sits in your buyers' stack and could introduce or connect with you: " + joinLong(sp(c, "partners")) + ". Pick the two or three that touch the most accounts on your list, existing partners first, and ask each what a joint account plan" + (c.segShort ? " for " + c.segShort : "") + " would need.",
   ];
   const d60 = [
-    "Run a first ABM wave on the top 20 accounts" + EXAMPLE + ". Open with the numbers this buyer already watches (" + metricsText(c, 3) + ") and offer " + c.entry + ".",
+    "Run a first ABM wave on the top 20 accounts" + EXAMPLE + ". Open with the numbers this buyer already watches (" + metricsText(c, 3) + ") and offer " + c.entry + (c.useOr ? ", built around " + c.useOr : "") + ".",
     "Put each partner you will work with on one page, renewing the agreements you already have and adding new ones where the list shows a gap: what each brings (introductions, integration or resale), how an introduced account is tracked from first meeting to closed won, and who answers the buyer's technical questions.",
     objectionStep(c),
   ];
   const d90 = [
-    "Turn the first wave into a proof point in the shape this buyer trusts. Write up the first result as " + lowerFirst(stripEnd(c.proofShape)) + ".",
+    "Turn the first wave into a proof point in the shape this buyer trusts. Write up the first result" + (c.segShort ? " for " + c.segShort : "") + (c.use0 ? " on " + c.use0 : "") + " as " + lowerFirst(stripEnd(c.proofShape)) + ".",
     "Extend the wave to the next accounts on the list and give partners a short enablement pack: who to introduce, what to say, what not to promise, and the proof point above. Keep ready: " + joinLong(sp(c, "assets")) + ".",
     "Measure pipeline from ABM and from partners separately, and the days from first meeting to closed won against " + c.cycleText + ", so next quarter's budget follows the part that moves accounts.",
   ];
@@ -494,14 +622,14 @@ function iNeedsPartners(c) { return (c.acv !== null && c.acv > 50000) || (c.cycl
 function planI(c) {
   const words = c.vocab.length ? joinList(c.vocab.slice(0, 5)) : "";
   const d30 = [
-    words ? "Write down the words your buyers use for the problem (" + words + ") next to the words you use. Keep the buyer's version for search terms, subject lines and headlines."
+    words ? "Write down the words your buyers use for the problem" + (c.painQ ? " you describe (" + c.painQ + ") and for this sector (" : " (") + words + ") next to the words you use. Keep the buyer's version for search terms, subject lines and headlines."
       : "Interview five customers and write down, in their exact words, how they describe the problem before they buy" + EXAMPLE + ". Keep their version for search terms, subject lines and headlines, and drop yours where the two differ.",
     c.channels ? channelStep(c) : "List what you do today to reach buyers, count the meetings each channel produced with the roles that decide (" + deciders(c) + "), and keep the one or two that reach them.",
-    "Build the outbound list by role (" + joinList(c.roles.slice(0, 3)) + ")" + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
+    "Build the outbound list by role (" + joinList(c.textRoles ? [...new Set([...(c.read.roles || []), ...c.roles.slice(0, 2)])].slice(0, 4) : c.roles.slice(0, 3)) + ")" + (c.teams ? ", plus the leader of each team your text names (" + c.teams + ")" : "") + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
   ];
   const d60 = [
     "Publish the proof in the forms these buyers read: " + joinLong(sp(c, "reads")) + ". Build each piece on the numbers the buyer already watches (" + metricsText(c, 2) + ").",
-    "Start a short outbound sequence to the list. Each message opens with a problem in the buyer's words and ends with one ask: " + c.entry + ".",
+    "Start a short outbound sequence to the list. Each message opens with a problem in the buyer's words and ends with one ask: " + c.entry + "." + (c.use0 ? " Lead the sequence with your " + c.use0 + " offer" + (c.segShort ? " for " + c.segShort : "") + "." : ""),
     c.longCycle ? "Agree with sales which signals mean a call is worth booking (a reply, a second reader at the same account, a request for the reference). With " + c.cycleText + ", expect several people to engage before anyone asks for a meeting." : "Agree with sales which signals mean a call is worth booking (a reply, a second reader at the same account, a request for the reference) and how fast each is followed up.",
   ];
   const d90 = [
@@ -521,7 +649,7 @@ function planPSelf(c, prefix = "") {
   const p = (t) => prefix + t;
   return {
     d30: [
-      p("Define the first moment of value: " + sp(c, "firstValue") + ". Measure how many new users reach it and how long it takes."),
+      p("Define the first moment of value: " + sp(c, "firstValue") + (c.use0 ? ", and check whether for " + (c.seg || "your users") + " it comes from " + c.use0 : "") + ". Measure how many new users reach it and how long it takes."),
       p("Remove the steps between sign-up and that moment, and record where people stop."),
       p("Decide who the product-led user is (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + "). The sales conversation starts when the second person appears in an account."),
     ],
@@ -541,7 +669,7 @@ function planPAssisted(c, prefix = "") {
   const p = (t) => prefix + t;
   return {
     d30: [
-      p("Choose the one low-risk way a buyer can see value without a full project: " + c.assisted + ". Write the scope on one page, with what the buyer gets to keep."),
+      p("Choose the one low-risk way a buyer can see value without a full project: " + c.assisted + ". Write the scope on one page, with what the buyer gets to keep." + (c.useOr ? " Build it on " + c.useOr + (c.seg ? ", offered to " + c.seg : "") + "." : "")),
       p("Agree the measure that shows value in that step (" + metricsText(c, 2) + ") and who on the buyer's side signs it off."),
       p("Decide who starts it (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + "), and give the starter a short pack they can forward."),
     ],
@@ -658,7 +786,7 @@ function planCInvestment(c) {
 function planC(c) {
   if (c.model === "investment") return planCInvestment(c);
   const big = c.tam !== null && c.tam > 10000;
-  const topic = c.communityTopics || metricsText(c, 2);
+  const topic = c.communityTopics || (c.uses.length ? orList(c.uses.slice(0, 2)) : metricsText(c, 2));
   const d30 = [
     "Choose where your buyers already talk: " + joinLong(sp(c, "venues")) + ". Join two and listen before you launch your own.",
     big
@@ -681,6 +809,17 @@ function planC(c) {
   return { d30, d60, d90 };
 }
 
+// The first step of every plan: start from what the user said they sell and to whom (their own use cases, buyers, roles and problem).
+function anchorStep(c, letter) {
+  if (!c.read || (!c.uses.length && !c.head && !c.seg)) return null;
+  const what = c.uses.length ? "Start from what you sell" + (c.head ? " (" + c.head + ")" : "") + " and decide which use case leads: " + orList(c.uses) + "." : c.head ? "Start from what you sell and decide which use of " + c.head + " leads." : "Start from who buys.";
+  const who = c.seg ? " Aim it at " + c.seg + (c.textRoles && !c.seg.toLowerCase().includes(c.textRoles.toLowerCase()) ? ", starting with " + c.textRoles : "") + (c.place && !c.seg.includes(c.place) ? " in " + c.place : "") + "." : "";
+  const pain = c.painQ ? " Pick the one that answers " + c.painQ + " first, and write its promise in your buyers' own words." : " Pick the one your buyers would notice first, and write its promise in their own words.";
+  const tail = { E: c.seg ? " That use case and segment give the first accounts on your list." : " That use case sets which accounts go first on your list.", P: " That use case is the first moment of value you will measure.", I: " That promise becomes the headline of your first messages and search terms.", C: " That use case is the topic of your first community sessions." }[letter] || "";
+  const staff = c.staffing ? (/^(?:delivered|run|sold|deployed|built)\b/i.test(c.staffing) ? " Your text says it is " + c.staffing : " Your text says you deliver with " + c.staffing) + "; use them to run the first pilots." : "";
+  return what + who + pain + staff + tail;
+}
+
 const PLANNERS = { E: planE, P: planP, I: planI, C: planC };
 
 /** The three phases of a plan for one motion: days_30, days_60 and first_quarter, each a list of sentences. */
@@ -688,6 +827,8 @@ export function buildPlan({ letter, vertical, model, args }) {
   const c = planContext({ vertical, model, args });
   const planner = PLANNERS[letter] || planP;
   const p = planner(c);
+  const anchor = anchorStep(c, letter);
+  if (anchor) p.d30 = [anchor, ...p.d30];
   const fix = (list) => list.filter(Boolean).map((t) => t.replace(/\s+/g, " ").replace(/\.\./g, "."));
   return { days_30: fix(p.d30), days_60: fix(p.d60), first_quarter: fix(p.d90), context: c, warning: fitWarning(c, letter) };
 }
@@ -747,7 +888,7 @@ export function sectorFit({ vertical, model, letter, motionName, scores, selfSer
   }
   // Where the sector's usual route is product-led but the score is low because self_serve was not given, say so.
   if (!tie && letter !== "P" && typical.includes("P") && selfCapable && !selfServeGiven && scores) {
-    text += " In this sector the product-led route is common; its score is " + scores.P + " and no lift was applied because self_serve was not given (see the self-serve check).";
+    text += " In this sector the product-led route is common; its score is " + scores.P + " and no lift was applied because self_serve was not given (the closing list shows what setting it would do).";
   }
   // A large-account lead in a sector that also sells to small accounts self-serve.
   if (!tie && letter === "E" && selfCapable && spx.fit.P && !typical.includes("P") && vertical && ["saas", "software", "ai-native", "vertical-saas"].includes(vertical.id)) {
