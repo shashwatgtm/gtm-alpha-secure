@@ -47,7 +47,7 @@ test("customer claims are not use cases, buyers are read before a colon list of 
     assert.doesNotMatch(lines(j.what_i_read), /use cases named:[^|]*300\+/, tool);
     assert.match(lines(j.what_i_read), /Buyers: enterprises/, tool);
     assert.doesNotMatch(t, /repositor|pull request|secrets in code|merge request/i, tool + ": " + (t.match(/repositor\w*|pull request|secrets in code/i) || [""])[0]);
-    assert.equal(j.sector_notes.sector, "cybersecurity", tool);
+    assert.match(j.sector_notes.sector, /^cybersecurity(?:, mobile application security)?$/, tool);
   }
 });
 

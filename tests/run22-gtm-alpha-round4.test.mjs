@@ -84,7 +84,7 @@ test("a data platform with solo developers, students, startup credits and enterp
     assert.match(j.adoption_note, /self_serve/);
     assert.match(j.adoption_note, /Product-Led/);
     assert.doesNotMatch(flat(j.sector_notes), /release frequency|build time|flaky|per user cost|Per user cost/i, tool);
-    assert.match(flat(j.sector_notes), /no notes for|only who decides/i, tool);
+    assert.match(flat(j.sector_notes), /managed data infrastructure/i, tool);
     assert.match(steps(j), /best-scoring accounts|first batch/, tool);
   }
 });

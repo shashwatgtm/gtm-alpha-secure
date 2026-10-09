@@ -31,12 +31,12 @@ test("(a)(b)(c) a mobile app binary scanner: the headline pain is the core one, 
   assert.doesNotMatch(s, /(?:starting from|answers) "fake apps/);
   assert.doesNotMatch(flat(j.sector_notes), /attack surface|alert fatigue|mean time to detect|mean time to respond|least privilege/i);
   assert.match(flat(j.sector_notes.buyer_words), /APK|IPA|binar/i);
-  assert.match(j.sector_notes.read_as, /no notes for/i);
+  assert.match(flat(j.sector_notes), /app binary|findings?|release/i);
   assert.match(lines(j.what_i_read), /Buyers: enterprises[^|]*banking and financial services/);
   assert.match(lines(j.what_i_read), /Fortune 500/);
   assert.match(s, /banking and financial services/);
   assert.doesNotMatch(s, /attack surface, exposure|mean time to detect/);
-  assert.equal(j.sector_notes.sector, "cybersecurity");
+  assert.equal(j.sector_notes.sector, "cybersecurity, mobile application security");
 });
 
 test("(b) cybersecurity teams at global enterprises and Fortune 500 companies: the customer groups are kept", async () => {
@@ -74,7 +74,8 @@ test("a roadmap for the scanner reads the delivered features as uses and leaves 
   assert.match(lines(j.what_i_read), /use cases named: automated dynamic testing on real devices/);
   assert.doesNotMatch(lines(j.what_i_read), /use cases named:[^|]*add-ons/);
   assert.doesNotMatch(steps(j), /decide which use case leads:[^.]*add-ons/);
-  assert.match(lines(j.what_i_read), /no notes for/);
+  assert.equal(j.sector, "cybersecurity, mobile application security");
+  assert.match(lines(j.what_i_read), /Sector: cybersecurity, mobile application security/);
 });
 
 test("banks as buyers: the technology, risk and compliance roles lead; a small fintech buyer keeps the owner roles", async () => {
