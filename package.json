@@ -1,6 +1,6 @@
 {
   "name": "@shashwatgtmalpha/gtm-alpha-mcp-server",
-  "version": "1.3.10",
+  "version": "1.3.11",
   "description": "GTM Alpha MCP Server: Free EPIC audit using Shashwat Ghosh's EPIC framework",
   "main": "bin/cli.js",
   "files": [
