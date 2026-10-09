@@ -161,9 +161,18 @@ function chunkList(text) {
     const nx = parts[i + 1];
     // "speech, translation and document models": a one word stub followed by a part that continues the coordination is one phrase
     if (nx !== undefined && /^[a-z]+$/.test(p) && /^[a-z]+\s+and\s+\S+\s+\S/i.test(nx)) { p = p + ", " + nx; i++; }
+    // a lone modifier ("AI-personalized", "gamified") belongs to the phrase that follows it
+    else if (nx !== undefined && /^[A-Za-z]+(?:-[A-Za-z]+)*(?:ed|ized|ised|ive)$/.test(p)) { p = p + ", " + nx; i++; }
     out.push(withs[i] ? Object.assign(new String(p), { rawWith: true }) : p);
   }
-  return out;
+  // "delivered across email, SMS, phone calls and Teams": a list of channels after across, via or through stays in the phrase that opened it
+  const merged = [];
+  for (let i = 0; i < out.length; i++) {
+    let p = String(out[i]);
+    if (/\b(?:across|via|through|over)\s+\S+$/i.test(p)) while (i + 1 < out.length && String(out[i + 1]).split(/\s+/).length <= 4 && !/^[a-z]+ing\b/i.test(String(out[i + 1]))) { p += ", " + out[i + 1]; i++; }
+    merged.push(out[i] && out[i].rawWith && p === String(out[i]) ? out[i] : p);
+  }
+  return merged;
 }
 
 const HOW_DELIVERED = /^(?:delivered|run|sold|available|powered|built|deployed|offered|priced|billed|hosted)\b/i;
@@ -181,14 +190,18 @@ function rolesIn(text) {
   }
   return [...found.values()].slice(0, 6);
 }
-const TEAM_LIST = /\b(?:across|in|between|for)\s+((?:(?!\b(?:across|in|between|for|with)\b)[A-Za-z &\/,-])+?)\s+(?:teams|departments|functions|groups)\b/i;
+const TEAM_LIST = /\b(?:across|in|between|for|to)\s+((?:(?!\b(?:across|in|between|for|with|to)\b)[A-Za-z &\/,-])+?)\s+(?:teams|departments|functions|groups)\b/i;
+const TEAM_WORDS = /^(?:sales|marketing|service|services|support|customer|success|hr|human|resources|people|finance|legal|it|engineering|product|security|operations|ops|data|procurement|compliance|risk|design|qa|devops|developer|developers|field|revenue|supply|chain|logistics|partnerships|localization|analytics|research|management|accounting|growth|content|infrastructure|platform|talent|recruiting|facilities|admin|digital)$/i;
 function teamsIn(text) {
-  const m = text.match(TEAM_LIST);
-  if (!m) return null;
-  const list = m[1].trim().replace(/,\s*$/, "");
-  const items = list.split(/\s*,\s*|\s+and\s+/).map((x) => x.trim()).filter(Boolean);
-  const ok = items.length >= 2 && items.length <= 7 && items.every((x) => x.split(/\s+/).length <= 3 && !/\b(?:that|which|so|to|the|did|not|from|with|their|its|our|of)\b/i.test(x));
-  return ok ? list : null;
+  const g = new RegExp(TEAM_LIST.source, "gi");
+  for (const m of text.matchAll(g)) {
+    const list = m[1].trim().replace(/,\s*$/, "");
+    const items = list.split(/\s*,\s*|\s+and\s+/).map((x) => x.trim()).filter(Boolean);
+    // every item must name a function (sales, IT support, legal ...): a list of systems, channels or processes is not a list of teams
+    const ok = items.length >= 2 && items.length <= 7 && items.every((x) => x.split(/\s+/).length <= 3 && x.split(/\s+/).some((w) => TEAM_WORDS.test(w)) && !/\b(?:that|which|so|to|the|did|not|from|with|their|its|our|of)\b/i.test(x));
+    if (ok) return list;
+  }
+  return null;
 }
 
 // ---------------------------------------------------------------- geography
@@ -202,7 +215,7 @@ const GEO = [
   { code: null, label: "Africa", re: /\b(?:Africa\w*|Nigeria\w*|Kenya\w*|South Africa)\b/ },
   { code: null, label: "Latin America", re: /\b(?:Latin America\w*|LATAM|Brazil\w*|Mexic\w+)\b/ },
 ];
-const GLOBAL_RE = /\b(?:global|worldwide|around the world|across the world|in \d{2,3}\+? countries)\b/i;
+const GLOBAL_RE = /\b(?:worldwide|globally|around the world|across the world|in \d{2,3}\+? countries|global (?:customers|clients|market|markets|enterprises|brands|shippers|businesses|companies|footprint|presence|teams))\b/i;
 export const GEO_LABEL = { india: "India", us_eu: "the US or EU", middle_east: "the Middle East", apac: "Asia Pacific", global: "global" };
 
 function readGeography(args, fields) {
@@ -232,6 +245,7 @@ const PRICED = [
 // payroll, reconciliation or security). Only the product sentence is read, never the buyers' problem.
 const CATEGORY = [
   { model: "connectivity", over: ["saas", "hardware_software"], re: /\b(?:iot (?:sim|connectivity|esim)|esims?|sim cards?|connectivity (?:platform|management|service)s?|business internet|leased lines?|mpls)\b/i },
+  { model: "services", over: ["saas"], re: /\b(?:freight forwarders?|freight forwarding|customs brokerage|third[- ]party logistics provider|moves freight|managed (?:freight|logistics|transport))\b/i },
   { model: "transactions", re: /\b(?:payment gateways?|payments? (?:platform|processing|processor|acceptance|infrastructure|stack|apis?|orchestration)|payments and banking|accept(?:s|ing)? (?:online |in-store |card |digital )?payments?|payouts?|merchant acquiring|remittances?|upi|card acceptance|disburs\w+)\b/i },
   { model: "marketplace", re: /\b(?:marketplaces? (?:where|that|for|connecting)|two-sided|connects? (?:buyers|shippers|sellers) (?:and|with) )\b/i },
 ];
@@ -306,10 +320,16 @@ function voteKinds(v, productText) {
     const strong = distinct(st.match, productText);
     const cues = KIND_CUES[st.id] ? distinct(KIND_CUES[st.id], productText).filter((w) => !strong.some((s) => s.includes(w))) : [];
     const score = strong.length + 0.5 * cues.length;
-    if (score > 0) rows.push({ st, strong, cues, score, first: Math.min(...[...strong, ...cues].map((w) => lc(productText).indexOf(w)).filter((i) => i >= 0), 1e9) });
+    const at = (w) => lc(productText).indexOf(w);
+    if (score > 0) rows.push({ st, strong, cues, score, first: Math.min(...[...strong, ...cues].map(at).filter((i) => i >= 0), 1e9), headIdx: Math.min(...strong.map(at).filter((i) => i >= 0), 1e9) });
   }
   return rows.sort((a, b) => b.score - a.score || a.first - b.first);
 }
+// Words that say a kind of company is NOT the one read, even though the shared sector file has a matching word (an awareness training platform is not an email gateway).
+const KIND_BLOCK = {
+  "email-security": { when: /human risk|awareness training|security awareness|phishing (?:training|simulations?)|simulations?/i, unless: /gateway|mail flow|inbound (?:e)?mail|quarantine|secure email/i },
+};
+const blockedKind = (id, text) => { const b = KIND_BLOCK[id]; return !!b && b.when.test(text) && !b.unless.test(text); };
 const wordsText = (r) => joinList((r.strong.length ? r.strong : r.cues).slice(0, 3));
 
 function readSector(args, name, texts, product, pain, buyers, whole) {
@@ -339,23 +359,35 @@ function readSector(args, name, texts, product, pain, buyers, whole) {
   const profile = !pick.subtype && (/investment management|billing/.test(pick.name));
   const supportProfile = !pick.subtype && !profile && pick.buyerRoles !== base.buyerRoles;
   let v = pick, why = null;
+  let dropped = null;
   if (!profile) {
-    const votes = voteKinds(base, product || whole);
+    const text = product || whole;
+    const votes = voteKinds(base, text).filter((r) => !blockedKind(r.st.id, text));
+    const supported = (r) => r.strong.length >= 1 || r.cues.length >= 3;
     const cur = pick.subtype ? votes.find((r) => r.st.id === pick.subtype) : null;
-    const top = votes[0];
-    const qualifies = top && (top.strong.length >= 1 || top.cues.length >= 3);
-    const mayOverride = qualifies && (!supportProfile || (top.strong.length >= 1 && top.st.id !== "agents-copilots"));
-    if (top && mayOverride && (!cur || (top.st.id !== cur.st.id && top.score >= cur.score + 1))) {
-      v = withSubtype(base, top.st);
-      why = cur ? "more of your product words (" + wordsText(top) + ") point to " + top.st.name + " than to " + cur.st.name : "the product words (" + wordsText(top) + ") point to " + top.st.name;
-    }
-    const chosen = v.subtype ? votes.find((r) => r.st.id === v.subtype) : null;
-    const second = votes.find((r) => !chosen || r.st.id !== chosen.st.id);
-    if (chosen && second && second.score >= 0.5 * chosen.score) {
-      close = { chosen: chosen.st.name, other: second.st.name, chosenWords: wordsText(chosen), otherWords: wordsText(second), reason: chosen.score > second.score ? "more of your product words point to it" : "its words come first in your description" };
-    } else if (!chosen && votes.length >= 2 && votes[1].score >= 0.5 * votes[0].score) {
-      close = { chosen: base.name, other: votes[0].st.name, chosenWords: joinList(strong.filter((w) => !GENERIC_WORD.test(w)).slice(0, 2)) || base.name, otherWords: wordsText(votes[0]), reason: "the sector you named fits the description as a whole and neither kind of company stands out" };
-    }
+    const top = votes.find(supported);
+    // the kind named by the shared reader stays only when the product sentence supports it; a kind whose own words are not in the text is never printed
+    let cand = null, tie = false;
+    const best = (list, skip) => list.find((r) => supported(r) && (!skip || r.st.id !== skip));
+    const rival = cur ? best(votes, cur.st.id) : null;
+    if (cur && supported(cur) && (!rival || cur.score >= rival.score)) cand = cur;                   // the shared reader's kind, when no other kind has more of the user's words
+    else if (cur && supported(cur) && rival && rival.score >= cur.score + 1) cand = rival;           // another kind has clearly more of them
+    else if (cur && supported(cur)) { cand = cur; tie = true; }                                       // within one point: a close call
+    else if (top && (!supportProfile || (top.strong.length >= 1 && top.st.id !== "agents-copilots"))) cand = top;
+    if (cand && pick.subtype && cand.st.id !== pick.subtype && cur) why = "more of your product words (" + wordsText(cand) + ") point to " + cand.st.name + " than to " + cur.st.name;
+    else if (cand && !pick.subtype) why = "the product words (" + wordsText(cand) + ") point to " + cand.st.name;
+    const second = votes.find((r) => !cand || r.st.id !== cand.st.id);
+    // a kind named right at the start of the description ("CRM for ...", "voice AI built for ...") says what the product is; a list of features does not
+    const head = cand && second && cand.strong.length >= 1 && cand.headIdx <= 45 && (second.strong.length === 0 || second.headIdx > 45);
+    if (!pick.subtype && cand && second && cand.score - second.score < 1 && !head) tie = true;
+    if (cand && tie && second) {
+      // two kinds fit about equally and the shared reader did not settle it: only the notes that hold for every company of the sector are printed
+      close = { tie: true, chosen: base.name, other: cand.st.name, chosenWords: wordsText(cand), otherWords: wordsText(second), second: second.st.name };
+      v = base; why = null;
+    } else if (cand) {
+      v = withSubtype(base, cand.st);
+      if (second && second.score >= 0.5 * cand.score) close = { chosen: cand.st.name, other: second.st.name, chosenWords: wordsText(cand), otherWords: wordsText(second), reason: cand.score > second.score ? "more of your product words point to it" : "its words come first in your description" };
+    } else if (pick.subtype) { v = base; dropped = pick.subtype; }
   }
   // a second vertical: its own match words in the product sentence against the chosen one's
   let otherVertical = null;
@@ -367,7 +399,7 @@ function readSector(args, name, texts, product, pain, buyers, whole) {
       if (w.length >= 2 && mine.length >= 1 && w.length >= 0.7 * mine.length && w.length >= (otherVertical ? otherVertical.words.length : 0)) otherVertical = { v: o, words: w };
     }
   }
-  return { v, source: from, words: [...new Set(strong)].slice(0, 4), close, why, otherVertical, mine: distinct(base.match, product || whole) };
+  return { v, source: from, words: [...new Set(strong)].slice(0, 4), close, why, dropped, otherVertical, mine: distinct(base.match, product || whole) };
 }
 
 // ---------------------------------------------------------------- the whole reading
@@ -435,19 +467,20 @@ export function readCompany(args, tool) {
         if (sp.buyers) {
           const bc = firstTop(sp.buyers, /:\s*/);
           if (bc) { const seg = stripEnd(sp.buyers.slice(bc.end)); if (seg.length >= 6 && seg.length <= 170 && !/[“”<>{}\[\]]/.test(seg)) out.segmentsText = seg; sp.buyers = sp.buyers.slice(0, bc.index); }
-          const b0 = stripEnd(sp.buyers.trim().split(/,\s+(?:from|including|especially|such as|plus)\s/i)[0]);
-          const cut = b0.match(/\s+(?:that|whose|which|where|including|especially)\s+/i);
-          const b = stripEnd((cut && cut.index >= 6 && b0.length > 120 ? b0.slice(0, cut.index) : b0).replace(/\s*\([^)]*\)?\s*$/, ""));
-          if (b && b.length <= 160 && !/[“”<>{}]/.test(b)) {
+          // the buyers end where a clause about what they do begins ("security teams collaborating with developers": the buyers are the security teams)
+          let b0 = stripEnd(sp.buyers.trim().split(/,\s+(?:from|including|especially|such as|plus)\s/i)[0]);
+          b0 = b0.split(/\s+(?:collaborating|working|building|responsible|looking|trying|needing|wanting|seeking|who|that|whose|which|where|including|especially)\b/i)[0];
+          if (b0.length > 160) { const k = b0.match(/\s+(?:at|in|across|within)\s+/i); if (k && k.index >= 12) b0 = b0.slice(0, k.index); }
+          const b = stripEnd(b0.replace(/\s*\([^)]*\)?\s*$/, ""));
+          if (b && b.length >= 4 && b.length <= 160 && !/[“”<>{}]/.test(b)) {
             out.buyers = b;
-            const short = cut && cut.index >= 6 && b0.startsWith(b.slice(0, 6)) ? b0.slice(0, cut.index) : b;
-            out.buyersShort = stripEnd(short.replace(/\s*\([^)]*\)?/g, "").replace(/\s+(?:at|in|across)\s+(?:the\s+)?(?:companies|enterprises|organi[sz]ations|businesses|firms|large enterprises|India|\w+)\b.*$/i, (m) => (/\b(?:companies|enterprises|organi[sz]ations|businesses|firms)\b/i.test(m) ? "" : m)));
+            out.buyersShort = stripEnd(b.replace(/\s*\([^)]*\)?/g, "").replace(/\s+(?:at|in|across)\s+(?:the\s+)?(?:companies|enterprises|organi[sz]ations|businesses|firms|large enterprises|India|\w+)\b.*$/i, (m) => (/\b(?:companies|enterprises|organi[sz]ations|businesses|firms)\b/i.test(m) ? "" : m)));
             if (out.buyersShort.length < 4) out.buyersShort = b;
           }
         }
       }
       const pool = [out.buyers || "", mainText].join(" ");
-      out.roles = rolesIn(out.buyers || "");
+      out.roles = rolesIn(out.buyersShort || "");
       out.teams = teamsIn(mainText);
       if (out.pain && (out.pain.length > 170 || /[“”<>{}]/.test(out.pain))) out.pain = null;
       if (out.pain) { const first = stripEnd(out.pain.split(/;\s*/)[0]); out.painShort = first.length <= 110 ? first : null; }
@@ -506,13 +539,13 @@ function geoLine(read, args) {
 
 function modelLine(read, nameOf, field) {
   const m = read.model;
-  if (!m.model) return "Business model: I could not tell how you charge from the text.";
+  if (!m.model) return "How you charge: I could not tell from the text.";
   const n = nameOf(m.model);
-  if (m.how === "input") return "Business model: " + n + ", as you set it.";
-  if (m.how === "priced") return "Business model: " + n + ", read from " + quoted(m.words) + fieldNote(field) + ".";
-  if (m.how === "product") return "Business model: " + n + ", read from the product words " + quoted(m.words) + fieldNote(field) + ".";
-  if (m.how === "assumed") return "Business model: " + n + ", assumed: the text describes a software product but does not say how you charge.";
-  return "Business model: " + n + ", the usual model in this sector, assumed: the text does not say how you charge.";
+  if (m.how === "input") return "How you charge: " + n + ", as you set it in the business model input.";
+  if (m.how === "priced") return "How you charge: " + n + ", read from " + quoted(m.words) + fieldNote(field) + ".";
+  if (m.how === "product") return "How you charge: " + n + ", read from the product words " + quoted(m.words) + fieldNote(field) + ".";
+  if (m.how === "assumed") return "How you charge: " + n + ", assumed: the text describes a software product but does not say how you charge.";
+  return "How you charge: " + n + ", the usual model in this sector, assumed: the text does not say how you charge.";
 }
 
 const GENERIC_WORD = /^(?:ai|ai native|ai platform|platform|api|apis|cloud|software|saas|fintech|telecom|ites|logistics tech|vertical saas|cybersecurity)$/;
@@ -522,9 +555,11 @@ function sectorLine(read, args) {
   const ind = clean(args.industry);
   const own = sec.words.filter((w) => !GENERIC_WORD.test(w));
   let t = "Sector: " + read.v.name + " (read from " + [ind ? "industry" : null, read.field].filter(Boolean).join(" and ") + (own.length ? ": " + own.join(", ") : "") + ").";
-  const reason = sec.why ? sec.why.replace(/^more of your product words/, "more of your product words") : null;
-  if (sec.close) t += " Close call: your words fit " + sec.close.chosen + " (" + sec.close.chosenWords + ") and " + sec.close.other + " (" + sec.close.otherWords + "); I chose " + sec.close.chosen + " because " + sec.close.reason + ".";
-  else if (reason) t += " I chose the kind of company because " + reason + ".";
+  const c = sec.close;
+  if (c && c.tie) t += " Close call: your words fit " + c.other + " (" + c.chosenWords + ") and " + c.second + " (" + c.otherWords + ") about equally, so I used the sector-level notes that hold for every " + c.chosen + " company, not the notes of one kind.";
+  else if (c) t += " Close call: your words fit " + c.chosen + " (" + c.chosenWords + ") and " + c.other + " (" + c.otherWords + "); I chose " + c.chosen + " because " + c.reason + ".";
+  else if (sec.why) t += " I chose the kind of company because " + sec.why + ".";
+  else if (sec.dropped) t += " Your words do not single out one kind of company, so I used the sector-level notes that hold for every " + read.v.name + " company.";
   else if (sec.otherVertical) t += " Your words also fit " + sec.otherVertical.v.name + " (" + joinList(sec.otherVertical.words.slice(0, 3)) + "); I kept " + (ind ? "the sector you named in industry" : read.v.name.replace(/,.*$/, "")) + ".";
   return t;
 }
@@ -563,6 +598,7 @@ export function sharpenLines(read, args, extra) {
     if (!given("deal_source")) out.push("Give deal_source: referrals would add 3 to Community-Led, outbound 2 to Inbound and Outbound and partnerships 2 to Ecosystem and ABM, so it can change the lead.");
     if (!given("geography")) out.push("Give geography: " + (extra.geography || "India, the Middle East and APAC lift Ecosystem and ABM and the US or EU lifts Inbound and Outbound, so it would change the scores."));
   }
+  if (extra.askBatch) out.push("Tell me how many accounts you can work in the first batch: it would change how many accounts the first wave covers and how deep the research per account goes.");
   if (!given("current_channels")) out.push("Give current_channels: it would change the first steps, which would start from what you do today instead of from a general list.");
   if (read.model.how === "assumed" || read.model.how === "sector" || read.model.how === "unknown") out.push("Give business_model: it would change the pilot and trial wording (a services business gets a paid assessment, not a sign-up trial).");
   if (!read.v) out.push("Give industry (one of logistics tech, fintech, SaaS, vertical SaaS, AI native, ITeS, telecom, software, cybersecurity, or your own words): it would change the buyer roles, partner types, reviews and measures in every step, which are written for any sector now.");

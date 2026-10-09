@@ -64,6 +64,23 @@ function geographyEffect(input, analysis, read) {
 function inputsGiven(lines) {
   return lines.filter(function(t) { return !/^(?:ACV|Deal cycle|NRR|TAM|Self-serve|Deal source|Geography): .*not given, no adjustment/.test(t); });
 }
+// A long challenge is not echoed in full: the product, buyers and problem in it are read back in "What I read from your text".
+function shortChallenge(text) {
+  var t = String(text);
+  if (t.length <= 240) return t;
+  var cut = t.slice(0, 240).replace(/\s+\S*$/, "");
+  return cut + (/^\u201c/.test(cut) ? "\u201d" : "") + " (shortened; all of it was read)";
+}
+// When no input moved any score and the stage is the assumed default row, the lead rests on the order rule: say so, and what would change it.
+function leadNote(analysis, input) {
+  var sc = analysis.scores;
+  if (analysis.adjustments_applied.length > 1 || !/^Stage not given/.test(analysis.stage_used)) return null;
+  if (!(sc.E === 7 && sc.P === 5 && sc.I === 6 && sc.C === 6)) return null;
+  var lead = analysis.primary, second = ["E", "P", "I", "C"].filter(function(k) { return k !== lead.letter; }).sort(function(a, b) { return sc[b] - sc[a]; })[0];
+  var gap = sc[lead.letter] - sc[second];
+  var given = [["acv_usd", "ACV"], ["deal_cycle_days", "deal cycle"], ["nrr_percent", "NRR"], ["tam_accounts", "TAM"]].filter(function(k) { return typeof input[k[0]] === "number"; }).map(function(k) { return k[1]; });
+  return "No input you gave moved a score" + (given.length ? " (your " + given.join(", ") + " fell in the middle bands of the rubric)" : "") + ": all four scores are the untouched Series B starting row (E 7, P 5, I 6, C 6), which is an assumed stage. So the lead, " + lead.motion + ", rests on the order rule that breaks ties and on a " + (gap === 1 ? "one point" : gap + " point") + " gap over " + MOTIONS[second] + ", not on your company. Giving business_stage, or an ACV, deal cycle, NRR or TAM outside the middle bands, would change it.";
+}
 // The answer both scoring tools share: scores, inputs read back, what was read from the text, model, sector block, fit, the first 30 days, what to give next.
 function describe(args, tool) {
   var input = Object.assign({}, args, { gtm_challenge: args.gtm_challenge || args.challenge || "", business_stage: args.business_stage, industry: args.industry || "" });
@@ -76,8 +93,8 @@ function describe(args, tool) {
   var fit = sectorFit({ vertical: v, model: m.model, letter: analysis.primary.letter, motionName: analysis.primary.motion, scores: analysis.scores, args: input, selfServeGiven: input.self_serve === true || input.self_serve === false });
   var nameOf = function(model) { return modelName(model, v); };
   var seen = readLines(read, input, nameOf);
-  var sharpen = sharpenLines(read, input, { selfServe: selfServeEffect(input, analysis, m.model, input.gtm_challenge), geography: geographyEffect(input, analysis, read) });
-  return { analysis: analysis, read: read, v: v, m: m, first: plan.days_30, notes: notes, fit: fit, check: selfServeCheck(input, analysis, m.model, input.gtm_challenge), input: input, seen: seen, sharpen: sharpen };
+  var sharpen = sharpenLines(read, input, { selfServe: selfServeEffect(input, analysis, m.model, input.gtm_challenge), geography: geographyEffect(input, analysis, read), askBatch: analysis.primary.letter === "E" });
+  return { analysis: analysis, read: read, v: v, m: m, first: plan.days_30, notes: notes, fit: fit, leadNote: leadNote(analysis, input), check: selfServeCheck(input, analysis, m.model, input.gtm_challenge), input: input, seen: seen, sharpen: sharpen };
 }
 
 const GTM_CONSULTANT = {
@@ -103,7 +120,7 @@ const GTM_CONSULTANT = {
     var d = describe(args, "gtm_consultation");
     var analysis = d.analysis;
     var lines = ["GTM Alpha Free EPIC audit"].concat(company ? ["Company: " + company] : person ? ["Name: " + person] : []).concat([
-      "Challenge: " + (args.gtm_challenge ? String(args.gtm_challenge) : "not supplied"),
+      "Challenge: " + (args.gtm_challenge ? shortChallenge(args.gtm_challenge) : "not supplied"),
       "",
       "Primary Focus: " + analysis.primary.motion,
       "Secondary Focus: " + analysis.secondary.motion,
@@ -112,6 +129,7 @@ const GTM_CONSULTANT = {
     analysis.warnings.forEach(function(w) { lines.push("Warning: " + w); });
     analysis.notes.forEach(function(n) { lines.push("Note: " + n); });
     if (analysis.preliminary_note) lines.push(analysis.preliminary_note);
+    if (d.leadNote) lines.push(d.leadNote);
     lines.push("", "What I read from your text:");
     d.seen.forEach(function(t) { lines.push("- " + t); });
     lines.push("", "Your inputs, read:");
@@ -124,21 +142,28 @@ const GTM_CONSULTANT = {
       if (d.notes.read_as) lines.push(d.notes.read_as);
     }
     if (d.fit) lines.push("", "How this fits the sector: " + d.fit);
-    if (d.sharpen.length) { lines.push("", "To sharpen this, give these inputs (each line says what it would change):"); d.sharpen.forEach(function(t) { lines.push("- " + t); }); }
+    if (d.sharpen.length) { lines.push("", "To sharpen this, give these inputs. Each line says what it would change:"); d.sharpen.forEach(function(t) { lines.push("- " + t); }); }
+    // epic_detail keeps only what the flat fields above do not hold (the method, the reasons per motion, the stage used and every adjustment)
+    var detail = Object.assign({}, analysis);
+    ["scores", "primaryFocus", "recommendation", "inputs_read", "notes", "warnings", "preliminary", "preliminary_note", "skipped_adjustments"].forEach(function(k) { delete detail[k]; });
     var out = {
       consultation_output: lines.join("\n"),
       epic_scores: analysis.scores,
       primary_focus: analysis.primary.motion,
       secondary_focus: analysis.secondary.motion,
       inputs_read: analysis.inputs_read,
+      warnings: analysis.warnings,
+      notes: analysis.notes,
       what_i_read: d.seen,
       first_30_days: d.first,
       sector_notes: d.notes,
       sector_fit: d.fit,
       business_model: modelLine(d.read),
       to_sharpen_this: d.sharpen,
-      epic_detail: analysis
+      epic_detail: detail
     };
+    if (analysis.preliminary_note) out.preliminary_note = analysis.preliminary_note;
+    if (d.leadNote) out.lead_note = d.leadNote;
     if (d.check) out.self_serve_check = d.check;
     return out;
   },
@@ -167,7 +192,7 @@ const GTM_CONSULTANT = {
     if (typeof args.nrr_percent === "number") used.push("NRR: " + args.nrr_percent + " percent");
     if (clean(args.current_channels)) used.push("current channels: quoted in the first steps");
     var seen = readLines(read, args, function(mm) { return modelName(mm, v); });
-    var missing = sharpenLines(read, args, {});
+    var missing = sharpenLines(read, args, { askBatch: letter === "E" });
     // AI native covers very different products; when nothing in the text says which, the investment case is the one that changes the steps most.
     if (v && v.id === "ai-native" && how !== "input" && model !== "investment" && !read.head && !read.uses.length) missing.push("Give business_model or product_description: AI native covers very different products (an agent that automates a workflow, a forecasting tool, investment strategies built with AI). If you sell investment strategies, setting business_model to investment would change the steps to due diligence, consultants and track record.");
     var note;
@@ -299,6 +324,7 @@ function handleToolCall(name, rawArgs) {
     if (d.fit) extra.sector_fit = d.fit;
     if (d.check) extra.self_serve_check = d.check;
     extra.to_sharpen_this = d.sharpen;
+    if (d.leadNote) extra.lead_note = d.leadNote;
     return Object.assign(named ? { company: named } : {}, audit, extra);
   } else if (name === "generate_roadmap") {
     return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args);

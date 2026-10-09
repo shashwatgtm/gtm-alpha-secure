@@ -507,7 +507,11 @@ export function buyerFunction(...texts) {
 export function planContext({ vertical, model, args }) {
   const a = args || {};
   // Run 21b: a sub-type named by the reader brings its own roles, committee and measures; the buyer function read from the words is for generic SaaS only.
-  const fn = vertical && vertical.id === "saas" && !vertical.subtype ? buyerFunction(a.product_description, a.company_description, a.gtm_challenge, a.challenge, a.industry) : null;
+  const namedByTeam = !!(a.read && (a.read.teams || (a.read.roles && a.read.roles.length) || /\bteams?\b/i.test(a.read.buyersShort || "")));
+  const fn0 = vertical && vertical.id === "saas" && !vertical.subtype && !namedByTeam ? buyerFunction(a.product_description, a.company_description, a.gtm_challenge, a.challenge, a.industry) : null;
+  // a marketing or HR guess from keywords is dropped when the same text describes a developer-side product (API, CLI, SDKs): a localization platform is not bought by a marketer alone
+  const devSide = /\b(?:apis?|cli|sdks?|developers?|engineering|devops)\b/i.test([a.product_description, a.company_description, a.gtm_challenge, a.challenge].filter((t) => typeof t === "string").join(" "));
+  const fn = fn0 && devSide && /^(?:marketing|people)/.test(fn0.id) ? null : fn0;
   const inv = model === "investment";
   const details = planDetails(vertical);
   const sp = inv ? INVESTMENT_BLOCK : details;
@@ -552,7 +556,8 @@ export function planContext({ vertical, model, args }) {
   };
 }
 
-const metricsText = (c, n) => joinList(c.metrics.slice(0, n));
+// measures that hold their own "and" are separated with semicolons, so each stays one measure
+const metricsText = (c, n) => { const a = c.metrics.slice(0, n); return a.some((x) => / and /.test(x)) ? a.join("; ") : joinList(a); };
 const neutral = {
   partners: ["the vendors and advisers already in your buyers' stack", "implementation partners that set up tools like yours", "associations and analysts in your buyers' function"],
   accounts: "fit with your best customers, a visible trigger (a new leader, a launch, a change of system or a regulation) and how many people you can reach",
@@ -583,7 +588,7 @@ function objectionStep(c) {
 function reviewStep(c) {
   const r = sp(c, "reviews");
   const named = c.textRoles ? "Your text names " + c.textRoles + " as the buyers, so start with them. " : "";
-  const teams = c.teams ? " Your text says the product serves " + c.teams + " teams, so add the leader of each of those teams to the sheet, since they use it or pay for it." : "";
+  const teams = c.teams ? " Your text names these teams: " + c.teams + ". Add the leader of each to the sheet, since they use it or pay for it." : "";
   const ppl = c.textRoles ? joinList([...new Set([...(c.read.roles || []), ...c.roles.slice(0, 2)])].slice(0, 4)) : joinList(c.roles.slice(0, 4));
   return named + (c.longCycle
     ? "For every account name the people on the buying side: " + ppl + ". Write down who signs, who champions and who can block. With " + c.cycleText + ", add the review steps (" + r + ") to the same sheet and book their dates before the first meeting, so no review surprises you late."
@@ -597,15 +602,15 @@ const acvNote = (c) => c.acv === null ? "One person should be able to research e
   : "At " + num(c.acv) + " US dollars a year per account, keep the research per account short enough to repeat across the whole list.";
 function planE(c) {
   const among = (c.seg ? " among " + c.seg : "") + (c.place && !(c.seg || "").includes(c.place) ? " in " + c.place : "");
-  const list = c.tam ? "Rank your " + num(c.tam) + " addressable accounts" + among + " by " + sp(c, "accounts") + ", and take the top 50" + EXAMPLE + ". " + acvNote(c)
-    : "Build the account list" + among + ": rank accounts by " + sp(c, "accounts") + ", and take the top 50" + EXAMPLE + ". " + acvNote(c);
+  const list = c.tam ? "Rank your " + num(c.tam) + " addressable accounts" + among + " by " + sp(c, "accounts") + ", and take the best-scoring accounts as the first batch. " + acvNote(c)
+    : "Build the account list" + among + ": rank accounts by " + sp(c, "accounts") + ", and take the best-scoring accounts as the first batch. " + acvNote(c);
   const d30 = [
     list,
     reviewStep(c),
     "List the partners you already have and who else sits in your buyers' stack and could introduce or connect with you: " + joinLong(sp(c, "partners")) + ". Pick the two or three that touch the most accounts on your list, existing partners first, and ask each what a joint account plan" + (c.segShort ? " for " + c.segShort : "") + " would need.",
   ];
   const d60 = [
-    "Run a first ABM wave on the top 20 accounts" + EXAMPLE + ". Open with the numbers this buyer already watches (" + metricsText(c, 3) + ") and offer " + c.entry + (c.useOr ? ", built around " + c.useOr : "") + ".",
+    "Run a first ABM wave on the first batch of accounts. Open with the numbers this buyer already watches (" + metricsText(c, 3) + ") and offer " + c.entry + (c.useOr ? ", built around " + c.useOr : "") + ".",
     "Put each partner you will work with on one page, renewing the agreements you already have and adding new ones where the list shows a gap: what each brings (introductions, integration or resale), how an introduced account is tracked from first meeting to closed won, and who answers the buyer's technical questions.",
     objectionStep(c),
   ];
@@ -623,7 +628,7 @@ function planI(c) {
   const words = c.vocab.length ? joinList(c.vocab.slice(0, 5)) : "";
   const d30 = [
     words ? "Write down the words your buyers use for the problem" + (c.painQ ? " you describe (" + c.painQ + ") and for this sector (" : " (") + words + ") next to the words you use. Keep the buyer's version for search terms, subject lines and headlines."
-      : "Interview five customers and write down, in their exact words, how they describe the problem before they buy" + EXAMPLE + ". Keep their version for search terms, subject lines and headlines, and drop yours where the two differ.",
+      : "Interview your customers and write down, in their exact words, how they describe the problem before they buy. Keep their version for search terms, subject lines and headlines, and drop yours where the two differ.",
     c.channels ? channelStep(c) : "List what you do today to reach buyers, count the meetings each channel produced with the roles that decide (" + deciders(c) + "), and keep the one or two that reach them.",
     "Build the outbound list by role (" + joinList(c.textRoles ? [...new Set([...(c.read.roles || []), ...c.roles.slice(0, 2)])].slice(0, 4) : c.roles.slice(0, 3)) + ")" + (c.teams ? ", plus the leader of each team your text names (" + c.teams + ")" : "") + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
   ];
@@ -654,9 +659,9 @@ function planPSelf(c, prefix = "") {
       p("Decide who the product-led user is (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + "). The sales conversation starts when the second person appears in an account."),
     ],
     d60: [
-      p("Launch the improved first-use path and offer " + c.entry + " to accounts that ask for more."),
+      p("Launch the improved first-use path and, for accounts that ask for more, offer " + c.entry + "."),
       p("Build the hand-off from usage to a sales conversation: flag accounts where " + sp(c, "expansionSignal") + ", and have a person reach out within a day."),
-      p("Test the plan and price page for the buyer who signs (" + c.plgSigner + "), not only for the user who tried the product."),
+      p("Test how the plan and the price are put to the buyer who signs (" + c.plgSigner + "), not only to the user who tried the product."),
     ],
     d90: [
       p("Measure the share of new accounts that started in the product, the share that reached the first moment of value and the share that moved to a sales conversation." + (c.nrr ? " Compare with your NRR of " + c.nrr + " percent to see whether product-led accounts expand as much as sales-led ones." : "")),
@@ -667,21 +672,29 @@ function planPSelf(c, prefix = "") {
 }
 function planPAssisted(c, prefix = "") {
   const p = (t) => prefix + t;
+  const rolesList = joinList((c.textRoles ? [...new Set([...(c.read.roles || []), ...c.roles.slice(0, 2)])] : c.roles).slice(0, 3));
+  const useTwo = c.uses.length ? orList(c.uses.slice(0, 2)) : c.use0;
+  const partnerKinds = joinList(sp(c, "partners").slice(0, 2).map((x) => lowerFirst(x.replace(/\s+(?:whose|that|which)\b.*$/i, ""))));
+  const pilotDesign = "Design the pilot: scope it to " + (useTwo || "one use case") + (c.segShort ? " for " + c.segShort : "") + ", end it well inside " + c.cycleText + ", measure " + metricsText(c, 2) + " against the buyer's own numbers from before the pilot, and agree before it starts that " + c.plgSigner + " signs the result off" + (c.acv ? " (at " + num(c.acv) + " US dollars a year, that sign-off is the real sale)" : "") + ".";
+  const outreach = "Write the outreach: one message per role (" + rolesList + ") that opens with " + (c.painQ ? c.painQ : "the cost of the problem today") + " and offers the pilot" + (c.use0 ? " built around " + c.use0 : "") + ". Send it to the first batch from your " + (c.tam ? num(c.tam) + " addressable accounts" : "account list") + (c.channels ? ", through " + c.channels : "") + ", run the first two pilots yourself and record what the buyer asked for that you did not expect.";
+  const partner = "Ask " + partnerKinds + " to introduce the pilot to the " + (c.segShort || "accounts") + " they already serve, and give them the one-page scope so an introduction takes one email.";
   return {
     d30: [
       p("Choose the one low-risk way a buyer can see value without a full project: " + c.assisted + ". Write the scope on one page, with what the buyer gets to keep." + (c.useOr ? " Build it on " + c.useOr + (c.seg ? ", offered to " + c.seg : "") + "." : "")),
       p("Agree the measure that shows value in that step (" + metricsText(c, 2) + ") and who on the buyer's side signs it off."),
       p("Decide who starts it (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + "), and give the starter a short pack they can forward."),
+      p(pilotDesign),
     ],
     d60: [
-      p("Offer the step to the accounts you already talk to and run the first two, recording what the buyer asked for that you did not expect."),
+      p(outreach),
+      p(partner),
       p("Build the hand-off from the step to a full contract: the findings or results, a proposal that follows from them and a date for the decision."),
       p("Write down what the step costs you to deliver, so you can tell which accounts to offer it to and which to qualify first."),
     ],
     d90: [
       p("Measure how many step-one accounts moved to a full contract, how long that took" + (c.cycle ? " against " + c.cycleText : "") + " and what the ones that stopped had in common."),
       p("Write the first result up in the shape this buyer trusts: " + lowerFirst(stripEnd(c.proofShape)) + "."),
-      p("Keep the version of the step that converts and drop the rest."),
+      p("Keep the pilot design that got " + c.plgSigner + " to sign off" + (c.cycle ? " inside " + c.cycleText : "") + ", write its scope, measures and sign-off as the standard offer for the next accounts, and drop the variants that did not."),
     ],
   };
 }
@@ -790,14 +803,14 @@ function planC(c) {
   const d30 = [
     "Choose where your buyers already talk: " + joinLong(sp(c, "venues")) + ". Join two and listen before you launch your own.",
     big
-      ? "Recruit a first group of active customers as community champions (start with a few dozen, Example figure: replace with your own), and ask each what they would want help with from other practitioners (" + c.plgUser + "). With " + num(c.tam) + " addressable accounts the community has to run at scale: an open, public forum with moderators and an ambassador programme, not hand-picked peer sessions."
-      : "Invite five to ten customers who got a result" + EXAMPLE + " to be founding members, and ask each what they would want to discuss with peers in their role (" + c.champion + ").",
+      ? "Recruit a first group of active customers as community champions (start with those who already got a result), and ask each what they would want help with from other practitioners (" + c.plgUser + "). With " + num(c.tam) + " addressable accounts the community has to run at scale: an open, public forum with moderators and an ambassador programme, not hand-picked peer sessions."
+      : "Invite the customers who got a result to be founding members, and ask each what they would want to discuss with peers in their role (" + c.champion + ").",
     "Agree what the community is for: peer answers on " + topic + ", not product announcements.",
   ];
   const d60 = [
     big
-      ? "Open the forum to everyone and run recurring open sessions and office hours led by champions, not by you. Each champion shows " + (c.communityTopics ? "how they handle " + c.communityTopics : "how they measure " + c.metrics[0]) + " and what they changed."
-      : "Run the first two sessions led by customers, not by you. Each member shows " + (c.communityTopics ? "how they handle " + c.communityTopics : "how they measure " + c.metrics[0]) + " and what they changed.",
+      ? "Open the forum to everyone and run recurring open sessions and office hours led by champions, not by you. Each champion shows " + (c.communityTopics ? "how they handle " + c.communityTopics : c.uses.length ? "how they use " + c.uses[0] : "how they measure " + c.metrics[0]) + " and what they changed."
+      : "Run the first two sessions led by customers, not by you. Each member shows " + (c.communityTopics ? "how they handle " + c.communityTopics : c.uses.length ? "how they use " + c.uses[0] : "how they measure " + c.metrics[0]) + " and what they changed.",
     big ? "Answer new posts within a day, tag the questions that repeat, and turn the top ones into documentation and content. They are also your list of objections to answer." : "Record the questions members ask. They become your content and your list of objections to answer.",
     c.channels ? "Connect the community to what you already do (" + c.channels + "): invite the people you meet there to a session, and note which ones come back." : "Ask members who got a result to act as a reference for the prospects you are talking to now.",
   ];
@@ -812,9 +825,11 @@ function planC(c) {
 // The first step of every plan: start from what the user said they sell and to whom (their own use cases, buyers, roles and problem).
 function anchorStep(c, letter) {
   if (!c.read || (!c.uses.length && !c.head && !c.seg)) return null;
-  const what = c.uses.length ? "Start from what you sell" + (c.head ? " (" + c.head + ")" : "") + " and decide which use case leads: " + orList(c.uses) + "." : c.head ? "Start from what you sell and decide which use of " + c.head + " leads." : "Start from who buys.";
+  const what = c.uses.length ? "Start from what you sell" + (c.head ? " (" + c.head + ")" : "") + " and decide which use case leads: " + orList(c.uses) + "." : c.head ? "Start from what you sell (" + c.head + ") and name the one job it does best." : "Start from who buys.";
   const who = c.seg ? " Aim it at " + c.seg + (c.textRoles && !c.seg.toLowerCase().includes(c.textRoles.toLowerCase()) ? ", starting with " + c.textRoles : "") + (c.place && !c.seg.includes(c.place) ? " in " + c.place : "") + "." : "";
-  const pain = c.painQ ? " Pick the one that answers " + c.painQ + " first, and write its promise in your buyers' own words." : " Pick the one your buyers would notice first, and write its promise in their own words.";
+  const pain = c.uses.length || !c.head
+    ? (c.painQ ? " Pick the one that answers " + c.painQ + " first, and write its promise in your buyers' own words." : " Pick the one your buyers would notice first, and write its promise in their own words.")
+    : (c.painQ ? " Write its promise in your buyers' own words, starting from " + c.painQ + "." : " Write its promise in your buyers' own words.");
   const tail = { E: c.seg ? " That use case and segment give the first accounts on your list." : " That use case sets which accounts go first on your list.", P: " That use case is the first moment of value you will measure.", I: " That promise becomes the headline of your first messages and search terms.", C: " That use case is the topic of your first community sessions." }[letter] || "";
   const staff = c.staffing ? (/^(?:delivered|run|sold|deployed|built)\b/i.test(c.staffing) ? " Your text says it is " + c.staffing : " Your text says you deliver with " + c.staffing) + "; use them to run the first pilots." : "";
   return what + who + pain + staff + tail;
