@@ -232,7 +232,7 @@ export const KIND_PLAN = {
     typical: ["E", "I"],
     fit: {
       E: "this sector is bought by the sales function after a pilot in one region, so account-based selling with route-to-market partners fits",
-      P: "reps and distributors adopt an app only when the sales head mandates it, so self-serve is an entry route for smaller brands at most",
+      P: "reps and distributors adopt an app only when the sales head requires it, so self-serve is an entry route for smaller brands at most",
       I: "sales heads search for secondary sales and outlet coverage problems, so content on those reaches them before any vendor list exists",
       C: "sales heads ask peers at other brands what worked in the field, so references are strong here",
     },
