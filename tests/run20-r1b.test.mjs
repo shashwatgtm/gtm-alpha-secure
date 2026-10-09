@@ -377,7 +377,7 @@ test("round 3 (b): a software subscription asking for the product-led motion kee
   assert.match(s, /hand(ed)? (it |them |accounts )?(over )?to sales|sales-assist/i);
   assert.match(s, /activation|usage/i);
   assert.ok(j.action_plan.short_term.length >= 3 && j.action_plan.medium_term.length >= 3);
-  // sectors where a self-serve start is not usual keep the pilot-led replacement (Locus-like), and so does hardware plus software
+  // sectors where a self-serve start is not usual keep the pilot-led replacement (a fleet and route planning seller), and so does hardware plus software
   const logi = await call("generate_roadmap", { primary_focus: "P", industry: "logistics tech", acv_usd: 150000, deal_cycle_days: 150 });
   assert.match(logi.read_this_first, /nearest fitting version/);
   assert.doesNotMatch(plan(logi), /first moment of value/);
@@ -402,7 +402,7 @@ test("round 3: the sector named in industry decides the usual model, whatever th
   assert.doesNotMatch(flat(j), /software subscription/);
 });
 
-// ---- Round 4 (fresh judge on f89b054f: Airtel-like roadmap at 3, and smaller points) ----
+// ---- Round 4 (fresh judge on f89b054f: connectivity seller roadmap at 3, and smaller points) ----
 test("round 4: the telecom objection is worded neutrally, for a challenger and for an incumbent alike", async () => {
   const r = await call("generate_roadmap", { primary_focus: "E", industry: "telecom", product_description: "Managed SD-WAN and internet leased lines for enterprise branches", company_name: "Linkspan", acv_usd: 120000, deal_cycle_days: 120 });   // run 21b: operator notes belong to the connectivity sub-type
   const s = plan(r);
