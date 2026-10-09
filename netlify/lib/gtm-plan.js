@@ -455,6 +455,10 @@ export function joinList(items) {
   if (a.length === 2) return a[0] + " and " + a[1];
   return a.slice(0, -1).join(", ") + " and " + a[a.length - 1];
 }
+// A noun phrase without its leading article, for "your X offer" (the phrase may already be "a cloud-native platform").
+export const bare = (t) => String(t || "").replace(/^(?:a|an|the|our|your)\s+/i, "");
+// Developers and engineers use a product; they rarely sign for it. Roles the text names are split so that an outbound list aims at the people who sign.
+const USER_ROLE = /^(?:developers?|software engineers?|engineers?|platform engineers?|security engineers?)$/i;
 // "A, B or C": a choice between the user's own use cases (a phrase may hold its own "and").
 export function orList(items) {
   const a = (items || []).filter(Boolean);
@@ -543,7 +547,8 @@ export function planContext({ vertical, model, args }) {
   const geoOne = rd && rd.geo && rd.geo.hits.length === 1 && rd.geo.hits[0].label ? rd.geo.hits[0].label : null;
   return {
     read: rd, uses, head: rd ? rd.head : null, use0: uses[0] || (rd && rd.head) || null, useOr: uses.length ? orList(uses) : rd && rd.head ? rd.head : null,
-    seg: rd ? rd.buyersShort : null, segShort: rd && rd.buyersShort ? (rd.buyersShort.length > 60 ? rd.buyersShort.split(/,\s+|\s+and\s+/)[0] : rd.buyersShort) : null, textRoles: rd && rd.roles && rd.roles.length ? joinList(rd.roles) : null, teams: rd ? rd.teams : null,
+    seg: rd ? rd.buyersShort : null, segShort: rd && rd.buyersShort ? (rd.buyersShort.length > 60 ? rd.buyersShort.split(/,\s+|\s+and\s+/)[0] : rd.buyersShort) : null, signRoles: rd && rd.roles ? rd.roles.filter((x) => !USER_ROLE.test(x)) : [], userRoles: rd && rd.roles ? rd.roles.filter((x) => USER_ROLE.test(x)) : [],
+    textRoles: rd && rd.roles && rd.roles.filter((x) => !USER_ROLE.test(x)).length ? joinList(rd.roles.filter((x) => !USER_ROLE.test(x))) : null, owners: rd && rd.owners ? rd.owners : [], teams: rd ? rd.teams : null,
     staffing: rd && rd.how ? ((rd.how.find((x) => /engineer|team|consult|specialist|success|manager/i.test(x)) || null)) : null,
     painQ: rd && rd.painShort ? "\"" + stripEnd(rd.painShort) + "\"" : null, place: geoOne,
     vertical, model, sp, fn, api, over, communityTopics: api ? api.communityTopics : null, terms: (details && details.terms) || (api ? api.terms : []), typical: details ? details.typical : null, roles, metrics, objections, proofShape, vocab, mp, entry, assisted, plgUser: plg.user, plgSigner: plg.signer, acv, cycle, tam, nrr, channels,
@@ -589,10 +594,11 @@ function reviewStep(c) {
   const r = sp(c, "reviews");
   const named = c.textRoles ? "Your text names " + c.textRoles + " as the buyers, so start with them. " : "";
   const teams = c.teams ? " Your text names these teams: " + c.teams + ". Add the leader of each to the sheet, since they use it or pay for it." : "";
-  const ppl = c.textRoles ? joinList([...new Set([...(c.read.roles || []), ...c.roles.slice(0, 2)])].slice(0, 4)) : joinList(c.roles.slice(0, 4));
+  const owner = c.owners.length ? " Your text describes a " + (/phishing|scam|spam|fraud|abuse/i.test(c.painQ || c.head || "") ? "fraud" : "fraud or abuse") + " problem, so also name the head of " + c.owners[0] + " at each account." : "";
+  const ppl = c.textRoles ? joinList([...new Set([...c.signRoles, ...c.roles.slice(0, 2)])].slice(0, 4)) : joinList(c.roles.slice(0, 4));
   return named + (c.longCycle
     ? "For every account name the people on the buying side: " + ppl + ". Write down who signs, who champions and who can block. With " + c.cycleText + ", add the review steps (" + r + ") to the same sheet and book their dates before the first meeting, so no review surprises you late."
-    : "For every account name the people on the buying side: " + ppl + ". Write down who signs, who champions and who can block, and which reviews come before a decision (" + r + ").") + teams;
+    : "For every account name the people on the buying side: " + ppl + ". Write down who signs, who champions and who can block, and which reviews come before a decision (" + r + ").") + owner + teams;
 }
 
 // ---------- the plans: three steps in each of three phases, for each motion ----------
@@ -630,11 +636,11 @@ function planI(c) {
     words ? "Write down the words your buyers use for the problem" + (c.painQ ? " you describe (" + c.painQ + ") and for this sector (" : " (") + words + ") next to the words you use. Keep the buyer's version for search terms, subject lines and headlines."
       : "Interview your customers and write down, in their exact words, how they describe the problem before they buy. Keep their version for search terms, subject lines and headlines, and drop yours where the two differ.",
     c.channels ? channelStep(c) : "List what you do today to reach buyers, count the meetings each channel produced with the roles that decide (" + deciders(c) + "), and keep the one or two that reach them.",
-    "Build the outbound list by role (" + joinList(c.textRoles ? [...new Set([...(c.read.roles || []), ...c.roles.slice(0, 2)])].slice(0, 4) : c.roles.slice(0, 3)) + ")" + (c.teams ? ", plus the leader of each team your text names (" + c.teams + ")" : "") + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
+    "Build the outbound list by role (" + joinList(c.textRoles ? [...new Set([...c.signRoles, ...c.roles.slice(0, 2)])].slice(0, 4) : c.roles.slice(0, 3)) + ")" + (c.teams ? ", plus the leader of each team your text names (" + c.teams + ")" : "") + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
   ];
   const d60 = [
     "Publish the proof in the forms these buyers read: " + joinLong(sp(c, "reads")) + ". Build each piece on the numbers the buyer already watches (" + metricsText(c, 2) + ").",
-    "Start a short outbound sequence to the list. Each message opens with a problem in the buyer's words and ends with one ask: " + c.entry + "." + (c.use0 ? " Lead the sequence with your " + c.use0 + " offer" + (c.segShort ? " for " + c.segShort : "") + "." : ""),
+    "Start a short outbound sequence to the list. Each message opens with a problem in the buyer's words and ends with one ask: " + c.entry + "." + (c.use0 ? " Lead the sequence with your " + bare(c.use0) + " offer" + (c.segShort ? " for " + c.segShort : "") + "." : ""),
     c.longCycle ? "Agree with sales which signals mean a call is worth booking (a reply, a second reader at the same account, a request for the reference). With " + c.cycleText + ", expect several people to engage before anyone asks for a meeting." : "Agree with sales which signals mean a call is worth booking (a reply, a second reader at the same account, a request for the reference) and how fast each is followed up.",
   ];
   const d90 = [
@@ -654,7 +660,7 @@ function planPSelf(c, prefix = "") {
   const p = (t) => prefix + t;
   return {
     d30: [
-      p("Define the first moment of value: " + sp(c, "firstValue") + (c.use0 ? ", and check whether for " + (c.seg || "your users") + " it comes from " + c.use0 : "") + ". Measure how many new users reach it and how long it takes."),
+      p("Define the first moment of value: " + sp(c, "firstValue") + "." + (c.use0 ? " Check with your first users whether, for " + (c.seg || "them") + ", it comes from " + c.use0 + "." : "") + " Measure how many new users reach it and how long it takes."),
       p("Remove the steps between sign-up and that moment, and record where people stop."),
       p("Decide who the product-led user is (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + "). The sales conversation starts when the second person appears in an account."),
     ],
@@ -672,7 +678,8 @@ function planPSelf(c, prefix = "") {
 }
 function planPAssisted(c, prefix = "") {
   const p = (t) => prefix + t;
-  const rolesList = joinList((c.textRoles ? [...new Set([...(c.read.roles || []), ...c.roles.slice(0, 2)])] : c.roles).slice(0, 3));
+  const rolesList = joinList((c.textRoles ? [...new Set([...c.signRoles, ...c.roles.slice(0, 2)])] : c.roles).slice(0, 3));
+  const unit = c.model === "services" ? "assessment" : "pilot";
   const useTwo = c.uses.length ? orList(c.uses.slice(0, 2)) : c.use0;
   const partnerKinds = joinList(sp(c, "partners").slice(0, 2).map((x) => lowerFirst(x.replace(/\s+(?:whose|that|which)\b.*$/i, ""))));
   const pilotDesign = "Design the pilot: scope it to " + (useTwo || "one use case") + (c.segShort ? " for " + c.segShort : "") + ", end it well inside " + c.cycleText + ", measure " + metricsText(c, 2) + " against the buyer's own numbers from before the pilot, and agree before it starts that " + c.plgSigner + " signs the result off" + (c.acv ? " (at " + num(c.acv) + " US dollars a year, that sign-off is the real sale)" : "") + ".";
@@ -681,18 +688,18 @@ function planPAssisted(c, prefix = "") {
   return {
     d30: [
       p("Choose the one low-risk way a buyer can see value without a full project: " + c.assisted + ". Write the scope on one page, with what the buyer gets to keep." + (c.useOr ? " Build it on " + c.useOr + (c.seg ? ", offered to " + c.seg : "") + "." : "")),
-      p("Agree the measure that shows value in that step (" + metricsText(c, 2) + ") and who on the buyer's side signs it off."),
+      p("Agree the measure that shows value in the " + unit + " (" + metricsText(c, 2) + ") and who on the buyer's side signs it off."),
       p("Decide who starts it (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + "), and give the starter a short pack they can forward."),
       p(pilotDesign),
     ],
     d60: [
       p(outreach),
       p(partner),
-      p("Build the hand-off from the step to a full contract: the findings or results, a proposal that follows from them and a date for the decision."),
-      p("Write down what the step costs you to deliver, so you can tell which accounts to offer it to and which to qualify first."),
+      p("Build the hand-off from the " + unit + " to a full contract: the findings or results, a proposal that follows from them and a date for the decision."),
+      p("Write down what each " + unit + " costs you to deliver, so you can tell which accounts to offer it to and which to qualify first."),
     ],
     d90: [
-      p("Measure how many step-one accounts moved to a full contract, how long that took" + (c.cycle ? " against " + c.cycleText : "") + " and what the ones that stopped had in common."),
+      p("Measure how many accounts that took a " + unit + " moved to a full contract, how long that took" + (c.cycle ? " against " + c.cycleText : "") + " and what the ones that stopped had in common."),
       p("Write the first result up in the shape this buyer trusts: " + lowerFirst(stripEnd(c.proofShape)) + "."),
       p("Keep the pilot design that got " + c.plgSigner + " to sign off" + (c.cycle ? " inside " + c.cycleText : "") + ", write its scope, measures and sign-off as the standard offer for the next accounts, and drop the variants that did not."),
     ],
@@ -725,6 +732,9 @@ export function fitWarning(c, letter) {
   }
   if (letter === "I" && iNeedsPartners(c)) {
     return "With " + both + ", inbound and outbound alone rarely start a sale this size: buyers shortlist through partners, advisers and references before they answer a cold message. The steps below begin with partner and referral-led steps, then build content and outbound on top of them. Ecosystem and ABM usually leads at this size; run gtm_consultation to score it on your numbers.";
+  }
+  if (letter === "E" && c.acv !== null && c.acv < 50000 && c.cycle !== null && c.cycle <= 60 && c.tam !== null && c.tam > 10000 && !((c.acv < 5000) || (c.cycle < 14))) {
+    return "With an ACV of " + num(c.acv) + " US dollars a year, a " + num(c.cycle) + "-day cycle and " + num(c.tam) + " addressable accounts, account-based selling is an unusual lead: the list is too long to research account by account, and a short cycle rarely needs it. The steps below still follow the motion you asked for. What would change the lead: a large account base moves it toward Inbound and Outbound, and people who can start without a call move it toward Product-Led; run gtm_consultation to score it on your numbers.";
   }
   if (letter === "E" && ((c.acv !== null && c.acv < 5000) || (c.cycle !== null && c.cycle < 14))) {
     return "With " + both + ", account-based selling usually costs more per deal than it returns: a small, fast sale is normally won with product-led or inbound motions. The steps below still follow the motion you asked for; run gtm_consultation to score it on your numbers.";
@@ -826,7 +836,7 @@ function planC(c) {
 function anchorStep(c, letter) {
   if (!c.read || (!c.uses.length && !c.head && !c.seg)) return null;
   const what = c.uses.length ? "Start from what you sell" + (c.head ? " (" + c.head + ")" : "") + " and decide which use case leads: " + orList(c.uses) + "." : c.head ? "Start from what you sell (" + c.head + ") and name the one job it does best." : "Start from who buys.";
-  const who = c.seg ? " Aim it at " + c.seg + (c.textRoles && !c.seg.toLowerCase().includes(c.textRoles.toLowerCase()) ? ", starting with " + c.textRoles : "") + (c.place && !c.seg.includes(c.place) ? " in " + c.place : "") + "." : "";
+  const who = c.seg ? " Aim it at " + c.seg + (c.textRoles && !c.seg.toLowerCase().includes(c.textRoles.toLowerCase()) ? ", starting with " + c.textRoles : "") + (c.place && !c.seg.includes(c.place) ? " in " + c.place : "") + "." + (c.read.segmentsText ? " Your text names " + c.read.segmentsText + " among them, so test the first message on one of those." : "") : "";
   const pain = c.uses.length || !c.head
     ? (c.painQ ? " Pick the one that answers " + c.painQ + " first, and write its promise in your buyers' own words." : " Pick the one your buyers would notice first, and write its promise in their own words.")
     : (c.painQ ? " Write its promise in your buyers' own words, starting from " + c.painQ + "." : " Write its promise in your buyers' own words.");
@@ -884,7 +894,7 @@ export function sectorBlock(vertical, model, args) {
 }
 
 /** One paragraph that says how the lead motion sits with the way this sector (or this kind of business) usually buys. */
-export function sectorFit({ vertical, model, letter, motionName, scores, selfServeGiven }) {
+export function sectorFit({ vertical, model, letter, motionName, scores, selfServeGiven, selfServeLine }) {
   const inv = model === "investment";
   const spx = inv ? INVESTMENT_BLOCK : planDetails(vertical);
   if (!spx) return null;
@@ -903,7 +913,7 @@ export function sectorFit({ vertical, model, letter, motionName, scores, selfSer
   }
   // Where the sector's usual route is product-led but the score is low because self_serve was not given, say so.
   if (!tie && letter !== "P" && typical.includes("P") && selfCapable && !selfServeGiven && scores) {
-    text += " In this sector the product-led route is common; its score is " + scores.P + " and no lift was applied because self_serve was not given (the closing list shows what setting it would do).";
+    text += " In this sector the product-led route is common; its score is " + scores.P + " and no lift was applied because self_serve was not given" + (selfServeLine ? " (the closing list shows what setting it would do)." : ".");
   }
   // A large-account lead in a sector that also sells to small accounts self-serve.
   if (!tie && letter === "E" && selfCapable && spx.fit.P && !typical.includes("P") && vertical && ["saas", "software", "ai-native", "vertical-saas"].includes(vertical.id)) {

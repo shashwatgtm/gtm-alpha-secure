@@ -128,7 +128,8 @@ function splitSell(sentence, company) {
   if (colon) {
     const a = s.slice(0, colon.index), b = s.slice(colon.end);
     const ma0 = lastCandidate(a);
-    const ma = ma0 && cleanPhrase(a.slice(ma0.end)) ? ma0 : null;
+    const relHead = (t) => { const k = t.match(/\s(?:that|who|whose|which)\s/i); const pre = k ? t.slice(0, k.index).trim() : ""; return pre && !/\b(?:so|can|will)\b/i.test(pre) && BUYER_LEX.test(pre.split(/\s+/).pop()) ? pre : null; };
+    const ma = ma0 && (cleanPhrase(a.slice(ma0.end)) || relHead(a.slice(ma0.end))) ? ma0 : null;
     const mb = lastCandidate(b) || otherMarker(b);
     if (ma) { head = a.slice(0, ma.index); buyers = a.slice(ma.end); features = b; }
     else if (mb) { head = a; features = b.slice(0, mb.index); buyers = b.slice(mb.end); }
@@ -327,6 +328,8 @@ function voteKinds(v, productText) {
 }
 // Words that say a kind of company is NOT the one read, even though the shared sector file has a matching word (an awareness training platform is not an email gateway).
 const KIND_BLOCK = {
+  "appsec": { when: /\b(?:binar(?:y|ies)|apk|ipa|compiled|mobile (?:app|application) security|rather than source code)\b/i, unless: /\b(?:repositor\w+|pull requests?|secrets? (?:in|detection)|ide plugin|code scanning|ci\/cd pipelines?)\b/i },
+  "payments-banking": { when: /\b(?:core banking|banking platform|banking software|loan origination|lending platform|deposits?)\b/i, unless: /\b(?:payment gateway|payment acceptance|accept(?:s|ing)? (?:online |card )?payments|checkout|payouts?|merchant acquiring|card issuing|payment processing|payment apis?)\b/i },
   "email-security": { when: /human risk|awareness training|security awareness|phishing (?:training|simulations?)|simulations?/i, unless: /gateway|mail flow|inbound (?:e)?mail|quarantine|secure email/i },
 };
 const blockedKind = (id, text) => { const b = KIND_BLOCK[id]; return !!b && b.when.test(text) && !b.unless.test(text); };
@@ -374,7 +377,7 @@ function readSector(args, name, texts, product, pain, buyers, whole) {
     else if (cur && supported(cur) && rival && rival.score >= cur.score + 1) cand = rival;           // another kind has clearly more of them
     else if (cur && supported(cur)) { cand = cur; tie = true; }                                       // within one point: a close call
     else if (top && (!supportProfile || (top.strong.length >= 1 && top.st.id !== "agents-copilots"))) cand = top;
-    if (cand && pick.subtype && cand.st.id !== pick.subtype && cur) why = "more of your product words (" + wordsText(cand) + ") point to " + cand.st.name + " than to " + cur.st.name;
+    if (cand && pick.subtype && cand.st.id !== pick.subtype && cur) why = "more of your product words (" + wordsText(cand) + ") point to it than to the kind first read";
     else if (cand && !pick.subtype) why = "the product words (" + wordsText(cand) + ") point to " + cand.st.name;
     const second = votes.find((r) => !cand || r.st.id !== cand.st.id);
     // a kind named right at the start of the description ("CRM for ...", "voice AI built for ...") says what the product is; a list of features does not
@@ -382,11 +385,11 @@ function readSector(args, name, texts, product, pain, buyers, whole) {
     if (!pick.subtype && cand && second && cand.score - second.score < 1 && !head) tie = true;
     if (cand && tie && second) {
       // two kinds fit about equally and the shared reader did not settle it: only the notes that hold for every company of the sector are printed
-      close = { tie: true, chosen: base.name, other: cand.st.name, chosenWords: wordsText(cand), otherWords: wordsText(second), second: second.st.name };
+      close = { tie: true, chosen: base.name, chosenWords: wordsText(cand), otherWords: wordsText(second) };
       v = base; why = null;
     } else if (cand) {
       v = withSubtype(base, cand.st);
-      if (second && second.score >= 0.5 * cand.score) close = { chosen: cand.st.name, other: second.st.name, chosenWords: wordsText(cand), otherWords: wordsText(second), reason: cand.score > second.score ? "more of your product words point to it" : "its words come first in your description" };
+      if (second && second.score >= 0.5 * cand.score) close = { chosen: cand.st.name, chosenWords: wordsText(cand), otherWords: wordsText(second), reason: cand.score > second.score ? "more of your product words point to it" : "its words come first in your description" };
     } else if (pick.subtype) { v = base; dropped = pick.subtype; }
   }
   // a second vertical: its own match words in the product sentence against the chosen one's
@@ -449,13 +452,14 @@ export function readCompany(args, tool) {
         // a head that is itself a comma list of short phrases ("UPI and card acceptance, split payouts, refunds") holds the use cases
         if (out.head && !sp.features && !moreFeatures) {
           const pieces = splitTop(out.head, /\s*,\s*/);
-          if (pieces.length >= 2 && !/^[A-Z][\w.'-]*$/.test(pieces[0].trim()) && pieces.every((x) => x.trim().split(/\s+/).length <= 9)) { featureText = out.head; out.head = null; }
+          if (pieces.length >= 2 && !/^[A-Z][\w.'-]*$/.test(pieces[0].trim()) && !/^(?:a|an|the)\s+[\w-]+$/i.test(pieces[0].trim()) && pieces.every((x) => x.trim().split(/\s+/).length <= 9)) { featureText = out.head; out.head = null; }
         }
         const chunks = featureText ? chunkList(featureText) : [];
         const extraBuyers = [];
         for (const c0 of chunks) {
           const c = stripEnd(String(c0));
           if (/^to\s+/i.test(c) && looksLikeBuyers(c.replace(/^to\s+/i, ""))) { extraBuyers.push(c.replace(/^to\s+/i, "")); continue; }
+          if (/^\d[\d,.]*\+?(?:\s|%)/.test(c) || (/\d/.test(c) && /\b(?:customers?|enterprises|clients|companies|brands|users|organi[sz]ations|banks)\b/i.test(c))) continue;   // "300+ enterprises including 60+ in banking", "275+ app connectors": claims, not uses
           if (!goodChunk(c) || /^(?:in|on|at|by|from|under|across|over|as|it|its|that|which|where|when|via|so|but|moves|runs|connects|offers|provides|helps|lets|gives|makes|handles|covers|joins|builds|delivers|automates|designs)\b/i.test(c)) continue;
           if (HOW_DELIVERED.test(c) || c0.rawWith) { out.how.push(c); continue; }
           if (!out.uses.includes(c)) out.uses.push(c);
@@ -468,7 +472,9 @@ export function readCompany(args, tool) {
           const bc = firstTop(sp.buyers, /:\s*/);
           if (bc) { const seg = stripEnd(sp.buyers.slice(bc.end)); if (seg.length >= 6 && seg.length <= 170 && !/[“”<>{}\[\]]/.test(seg)) out.segmentsText = seg; sp.buyers = sp.buyers.slice(0, bc.index); }
           // the buyers end where a clause about what they do begins ("security teams collaborating with developers": the buyers are the security teams)
-          let b0 = stripEnd(sp.buyers.trim().split(/,\s+(?:from|including|especially|such as|plus)\s/i)[0]);
+          const inc = sp.buyers.match(/,?\s+(?:including|especially|such as)\s+([^;]+)$/i);
+          if (inc && !out.segmentsText) { const seg = stripEnd(inc[1]); if (!/^\d/.test(seg) && seg.length >= 6 && seg.length <= 170 && !/[“”<>{}\[\]]/.test(seg)) out.segmentsText = seg; }
+          let b0 = stripEnd(sp.buyers.trim().split(/,\s+(?:from|including|especially|such as|plus|with)\s/i)[0]);
           b0 = b0.split(/\s+(?:collaborating|working|building|responsible|looking|trying|needing|wanting|seeking|who|that|whose|which|where|including|especially)\b/i)[0];
           if (b0.length > 160) { const k = b0.match(/\s+(?:at|in|across|within)\s+/i); if (k && k.index >= 12) b0 = b0.slice(0, k.index); }
           const b = stripEnd(b0.replace(/\s*\([^)]*\)?\s*$/, ""));
@@ -483,12 +489,20 @@ export function readCompany(args, tool) {
       out.roles = rolesIn(out.buyersShort || "");
       out.teams = teamsIn(mainText);
       if (out.pain && (out.pain.length > 170 || /[“”<>{}]/.test(out.pain))) out.pain = null;
-      if (out.pain) { const first = stripEnd(out.pain.split(/;\s*/)[0]); out.painShort = first.length <= 110 ? first : null; }
+      if (out.pain) {
+        // the first clause of the problem, whole: up to a semicolon, ", so" or, when that is long, the last comma that keeps it under 110 characters
+        let first = stripEnd(out.pain.split(/;\s*|,\s+so\s/)[0]);
+        if (first.length > 110) { const k = first.slice(0, 110).lastIndexOf(", "); first = k > 30 ? first.slice(0, k) : ""; }
+        out.painShort = first && first.length <= 110 && !/[“”<>{}]/.test(first) ? first : null;
+      }
     }
   }
   const product = out.quoted ? "" : [out.head, ...out.uses, ...out.how].filter(Boolean).join(", ") || "";
   const productForReader = out.quoted ? "" : (mainText ? (sentencesOf(mainText).find((s) => !PAIN_START.test(s) && !ASK_WORDS.test(s)) || mainText) : "");
   const whole = [mainText, industry, channels].filter(Boolean).join(" \n ");
+  // owners of the problem named by the user's own words (a phishing problem belongs to fraud or risk as well as to the product owner)
+  out.owners = [];
+  if (!out.quoted && /\b(?:fraud|phishing|scams?|spam|abuse)\b/i.test([out.pain || "", productForReader].join(" "))) out.owners.push("fraud or risk");
   // sector
   const sec = readSector(args, name, { challenge: mainText, isRoadmap }, productForReader, out.pain || "", out.buyers || "", whole);
   out.sector = sec;
@@ -556,11 +570,12 @@ function sectorLine(read, args) {
   const own = sec.words.filter((w) => !GENERIC_WORD.test(w));
   let t = "Sector: " + read.v.name + " (read from " + [ind ? "industry" : null, read.field].filter(Boolean).join(" and ") + (own.length ? ": " + own.join(", ") : "") + ").";
   const c = sec.close;
-  if (c && c.tie) t += " Close call: your words fit " + c.other + " (" + c.chosenWords + ") and " + c.second + " (" + c.otherWords + ") about equally, so I used the sector-level notes that hold for every " + c.chosen + " company, not the notes of one kind.";
-  else if (c) t += " Close call: your words fit " + c.chosen + " (" + c.chosenWords + ") and " + c.other + " (" + c.otherWords + "); I chose " + c.chosen + " because " + c.reason + ".";
+  // a second reading is named only with the user's own words, never with the name of a sector or kind of company the text does not hold
+  if (c && c.tie) t += " Close call: your words (" + c.chosenWords + ") and your words (" + c.otherWords + ") point to different kinds of company about equally, so I used the sector-level notes that hold for every " + c.chosen + " company, not the notes of one kind.";
+  else if (c) t += " Close call: your words (" + c.chosenWords + ") point to one kind of company and your words (" + c.otherWords + ") to another; I chose the first because " + c.reason + ".";
   else if (sec.why) t += " I chose the kind of company because " + sec.why + ".";
   else if (sec.dropped) t += " Your words do not single out one kind of company, so I used the sector-level notes that hold for every " + read.v.name + " company.";
-  else if (sec.otherVertical) t += " Your words also fit " + sec.otherVertical.v.name + " (" + joinList(sec.otherVertical.words.slice(0, 3)) + "); I kept " + (ind ? "the sector you named in industry" : read.v.name.replace(/,.*$/, "")) + ".";
+  else if (sec.otherVertical && ind) t += " Some of your words (" + joinList(sec.otherVertical.words.slice(0, 3)) + ") also point to another sector; I kept the sector you named in industry.";
   return t;
 }
 
@@ -589,7 +604,7 @@ export function sharpenLines(read, args, extra) {
   const given = (k) => args[k] !== undefined && args[k] !== null && args[k] !== "";
   const tool = read.tool;
   if (tool !== "generate_roadmap") {
-    if (!given("business_stage")) out.push("Give business_stage: it would change the starting row of all four scores; the Series B row in use now is a neutral default, not a claim about you.");
+    if (!given("business_stage")) out.push("Give business_stage: it would change the starting row of all four scores; the Series B row in use now is a neutral default, not a claim about you, and a large, established company usually belongs on a later row.");
     if (!given("acv_usd")) out.push("Give acv_usd: above 50,000 US dollars it would change the lead toward Ecosystem and ABM, below 5,000 toward Product-Led.");
     if (!given("deal_cycle_days")) out.push("Give deal_cycle_days: above 90 days it would change the lead toward Ecosystem and ABM, below 14 toward Product-Led.");
     if (!given("nrr_percent")) out.push("Give nrr_percent: below 100 it would change the score toward Community-Led (fix retention first), above 120 it would add to Community-Led and Product-Led.");

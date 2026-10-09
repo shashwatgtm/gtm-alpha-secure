@@ -347,7 +347,7 @@ test("a connectivity SIM seller is read as connectivity from its product words, 
 test("a close call between two kinds says why the chosen one was chosen, not just that it was", async () => {
   const j = await call("epic_audit", audit(FIND));
   const t = lines(j.what_i_read);
-  assert.match(t, /Close call: your words fit .+ and .+; I chose .+ because (?:more of your product words point to it|its words come first in your description)/);
+  assert.match(t, /Close call: your words \(.+\) point to one kind of company and your words \(.+\) to another; I chose the first because (?:more of your product words point to it|its words come first in your description)/);
 });
 
 test("the new reader module ships in the npm package", async () => {
