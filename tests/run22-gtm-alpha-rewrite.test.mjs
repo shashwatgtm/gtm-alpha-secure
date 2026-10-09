@@ -55,7 +55,7 @@ test("a payments company is not called a software subscription, and the answer s
     assert.match(j.business_model, /per-transaction/, tool + ": " + j.business_model);
     assert.doesNotMatch(j.business_model, /software subscription/i, tool);
     assert.match(lines(j.what_i_read), /payment gateway|payouts/i, tool + ": the words the model was read from are named");
-    assert.match(lines(j.what_i_read), /business model/i, tool);
+    assert.match(lines(j.what_i_read), /how you charge/i, tool);
   }
 });
 
@@ -80,7 +80,7 @@ test("a text that says subscription or per seat is read as a subscription from t
 test("an explicit business_model is used as given and the answer says so", async () => {
   const j = await call("epic_audit", audit(ROUTE, { business_model: "marketplace" }));
   assert.match(j.business_model, /marketplace/);
-  assert.match(lines(j.what_i_read), /business model.*(you set|as given|your input)/i);
+  assert.match(lines(j.what_i_read), /how you charge.*(you set|as given|your input)/i);
 });
 
 // ---- (a) the country in the text is read, named, and the scores do not change (D80) ----
@@ -258,7 +258,7 @@ test("a text that names no product, buyer, sector or model is answered by saying
   const t = j.consultation_output;
   assert.match(t, /could not (?:tell|read)/i);
   assert.match(lines(j.what_i_read), /sector/i);
-  assert.match(lines(j.what_i_read), /business model/i);
+  assert.match(lines(j.what_i_read), /how you charge/i);
   assert.match(lines(j.what_i_read), /buyers?/i);
   assert.doesNotMatch(t, /software subscription \(read from your inputs\)/);
   const k = await call("generate_roadmap", { primary_focus: "I" });

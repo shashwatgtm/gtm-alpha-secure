@@ -393,7 +393,8 @@ test("round 3 (c): the community steps scale to a large TAM instead of five to t
   assert.match(s, /moderat|ambassador|champions/i);
   assert.match(s, /open|public/i);
   const small = await call("generate_roadmap", { primary_focus: "C", industry: "cybersecurity", acv_usd: 80000, tam_accounts: 800 });
-  assert.match(plan(small), /five to ten customers/);
+  assert.doesNotMatch(plan(small), /five to ten customers/);
+  assert.match(plan(small), /founding members/);
 });
 
 test("round 3: the sector named in industry decides the usual model, whatever the description says about itself", async () => {
