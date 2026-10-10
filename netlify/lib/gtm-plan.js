@@ -369,6 +369,78 @@ KIND_PLAN.cybersecurity = [{
     I: "security and mobile engineering leaders search for app vulnerabilities and audit evidence, so content built on those reaches them before a trial",
     C: "application security peers share what slowed or sped up their release process, which supports a trial-led sale",
   },
+}, {
+  kinds: ["cloud-security"],
+  entry: "a time-boxed proof of value on one cloud account, with the exposures found and ranked and the share confirmed as real agreed in writing first",
+  plg: { user: "a cloud or security engineer connecting one cloud account", signer: "the CISO" },
+  partners: ["cloud providers and their marketplaces, where your buyers already buy", "infrastructure as code, CI and ticketing tools you integrate with so a finding reaches the team that owns the resource", "cloud consultancies and systems integrators that run cloud migrations", "audit and risk advisers that ask for evidence of cloud controls"],
+  accounts: "the number of cloud accounts and clouds in use, the security tools already in place, recent audit findings or incidents, and a visible trigger such as a cloud migration, a compliance deadline or a new cloud security lead",
+  reviews: "security architecture, the cloud platform and engineering owners, risk and compliance, and a proof of value",
+  venues: ["CISO peer groups", "cloud security and cloud engineering communities", "audit and compliance working groups"],
+  assets: ["a proof of value plan on one cloud account with success criteria in writing", "an integration list for the cloud, ticketing and code tools the buyer runs", "an evidence pack for audit and risk reviewers"],
+  firstValue: "a cloud or security engineer sees real exposures in one of their own cloud accounts, ranked",
+  expansionSignal: "another cloud account, cloud or business unit asks to be covered",
+  typical: ["E", "I"],
+  fit: {
+    E: "cloud security is CISO-led with a proof of value on one cloud account, often after an audit finding or a cloud move, so account-based selling with cloud and integration partners is the usual way in",
+    P: "a cloud engineer can connect one account and see findings before anyone signs, but a production deal still needs the CISO, the platform owners and compliance",
+    I: "security and cloud leaders search for exposure and misconfiguration topics, so research content builds trust before a proof of value",
+    C: "CISOs and cloud engineers trust their peers, so peer groups and references carry weight",
+  },
+}, {
+  kinds: ["identity-security"],
+  entry: "a time-boxed proof of value on one directory or one set of applications, with the access findings and the effort to fix them agreed in writing first",
+  plg: { user: "an identity or IT administrator connecting one directory", signer: "the CISO" },
+  partners: ["identity providers and directory vendors you connect to", "the owners of the applications and HR systems that hold the accounts", "systems integrators that run identity programmes", "audit and risk advisers that ask for evidence of access reviews"],
+  accounts: "the number of employees and applications, the directories and identity tools in use, audit findings on access, and a visible trigger such as a merger, a move to the cloud or an audit",
+  reviews: "security architecture, IT, internal audit, and risk and compliance",
+  venues: ["CISO peer groups", "identity and access management communities", "internal audit and compliance working groups"],
+  assets: ["a proof of value plan on one directory with success criteria in writing", "an integration list for the directories and applications the buyer runs", "an evidence pack for access reviews and audit"],
+  firstValue: "an identity administrator sees a first set of risky or unused accounts in their own directory",
+  expansionSignal: "another directory, application or business unit asks to be covered",
+  typical: ["E", "I"],
+  fit: {
+    E: "identity is bought by the CISO with IT and audit after an audit finding, a merger or a cloud move, so account-based selling with identity and integration partners is the usual way in",
+    P: "an administrator can connect one directory and see findings before anyone signs, but a rollout needs the CISO, IT and audit",
+    I: "security and IT leaders search for access, privilege and audit topics, so research content builds trust before a proof of value",
+    C: "identity and security peers share what worked in a rollout, so peer groups and references carry weight",
+  },
+}, {
+  kinds: ["email-security"],
+  entry: "a pilot on live mail for one group of users, with the phishing the current filter missed counted before and after",
+  plg: { user: "an IT or security administrator turning it on for a small group of mailboxes", signer: "the CISO" },
+  partners: ["email and collaboration platform vendors you integrate with", "managed IT and security providers that run mailboxes for several companies", "security awareness and training providers", "insurers and audit advisers that ask for email controls"],
+  accounts: "the number of mailboxes, the email platform and filters in use, recent phishing or payment fraud cases, and a visible trigger such as a fraud loss, an audit finding or a platform change",
+  reviews: "security, the messaging and IT owners, finance for payment fraud, and a pilot on live mail",
+  venues: ["CISO peer groups", "messaging and IT administrator communities", "fraud and risk working groups"],
+  assets: ["a pilot plan on live mail with the measures agreed first", "an integration note for the email platform the buyer runs", "a note on how mail is scanned, stored and deleted"],
+  firstValue: "an administrator sees phishing the current filter missed in their own mail",
+  expansionSignal: "another group of users or business unit asks to be covered",
+  typical: ["E", "I"],
+  fit: {
+    E: "email security is bought by the CISO with IT after a phishing or fraud case, with a pilot on live mail first, so account-based selling with platform and managed service partners is a common way in",
+    P: "an administrator can turn it on for a few mailboxes before anyone signs, but a company wide deal needs the CISO and IT",
+    I: "security and IT leaders search for phishing and fraud topics, so research content builds trust before a pilot",
+    C: "security peers share which phishing got through, so peer groups carry weight",
+  },
+}, {
+  kinds: ["appsec"],
+  entry: "a trial on one or two repositories, with the findings confirmed as real and the time to fix counted before any rollout",
+  plg: { user: "a developer scanning one of their own repositories", signer: "the CISO or the head of application security" },
+  partners: ["code hosting, CI and ticketing tools you integrate with so findings reach developers", "development agencies and platform engineering teams that set up pipelines", "penetration testing and security consultancies that advise on code risk", "audit and compliance advisers that ask for evidence of secure development"],
+  accounts: "the number of developers and repositories, the languages and pipelines in use, recent findings from audits or tests, and a visible trigger such as a customer security questionnaire or a compliance deadline",
+  reviews: "security, engineering leadership, compliance, and a trial on one or two repositories",
+  venues: ["application security and developer communities", "CISO and product security roundtables", "compliance and audit events"],
+  assets: ["a pipeline integration guide", "a trial plan on one or two repositories with the measures agreed first", "a note on what the product reads and stores of the code"],
+  firstValue: "a developer sees a first finding in their own repository, with a suggested fix",
+  expansionSignal: "another repository or engineering team is added to the scan",
+  typical: ["P", "I"],
+  fit: {
+    E: "once developers use it, an enterprise deal is signed by security and engineering leaders after a trial, so account-based selling with platform and advisory partners helps at the larger accounts",
+    P: "developers scan their own repository before anyone signs, so a hands-on start fits; a company wide rollout still goes through security and compliance",
+    I: "developers and security leaders search for vulnerability and secure coding topics, so how-to content brings them in",
+    C: "developers trust other developers, so communities and open source presence carry weight",
+  },
 }];
 
 KIND_PLAN.fintech = [KIND_PLAN.fintech, {
@@ -529,7 +601,8 @@ const GENERIC_TOP_ROLE = /^(?:chief executive officer|ceo|head of product)$/i;
 const USER_ROLE = /^(?:developers?|software engineers?|engineers?|platform engineers?|security engineers?)$/i;
 // "A, B or C": a choice between the user's own use cases (a phrase may hold its own "and").
 export function orList(items) {
-  const a = (items || []).filter(Boolean);
+  // a parenthesis is a detail, not a choice: it stays in what was read and out of the list of choices
+  const a = (items || []).map((x) => String(x || "").replace(/\s*\([^)]*\)?/g, "").replace(/\s+/g, " ").trim()).filter(Boolean);
   if (a.length <= 1) return a.join("");
   // phrases that hold their own "and" or commas are separated with semicolons, so each stays one choice
   if (a.length > 2 && a.some((x) => /,|\band\b/.test(x))) return a.slice(0, -1).join("; ") + "; or " + a[a.length - 1];
@@ -593,7 +666,10 @@ export function planContext({ vertical, model, args }) {
   const roles0 = inv ? INVESTMENT_BLOCK.roles : fn ? fn.roles : over.buyerRoles || (vertical ? vertical.buyerRoles : ["the person who signs", "the champion who feels the problem", "the daily user"]);
   // Run 22 round 5: a deal of this size is signed by a head or an officer, so the role lists lead with those; the daily user stays the last role of the sector's own list
   const acvBig = typeof a.acv_usd === "number" && isFinite(a.acv_usd) && a.acv_usd > 100000;
-  const seniorOnly = acvBig ? roles0.filter((x) => SENIOR_ROLE.test(x)) : roles0;
+  // a ticket under 5,000 dollars is signed by whoever runs the function, not by a chief officer
+  const acvSmall = typeof a.acv_usd === "number" && isFinite(a.acv_usd) && a.acv_usd < 5000;
+  const noChief = acvSmall ? roles0.filter((x) => !/^chief\b|\bofficer\b/i.test(x)) : roles0;
+  const seniorOnly = acvBig ? roles0.filter((x) => SENIOR_ROLE.test(x)) : noChief.length >= 3 ? noChief : roles0;
   const seniorRoles = seniorOnly.length >= 2 ? seniorOnly : roles0;
   // buyers that are banks, insurers or the like pick a vendor through technology, risk and compliance: when the sector's list opens with the chief executive, the owner level roles (the chief executive, the product head) go last
   const bankBuyers = !inv && a.read && GENERIC_TOP_ROLE.test(seniorRoles[0] || "") && /\b(?:banks?|credit unions?|insurers?|insurance (?:companies|carriers)|financial institutions|building societies)\b/i.test([a.read.buyersShort, a.read.buyers, a.read.segmentsText].filter(Boolean).join(" "));
@@ -621,12 +697,12 @@ export function planContext({ vertical, model, args }) {
   const channels = clean(a.current_channels);
   // Run 22: what was read from the user's text (netlify/lib/company-read.js): use cases, buyers, roles, teams and the problem, in their own words.
   const rd = a.read || null;
-  const uses = rd ? rd.uses.filter(Boolean).slice(0, 3) : [];
+  const uses = rd ? rd.uses.filter(Boolean).slice(0, 4) : [];
   const geoHit = rd && rd.geo && rd.geo.hits.length === 1 && rd.geo.hits[0].label ? rd.geo.hits[0] : null;
   // the place is added to a sentence only when the buyer phrase does not already hold it ("businesses in MENA")
   const geoOne = geoHit && !(rd.buyersShort && rd.buyersShort.toLowerCase().includes(String(geoHit.word).toLowerCase())) ? geoHit.label : null;
   return {
-    gap: !!gapKind, read: rd, uses, head: rd ? rd.head : null, use0: uses[0] || (rd && rd.head) || null, useOr: uses.length ? orList(uses) : rd && rd.head ? rd.head : null,
+    gap: !!gapKind, tieBreak: !!a.tieBreak, read: rd, uses, head: rd ? rd.head : null, use0: uses[0] || (rd && rd.head) || null, useOr: uses.length ? orList(uses) : rd && rd.head ? rd.head : null,
     seg: rd ? rd.buyersShort : null, segShort: rd && rd.buyersShort ? (rd.buyersShort.length > 60 ? rd.buyersShort.split(/,\s+|\s+and\s+/)[0] : rd.buyersShort) : null, signRoles: rd && rd.roles ? rd.roles.filter((x) => !USER_ROLE.test(x)) : [], userRoles: rd && rd.roles ? rd.roles.filter((x) => USER_ROLE.test(x)) : [],
     textRoles: rd && rd.roles && rd.roles.filter((x) => !USER_ROLE.test(x)).length ? joinList(rd.roles.filter((x) => !USER_ROLE.test(x))) : null, owners: rd && rd.owners ? rd.owners : [], teams: rd ? rd.teams : null,
     staffing: rd && rd.how ? ((rd.how.find((x) => /engineer|team|consult|specialist|success|manager/i.test(x)) || null)) : null,
@@ -929,7 +1005,9 @@ function anchorStep(c, letter) {
   if (!c.read || (!c.uses.length && !c.head && !c.seg)) return null;
   const what = c.uses.length ? "Start from what you sell" + (c.head ? " (" + c.head + ")" : "") + " and decide which use case leads: " + orList(c.uses) + "." : c.head ? "Start from what you sell (" + c.head + ") and name the one job it does best." : "Start from who buys.";
   const who = c.seg ? " Aim it at " + c.seg + (c.textRoles && !c.seg.toLowerCase().includes(c.textRoles.toLowerCase()) ? ", starting with " + c.textRoles : "") + (c.place && !c.seg.includes(c.place) ? " in " + c.place : "") + "." + (c.read.segmentsText ? " Your text names " + c.read.segmentsText + " among them, so test the first message on one of those." : "") : "";
-  const pain = c.uses.length || !c.head
+  const pain = c.tieBreak && c.painQ
+    ? " Your numbers did not pick the lead, so let the problem you stated pick the first action: " + (c.uses.length || !c.head ? "choose the use case that answers " + c.painQ + " and write its promise in your buyers' own words." : "write the promise that answers " + c.painQ + " in your buyers' own words.")
+    : c.uses.length || !c.head
     ? (c.painQ ? " Pick the one that answers " + c.painQ + " first, and write its promise in your buyers' own words." : " Pick the one your buyers would notice first, and write its promise in their own words.")
     : (c.painQ ? " Write its promise in your buyers' own words, starting from " + c.painQ + "." : " Write its promise in your buyers' own words.");
   const tail = { E: c.seg ? " That use case and segment give the first accounts on your list." : " That use case sets which accounts go first on your list.", P: " That use case is the first moment of value you will measure.", I: " That promise becomes the headline of your first messages and search terms.", C: " That use case is the topic of your first community sessions." }[letter] || "";
