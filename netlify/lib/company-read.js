@@ -168,7 +168,7 @@ function chunkList(text) {
     else if (nx !== undefined && /^[A-Za-z]+(?:-[A-Za-z]+)*(?:ed|ized|ised|ive)$/.test(p)) { p = p + ", " + nx; i++; }
     // "one setup for local, regional and global payment methods": a list of adjectives after a preposition is one phrase
     else if (nx !== undefined && /\b(?:for|of|in|with|across)\s+[a-z]+$/i.test(p) && /^[a-z]+\s+and\s+[a-z]+\s+\S/i.test(nx)) { p = p + ", " + nx; i++; }
-    // "Trubloq anti spam on blockchain and Wisely Consent management": a second named product after "and" is its own use case
+    // "Trubloq anti spam on blockchain and Quikly Consent management": a second named product after "and" is its own use case
     const np = p.match(/^([A-Z][\w-]*(?:\s+[\w-]+){2,}?)\s+and\s+((?:[A-Z][\w-]*\s+[A-Z][\w-]*|[A-Z]{2,}\w*|[A-Z][a-z]+[A-Z]\w*)\b.*)$/);
     if (np && !withs[i]) { out.push(np[1]); out.push(np[2]); continue; }
     out.push(withs[i] ? Object.assign(new String(p), { rawWith: true }) : p);
