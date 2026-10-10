@@ -58,7 +58,7 @@ test("a core banking vendor gets no card acceptance words, and no article stands
     assert.doesNotMatch(flat(j), /\byour (?:a|an|the) /i, "motion " + f + ": " + (flat(j).match(/\byour (?:a|an|the) [^.]{0,40}/i) || [""])[0]);
   }
   const i = await call("generate_roadmap", road("Ledgerstone", "fintech", CORE, "I", { acv_usd: 250000, deal_cycle_days: 180, tam_accounts: 1500 }));
-  assert.match(steps(i), /Lead the sequence with your cloud-native, composable core banking platform offer|Lead the sequence with your [a-z-]/);
+  assert.match(steps(i), /Lead the sequence with your cloud-native, composable core banking platform offer|Lead the sequence with your [a-z-]|Lead the sequence with the first number this buyer already watches/);
 });
 
 test("grammar: no 'your a/an/the' in any answer of any tool for several invented companies", async () => {

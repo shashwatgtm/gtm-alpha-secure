@@ -101,7 +101,7 @@ function scaleNote(input, analysis, read, signers, ssEffect, withLever) {
   var tam = typeof input.tam_accounts === "number" ? input.tam_accounts : null, acv = typeof input.acv_usd === "number" ? input.acv_usd : null;
   if (!((tam !== null && tam >= 100000) || (acv !== null && acv < 5000))) return null;
   var small = /\b(?:startups?|freelancers?|small business\w*|solo|single stores?|shop owners?|owners?|D2C|sole traders?|micro)\b/i.test([read.segmentsText, read.buyersShort, read.head].filter(Boolean).join(" ")) || (acv !== null && acv < 5000);
-  var who = !withLever ? "the developer who starts on their own, and the signer only once a team adopts it" : small ? "the founder or owner, with whoever runs finance" : signers.join(" and ");
+  var who = !withLever ? "the developer who starts on their own, and the signer only once a team adopts it" : small ? "the person who runs the business, with whoever runs finance" : signers.join(" and ");
   var parts = ["With " + (tam !== null && tam >= 100000 ? tam.toLocaleString("en-US") + " addressable accounts" : "an ACV of " + acv.toLocaleString("en-US") + " US dollars a year") + (tam !== null && tam >= 100000 && acv !== null && acv < 20000 ? " and an ACV of " + acv.toLocaleString("en-US") + " US dollars a year" : "") + ", a role by role outbound list cannot cover your market and does not pay back at the small end."];
   parts.push("Reach the small accounts through the product itself, content on the problem and partners that already serve them" + (read.segmentsText ? " (your text names " + read.segmentsText + ")" : "") + ", and keep role by role outbound for the larger accounts.");
   parts.push("At the small end the person who decides is " + who + ".");
