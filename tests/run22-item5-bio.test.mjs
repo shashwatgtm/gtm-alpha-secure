@@ -63,7 +63,7 @@ const PERSON = {
     "https://gtmexpert.substack.com/",
     "https://x.com/Shashwat_Ghosh",
     "https://apify.com/shashghosh",
-    "https://www.google.com/search?kgmid=/g/11k58ncv_x",
+    "https://www.google.com/search?kgmid=/g/11k58ncv_x&q=Shashwat+Ghosh",
   ],
   hasOccupation: [
     "VP Marketing, Happay: 161% ARR growth. 2x exit: to CRED ($180M), then MakeMyTrip.",
