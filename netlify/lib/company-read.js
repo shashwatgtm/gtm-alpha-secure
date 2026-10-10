@@ -168,6 +168,9 @@ function chunkList(text) {
     else if (nx !== undefined && /^[A-Za-z]+(?:-[A-Za-z]+)*(?:ed|ized|ised|ive)$/.test(p)) { p = p + ", " + nx; i++; }
     // "one setup for local, regional and global payment methods": a list of adjectives after a preposition is one phrase
     else if (nx !== undefined && /\b(?:for|of|in|with|across)\s+[a-z]+$/i.test(p) && /^[a-z]+\s+and\s+[a-z]+\s+\S/i.test(nx)) { p = p + ", " + nx; i++; }
+    // "Trubloq anti spam on blockchain and Wisely Consent management": a second named product after "and" is its own use case
+    const np = p.match(/^([A-Z][\w-]*(?:\s+[\w-]+){2,}?)\s+and\s+((?:[A-Z][\w-]*\s+[A-Z][\w-]*|[A-Z]{2,}\w*|[A-Z][a-z]+[A-Z]\w*)\b.*)$/);
+    if (np && !withs[i]) { out.push(np[1]); out.push(np[2]); continue; }
     out.push(withs[i] ? Object.assign(new String(p), { rawWith: true }) : p);
   }
   // "delivered across email, SMS, phone calls and Teams": a list of channels after across, via or through stays in the phrase that opened it
@@ -533,9 +536,11 @@ export function readCompany(args, tool) {
         // each clause as a headline: whole when it fits, else cut at the last comma under 110 characters (the first clause may be any length, as before)
         const asHead = (x, i) => { if (i > 0 && x.length < 20) return ""; if (x.length <= 110 && balanced(x)) return x; const k = x.slice(0, 110).lastIndexOf(", "); const cut = k > 30 ? x.slice(0, k) : ""; return cut && balanced(cut) ? cut : ""; };
         const fits = clauses.map(asHead).filter(Boolean);
+        // a single long clause with no comma to cut at is better whole (up to 150 characters) than no headline at all
+        if (!fits.length && clauses[0] && clauses[0].length <= 150 && balanced(clauses[0]) && !clauses[0].includes(", ")) fits.push(clauses[0]);
         const addonish = (x) => { const w = toks(x); return w.filter((t) => addSet.has(t) && !coreSet.has(t)).length > w.filter((t) => coreSet.has(t)).length; };
         let first = fits.find((x) => !addonish(x)) || fits[0] || "";
-        out.painShort = first && first.length <= 110 && !/[“”<>{}]/.test(first) ? first : null;
+        out.painShort = first && first.length <= 150 && !/[“”<>{}]/.test(first) ? first : null;
         // a long problem text is read back as the clause that was used, not pasted whole
         if (out.pain.length > 170) out.pain = out.painShort;
       }
@@ -670,7 +675,12 @@ export function sharpenLines(read, args, extra) {
   const given = (k) => args[k] !== undefined && args[k] !== null && args[k] !== "";
   const tool = read.tool;
   if (tool !== "generate_roadmap") {
-    if (!given("business_stage")) out.push("Give business_stage: it would change the starting row of all four scores; the Series B row in use now is a neutral default, not a claim about you, and a large, established company usually belongs on a later row.");
+    if (!given("business_stage")) {
+      const textAll = [args.gtm_challenge, args.challenge, args.product_description, args.company_description].filter((t) => typeof t === "string").join(" ");
+      const sizeClaim = (textAll.match(/\b\d{1,3}(?:,\d{3})+\+?\s+(?:enterprise\s+(?:brands|clients|customers)|enterprises|clients|customers|brands|companies|businesses|organi[sz]ations)\b|\b\d+(?:\.\d+)?\s*(?:B|bn|billion)\+?\s+(?:dollars?\s+)?(?:in\s+)?revenue\b|\brevenue (?:above|of|over)\s+\d[\d.,]*\s*(?:B|bn|billion|million|M)?/i) || [])[0];
+      if (sizeClaim) out.push("Give business_stage first: your text names \"" + sizeClaim.trim() + "\", which points to an established company, for which the assumed Series B row is a poor fit, and the stage sets the starting row of all four scores.");
+      else out.push("Give business_stage: it would change the starting row of all four scores; the Series B row in use now is a neutral default, not a claim about you, and a large, established company usually belongs on a later row.");
+    }
     if (!given("acv_usd")) out.push("Give acv_usd: above 50,000 US dollars it would change the lead toward Ecosystem and ABM, below 5,000 toward Product-Led.");
     if (!given("deal_cycle_days")) out.push("Give deal_cycle_days: above 90 days it would change the lead toward Ecosystem and ABM, below 14 toward Product-Led.");
     if (!given("nrr_percent")) out.push("Give nrr_percent: below 100 it would change the score toward Community-Led (fix retention first), above 120 it would add to Community-Led and Product-Led.");

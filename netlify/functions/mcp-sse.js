@@ -119,7 +119,8 @@ function describe(args, tool) {
   var analysis = GTM_CONSULTANT.analyzeEPIC(input);
   var read = readCompany(input, tool);
   var v = read.v, m = read.model;
-  var pargs = Object.assign({}, input, { read: read });
+  var leadText = leadNote(analysis, input);
+  var pargs = Object.assign({}, input, { read: read, tieBreak: !!leadText });
   var plan = buildPlan({ letter: analysis.primary.letter, vertical: v, model: m.model, args: pargs });
   var notes = sectorBlock(v, m.model, pargs);
   var signers = (plan.context.signRoles && plan.context.signRoles.length ? plan.context.signRoles : plan.context.roles).slice(0, 2);
@@ -131,7 +132,7 @@ function describe(args, tool) {
   var nameOf = function(model) { return modelName(model, v); };
   var seen = readLines(read, input, nameOf);
   var sharpen = sharpenLines(read, input, { selfServe: ssEffect, geography: geographyEffect(input, analysis, read), askBatch: analysis.primary.letter === "E" });
-  return { analysis: analysis, read: read, v: v, m: m, first: plan.days_30, notes: notes, fit: fit, leadNote: leadNote(analysis, input), adoptionNote: adoption, scaleNote: scale, tierNote: tier, check: selfServeCheck(input, analysis, m.model, input.gtm_challenge), input: input, seen: seen, sharpen: sharpen };
+  return { analysis: analysis, read: read, v: v, m: m, first: plan.days_30, notes: notes, fit: fit, leadNote: leadText, adoptionNote: adoption, scaleNote: scale, tierNote: tier, check: selfServeCheck(input, analysis, m.model, input.gtm_challenge), input: input, seen: seen, sharpen: sharpen };
 }
 
 const GTM_CONSULTANT = {
