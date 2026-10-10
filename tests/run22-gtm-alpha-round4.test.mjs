@@ -32,7 +32,7 @@ test("a small-ticket product across millions of accounts: no role by role list, 
   assert.doesNotMatch(t, /Build the outbound list by role/);
   assert.ok(j.scale_note, "a scale_note field");
   assert.match(j.scale_note, /5,000,000/);
-  assert.match(j.scale_note, /owner/i);
+  assert.match(j.scale_note, /owner|runs the business/i);
   assert.match(j.scale_note, /self_serve/);
   assert.ok(t.includes(j.scale_note));
   assert.match(t, /paper registers|slow billing/);
@@ -50,7 +50,7 @@ test("a payments platform with a very wide market: founders and finance heads fo
   assert.doesNotMatch(t, /Build the outbound list by role \(Chief Technology Officer/);
   assert.ok(j.scale_note);
   assert.match(j.scale_note, /500,000/);
-  assert.match(j.scale_note, /founder|owner/i);
+  assert.match(j.scale_note, /founder|owner|runs the business/i);
   assert.match(j.scale_note, /finance/i);
   assert.match(j.scale_note, /self_serve/);
   assert.match(lines(j.to_sharpen_this), /Give self_serve/);

@@ -340,7 +340,8 @@ const KIND_BLOCK = {
   "email-security": { when: /human risk|awareness training|security awareness|phishing (?:training|simulations?)|simulations?/i, unless: /gateway|mail flow|inbound (?:e)?mail|quarantine|secure email/i },
 };
 const blockedKind = (id, text) => { const b = KIND_BLOCK[id]; return !!b && b.when.test(text) && !b.unless.test(text); };
-const wordsText = (r) => joinList((r.strong.length ? r.strong : r.cues).slice(0, 3));
+// the words are shown as the user typed them, without a function word left dangling at the end ("crm for" is shown as "crm")
+const wordsText = (r) => joinList((r.strong.length ? r.strong : r.cues).slice(0, 3).map((w) => String(w).replace(/(?:\s+(?:for|and|of|with|to|in|the|a|an|on|by))+\s*$/i, "")).filter(Boolean));
 
 function readSector(args, name, texts, product, pain, buyers, whole) {
   const plain = (t) => (typeof t === "string" && name.length > 1 ? t.split(name).join(" ") : t);
@@ -553,6 +554,8 @@ export function readCompany(args, tool) {
     if (small.length && large.length) out.sizeSplit = { small: small.slice(0, 2), large: large.slice(0, 2) };
     out.ledSignals = uniq(/\b(?:solo developers?|students?|free (?:tier|plan)s?|hobby\w*|startup credits?|credits? for \d+ months|credits)\b/).slice(0, 3);
   }
+  // a segment keeps the group, not the claim after it ("Fortune 500 companies, with 400+ clients (page claim)" is "Fortune 500 companies")
+  if (out.segmentsText) { const t = stripEnd(out.segmentsText.replace(/\s*\([^)]*\)\s*$/, "").replace(/,?\s+with\s+\d[\d,.]*\+?\s.*$/i, "")); out.segmentsText = t.length >= 4 ? t : null; }
   out.owners = [];
   if (!out.quoted && /\b(?:fraud|phishing|scams?|spam|abuse)\b/i.test([out.pain || "", productForReader].join(" "))) out.owners.push("fraud or risk");
   // sector

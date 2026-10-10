@@ -347,6 +347,72 @@ KIND_PLAN.telecom = [KIND_PLAN.telecom, {
   },
 }];
 
+// Run 22 round 6: the three kinds the shared sector file gained (mobile application security, core banking and lending platforms, managed data
+// infrastructure). Wording only: who sits next to the seller, what the buyer reviews, what the first offer is. It follows the sales motion, objections
+// and proof lines the shared file holds for the kind and adds no figure, market size or company name (rule B82).
+KIND_PLAN.cybersecurity = [{
+  kinds: ["mobile-appsec"],
+  entry: "a trial on one or two apps, with findings per release and the share confirmed as real measured before any rollout across the app portfolio",
+  plg: { user: "a mobile developer or security engineer scanning a build of one of their own apps", signer: "the CISO or the head of application security" },
+  partners: ["mobile app development agencies and platform teams that build and release apps for your buyers", "CI/CD, ticketing and app store tooling you integrate with so findings reach developers", "penetration testing and security consultancies that advise on app risk", "audit and compliance advisers that ask for evidence of mobile app security"],
+  accounts: "the number of mobile apps and how often they are released, how they are tested today, and a visible trigger such as an audit finding, a customer security questionnaire or a store policy change",
+  reviews: "security, mobile engineering, compliance evidence and a legal check on how uploaded app files are handled",
+  reads: ["findings per release write-ups on one app", "guides to adding a scan to the release pipeline", "comparisons of scanning every release with a yearly penetration test", "notes on store submission and audit evidence"],
+  venues: ["application security and mobile developer communities", "CISO and product security roundtables", "compliance and audit events for companies that publish regulated apps"],
+  assets: ["a release pipeline integration guide", "a trial plan on one or two apps with the measures agreed first", "a note on how uploaded app files are handled, stored and deleted"],
+  firstValue: "a developer or security engineer sees the first scan of one of their own app builds, with each finding explained",
+  expansionSignal: "a second app or mobile team is added to the scan",
+  typical: ["E", "I"],
+  fit: {
+    E: "mobile app security is usually bought by security leaders after an audit finding or a customer demand, with a trial on one or two apps first, so account-based selling with advisers and platform teams is a common way in",
+    P: "a developer can scan one app build alone before anyone signs, so a hands-on start fits the first app; a rollout across the portfolio still goes through security and mobile engineering",
+    I: "security and mobile engineering leaders search for app vulnerabilities and audit evidence, so content built on those reaches them before a trial",
+    C: "application security peers share what slowed or sped up their release process, which supports a trial-led sale",
+  },
+}];
+
+KIND_PLAN.fintech = [KIND_PLAN.fintech, {
+  kinds: ["core-banking"],
+  entry: "a proof of concept on one new product or brand, with time to launch and the cost of a change measured against the current core before any migration",
+  plg: { user: "a product or core systems engineer configuring a first product in a sandbox", signer: "the chief technology officer or the chief operating officer" },
+  partners: ["systems integrators and banking technology consultancies that run core replacement programmes", "payment, card and channel providers that must connect to the core", "cloud providers that hold the bank's data and the regions it must stay in", "audit and regulatory advisers that review reporting and data location"],
+  accounts: "the products and channels on the current core, its age and what a change costs today, regulatory change ahead, and a visible trigger such as a new digital brand, a merger or a regulator deadline",
+  reviews: "technology architecture, risk and compliance, regulatory reporting and data location, and procurement",
+  reads: ["time to launch a product on a new core against the old one", "staged migration and rollback plans", "regulatory reporting and data location notes", "integration guides for payments, cards and channels"],
+  venues: ["banking technology and digital banking conferences", "roundtables for heads of digital banking and core systems", "regulator and industry association events"],
+  assets: ["a staged migration and rollback plan", "a regulatory reporting and data location pack", "a reference from a comparable bank"],
+  firstValue: "a product team configures and launches one product in the sandbox without a change request to the old core",
+  expansionSignal: "a second product or brand asks to move onto the platform",
+  typical: ["E", "I"],
+  fit: {
+    E: "a core change is signed by technology or operations leaders after a proof of concept and regulator checks, so account-based selling with integrators and advisers is the usual way in",
+    P: "a core is not bought on a sign-up: a sandbox lets product and engineering teams test configuration before a proof of concept, but the sale goes through a committee",
+    I: "heads of digital banking and core systems search for legacy core, migration and time to launch topics, so content built on those reaches them before a vendor list exists",
+    C: "bank technology leaders trust peers who have moved a core, so references and peer roundtables carry weight at the risk review",
+  },
+}];
+
+KIND_PLAN.software = [{
+  kinds: ["data-infrastructure"],
+  entry: "a trial or credits on one service, with operations hours and incidents measured before and after a staged migration",
+  plg: { user: "a developer or data engineer starting a managed service on a trial", signer: "the VP Engineering or the head of platform" },
+  partners: ["cloud providers and their marketplaces, where your buyers already buy infrastructure", "open source communities around the engines you run", "consultancies and systems integrators that migrate and operate data platforms", "observability and security vendors whose tools connect to the same data"],
+  accounts: "the data services in use and who is on call for them, the clouds and regions, recent outages or failed upgrades, and a visible trigger such as a migration, a new platform team or pressure on cloud spend",
+  reviews: "security (access, encryption and data location), finance on predictable spend, and a technical pilot of a staged migration",
+  reads: ["operations hours and incidents for a service before and after moving it", "migration guides with a replica and a rollback", "cost breakdowns built from a buyer's own workload", "comparisons of running it in house with the managed price"],
+  venues: ["developer and open source communities around the engines you run", "platform engineering and data engineering meetups", "cloud and infrastructure conferences"],
+  assets: ["a migration guide with a replica and a tested rollback", "a worked cost estimate from the buyer's own workload", "a security note on access, encryption and data location"],
+  firstValue: "a developer provisions a first managed service and connects it to their own workload",
+  expansionSignal: "a second service or team moves onto the managed platform",
+  typical: ["P", "I"],
+  fit: {
+    E: "larger contracts are signed by engineering or platform leaders with security and finance, so account-based selling with cloud and integration partners helps at the larger accounts",
+    P: "developers start on a trial or credits before anyone signs, so a hands-on start is the usual way in, and a platform lead signs a committed plan once usage grows",
+    I: "engineers search for outage, upgrade and migration topics, so how-to content reaches them before a vendor list exists",
+    C: "engineering peers and open source communities vouch for tools, which carries weight with the people who run the service",
+  },
+}];
+
 // Software sold to developers: the API platform wording applies only when the seller's own words name APIs as the product and the shared
 // reader named no software sub-type (a developer platform or a testing tool gets its sub-type's notes instead).
 export const API_PLATFORM = {
@@ -560,7 +626,7 @@ export function planContext({ vertical, model, args }) {
   // the place is added to a sentence only when the buyer phrase does not already hold it ("businesses in MENA")
   const geoOne = geoHit && !(rd.buyersShort && rd.buyersShort.toLowerCase().includes(String(geoHit.word).toLowerCase())) ? geoHit.label : null;
   return {
-    read: rd, uses, head: rd ? rd.head : null, use0: uses[0] || (rd && rd.head) || null, useOr: uses.length ? orList(uses) : rd && rd.head ? rd.head : null,
+    gap: !!gapKind, read: rd, uses, head: rd ? rd.head : null, use0: uses[0] || (rd && rd.head) || null, useOr: uses.length ? orList(uses) : rd && rd.head ? rd.head : null,
     seg: rd ? rd.buyersShort : null, segShort: rd && rd.buyersShort ? (rd.buyersShort.length > 60 ? rd.buyersShort.split(/,\s+|\s+and\s+/)[0] : rd.buyersShort) : null, signRoles: rd && rd.roles ? rd.roles.filter((x) => !USER_ROLE.test(x)) : [], userRoles: rd && rd.roles ? rd.roles.filter((x) => USER_ROLE.test(x)) : [],
     textRoles: rd && rd.roles && rd.roles.filter((x) => !USER_ROLE.test(x)).length ? joinList(rd.roles.filter((x) => !USER_ROLE.test(x))) : null, owners: rd && rd.owners ? rd.owners : [], teams: rd ? rd.teams : null,
     staffing: rd && rd.how ? ((rd.how.find((x) => /engineer|team|consult|specialist|success|manager/i.test(x)) || null)) : null,
@@ -651,12 +717,12 @@ function planI(c) {
   const d30 = [
     words ? "Write down the words your buyers use for the problem" + (c.painQ ? " you describe (" + c.painQ + ") and for this sector (" : " (") + words + ") next to the words you use. Keep the buyer's version for search terms, subject lines and headlines."
       : "Interview your customers and write down, in their exact words, how they describe the problem before they buy. Keep their version for search terms, subject lines and headlines, and drop yours where the two differ.",
-    c.channels ? channelStep(c) : c.userRoles.length && c.signRoles.length + c.roles.length ? "List what you do today to reach buyers, count the sign-ups or developers each channel brought and the meetings with " + joinList((c.signRoles.length ? c.signRoles : c.roles).slice(0, 2)) + " that followed, and keep the one or two that reach them." : "List what you do today to reach buyers, count the meetings each channel produced with the roles that decide (" + (c.broad && c.smallEnd ? "the founder or owner who decides at the small end" : deciders(c)) + "), and keep the one or two that reach them.",
-    c.broad ? "Do not build a role by role list for " + num(c.tam) + " accounts. Pick one segment from your text (" + (c.read && c.read.segmentsText ? c.read.segmentsText : c.seg || "your best customers") + ") and one trigger, write one message for the person who decides there (" + (c.smallEnd ? "the founder or owner, or whoever runs finance" : joinList(c.roles.slice(0, 2))) + "), and let content on the problem and the product itself reach the rest." : "Build the outbound list by role (" + joinList(c.textRoles ? [...new Set([...c.signRoles, ...c.roles.slice(0, 2)])].slice(0, 4) : c.roles.slice(0, 3)) + ")" + (c.teams ? ", plus the leader of each team your text names (" + c.teams + ")" : "") + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
+    c.channels ? channelStep(c) : c.userRoles.length && c.signRoles.length + c.roles.length ? "List what you do today to reach buyers, count the sign-ups or developers each channel brought and the meetings with " + joinList((c.signRoles.length ? c.signRoles : c.roles).slice(0, 2)) + " that followed, and keep the one or two that reach them." : "List what you do today to reach buyers, count the meetings each channel produced with the roles that decide (" + (c.broad && c.smallEnd ? "the person who runs the business and decides at the small end" : deciders(c)) + "), and keep the one or two that reach them.",
+    c.broad ? "Do not build a role by role list for " + num(c.tam) + " accounts. Pick one segment from your text (" + (c.read && c.read.segmentsText ? c.read.segmentsText : c.seg || "your best customers") + ") and one trigger, write one message for the person who decides there (" + (c.smallEnd ? "the person who runs the business, or whoever runs finance" : joinList(c.roles.slice(0, 2))) + "), and let content on the problem and the product itself reach the rest." : "Build the outbound list by role (" + joinList(c.textRoles ? [...new Set([...c.signRoles, ...c.roles.slice(0, 2)])].slice(0, 4) : c.roles.slice(0, 3)) + ")" + (c.teams ? ", plus the leader of each team your text names (" + c.teams + ")" : "") + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
   ];
   const d60 = [
     "Publish the proof in the forms these buyers read: " + joinLong(sp(c, "reads")) + ". Build each piece on the numbers the buyer already watches (" + metricsText(c, 2) + ").",
-    "Start a short outbound sequence to the list. Each message opens with a problem in the buyer's words and ends with one ask: " + c.entry + "." + (c.use0 ? " Lead the sequence with your " + bare(c.use0) + " offer" + (c.segShort ? " for " + c.segShort : "") + "." : ""),
+    "Start a short outbound sequence to the list. Each message opens with a problem in the buyer's words and ends with one ask: " + c.entry + "." + (c.uses.length || c.gap || !c.metrics.length || !c.vertical ? (c.use0 ? " Lead the sequence with your " + bare(c.use0) + " offer" + (c.segShort ? " for " + c.segShort : "") + "." : "") : " Lead the sequence with the first number this buyer already watches (" + c.metrics[0] + ")."),
     c.longCycle ? "Agree with sales which signals mean a call is worth booking (a reply, a second reader at the same account, a request for the reference). With " + c.cycleText + ", expect several people to engage before anyone asks for a meeting." : "Agree with sales which signals mean a call is worth booking (a reply, a second reader at the same account, a request for the reference) and how fast each is followed up.",
   ];
   const d90 = [
@@ -676,11 +742,14 @@ function planPSelf(c, prefix = "") {
   const p = (t) => prefix + t;
   // a payment or marketplace business grows by volume and by methods or markets switched on, not by seats: its first value and its growth signal say so
   const pay = (c.model === "transactions" || c.model === "marketplace") && !(c.sp && c.sp.firstValue);
-  const firstValue = pay ? (c.model === "transactions" ? "the first real transaction is processed end to end and the merchant sees it settled" : "the first real order or listing goes through end to end") : sp(c, "firstValue");
+  // without a first value written for the sector or kind, the first result is the product's first use case in the user's own words (parentheses left out)
+  const useFV = !pay && c.uses.length && sp(c, "firstValue") === neutral.firstValue ? bare(c.use0).replace(/\s*\([^)]*\)?/g, "").replace(/\s+/g, " ").trim() : "";
+  const useFirst = useFV.length >= 8 && useFV.length <= 70;
+  const firstValue = pay ? (c.model === "transactions" ? "the first real transaction is processed end to end and the merchant sees it settled" : "the first real order or listing goes through end to end") : useFirst ? "a new user gets a first result from " + useFV + ", on their own data" : sp(c, "firstValue");
   const growth = pay ? (c.model === "transactions" ? "a second payment method or market is switched on, or monthly volume grows" : "a second batch of listings or orders is added") : sp(c, "expansionSignal");
   return {
     d30: [
-      p("Define the first moment of value: " + firstValue + "." + (c.use0 ? (c.use0.length <= 60 && !/[()]/.test(c.use0) ? " Check with your first users whether, for " + (c.seg || "them") + ", it comes from " + c.use0 + "." : " Check with your first users which of your use cases brings them to it first.") : "") + " Measure how many new users reach it and how long it takes."),
+      p("Define the first moment of value: " + firstValue + "." + (useFirst ? " Check with your first users that this is the result they came for." : c.use0 ? (c.use0.length <= 60 && !/[()]/.test(c.use0) ? " Check with your first users whether, for " + (c.seg || "them") + ", it comes from " + c.use0 + "." : " Check with your first users which of your use cases brings them to it first.") : "") + " Measure how many new users reach it and how long it takes."),
       p("Remove the steps between sign-up and that moment, and record where people stop."),
       p("Decide who the product-led user is (" + c.plgUser + ") and who still has to say yes (" + c.plgSigner + ")." + (pay ? " The sales conversation starts when volume or the number of methods grows." : " The sales conversation starts when the second person appears in an account.")),
     ],
