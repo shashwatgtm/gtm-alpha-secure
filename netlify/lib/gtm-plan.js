@@ -702,7 +702,7 @@ export function planContext({ vertical, model, args }) {
   // the place is added to a sentence only when the buyer phrase does not already hold it ("businesses in MENA")
   const geoOne = geoHit && !(rd.buyersShort && rd.buyersShort.toLowerCase().includes(String(geoHit.word).toLowerCase())) ? geoHit.label : null;
   return {
-    gap: !!gapKind, tieBreak: !!a.tieBreak, read: rd, uses, head: rd ? rd.head : null, use0: uses[0] || (rd && rd.head) || null, useOr: uses.length ? orList(uses) : rd && rd.head ? rd.head : null,
+    gap: !!gapKind, tieBreak: !!a.tieBreak, lines: rd && rd.lines ? rd.lines : null, read: rd, uses, head: rd ? rd.head : null, use0: uses[0] || (rd && rd.head) || null, useOr: uses.length ? orList(uses) : rd && rd.head ? rd.head : null,
     seg: rd ? rd.buyersShort : null, segShort: rd && rd.buyersShort ? (rd.buyersShort.length > 60 ? rd.buyersShort.split(/,\s+|\s+and\s+/)[0] : rd.buyersShort) : null, signRoles: rd && rd.roles ? rd.roles.filter((x) => !USER_ROLE.test(x)) : [], userRoles: rd && rd.roles ? rd.roles.filter((x) => USER_ROLE.test(x)) : [],
     textRoles: rd && rd.roles && rd.roles.filter((x) => !USER_ROLE.test(x)).length ? joinList(rd.roles.filter((x) => !USER_ROLE.test(x))) : null, owners: rd && rd.owners ? rd.owners : [], teams: rd ? rd.teams : null,
     staffing: rd && rd.how ? ((rd.how.find((x) => /engineer|team|consult|specialist|success|manager/i.test(x)) || null)) : null,
@@ -747,12 +747,25 @@ function objectionStep(c) {
   return "Prepare the two objections this buyer raises first and rehearse the answers with your sales lead. " + o.map((x) => "\"" + x.objection + "\": " + stripEnd(x.response) + ".").join(" ");
 }
 
+// the buyers of a services text that names several lines of business: the kind's roles for the line it covers, the heads of the other lines in the user's words
+function lineRoles(c, n) {
+  const L = c.lines;
+  const sign = c.roles.find((r) => /Chief Operating Officer|Chief Executive|Managing Director|Business Unit Head/i.test(r));
+  return joinList(c.roles.slice(0, n)) + " for " + joinList(L.covered) + "; the heads of " + joinList(L.other) + " as you name them for those lines" + (sign ? "; and the " + sign + " across lines" : "");
+}
+function linesStep(c) {
+  const L = c.lines;
+  if (!L) return null;
+  const pains = L.pains.filter((x) => !c.painQ || c.painQ.indexOf(x.pain) < 0);
+  return "Your text names more than one line of business, and the sector notes cover " + joinList(L.covered) + " only. For " + joinList(L.other) + ", write the promise in the words of its own pain" + (pains.length ? ": " + pains.map((x) => "for " + x.line + ", \"" + x.pain + "\"").join("; ") : "") + ", and ask the first buyers of each line what would stop them signing.";
+}
+
 function reviewStep(c) {
   const r = sp(c, "reviews");
   const named = c.textRoles ? "Your text names " + c.textRoles + " as the buyers, so start with them. " : "";
   const teams = c.teams ? " Your text names these teams: " + c.teams + ". Add the leader of each to the sheet, since they use it or pay for it." : "";
   const owner = c.owners.length ? " Your text describes a " + (/phishing|scam|spam|fraud|abuse/i.test(c.painQ || c.head || "") ? "fraud" : "fraud or abuse") + " problem, so also name the head of " + c.owners[0] + " at each account." : "";
-  const ppl = c.textRoles ? joinList([...new Set([...c.signRoles, ...c.roles.slice(0, 2)])].slice(0, 4)) : joinList(c.roles.slice(0, 4));
+  const ppl = c.lines && !c.textRoles ? lineRoles(c, 3) : c.textRoles ? joinList([...new Set([...c.signRoles, ...c.roles.slice(0, 2)])].slice(0, 4)) : joinList(c.roles.slice(0, 4));
   return named + (c.longCycle
     ? "For every account name the people on the buying side: " + ppl + ". Write down who signs, who champions and who can block. With " + c.cycleText + ", add the review steps (" + r + ") to the same sheet and book their dates before the first meeting, so no review surprises you late."
     : "For every account name the people on the buying side: " + ppl + ". Write down who signs, who champions and who can block, and which reviews come before a decision (" + r + ").") + owner + teams;
@@ -794,7 +807,7 @@ function planI(c) {
     words ? "Write down the words your buyers use for the problem" + (c.painQ ? " you describe (" + c.painQ + ") and for this sector (" : " (") + words + ") next to the words you use. Keep the buyer's version for search terms, subject lines and headlines."
       : "Interview your customers and write down, in their exact words, how they describe the problem before they buy. Keep their version for search terms, subject lines and headlines, and drop yours where the two differ.",
     c.channels ? channelStep(c) : c.userRoles.length && c.signRoles.length + c.roles.length ? "List what you do today to reach buyers, count the sign-ups or developers each channel brought and the meetings with " + joinList((c.signRoles.length ? c.signRoles : c.roles).slice(0, 2)) + " that followed, and keep the one or two that reach them." : "List what you do today to reach buyers, count the meetings each channel produced with the roles that decide (" + (c.broad && c.smallEnd ? "the person who runs the business and decides at the small end" : deciders(c)) + "), and keep the one or two that reach them.",
-    c.broad ? "Do not build a role by role list for " + num(c.tam) + " accounts. Pick one segment from your text (" + (c.read && c.read.segmentsText ? c.read.segmentsText : c.seg || "your best customers") + ") and one trigger, write one message for the person who decides there (" + (c.smallEnd ? "the person who runs the business, or whoever runs finance" : joinList(c.roles.slice(0, 2))) + "), and let content on the problem and the product itself reach the rest." : "Build the outbound list by role (" + joinList(c.textRoles ? [...new Set([...c.signRoles, ...c.roles.slice(0, 2)])].slice(0, 4) : c.roles.slice(0, 3)) + ")" + (c.teams ? ", plus the leader of each team your text names (" + c.teams + ")" : "") + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
+    c.broad ? "Do not build a role by role list for " + num(c.tam) + " accounts. Pick one segment from your text (" + (c.read && c.read.segmentsText ? c.read.segmentsText : c.seg || "your best customers") + ") and one trigger, write one message for the person who decides there (" + (c.smallEnd ? "the person who runs the business, or whoever runs finance" : joinList(c.roles.slice(0, 2))) + "), and let content on the problem and the product itself reach the rest." : "Build the outbound list by role (" + (c.lines && !c.textRoles ? lineRoles(c, 3) : joinList(c.textRoles ? [...new Set([...c.signRoles, ...c.roles.slice(0, 2)])].slice(0, 4) : c.roles.slice(0, 3))) + ")" + (c.teams ? ", plus the leader of each team your text names (" + c.teams + ")" : "") + (c.tam ? " at the accounts within your " + num(c.tam) + " addressable accounts that show a trigger" : " at accounts that show a trigger") + ". Write one message per role, never one message for all.",
   ];
   const d60 = [
     "Publish the proof in the forms these buyers read: " + joinLong(sp(c, "reads")) + ". Build each piece on the numbers the buyer already watches (" + metricsText(c, 2) + ").",
@@ -1023,7 +1036,8 @@ export function buildPlan({ letter, vertical, model, args }) {
   const planner = PLANNERS[letter] || planP;
   const p = planner(c);
   const anchor = anchorStep(c, letter);
-  if (anchor) p.d30 = [anchor, ...p.d30];
+  const lstep = linesStep(c);
+  if (anchor) p.d30 = [anchor, ...(lstep ? [lstep] : []), ...p.d30];
   const fix = (list) => list.filter(Boolean).map((t) => t.replace(/\s+/g, " ").replace(/\.\./g, "."));
   return { days_30: fix(p.d30), days_60: fix(p.d60), first_quarter: fix(p.d90), context: c, warning: fitWarning(c, letter) };
 }
@@ -1053,7 +1067,11 @@ export function sectorBlock(vertical, model, args) {
     what_it_measures: [...c.fn.metrics, ...v.metrics.filter((m) => /retention|churn/.test(m))],
     read_as: "Your own words point at " + c.fn.name + " buyers (" + joinList(c.roles.slice(0, 3)) + "), so the buying committee and measures are those of a " + c.fn.name + " function, not the generic SaaS ones.",
   } : {};
-  return Object.assign({
+  const L = c.lines;
+  const linesBlock = L ? {
+    read_as: "Your words name more than one line of business. These notes cover " + joinList(L.covered) + "; they do not cover " + joinList(L.other) + ", for which only your own words are shown.",
+  } : {};
+  const out = Object.assign({
     sector: v.name,
     who_decides: over.committee || v.committee,
     what_it_measures: over.metrics || v.metrics,
@@ -1061,7 +1079,13 @@ export function sectorBlock(vertical, model, args) {
     proof_that_lands: over.proofShape || v.proofShape,
     sales_motion: v.salesMotion,
     buyer_words: c.fn ? c.fn.terms : [...new Set([...(over.vocabulary || v.vocabulary), ...c.terms])],
-  }, fnBlock);
+  }, fnBlock, linesBlock);
+  if (L) {
+    out.who_decides = out.who_decides + " For " + joinList(L.other) + ", which these notes do not cover, the buyers are the heads of those functions in your words.";
+    out.buyer_words = [...out.buyer_words, ...L.other];
+    out.usual_objections = [...out.usual_objections, "For " + joinList(L.other) + " the sector file has no objections yet: ask the first buyers of each line what would stop them signing."];
+  }
+  return out;
 }
 
 /** One paragraph that says how the lead motion sits with the way this sector (or this kind of business) usually buys. */

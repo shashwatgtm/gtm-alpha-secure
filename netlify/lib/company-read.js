@@ -534,13 +534,14 @@ export function readCompany(args, tool) {
         if (ai > 0) { const before = sell.slice(0, ai); const k = Math.max(before.lastIndexOf(", with "), before.lastIndexOf(" with "), before.lastIndexOf(", plus ")); if (k > 0) { addonText = before.slice(k); coreText = before.slice(0, k); } }
         const coreSet = new Set(toks(coreText)), addSet = new Set(toks(addonText));
         // each clause as a headline: whole when it fits, else cut at the last comma under 110 characters (the first clause may be any length, as before)
-        const asHead = (x, i) => { if (i > 0 && x.length < 20) return ""; if (x.length <= 110 && balanced(x)) return x; const k = x.slice(0, 110).lastIndexOf(", "); const cut = k > 30 ? x.slice(0, k) : ""; return cut && balanced(cut) ? cut : ""; };
+        const asHead = (x, i) => { if (i > 0 && x.length < 20) return ""; if (x.length <= 110 && balanced(x)) return x; const cl = x.slice(0, 151).match(/^(.{30,150}?),\s+(?:forcing|leaving|making|causing|resulting|meaning|slowing|costing|wasting|which|because)\b/); if (cl && balanced(cl[1])) return cl[1]; const k = x.slice(0, 110).lastIndexOf(", "); const cut = k > 30 ? x.slice(0, k) : ""; return cut && balanced(cut) ? cut : ""; };
         const fits = clauses.map(asHead).filter(Boolean);
         // a single long clause with no comma to cut at is better whole (up to 150 characters) than no headline at all
         if (!fits.length && clauses[0] && clauses[0].length <= 150 && balanced(clauses[0]) && !clauses[0].includes(", ")) fits.push(clauses[0]);
         const addonish = (x) => { const w = toks(x); return w.filter((t) => addSet.has(t) && !coreSet.has(t)).length > w.filter((t) => coreSet.has(t)).length; };
         let first = fits.find((x) => !addonish(x)) || fits[0] || "";
         out.painShort = first && first.length <= 150 && !/[“”<>{}]/.test(first) ? first : null;
+        out.painParts = clauses.slice(0, 4).map((x, i) => ({ full: x, head: asHead(x, i) })).filter((x) => x.head && !/[“”<>{}]/.test(x.head));
         // a long problem text is read back as the clause that was used, not pasted whole
         if (out.pain.length > 170) out.pain = out.painShort;
       }
@@ -589,6 +590,26 @@ export function readCompany(args, tool) {
   // geography
   out.geo = readGeography(args, [[mainField || "text", out.quoted ? "" : mainText || ""], ["industry", industry], ["current_channels", channels], ["company_name", ""]]);
   out.fields = { main: mainField };
+  // a services text that names more than one line of business: the sector kind covers the lines its own words reach; the others are named from the user's words
+  out.lines = null;
+  if (!out.quoted && out.uses.length >= 2 && sec.v && sec.v.subtype && out.model && out.model.model === "services") {
+    const GEN = new Set(["services", "service", "operations", "operation", "management", "solutions", "solution", "technology", "digital", "business", "process", "processes", "delivery", "platform", "compliance", "teams", "team", "data", "with", "from", "that", "this", "based", "into", "their", "other", "customers", "clients", "client", "voice", "chat", "email", "support", "phone", "social", "back", "office", "helpdesk", "channels", "omnichannel"]);
+    const stems = (t) => (String(t || "").toLowerCase().match(/[a-z]{4,}/g) || []).filter((w) => !GEN.has(w)).map((w) => w.slice(0, 5));
+    const kv = sec.v;
+    // what the kind is about: its name, words, measures and proof (not its committee or objections, which name finance, legal and security reviewers for every line)
+    const kindStems = new Set(stems([kv.name, ...(kv.vocabulary || []), ...(kv.metrics || []), kv.proofShape].join(" ")));
+    const covered = [], other = [];
+    for (const u of out.uses.slice(0, 4)) { const st = stems(u); (st.length && st.some((x) => kindStems.has(x)) ? covered : other).push(u); }
+    if (covered.length && other.length && other.length <= 4) {
+      const used = new Set(); const pains = [];
+      for (const line of other) {
+        const ls = new Set(stems(line));
+        const idx = (out.painParts || []).findIndex((x, i) => !used.has(i) && stems(x.full).some((y) => ls.has(y)));
+        if (idx >= 0) { used.add(idx); pains.push({ line, pain: out.painParts[idx].head }); }
+      }
+      out.lines = { covered, other, pains };
+    }
+  }
   return out;
 }
 
@@ -646,6 +667,7 @@ function sectorLine(read, args) {
   else if (sec.why) t += " I chose the kind of company because " + sec.why + ".";
   else if (sec.dropped && !sec.gap) t += " Your words do not single out one kind of company, so I used the sector-level notes that hold for every " + read.v.name + " company.";
   else if (sec.otherVertical && ind) t += " Some of your words (" + joinList(sec.otherVertical.words.slice(0, 3)) + ") also point to another sector; I kept the sector you named in industry.";
+  if (read.lines) t += " Your words name more than one line of business: the notes cover " + joinList(read.lines.covered) + " and do not cover " + joinList(read.lines.other) + ", so for those lines I used only your own words.";
   if (sec.gap) t += " Your product looks like " + sec.gap + ", which the sector file has no notes for yet, so only who decides is shown for the sector and the measures and objections of other kinds of product are left out.";
   return t;
 }
