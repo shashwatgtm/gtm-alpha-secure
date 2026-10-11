@@ -4,7 +4,10 @@
 // is hypothetical. Run: node --test tests/run25-sample-report.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import * as RC from "../netlify/lib/report-chrome.js";
+import { EXAMPLE_NOTE } from "../netlify/lib/premium-audit.js";
+import { exampleAnswers } from "../scripts/build-sample-report.mjs";
 
 const WORDMARK = '<span class="hx9-word">Helix GTM</span>';
 // "Helix GTM" not followed by " Consulting", outside the wordmark (the SVG text "HELIX GTM" is upper case and is the wordmark too).
@@ -27,4 +30,21 @@ test("report chrome: one company name in the header, footer, aria labels and str
   assert.equal(org.alternateName, undefined);
   const crumbs = ld["@graph"].find((n) => n["@type"] === "BreadcrumbList");
   assert.equal(crumbs.itemListElement[0].name, "Helix GTM Consulting");
+});
+
+test("the example is a real company used only as an example, with hypothetical figures, and no made-up company is left", () => {
+  const a = exampleAnswers();
+  assert.equal(a.company_name, "CloudSEK (example company)");
+  assert.match(a.company_description, /Hypothetical for this example only/);
+  assert.match(a.gtm_challenge, /^Hypothetical scenario for this example only/);
+  assert.match(EXAMPLE_NOTE, /CloudSEK, a real company used only as an example to show the tool/);
+  const page = readFileSync(new URL("../sample-report/index.html", import.meta.url), "utf8");
+  assert.ok(page.includes("a real company used only as an example to show the tool"));
+  assert.ok(page.includes("every figure in them is hypothetical"));
+  for (const bad of ["Branchwire", "made-up", "Priya", "GTM Helix"]) assert.ok(!page.includes(bad), bad);
+  assert.equal(loose(page), 0, "no loose Helix GTM on the sample page");
+  for (const f of ["assets/js/example.js", "consultation.html"]) {
+    const t = readFileSync(new URL("../" + f, import.meta.url), "utf8");
+    assert.ok(!t.includes("Branchwire") && !/made-up (company|example)/.test(t), f);
+  }
 });

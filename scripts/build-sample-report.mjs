@@ -3,7 +3,7 @@
 // process, to the same handler the form uses (netlify/lib/premium-audit.js, which calls netlify/lib/analyze.js). Every score,
 // focus line, rule, recommendation and plan step on the page comes from that answer; nothing is typed in by hand.
 // The page keeps the report as built and changes only its frame: the sample header and breadcrumb, the note that the
-// company is made up, a top action bar, no scripts (the static pages allow only this site's own scripts, and the sample
+// company is a real company used only as an example (run 25, P24-2; it was a made-up company before), a top action bar, no scripts (the static pages allow only this site's own scripts, and the sample
 // has no PDF button), and a fixed line in place of the consultation ID and time, so a rebuild with the same code gives the
 // same file. scripts/build-site.mjs runs it on every build, so the published sample always matches the published code.
 // Usage: node scripts/build-sample-report.mjs  (writes sample-report/index.html)
@@ -115,7 +115,7 @@ ${chrome.LD_SAMPLE}
             <div class="crop">${CM}<h1>Sample EPIC audit report</h1></div>
             <div class="ga-sample-grid">
                 <div>
-    <p class="hx10-note"><strong>Sample report for a made-up company (${esc(company)}).</strong> This is a made-up example: every score and line below is what GTM Alpha's report code returns for the example answers on the free audit form.</p>
+    <p class="hx10-note"><strong>Sample report for ${esc(company)}, a real company used only as an example to show the tool.</strong> ${esc(company)} did not ask for, write or review this report and is not a customer or partner of Helix GTM Consulting. The facts in the example answers come from its own pages, read on 11 October 2026; every figure in them is hypothetical, and the name and role are placeholders, not a real person. Every score and line below is what GTM Alpha's report code returns for the example answers on the free audit form.</p>
     <nav class="hx10-actions" aria-label="Sample report actions"><a class="hx10-primary" href="/consultation">Get your own free audit</a><a href="https://tools.gtmhelix.com/tools/">Back to all tools</a><a href="https://gtmhelix.com/lets-get-started/">Work with Shashwat</a></nav>
                 </div>
                 <div class="win ga-sample-who"><div class="win-bar"><span class="t">gtm-alpha / sample report</span><span class="wb" aria-hidden="true"><i></i><i></i></span></div><div class="win-body">

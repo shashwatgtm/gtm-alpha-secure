@@ -233,10 +233,10 @@ const GTM_ALPHA_ENGINE = {
     const timestamp = new Date().toISOString();
     const consultationId = `GTM-${Date.now()}`;
     // D22: the report's own meta line. The server's date (the report has no date of its own before this), the tool line and
-    // whether the answers were typed in or are the made-up example (the company name carries "(example company)" only then,
+    // whether the answers were typed in or are the form's example (the company name carries "(example company)" only then,
     // the same test premium-audit.js runs on the form's company name).
     const reportDate = new Date(timestamp).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-    const basedOn = /\(example company\)$/.test(inputData.company_name || '') ? 'Based on the made-up example inputs' : 'Based on what you entered';
+    const basedOn = /\(example company\)$/.test(inputData.company_name || '') ? 'Based on the example inputs (figures hypothetical)' : 'Based on what you entered';
 
     const digitalSection = analysis.digitalInsights ? `
     <div class="section">

@@ -68,12 +68,14 @@ test("a complete form gets the report page, with a policy that allows only its o
   assert.ok(html.includes("Built by Shashwat Ghosh"));
 });
 
-test("a report built from the made-up example answers says so; others do not (run 10 R10-16)", async () => {
-  const ex = await (await post("/api/premium-audit", new URLSearchParams({ ...FORM, company_name: "Branchwire (example company)" }).toString())).text();
-  assert.ok(ex.includes("This report uses the made-up example answers"));
-  assert.ok(ex.includes("Based on the made-up example inputs"), "the report's own meta line says so too");
+test("a report built from the example answers says so; others do not (run 10 R10-16; run 25: a real company used only as an example)", async () => {
+  const ex = await (await post("/api/premium-audit", new URLSearchParams({ ...FORM, company_name: "CloudSEK (example company)" }).toString())).text();
+  assert.ok(ex.includes("This report uses the example answers (CloudSEK, a real company used only as an example to show the tool)."));
+  assert.ok(ex.includes("Every figure in them is hypothetical"));
+  assert.ok(ex.includes("Based on the example inputs (figures hypothetical)"), "the report's own meta line says so too");
+  assert.ok(!ex.includes("made-up") && !ex.includes("Branchwire"));
   const own = await (await post("/api/premium-audit", new URLSearchParams(FORM).toString())).text();
-  assert.ok(!own.includes("made-up example answers"));
+  assert.ok(!own.includes("This report uses the example answers"));
   assert.ok(own.includes("Based on what you entered"));
 });
 
