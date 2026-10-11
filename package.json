@@ -6,6 +6,7 @@
   "files": [
     "bin/cli.js",
     "netlify/functions/mcp-sse.js",
+    "netlify/lib/echo-safe.js",
     "netlify/lib/epic-advanced.js",
     "netlify/lib/verticals.js",
     "README.md",
