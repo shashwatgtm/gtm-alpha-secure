@@ -97,8 +97,8 @@ test("missing inputs mark the result preliminary; never scored on the company na
   const r = scoreEpic({ gtm_challenge: "Help" });
   assert.equal(r.preliminary, true);
   assert.ok(r.skipped_adjustments.includes("ACV"));
-  const a = scoreEpic({ ...full, business_stage: "Seed", company_name: "Acme" });
-  const b = scoreEpic({ ...full, business_stage: "Seed", company_name: "Zeta" });
+  const a = scoreEpic({ ...full, business_stage: "Seed", company_name: "First company name" });
+  const b = scoreEpic({ ...full, business_stage: "Seed", company_name: "Second company name" });
   assert.deepEqual(a.scores, b.scores);
 });
 

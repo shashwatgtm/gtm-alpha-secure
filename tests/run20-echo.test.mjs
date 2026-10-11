@@ -1,7 +1,7 @@
 // Run 20 round 1d (D086): the echo safeguard. Every text field of every tool is sent the hostile strings (the same five as the
 // run 19 probe: inject, html, mdexfil, fake_tool, unicode) with otherwise valid inputs. The answer must keep the user's words
 // but hold nothing live: no markdown image to an outside address, no script, img or iframe tag, no javascript: link, no
-// right-to-left or zero-width characters, no raw </result> or <|im_start|>. Companies are invented (rule B81).
+// right-to-left or zero-width characters, no raw </result> or <|im_start|>. Run 25: no company is named; the inputs use plain words.
 // Run: node --test tests/run20-echo.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -37,11 +37,11 @@ const LIVE = [
   [/<\/result>|<\|im_start\|>/, "raw chat marker"],
 ];
 
-// Valid inputs for each tool (invented company, example figures). Fields that a tool reads but does not list in its schema
+// Valid inputs for each tool (plain words, example figures). Fields that a tool reads but does not list in its schema
 // (older clients send client_name; the browser form sends company_description) are covered too.
 const BASE = {
-  gtm_consultation: { company_name: "Lanehop", gtm_challenge: "We need more pipeline from mid-market freight buyers.", business_stage: "series-a", industry: "freight software", current_channels: "outbound and events", acv_usd: 40000, deal_cycle_days: 90, nrr_percent: 110, tam_accounts: 2000, self_serve: true, deal_source: "outbound", geography: "us_eu", business_model: "saas" },
-  epic_audit: { challenge: "We need more pipeline from mid-market freight buyers.", company_name: "Lanehop", industry: "freight software", business_stage: "series-a", current_channels: "outbound and events", acv_usd: 40000, deal_cycle_days: 90, nrr_percent: 110, tam_accounts: 2000, self_serve: true, deal_source: "outbound", geography: "us_eu" },
+  gtm_consultation: { company_name: "Example freight software company", gtm_challenge: "We need more pipeline from mid-market freight buyers.", business_stage: "series-a", industry: "freight software", current_channels: "outbound and events", acv_usd: 40000, deal_cycle_days: 90, nrr_percent: 110, tam_accounts: 2000, self_serve: true, deal_source: "outbound", geography: "us_eu", business_model: "saas" },
+  epic_audit: { challenge: "We need more pipeline from mid-market freight buyers.", company_name: "Example freight software company", industry: "freight software", business_stage: "series-a", current_channels: "outbound and events", acv_usd: 40000, deal_cycle_days: 90, nrr_percent: 110, tam_accounts: 2000, self_serve: true, deal_source: "outbound", geography: "us_eu" },
   generate_roadmap: { primary_focus: "E", timeframe: "60-day", business_model: "services" },
 };
 const LEGACY = { gtm_consultation: ["client_name", "company_description"], epic_audit: ["client_name", "company_description"], generate_roadmap: [] };
@@ -86,7 +86,7 @@ for (const tool of TOOLS) {
 
 test("the answer to a normal call is unchanged by the safeguard", async () => {
   const r = await call("gtm_consultation", BASE.gtm_consultation);
-  assert.match(r.text, /Company: Lanehop/);
+  assert.match(r.text, /Company: Example freight software company/);
   assert.match(r.text, /Challenge: We need more pipeline from mid-market freight buyers\./);
 });
 

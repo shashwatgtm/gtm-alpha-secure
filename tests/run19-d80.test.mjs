@@ -1,5 +1,6 @@
 // Run 19 R19-35 (owner decision D80): the GTM Alpha problems of the real-world test. Written before the fixes (B43); every
-// test here failed on the production head 8a6d1829. Companies are the invented ones of the run 19 examples (rule B81).
+// test here failed on the production head 8a6d1829. Run 25: no company is named any more (the invented names of the run 19
+// examples are gone); the inputs describe each business in plain words, and the company name echo uses plain words too.
 // Run: node --test tests/run19-d80.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
@@ -24,9 +25,9 @@ test("problem 1: no clinic word in the MCP tool code", () => {
   }
 });
 
-// Problem 4: a motion the inputs rule out never wins a tie. Answerloop-like input: self_serve false, P and I tie at 6.
+// Problem 4: a motion the inputs rule out never wins a tie. An AI support agent business: self_serve false, P and I tie at 6.
 test("epic_audit: with self_serve false, Product-Led Growth never wins a tie", async () => {
-  const r = await call("epic_audit", { challenge: "We sell Answerloop, AI agents that resolve support tickets inside the help desk, to support leaders at consumer apps.",
+  const r = await call("epic_audit", { challenge: "We sell AI agents that resolve support tickets inside the help desk, to support leaders at consumer apps.",
     industry: "AI native", business_stage: "series-a", acv_usd: 20000, deal_cycle_days: 45, nrr_percent: 125, tam_accounts: 6000, self_serve: false, deal_source: "inbound", geography: "global" });
   const j = JSON.parse(r.text);
   assert.equal(j.scores.P, j.scores.I); // the scores themselves are unchanged
@@ -36,7 +37,7 @@ test("epic_audit: with self_serve false, Product-Led Growth never wins a tie", a
 
 // Problems 3 and 8: the consultation gives the first steps for the lead motion and sector notes, not only scores.
 test("gtm_consultation: first steps for the lead motion and sector notes for a telecom company", async () => {
-  const r = await call("gtm_consultation", { company_name: "Branchwire (example company)", gtm_challenge: "Deals close only after a costly outage at the buyer, and procurement compares us line by line with the national operators.",
+  const r = await call("gtm_consultation", { company_name: "Example SD-WAN provider", gtm_challenge: "Deals close only after a costly outage at the buyer, and procurement compares us line by line with the national operators.",
     business_stage: "series-b", industry: "Telecom: managed SD-WAN and business internet for companies with many branches", acv_usd: 240000, deal_cycle_days: 150 });
   const j = JSON.parse(r.text);
   assert.ok(Array.isArray(j.first_30_days) && j.first_30_days.length >= 3);
@@ -57,8 +58,8 @@ test("epic_audit: names the company given and adds sector notes for a telecom co
   const args = { challenge: "We sell managed SD-WAN and business internet to companies with many branches; deals wait for an outage at the buyer.",
     industry: "Telecom: managed SD-WAN and business internet", business_stage: "series-b", acv_usd: 240000, deal_cycle_days: 150 };
   const plain = JSON.parse((await call("epic_audit", args)).text);
-  const j = JSON.parse((await call("epic_audit", { ...args, company_name: "Branchwire (example company)" })).text);
-  assert.equal(j.company, "Branchwire (example company)");
+  const j = JSON.parse((await call("epic_audit", { ...args, company_name: "Example SD-WAN provider" })).text);
+  assert.equal(j.company, "Example SD-WAN provider");
   assert.deepEqual(j.scores, plain.scores);
   assert.match(JSON.stringify(j.sector_notes || ""), /uptime|site|SD-WAN|CIO/i);
 });
