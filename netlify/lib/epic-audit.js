@@ -661,7 +661,9 @@ const EPIC_AUDIT_ENGINE = {
       insight += "foundational GTM approach with significant potential for systematic enhancement.";
     }
 
-    return insight;
+    // Run 30D: the finished sentence is made inert once more, because it joins two typed fields (stage and industry) that
+    // are harmless alone but can form markup together, and a tag can hide a query from the first pass.
+    return neutraliseText(insight);
   },
 
   getIndustryOpportunities(industry, scores) {
