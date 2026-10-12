@@ -3,6 +3,7 @@
 
 import { randomUUID } from 'node:crypto';
 import { allowedOrigin } from './site-origin.js';
+import { neutraliseDeep } from './echo-safe.js';
 
 // Run 10 R10-09: the API accepts only the fields it reads (the same ones openapi.yaml documents), with a 32 KB body cap as
 // on the free audit form (premium-audit.js), and the server makes the storage key itself. The scoring code below is
@@ -903,7 +904,10 @@ export default async (req, context) => {
     if (checked.problems) {
       return new Response(JSON.stringify({ error: 'Invalid input', problems: checked.problems }), { status: 400, headers });
     }
-    const inputData = checked.clean;
+    // Run 30D (independent-audit/run30/gtm-alpha-rest-path.md): the same echo safeguard as /mcp. This answer goes to API callers
+    // and assistants (the Custom GPT action), and it repeats company_id and the stage and industry text, so every checked text
+    // input is made inert once, here, before the audit is built. Ordinary text and the scores do not change.
+    const inputData = neutraliseDeep(checked.clean);
     
     // Validate required fields
     // Run 16 R16-10 (rule B52): a company that is empty or only whitespace counts as missing.
