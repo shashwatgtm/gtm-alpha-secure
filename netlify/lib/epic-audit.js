@@ -3,7 +3,7 @@
 
 import { randomUUID } from 'node:crypto';
 import { allowedOrigin } from './site-origin.js';
-import { neutraliseDeep } from './echo-safe.js';
+import { neutraliseDeep, neutraliseText } from './echo-safe.js';
 
 // Run 10 R10-09: the API accepts only the fields it reads (the same ones openapi.yaml documents), with a 32 KB body cap as
 // on the free audit form (premium-audit.js), and the server makes the storage key itself. The scoring code below is
@@ -922,8 +922,10 @@ export default async (req, context) => {
 
     // Generate unique company ID for tracking (returned to the caller only). The storage key is made by the server
     // (run 10 R10-09): a random ID, so no caller value decides where a record is written.
-    const companyId = inputData.company_id || 
-                      inputData.company.toLowerCase().replace(/\s+/g, '-');
+    // Run 30D: the id made from the company name is made inert again, because joining the words with dashes can join a link
+    // and its query that a space kept apart in what the user typed.
+    const companyId = neutraliseText(inputData.company_id || 
+                      inputData.company.toLowerCase().replace(/\s+/g, '-'));
     const consultationId = `EPIC-AUDIT-${randomUUID()}`;
 
     // Perform EPIC framework audit
