@@ -49,6 +49,10 @@ test("a made up field name in a length refusal is not echoed live", async () => 
     assert.match(t, /longer than/);
     safe(t, key);
   }
+  // round 2: two made up field names, inert one by one, must not join into an image in the refusal text
+  const j = textOf(await rpc("tools/call", { name: tool.name, arguments: { primary_focus: "P", "![x": "a".repeat(4001), "](https://evil.example/c.png)": "a".repeat(4001) } }));
+  assert.match(j, /longer than/);
+  assert.doesNotMatch(j, LIVE_IMAGE, `joined field names form an image: ${j.slice(0, 300)}`);
 });
 
 test("two inert fields joined in the answer do not form live markup, and the answer stays valid JSON", async () => {
@@ -74,4 +78,28 @@ test("two inert fields joined in the answer do not form live markup, and the ans
     }
   }
   assert.ok(calls > 0, "no call made");
+});
+
+// round 2 (run 32D auditor): the answer pass runs on each string value, never on the JSON text, so a crafted company name or
+// challenge can neither remove the scores nor break the JSON
+test("a crafted company name keeps every field of the epic_audit answer, and the JSON stays valid", async () => {
+  const base = { company_name: "a logistics software company", industry: "logistics", challenge: "B2B SaaS outbound" };
+  const ordinary = JSON.parse(textOf(await rpc("tools/call", { name: "epic_audit", arguments: base })));
+  for (const name of ["[a](< foo:x>", "x](< y>) ((", "![a](< b>"]) {
+    const t = textOf(await rpc("tools/call", { name: "epic_audit", arguments: { ...base, company_name: name } }));
+    const j = JSON.parse(t);
+    for (const k of Object.keys(ordinary)) assert.ok(k in j, `field ${k} lost with company_name ${name}`);
+    assert.deepEqual(j.scores, ordinary.scores, `scores changed with company_name ${name}`);
+  }
+});
+
+test("a challenge with a real newline and a quote keeps the gtm_consultation answer valid JSON", async () => {
+  const tl = await rpc("tools/list", {});
+  const tool = tl.result.tools.find((t) => t.name === "gtm_consultation");
+  const props = tool.inputSchema.properties;
+  const args = Object.fromEntries((tool.inputSchema.required || []).map((k) => [k, Array.isArray(props[k].enum) ? props[k].enum[0] : props[k].type === "number" ? 10 : "B2B SaaS"]));
+  for (const k of Object.keys(props)) if (props[k].type === "string" && !props[k].enum && /challenge/.test(k)) args[k] = 'see www.example.com\n?x"y B2B SaaS outbound';
+  const j = await rpc("tools/call", { name: "gtm_consultation", arguments: args });
+  assert.ok(!j.result.isError, textOf(j));
+  JSON.parse(textOf(j));
 });
