@@ -1,6 +1,6 @@
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
-import { neutraliseDeep } from "../lib/echo-safe.js";
+import { neutraliseDeep, neutraliseText, neutraliseAnswer } from "../lib/echo-safe.js";
 
 // Run 19 (D80, problems 3, 4 and 8): the plan steps that only fit a product people can try on their own (a software
 // subscription or hardware plus software). For any other business model they are left out and the answer says so.
@@ -229,7 +229,8 @@ var MAX_TEXT = 4000;
 
 function tooLong(args) {
   return Object.keys(args).filter(function(key) { return typeof args[key] === "string" && args[key].length > MAX_TEXT; })
-    .map(function(key) { return key + " is longer than " + MAX_TEXT + " characters"; });
+    // Run 32D (30D-1): a field name the caller made up is made inert before it is repeated.
+    .map(function(key) { return neutraliseText(key) + " is longer than " + MAX_TEXT + " characters"; });
 }
 
 function missingRequired(tool, args) {
@@ -357,7 +358,8 @@ export default async function handler(req, context) {
       if (!tool) {
         // Run 12 R12-12 a (A5-4 a): a name that is not text, or is longer than 100 characters, is never echoed back.
         if (typeof toolName !== "string" || toolName.length > 100) return toolError(id, "Unknown tool.");
-        return toolError(id, "Unknown tool: " + toolName + ". Available tools: " + TOOLS.map(function(t) { return t.name; }).join(", ") + ".");
+        // Run 32D (30D-1): the name the caller sent is made inert before it is repeated.
+        return toolError(id, "Unknown tool: " + neutraliseText(toolName) + ". Available tools: " + TOOLS.map(function(t) { return t.name; }).join(", ") + ".");
       }
       var missing = missingRequired(tool, toolArgs);
       if (missing.length > 0) {
@@ -376,13 +378,16 @@ export default async function handler(req, context) {
         jsonrpc: "2.0",
         id: id,
         result: {
-          content: [{ type: "text", text: JSON.stringify(result, null, 2) }]
+          // Run 32D (30D-5): the finished answer is made inert again where the tool joined two inert pieces into markup
+          // (the JSON stays valid: the pass only replaces markup with plain words and never adds a quote or a backslash).
+          content: [{ type: "text", text: neutraliseAnswer(JSON.stringify(result, null, 2)) }]
         }
       });
     }
 
     // Run 12 R12-12 a (A5-4 b): at most 100 characters of the method are echoed back.
-    return rpcError(id, -32601, "Method not found: " + method.slice(0, 100));
+    // Run 32D (30D-1): the method name the caller sent is made inert before it is repeated.
+    return rpcError(id, -32601, "Method not found: " + neutraliseText(method.slice(0, 100)));
   } catch (error) {
     console.error("mcp-sse error:", error && error.message);
     // Run 11 R11-A3-9 c: a fixed message; the caller's method name is never echoed back.
