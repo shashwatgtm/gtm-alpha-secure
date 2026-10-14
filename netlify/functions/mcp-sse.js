@@ -217,8 +217,22 @@ function rpcError(id, code, message, status, extraHeaders) {
   return reply(status || 200, { jsonrpc: "2.0", id: id === undefined ? null : id, error: { code: code, message: message } }, extraHeaders);
 }
 
+// Run 32D round 2: every refusal text passes through neutraliseAnswer, so two names that are inert one by one cannot join into markup.
 function toolError(id, text) {
-  return reply(200, { jsonrpc: "2.0", id: id, result: { content: [{ type: "text", text: text }], isError: true } });
+  return reply(200, { jsonrpc: "2.0", id: id, result: { content: [{ type: "text", text: neutraliseAnswer(text) }], isError: true } });
+}
+
+// Run 32D round 2 (30D-5): the answer pass runs on each string value of the result, never on the JSON text, so the JSON stays
+// valid and no field or score can be removed by what the caller typed.
+function answerStrings(value) {
+  if (typeof value === "string") return neutraliseAnswer(value);
+  if (Array.isArray(value)) return value.map(answerStrings);
+  if (value && typeof value === "object") {
+    var out = {};
+    Object.keys(value).forEach(function(k) { out[k] = answerStrings(value[k]); });
+    return out;
+  }
+  return value;
 }
 
 // Run 10 R10-09: size caps. The whole request may be at most 64 KB, and each text input at most 4,000 characters (a GTM
@@ -378,9 +392,8 @@ export default async function handler(req, context) {
         jsonrpc: "2.0",
         id: id,
         result: {
-          // Run 32D (30D-5): the finished answer is made inert again where the tool joined two inert pieces into markup
-          // (the JSON stays valid: the pass only replaces markup with plain words and never adds a quote or a backslash).
-          content: [{ type: "text", text: neutraliseAnswer(JSON.stringify(result, null, 2)) }]
+          // Run 32D (30D-5): each string of the finished answer is made inert again where the tool joined two inert pieces into markup.
+          content: [{ type: "text", text: JSON.stringify(answerStrings(result), null, 2) }]
         }
       });
     }
