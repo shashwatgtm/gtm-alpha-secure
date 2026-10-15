@@ -13,7 +13,9 @@ async function rpc(method, params) {
   return r.json();
 }
 const textOf = (j) => (j.result && j.result.content ? j.result.content.map((c) => c.text).join("\n") : JSON.stringify(j.error || j));
-const LIVE_INLINE = /(?<!\\)\]\s*\(\s*https?:\/\/evil/;
+// run 33D round 6 correction: these inputs are images, and an image can only render from an unescaped "![" (round 6 makes that
+// "!" + "\\[" at the source); the round 4 form (an unescaped "](" before the address) also flagged a plain https link.
+const LIVE_INLINE = /(^|[^\\])(\\\\)*!\[/;
 
 test("gtm_consultation: a ] in a code span does not hide the open [ of a split image", async () => {
   const t = textOf(await rpc("tools/call", { name: "gtm_consultation", arguments: { company_name: "x ![a", gtm_challenge: "`]` b\nc](https://evil.example/c.png) B2B SaaS outbound" } }));
@@ -24,7 +26,7 @@ test("gtm_consultation: a ] in a code span does not hide the open [ of a split i
 test("gtm_consultation: a shortcut reference image split over a line break is inert", async () => {
   const t = textOf(await rpc("tools/call", { name: "gtm_consultation", arguments: { company_name: "x ![a", gtm_challenge: "b]\n\n[a Challenge: b]: https://evil.example/c.png" } }));
   const j = JSON.parse(t);
-  assert.ok(/Challenge: b\\\]/.test(j.consultation_output), `closing bracket live: ${JSON.stringify(j.consultation_output.slice(0, 300))}`);
+  assert.doesNotMatch(j.consultation_output, LIVE_INLINE, `image live: ${JSON.stringify(j.consultation_output.slice(0, 300))}`);
 });
 
 test("length refusal: three line field names and a destination on the next line are inert", async () => {
