@@ -3,7 +3,7 @@
 import epicAudit from "../lib/epic-audit.js";
 import premiumAudit from "../lib/premium-audit.js";
 import health from "../lib/health.js";
-import { neutraliseAnswer } from "../lib/echo-safe.js";
+import { neutraliseAnswer, neutraliseJsonText } from "../lib/echo-safe.js";
 
 // Run 34D: every string of a JSON reply passes through neutraliseAnswer (the parser based answer pass), so text that a reply
 // repeats or joins cannot form live markup; when nothing changes the reply keeps its exact bytes.
@@ -17,12 +17,18 @@ async function answerReply(res) {
   if (!res.body || res.status === 204 || res.status === 304 || !(res.headers.get("content-type") || "").includes("application/json")) return res;
   const text = await res.text();
   let next = text;
+  let json;
   try {
-    const json = JSON.parse(text);
-    const safe = answerStrings(json);
-    if (JSON.stringify(safe) !== JSON.stringify(json)) next = JSON.stringify(safe);
+    json = JSON.parse(text);
   } catch {
-    next = neutraliseAnswer(text);
+    json = undefined;
+  }
+  if (json === undefined) next = neutraliseAnswer(text);
+  else {
+    const safe = answerStrings(json);
+    // Run 36D (register 34D-4): the JSON text itself is checked too (a JSON "[" can open a link that a value closes), with HTML
+    // entities so the JSON stays valid; a reply with no live markup keeps its exact bytes.
+    next = neutraliseJsonText(JSON.stringify(safe) !== JSON.stringify(json) ? JSON.stringify(safe) : text, 0);
   }
   return new Response(next, { status: res.status, statusText: res.statusText, headers: res.headers });
 }
