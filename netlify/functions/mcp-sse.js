@@ -1,6 +1,6 @@
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
-import { neutraliseDeep, neutraliseText, neutraliseAnswer } from "../lib/echo-safe.js";
+import { neutraliseDeep, neutraliseText, neutraliseAnswer, neutraliseJsonText } from "../lib/echo-safe.js";
 
 // Run 19 (D80, problems 3, 4 and 8): the plan steps that only fit a product people can try on their own (a software
 // subscription or hardware plus software). For any other business model they are left out and the answer says so.
@@ -393,14 +393,16 @@ export default async function handler(req, context) {
         id: id,
         result: {
           // Run 32D (30D-5): each string of the finished answer is made inert again where the tool joined two inert pieces into markup.
-          content: [{ type: "text", text: JSON.stringify(answerStrings(result), null, 2) }]
+          // Run 34D fix round: the JSON text itself is checked too (JSON doubles every backslash the answer pass added).
+          content: [{ type: "text", text: neutraliseJsonText(JSON.stringify(answerStrings(result), null, 2)) }]
         }
       });
     }
 
     // Run 12 R12-12 a (A5-4 b): at most 100 characters of the method are echoed back.
     // Run 32D (30D-1): the method name the caller sent is made inert before it is repeated.
-    return rpcError(id, -32601, "Method not found: " + neutraliseText(method.slice(0, 100)));
+    // Run 34D fix round: the refusal text gets the answer pass too.
+    return rpcError(id, -32601, neutraliseAnswer("Method not found: " + neutraliseText(method.slice(0, 100))));
   } catch (error) {
     console.error("mcp-sse error:", error && error.message);
     // Run 11 R11-A3-9 c: a fixed message; the caller's method name is never echoed back.
