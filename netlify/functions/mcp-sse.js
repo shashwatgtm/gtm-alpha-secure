@@ -1,6 +1,6 @@
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
-import { escapeDeep, jsonInert } from "../lib/escape-inputs.js";
+import { escapeDeep, escapeText, jsonInert } from "../lib/escape-inputs.js";
 
 // Run 19 (D80, problems 3, 4 and 8): the plan steps that only fit a product people can try on their own (a software
 // subscription or hardware plus software). For any other business model they are left out and the answer says so.
@@ -191,7 +191,7 @@ function handleToolCall(name, rawArgs) {
   } else if (name === "generate_roadmap") {
     return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args.business_model);
   } else {
-    throw new Error("Unknown tool: " + name);
+    throw new Error("Unknown tool: " + escapeText(String(name)));
   }
 }
 
@@ -230,7 +230,7 @@ var MAX_TEXT = 4000;
 
 function tooLong(args) {
   return Object.keys(args).filter(function(key) { return typeof args[key] === "string" && args[key].length > MAX_TEXT; })
-    .map(function(key) { return key + " is longer than " + MAX_TEXT + " characters"; });
+    .map(function(key) { return escapeText(key) + " is longer than " + MAX_TEXT + " characters"; });
 }
 
 function missingRequired(tool, args) {
@@ -358,7 +358,7 @@ export default async function handler(req, context) {
       if (!tool) {
         // Run 12 R12-12 a (A5-4 a): a name that is not text, or is longer than 100 characters, is never echoed back.
         if (typeof toolName !== "string" || toolName.length > 100) return toolError(id, "Unknown tool.");
-        return toolError(id, "Unknown tool: " + toolName + ". Available tools: " + TOOLS.map(function(t) { return t.name; }).join(", ") + ".");
+        return toolError(id, "Unknown tool: " + escapeText(toolName) + ". Available tools: " + TOOLS.map(function(t) { return t.name; }).join(", ") + ".");
       }
       var missing = missingRequired(tool, toolArgs);
       if (missing.length > 0) {
@@ -383,7 +383,7 @@ export default async function handler(req, context) {
     }
 
     // Run 12 R12-12 a (A5-4 b): at most 100 characters of the method are echoed back.
-    return rpcError(id, -32601, "Method not found: " + method.slice(0, 100));
+    return rpcError(id, -32601, "Method not found: " + escapeText(String(method).slice(0, 100)));
   } catch (error) {
     console.error("mcp-sse error:", error && error.message);
     // Run 11 R11-A3-9 c: a fixed message; the caller's method name is never echoed back.

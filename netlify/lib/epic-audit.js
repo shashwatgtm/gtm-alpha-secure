@@ -3,7 +3,7 @@
 
 import { randomUUID } from 'node:crypto';
 import { allowedOrigin } from './site-origin.js';
-import { escapeDeep, quoteIfInstruction, jsonInert } from './escape-inputs.js';
+import { escapeDeep, escapeText, quoteIfInstruction, jsonInert } from './escape-inputs.js';
 
 // Run 10 R10-09: the API accepts only the fields it reads (the same ones openapi.yaml documents), with a 32 KB body cap as
 // on the free audit form (premium-audit.js), and the server makes the storage key itself. The scoring code below is
@@ -924,9 +924,10 @@ export default async (req, context) => {
 
     // Generate unique company ID for tracking (returned to the caller only). The storage key is made by the server
     // (run 10 R10-09): a random ID, so no caller value decides where a record is written.
-    // Run 40S: the company name was escaped where the request came in; joining its words with dashes forms no markup.
-    const companyId = quoteIfInstruction(inputData.company_id || 
-                      inputData.company.toLowerCase().replace(/\s+/g, '-'));
+    // Run 40S: the id is made from the name as typed (joining the words of the escaped name with "-" would change what the
+    // escape rules read next to each space: "q @host" would become the mail address "q-@host"), then escaped once.
+    const companyId = inputData.company_id ? quoteIfInstruction(inputData.company_id) :
+                      escapeText(String(checked.clean.company).toLowerCase().replace(/\s+/g, '-'));
     const consultationId = `EPIC-AUDIT-${randomUUID()}`;
 
     // Perform EPIC framework audit
