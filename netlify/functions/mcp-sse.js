@@ -1,6 +1,6 @@
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
-import { neutraliseDeep } from "../lib/echo-safe.js";
+import { escapeDeep, jsonInert } from "../lib/escape-inputs.js";
 
 // Run 19 (D80, problems 3, 4 and 8): the plan steps that only fit a product people can try on their own (a software
 // subscription or hardware plus software). For any other business model they are left out and the answer says so.
@@ -175,9 +175,10 @@ var TOOLS = [
 
 function handleToolCall(name, rawArgs) {
   // Run 20 round 1d (D086): the one place where a tools/call reaches a tool. Every text the caller sent is made inert once, here
-  // (markup, hidden characters and fake chat markers; an instruction-like text is quoted as the caller's own), so no tool can
-  // repeat live markup. The words stay. The checks before this call (required, length, type, minimum) ran on the original text.
-  var args = neutraliseDeep(rawArgs);
+  // (run 40S, D6, safe by design: escaped once, netlify/lib/escape-inputs.js; an instruction-like text is quoted as the caller's
+  // own), so no tool can repeat live markup. The words stay. The checks before this call (required, length, type, minimum) ran
+  // on the original text.
+  var args = escapeDeep(rawArgs);
   if (name === "gtm_consultation") {
     return GTM_CONSULTANT.generateConsultation(args);
   } else if (name === "epic_audit") {
@@ -376,7 +377,7 @@ export default async function handler(req, context) {
         jsonrpc: "2.0",
         id: id,
         result: {
-          content: [{ type: "text", text: JSON.stringify(result, null, 2) }]
+          content: [{ type: "text", text: jsonInert(JSON.stringify(result, null, 2)) }]
         }
       });
     }

@@ -3,7 +3,7 @@
 
 import { randomUUID } from 'node:crypto';
 import { allowedOrigin } from './site-origin.js';
-import { neutraliseDeep, neutraliseText } from './echo-safe.js';
+import { escapeDeep, quoteIfInstruction, jsonInert } from './escape-inputs.js';
 
 // Run 10 R10-09: the API accepts only the fields it reads (the same ones openapi.yaml documents), with a 32 KB body cap as
 // on the free audit form (premium-audit.js), and the server makes the storage key itself. The scoring code below is
@@ -661,9 +661,9 @@ const EPIC_AUDIT_ENGINE = {
       insight += "foundational GTM approach with significant potential for systematic enhancement.";
     }
 
-    // Run 30D: the finished sentence is made inert once more, because it joins two typed fields (stage and industry) that
-    // are harmless alone but can form markup together, and a tag can hide a query from the first pass.
-    return neutraliseText(insight);
+    // Run 40S: both typed fields were escaped where the request came in, so joined they still form no markup; escaping again
+    // would show doubled backslashes. The run 22 instruction rule still quotes the joined sentence when it reads as one.
+    return quoteIfInstruction(insight);
   },
 
   getIndustryOpportunities(industry, scores) {
@@ -909,7 +909,7 @@ export default async (req, context) => {
     // Run 30D (independent-audit/run30/gtm-alpha-rest-path.md): the same echo safeguard as /mcp. This answer goes to API callers
     // and assistants (the Custom GPT action), and it repeats company_id and the stage and industry text, so every checked text
     // input is made inert once, here, before the audit is built. Ordinary text and the scores do not change.
-    const inputData = neutraliseDeep(checked.clean);
+    const inputData = escapeDeep(checked.clean);
     
     // Validate required fields
     // Run 16 R16-10 (rule B52): a company that is empty or only whitespace counts as missing.
@@ -924,9 +924,8 @@ export default async (req, context) => {
 
     // Generate unique company ID for tracking (returned to the caller only). The storage key is made by the server
     // (run 10 R10-09): a random ID, so no caller value decides where a record is written.
-    // Run 30D: the id made from the company name is made inert again, because joining the words with dashes can join a link
-    // and its query that a space kept apart in what the user typed.
-    const companyId = neutraliseText(inputData.company_id || 
+    // Run 40S: the company name was escaped where the request came in; joining its words with dashes forms no markup.
+    const companyId = quoteIfInstruction(inputData.company_id || 
                       inputData.company.toLowerCase().replace(/\s+/g, '-'));
     const consultationId = `EPIC-AUDIT-${randomUUID()}`;
 
@@ -945,7 +944,8 @@ export default async (req, context) => {
     // Run 11 A2-D5 (2026-09-28): new audits are not saved. The Netlify Blobs save call was removed; records saved
     // earlier stay untouched in the "epic-audits" store (nothing is deleted) and are deleted on request.
 
-    return new Response(JSON.stringify({
+    // Run 40S: the escapes stay escapes when the JSON text itself is read (escape-inputs.js jsonInert)
+    return new Response(jsonInert(JSON.stringify({
       status: 'success',
       audit_results: auditResults,
       progress_analysis: progressAnalysis,
@@ -984,7 +984,7 @@ export default async (req, context) => {
         stored: false,
         tracking_enabled: false
       }
-    }), {
+    })), {
       status: 200,
       headers
     });

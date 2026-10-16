@@ -40,7 +40,9 @@ const LIVE = [
   [/\]\(\s*javascript\s*:/i, "a javascript link"],
   [/[​-‏‪-‮⁠-⁤⁦-⁩﻿]/, "a hidden or right-to-left character"],
   [/<\/result>|<\|im_start\|>/i, "a raw chat marker"],
-  [/evil\.example\/[^\s"]*\?d=SECRET/i, "a query left on an outside address"],
+  // Run 40S (D6, safe by design): a typed address is no longer cut at its query; it can no longer be a link at all (a reader
+  // that finds addresses in plain text sees "https\\://"), so the check is that no reader can link it
+  [/(?:https?:\/\/|www\.)evil\.example/i, "an outside address a reader links by itself"],
 ];
 
 for (const [field, make] of FIELDS) {
@@ -68,7 +70,8 @@ test("/api/epic-audit: stage and industry cannot join into an image or a link wi
 test("/api/epic-audit: ordinary text is repeated exactly as typed", async () => {
   const j = JSON.parse((await audit({ ...VALID, company_id: "regional-logistics-1", industry: "Logistics & supply chain < 5 days", company_stage: "Series A, 40 people" })).text);
   assert.equal(j.company_id, "regional-logistics-1");
-  assert.match(j.audit_results.detailed_assessment.overall_maturity, /stage: Series A, 40 people; industry: Logistics & supply chain < 5 days\)/);
+  // Run 40S: "<" is one of the characters every typed text shows escaped (a claimed row: "\\<" in the answer, "<" when rendered)
+  assert.match(j.audit_results.detailed_assessment.overall_maturity, /stage: Series A, 40 people; industry: Logistics & supply chain \\< 5 days\)/);
   const k = JSON.parse((await audit(VALID)).text);
   assert.equal(k.company_id, "a-regional-logistics-company");
 });
