@@ -885,7 +885,7 @@ export default async (req, context) => {
   }
 
   if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+    return new Response(jsonInert(JSON.stringify({ error: 'Method not allowed' })), {
       status: 405,
       headers
     });
@@ -894,17 +894,17 @@ export default async (req, context) => {
   try {
     const text = await req.text();
     if (Buffer.byteLength(text, "utf8") > MAX_BODY) {
-      return new Response(JSON.stringify({ error: 'Request body too large (limit 32 KB)' }), { status: 413, headers });
+      return new Response(jsonInert(JSON.stringify({ error: 'Request body too large (limit 32 KB)' })), { status: 413, headers });
     }
     let raw;
     try {
       raw = JSON.parse(text);
     } catch {
-      return new Response(JSON.stringify({ error: 'The body is not valid JSON' }), { status: 400, headers });
+      return new Response(jsonInert(JSON.stringify({ error: 'The body is not valid JSON' })), { status: 400, headers });
     }
     const checked = cleanAuditInput(raw);
     if (checked.problems) {
-      return new Response(JSON.stringify({ error: 'Invalid input', problems: checked.problems }), { status: 400, headers });
+      return new Response(jsonInert(JSON.stringify({ error: 'Invalid input', problems: checked.problems })), { status: 400, headers });
     }
     // Run 30D (independent-audit/run30/gtm-alpha-rest-path.md): the same echo safeguard as /mcp. This answer goes to API callers
     // and assistants (the Custom GPT action), and it repeats company_id and the stage and industry text, so every checked text
@@ -914,9 +914,9 @@ export default async (req, context) => {
     // Validate required fields
     // Run 16 R16-10 (rule B52): a company that is empty or only whitespace counts as missing.
     if (!inputData.company || !inputData.company.trim()) {
-      return new Response(JSON.stringify({
+      return new Response(jsonInert(JSON.stringify({
         error: 'Missing required field: company is required'
-      }), {
+      })), {
         status: 400,
         headers
       });
@@ -992,10 +992,10 @@ export default async (req, context) => {
 
   } catch (error) {
     console.error('Error in EPIC audit:', error);
-    return new Response(JSON.stringify({
+    return new Response(jsonInert(JSON.stringify({
       error: 'Internal server error',
       message: 'The audit could not be completed. Please check your input and try again.'
-    }), {
+    })), {
       status: 500,
       headers
     });

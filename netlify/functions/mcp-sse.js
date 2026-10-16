@@ -211,7 +211,8 @@ var CORS_HEADERS = {
 function reply(status, body, extraHeaders) {
   // Answers are never cached, as on the other connectors.
   var headers = Object.assign({ "Content-Type": "application/json", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", "Strict-Transport-Security": "max-age=31536000" }, CORS_HEADERS, extraHeaders || {});
-  return new Response(body === null ? null : JSON.stringify(body), { status: status, headers: headers });
+  // Run 40S2 (40S-5): every JSON body goes through jsonInert, refusals included, so an escape stays an escape in the raw body
+  return new Response(body === null ? null : jsonInert(JSON.stringify(body)), { status: status, headers: headers });
 }
 
 function rpcError(id, code, message, status, extraHeaders) {
