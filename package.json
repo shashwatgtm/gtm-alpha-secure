@@ -1,6 +1,6 @@
 {
   "name": "@shashwatgtmalpha/gtm-alpha-mcp-server",
-  "version": "1.3.17",
+  "version": "1.3.20",
   "description": "GTM Alpha MCP Server: Free EPIC audit using Shashwat Ghosh's EPIC framework",
   "main": "bin/cli.js",
   "files": [
@@ -29,7 +29,7 @@
     "type": "git",
     "url": "https://github.com/shashwatgtm/gtm-alpha-secure"
   },
-  "homepage": "https://gtmalpha.gtmhelix.com",
+  "homepage": "https://tools.gtmhelix.com/connectors/",
   "bugs": {
     "url": "https://github.com/shashwatgtm/gtm-alpha-secure/issues"
   },
@@ -52,7 +52,7 @@
     "ai-assistant",
     "claude"
   ],
-  "author": "Shashwat Ghosh <shashwat@gtmhelix.com>",
+  "author": "Shashwat Ghosh <shashwat@gtmhelix.com> (https://gtmhelix.com/about/)",
   "license": "MIT",
   "overrides": {
     "sharp": "^0.35.4"

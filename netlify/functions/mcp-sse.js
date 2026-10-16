@@ -338,7 +338,7 @@ export default async function handler(req, context) {
         id: id,
         result: {
           protocolVersion: version,
-          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.17" },
+          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.20" },
           capabilities: { tools: {} }
         }
       });
