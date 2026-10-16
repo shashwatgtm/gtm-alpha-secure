@@ -1,6 +1,6 @@
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
-import { escapeDeep, escapeText, jsonInert } from "../lib/escape-inputs.js";
+import { escapeDeep, escapeText, escapePiece, jsonInert } from "../lib/escape-inputs.js";
 
 // Run 19 (D80, problems 3, 4 and 8): the plan steps that only fit a product people can try on their own (a software
 // subscription or hardware plus software). For any other business model they are left out and the answer says so.
@@ -41,7 +41,7 @@ const GTM_CONSULTANT = {
       industry: args.industry || ""
     });
     var analysis = this.analyzeEPIC(input);
-    var lines = ["GTM Alpha Free EPIC audit"].concat(company ? ["Company: " + company] : person ? ["Name: " + person] : []).concat([
+    var lines = ["GTM Alpha Free EPIC audit"].concat(company ? ["Company: " + escapePiece(company)] : person ? ["Name: " + escapePiece(person)] : []).concat([
       "Challenge: " + (args.gtm_challenge ? String(args.gtm_challenge) : "not supplied"),
       "",
       "Primary Focus: " + analysis.primary.motion,
@@ -187,7 +187,7 @@ function handleToolCall(name, rawArgs) {
     var audit = GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
     var named = typeof args.company_name === "string" ? args.company_name.trim() : "";
     var sv = detectVertical(args.industry, args.challenge, args.current_channels);
-    return Object.assign(named ? { company: named } : {}, audit, sv ? { sector_notes: sectorNotes(sv) } : {});
+    return Object.assign(named ? { company: escapePiece(named) } : {}, audit, sv ? { sector_notes: sectorNotes(sv) } : {});
   } else if (name === "generate_roadmap") {
     return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args.business_model);
   } else {
