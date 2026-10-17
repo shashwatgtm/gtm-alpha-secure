@@ -1,6 +1,7 @@
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
 import { escapeDeep, escapeText, escapePiece, jsonInert } from "../lib/escape-inputs.js";
+import { countUse } from "../lib/usage-count.js";
 
 // Run 19 (D80, problems 3, 4 and 8): the plan steps that only fit a product people can try on their own (a software
 // subscription or hardware plus software). For any other business model they are left out and the answer says so.
@@ -373,6 +374,7 @@ export default async function handler(req, context) {
       if (below.length > 0) {
         return toolError(id, "Invalid input for " + toolName + ": " + below.join("; ") + ".");
       }
+      countUse("gtm-alpha", toolName, req, "mcp", context);
       var result = handleToolCall(toolName, toolArgs);
       return reply(200, {
         jsonrpc: "2.0",

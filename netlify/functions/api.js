@@ -4,6 +4,7 @@ import epicAudit from "../lib/epic-audit.js";
 import premiumAudit from "../lib/premium-audit.js";
 import health from "../lib/health.js";
 import { jsonInert } from "../lib/escape-inputs.js";
+import { countUse } from "../lib/usage-count.js";
 
 const ROUTES = { "/api/epic-audit": epicAudit, "/api/premium-audit": premiumAudit, "/api/health": health };
 
@@ -12,6 +13,8 @@ export default async (req, context) => {
   if (!route) {
     return new Response(jsonInert(JSON.stringify({ error: "Not found" })), { status: 404, headers: { "Content-Type": "application/json", "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff", "Strict-Transport-Security": "max-age=31536000" } });
   }
+  const tool = { "/api/epic-audit": "epic_audit", "/api/premium-audit": "premium_audit" }[new URL(req.url).pathname];
+  if (tool) countUse("gtm-alpha", tool, req, "web", context);
   return route(req, context);
 };
 
