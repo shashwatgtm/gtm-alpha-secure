@@ -9,6 +9,7 @@
     "netlify/lib/escape-inputs.js",
     "netlify/lib/epic-advanced.js",
     "netlify/lib/verticals.js",
+    "netlify/lib/usage-count.js",
     "README.md",
     "PRIVACY.md",
     "server.json",
