@@ -35,11 +35,11 @@
     "url": "https://github.com/shashwatgtm/gtm-alpha-secure/issues"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.31.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
     "@netlify/blobs": "^10.7.13"
   },
   "devDependencies": {
-    "@modelcontextprotocol/inspector": "^2.8.0",
+    "@modelcontextprotocol/inspector": "^2.12.0",
     "netlify-cli": "^27.10.0"
   },
   "keywords": [
@@ -57,6 +57,6 @@
   "author": "Shashwat Ghosh <shashwat@gtmhelix.com> (https://gtmhelix.com/about/)",
   "license": "MIT",
   "overrides": {
-    "sharp": "^0.35.4"
+    "sharp": "^0.35.5"
   }
 }
