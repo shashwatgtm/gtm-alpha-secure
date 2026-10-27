@@ -169,6 +169,18 @@ More: https://gtmhelix.com/about/
 
 ---
 
+## Privacy Policy
+
+Full policy: <https://gtmalpha.gtmhelix.com/privacy> (also in [PRIVACY.md](PRIVACY.md)).
+
+- **Data collection:** the MCP server (`/mcp`, `/mcp-sse` and the npm package) receives only the tool name and the inputs of each call. The website's Premium Audit form and EPIC audit API receive the answers you type. The npm package runs on your computer and sends nothing to us.
+- **Use and storage:** inputs are used only to build that reply. Our code does not store or log them, and new audits are not kept.
+- **Third-party sharing:** none by us. Netlify hosts the site and processes requests under its own policy (https://www.netlify.com/privacy/). We do not sell your data or use it to train AI models.
+- **Retention:** we keep no tool inputs or outputs. Audits saved by earlier versions are deleted on request within 30 days. Netlify keeps its own platform logs under its policy.
+- **Contact:** shashwat@gtmhelix.com
+
+---
+
 ## Links
 
 | Resource | URL |
