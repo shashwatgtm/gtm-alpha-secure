@@ -70,3 +70,7 @@
 
 /sample-report/index.html
   Cache-Control: public, max-age=0, must-revalidate
+
+/.well-known/openai-apps-challenge
+  Content-Type: text/plain; charset=utf-8
+  Cache-Control: no-store
