@@ -110,7 +110,7 @@ const GTM_CONSULTANT = {
 var TOOLS = [
   {
     name: "gtm_consultation",
-    title: "Free EPIC audit (in your browser and in Claude)",
+    title: "EPIC motion scores and first 30 days",
     description: "Scores the four motions from 1 to 10 with the documented rubric, names the primary and secondary motion, and lists the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary.",
     inputSchema: {
       type: "object",
@@ -131,7 +131,7 @@ var TOOLS = [
       },
       required: ["gtm_challenge"]
     },
-    annotations: { title: "Free EPIC audit (in your browser and in Claude)", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
+    annotations: { title: "EPIC motion scores and first 30 days", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
   },
   {
     name: "epic_audit",
