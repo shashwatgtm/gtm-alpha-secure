@@ -135,7 +135,7 @@ var TOOLS = [
   },
   {
     name: "epic_audit",
-    title: "EPIC scores (in Claude)",
+    title: "EPIC scores",
     description: "Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Add the optional inputs for a full score; without them the result is marked preliminary.",
     inputSchema: {
       type: "object",
@@ -155,11 +155,11 @@ var TOOLS = [
       },
       required: ["challenge"]
     },
-    annotations: { title: "EPIC scores (in Claude)", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
+    annotations: { title: "EPIC scores", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
   },
   {
     name: "generate_roadmap",
-    title: "GTM Roadmap (in Claude)",
+    title: "GTM Roadmap",
     description: "Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps, without the self-serve steps when your business model is not a software subscription. Builds text from the inputs only.",
     inputSchema: {
       type: "object",
@@ -170,7 +170,7 @@ var TOOLS = [
       },
       required: ["primary_focus"]
     },
-    annotations: { title: "GTM Roadmap (in Claude)", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
+    annotations: { title: "GTM Roadmap", readOnlyHint: true, openWorldHint: false, destructiveHint: false }
   }
 ];
 
