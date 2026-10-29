@@ -162,7 +162,7 @@
    "about": {
     "@id": "https://gtmhelix.com/#org"
    },
-   "dateModified": "2026-10-11",
+   "dateModified": "2026-10-29",
    "inLanguage": "en",
    "primaryImageOfPage": "https://gtmalpha.gtmhelix.com/assets/og.png"
   },
@@ -233,7 +233,7 @@
     <section class="hx-hero">
         <div class="hx-wrap"><div class="hx-hero-inner">
             <div class="crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><h1>Privacy policy</h1></div>
-            <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-10-11">11 October 2026</time></p>
+            <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-10-29">29 October 2026</time></p>
         </div></div>
     </section>
 <aside class="hx7-strip" aria-label="Built by Shashwat Ghosh"><div class="hx-wrap hx7-strip-row"><picture class="hx7-strip-photo"><source srcset="/assets/shashwat-ghosh-160.webp" type="image/webp"><img src="/assets/shashwat-ghosh-160.jpg" width="160" height="160" alt="Shashwat Ghosh" decoding="async"></picture><p><b>Built by Shashwat Ghosh</b>, Co-Founder and Fractional CMO, Helix GTM Consulting, with 24+ years in B2B and 10+ years fractional.</p><a href="https://gtmhelix.com/about/">About Shashwat</a></div></aside>
@@ -267,16 +267,26 @@
         <p>Developers can send company details to the EPIC audit API (described in the <a href="/api-docs">API docs</a>). New audits are not kept: what they send is used only to build the result, and our code does not save it. Audits that earlier versions of the API saved stay in a database at Netlify, the company that hosts this site, and are deleted on request within 30 days.</p>
 
         <h3>2.3 GTM Alpha in Claude and other AI assistants</h3>
-        <p>When your AI assistant uses a GTM Alpha tool, our server receives the name of the tool and the details for that request, and uses them only to build the answer. Our code does not save or log them, and it never sees the rest of your conversation. Answers are marked so that they are not stored in any cache.</p>
+        <p>When your AI assistant uses a GTM Alpha tool, our server receives the name of the tool and the details for that request, and uses them only to build the answer. Our code does not save or log the details or the answer, and it never sees the rest of your conversation. It does count the call (see 2.5). Answers are marked so that they are not stored in any cache.</p>
 
         <h3>2.4 What is collected automatically</h3>
         <ul>
-            <li>Our pages set no cookies and run no analytics or tracking.</li>
+            <li>Our pages set no cookies and run no analytics or tracking scripts. The only count is the usage count in 2.5.</li>
             <li>Netlify, which hosts this site, handles each visit (including your IP address and browser details) to deliver the page and to apply the rate limits, and keeps its own logs: <a href="https://www.netlify.com/privacy/">netlify.com/privacy</a>.</li>
             <li>Our pages load their fonts, images and scripts from this site.</li>
         </ul>
 
-        <h3>2.5 Older records</h3>
+        <h3>2.5 Usage counts</h3>
+        <p>Since 17 October 2026, each audit from the free EPIC audit form or the EPIC audit API, and each GTM Alpha tool call, adds one record to a usage count, kept in Netlify's storage for this site. It shows us which tools people use. Each record holds only:</p>
+        <ul>
+            <li>The date and time of the call.</li>
+            <li>This site's name and the tool's name.</li>
+            <li>One word for the kind of app that made the call, such as <code>claude</code>, <code>chatgpt</code> or <code>browser</code>. It is read from the User-Agent header the app sends.</li>
+            <li>Whether the call came from the website or an AI assistant.</li>
+        </ul>
+        <p>It never holds your answers, your inputs, the report, your IP address or the full User-Agent. Nothing in a record says who you are.</p>
+
+        <h3>2.6 Older records</h3>
         <p>Earlier versions of this site saved the answers people gave in an older consultation form, in the same database at Netlify. For orders placed when that form took payments, the record also holds the service chosen and its price. These records hold no card or bank details. Nothing adds to them now, and they are deleted on request within 30 days.</p>
         </section>
         <section class="hx10-sec">
@@ -291,7 +301,7 @@
         <section class="hx10-sec">
         <h2>4. Who else sees your data</h2>
         <ul>
-            <li><strong>Netlify:</strong> hosts the site, holds the database (older EPIC audit API records and the older consultation records) and keeps request logs, on our behalf</li>
+            <li><strong>Netlify:</strong> hosts the site, stores the usage counts, holds the database (older EPIC audit API records and the older consultation records) and keeps request logs, on our behalf</li>
             <li><strong>Legal authorities:</strong> only when the law requires it</li>
         </ul>
         </section>
@@ -303,6 +313,7 @@
             <tr><td>What is sent to the EPIC audit API, and its results</td><td>New audits: not kept. Older records: until you ask us to delete them, then deleted within 30 days. Nothing is deleted automatically</td></tr>
             <tr><td>Older consultation records</td><td>Until you ask us to delete them, then deleted within 30 days</td></tr>
             <tr><td>What your AI assistant sends to the GTM Alpha tools, and the answers</td><td>Not kept</td></tr>
+            <tr><td>Usage counts (see 2.5)</td><td>No set end date. They cannot be linked to you, so we cannot find or delete one person's records</td></tr>
             <tr><td>Netlify request logs</td><td>Kept by Netlify under its own policy</td></tr>
         </table>
         </section>

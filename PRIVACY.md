@@ -1,6 +1,6 @@
 # GTM Alpha Privacy Policy
 
-Last updated: 30 September 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
+Last updated: 29 October 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
 
 Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
@@ -8,18 +8,20 @@ Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
 - **Premium Audit form (website):** your name and role, company name, company description, GTM challenge, industry, business stage, team size, monthly budget, primary focus, company website and LinkedIn URL, and, if you choose to give them, your contract value band, deal cycle band, net revenue retention band, number of addressable accounts, main deal source, primary market and whether you offer self-serve sign-up. The form sends them to `/api/premium-audit`, which builds your report in that request and returns it to your browser. Our code does not store or log them. The form does not ask for your email address, and no payment is taken.
 - **EPIC audit API:** new audits are not kept. Inputs sent to `/api/epic-audit` are used only to build the result; our code does not store them. Audits saved by earlier versions (store "epic-audits") are deleted on request within 30 days.
-- **MCP server (`/mcp`, also `/mcp-sse`, and the npm package):** receives the tool name and inputs of each call and uses them only to build the reply. Our code does not store or log them. The npm package runs on your computer and sends nothing to us.
+- **MCP server (`/mcp`, also `/mcp-sse`, and the npm package):** receives the tool name and inputs of each call and uses them only to build the reply. Our code does not store or log the inputs or the reply. It does count the call (see Usage counts). The npm package runs on your computer and sends nothing to us.
+- **Usage counts:** since 17 October 2026, each audit from the free EPIC audit form or the EPIC audit API, and each GTM Alpha tool call, adds one record to a usage count in Netlify's storage for this site. Each record holds only the date and time, this site's name and the tool's name, one word for the kind of app (such as `claude`, `chatgpt` or `browser`, read from the User-Agent header) and whether the call came from the website or an AI assistant. It never holds your answers, your inputs, the report, your IP address or the full User-Agent.
 - **Automatically:** our pages include no analytics or tracking scripts and set no cookies. Netlify processes each request (including IP address) and keeps its own logs. Pages load their fonts, images and scripts from this site.
 
 ## Retention
 
 - Premium Audit form answers and reports, EPIC audit API inputs and results, and MCP tool inputs and results: not stored. New audits are not kept.
 - Stored records (store "epic-audits", and the older stores "pending-payments", "gtm-consultations" and "consultations", which nothing writes to now): kept until you ask us to delete them, and deleted on request within 30 days. There is no automatic deletion.
+- Usage counts: no set end date. They cannot be linked to you, so we cannot find or delete one person's records.
 - Netlify request logs: kept by Netlify under its own policy.
 
 ## Sharing
 
-Netlify (hosting, database, logs) and legal authorities when required by law. We do not sell your data, share it with competitors or use it to train AI models.
+Netlify (hosting, usage counts, database, logs) and legal authorities when required by law. We do not sell your data, share it with competitors or use it to train AI models.
 
 ## Your rights
 
