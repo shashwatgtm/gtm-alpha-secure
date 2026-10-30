@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@modelcontextprotocol/inspector": "^2.12.0",
-    "netlify-cli": "^27.10.0"
+    "netlify-cli": "^27.14.3"
   },
   "keywords": [
     "mcp",
