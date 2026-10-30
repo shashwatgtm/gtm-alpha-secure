@@ -199,7 +199,7 @@
    "@type": "SoftwareApplication",
    "@id": "https://gtmalpha.gtmhelix.com/#app",
    "name": "GTM Alpha MCP Server",
-   "description": "MCP server with three read-only tools: Free EPIC audit (in your browser and in Claude); EPIC scores (in Claude), with Ecosystem, Product-Led, Inbound and Outbound, and Community each scored 1 to 10; and GTM Roadmap (in Claude).",
+   "description": "MCP server with three read-only tools: EPIC motion scores and first 30 days; EPIC scores, with Ecosystem, Product-Led, Inbound and Outbound, and Community each scored 1 to 10; and GTM Roadmap.",
    "applicationCategory": "BusinessApplication",
    "applicationSubCategory": "MCP server (Model Context Protocol connector)",
    "operatingSystem": "Any (remote MCP server over Streamable HTTP)",
@@ -217,9 +217,9 @@
     "@id": "https://gtmhelix.com/#org"
    },
    "featureList": [
-    "Free EPIC audit (in your browser and in Claude)",
-    "EPIC scores (in Claude)",
-    "GTM Roadmap (in Claude)"
+    "EPIC motion scores and first 30 days",
+    "EPIC scores",
+    "GTM Roadmap"
    ],
    "downloadUrl": "https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server",
    "sameAs": [
@@ -351,9 +351,9 @@
             <div class="integration-tabs">
                 <p>GTM Alpha has three tools:</p>
                 <ul style="margin: 16px 0 40px; padding-left: 20px;">
-                    <li>Free EPIC audit (in your browser and in Claude): your EPIC scores and the motion to lead with.</li>
-                    <li>EPIC scores (in Claude): your EPIC scores with the rule behind each.</li>
-                    <li>GTM Roadmap (in Claude): a 30, 60 or 90 day plan for one motion.</li>
+                    <li>EPIC motion scores and first 30 days: your EPIC scores and the motion to lead with.</li>
+                    <li>EPIC scores: your EPIC scores with the rule behind each.</li>
+                    <li>GTM Roadmap: a 30, 60 or 90 day plan for one motion.</li>
                 </ul>
                 <p>In ChatGPT: in ChatGPT's settings, open the connectors (apps) section, turn on developer mode if your plan requires it, create a connector with the URL https://gtmalpha.gtmhelix.com/mcp and no authentication, then enable it in a chat.</p>
                 <p>Support: <a href="mailto:shashwat@gtmhelix.com">shashwat@gtmhelix.com</a> or <a href="https://github.com/shashwatgtm/gtm-alpha-secure/issues">GitHub issues</a>. Privacy policy: <a href="https://gtmalpha.gtmhelix.com/privacy">gtmalpha.gtmhelix.com/privacy</a>.</p>
@@ -446,7 +446,7 @@
                                 <h4>Connector address:</h4>
                                 <div class="file-location">https://gtmalpha.gtmhelix.com/mcp</div>
                                 <h4>What you can ask for:</h4>
-                                <ul class="tools cols3 ga-tools"><li><a class="trow" href="/consultation" aria-labelledby="ga-t1"><span class="nm" id="ga-t1">Free EPIC audit (in your browser and in Claude)</span><span class="rv">your EPIC scores and the motion to lead with</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li><li><a class="trow" href="/api-docs#available-tools" aria-labelledby="ga-t2"><span class="nm" id="ga-t2">EPIC scores (in Claude)</span><span class="rv">your EPIC scores with the rule behind each</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li><li><a class="trow" href="/api-docs#available-tools" aria-labelledby="ga-t3"><span class="nm" id="ga-t3">GTM Roadmap (in Claude)</span><span class="rv">a 30, 60 or 90 day plan for one motion</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li></ul>
+                                <ul class="tools cols3 ga-tools"><li><a class="trow" href="/consultation" aria-labelledby="ga-t1"><span class="nm" id="ga-t1">EPIC motion scores and first 30 days</span><span class="rv">your EPIC scores and the motion to lead with</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li><li><a class="trow" href="/api-docs#available-tools" aria-labelledby="ga-t2"><span class="nm" id="ga-t2">EPIC scores</span><span class="rv">your EPIC scores with the rule behind each</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li><li><a class="trow" href="/api-docs#available-tools" aria-labelledby="ga-t3"><span class="nm" id="ga-t3">GTM Roadmap</span><span class="rv">a 30, 60 or 90 day plan for one motion</span><span class="open" aria-hidden="true">Open <span class="arr">&rsaquo;</span></span></a></li></ul>
                             </div>
                     </div>
                 </div>
@@ -462,7 +462,7 @@
                         <li>MCP protocol versions: 2025-06-18, 2025-03-26, 2024-11-05</li>
                         <li>Server version: 1.3.20</li>
                         <li>Tool annotations for safety: all three tools are read-only</li>
-                        <li>Tool names: gtm_consultation (Free EPIC audit (in your browser and in Claude)), epic_audit (EPIC scores (in Claude)), generate_roadmap (GTM Roadmap (in Claude))</li>
+                        <li>Tool names: gtm_consultation (EPIC motion scores and first 30 days), epic_audit (EPIC scores), generate_roadmap (GTM Roadmap)</li>
                     </ul>
                     <h3>Call a tool</h3>
                     <div class="code-container"><div class="code-header"><span>API request example (curl)</span></div>

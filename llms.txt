@@ -13,8 +13,8 @@
 ## Tools
 
 - EPIC motion scores and first 30 days (gtm_consultation): EPIC scores from 1 to 10, primary and secondary motion, warnings and the first 30 days of steps for the primary motion.
-- EPIC scores (in Claude) (epic_audit): EPIC scores from 1 to 10 with the rules that set each score. Optional inputs: ACV, deal cycle, NRR, TAM, self-serve, deal source, geography.
-- GTM Roadmap (in Claude) (generate_roadmap): a 30, 60 or 90 day plan for one EPIC motion.
+- EPIC scores (epic_audit): EPIC scores from 1 to 10 with the rules that set each score. Optional inputs: ACV, deal cycle, NRR, TAM, self-serve, deal source, geography.
+- GTM Roadmap (generate_roadmap): a 30, 60 or 90 day plan for one EPIC motion.
 
 ## Questions and answers
 

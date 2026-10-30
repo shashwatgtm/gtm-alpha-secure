@@ -82,8 +82,8 @@ Generated on 29 September 2026 from the server's own tool list and checked again
 | # | Tool | Title | What it does |
 |---|---|---|---|
 | 1 | `gtm_consultation` | EPIC motion scores and first 30 days | Scores the four motions from 1 to 10 with the documented rubric, names the primary and secondary motion, and lists the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary. |
-| 2 | `epic_audit` | EPIC scores (in Claude) | Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Add the optional inputs for a full score; without them the result is marked preliminary. |
-| 3 | `generate_roadmap` | GTM Roadmap (in Claude) | Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps, without the self-serve steps when your business model is not a software subscription. Builds text from the inputs only. |
+| 2 | `epic_audit` | EPIC scores | Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Add the optional inputs for a full score; without them the result is marked preliminary. |
+| 3 | `generate_roadmap` | GTM Roadmap | Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps, without the self-serve steps when your business model is not a software subscription. Builds text from the inputs only. |
 
 ### Inputs of each tool
 
@@ -105,7 +105,7 @@ Generated on 29 September 2026 from the server's own tool list and checked again
 | `current_channels` | No | string | Optional. What you do today (content, outbound, events, partnerships, PLG, community) |
 | `business_model` | No | one of: `saas`, `services`, `connectivity`, `transactions`, `marketplace`, `hardware_software`, `investment` | Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Read from your other inputs when left out |
 
-#### 2. EPIC scores (in Claude) (`epic_audit`)
+#### 2. EPIC scores (`epic_audit`)
 
 | Input | Required | Type | Description |
 |---|---|---|---|
@@ -122,7 +122,7 @@ Generated on 29 September 2026 from the server's own tool list and checked again
 | `geography` | No | one of: `india`, `us_eu`, `middle_east`, `apac`, `global` | Optional. Primary market |
 | `current_channels` | No | string | Optional. What you do today (content, outbound, events, partnerships, PLG, community) |
 
-#### 3. GTM Roadmap (in Claude) (`generate_roadmap`)
+#### 3. GTM Roadmap (`generate_roadmap`)
 
 | Input | Required | Type | Description |
 |---|---|---|---|
