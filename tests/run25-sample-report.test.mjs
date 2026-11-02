@@ -10,8 +10,8 @@ import { EXAMPLE_NOTE } from "../netlify/lib/premium-audit.js";
 import { exampleAnswers } from "../scripts/build-sample-report.mjs";
 
 const WORDMARK = '<span class="hx9-word">Helix GTM</span>';
-// "Helix GTM" not followed by " Consulting", outside the wordmark (the SVG text "HELIX GTM" is upper case and is the wordmark too).
-const loose = (s) => (s.split(WORDMARK).join("").match(/Helix GTM(?! Consulting)/g) || []).length;
+// The company is "Helix GTM Consulting"; "Helix GTM Suite" names the separate skills package. Outside the wordmark (the SVG text "HELIX GTM" is upper case and is the wordmark too).
+const loose = (s) => (s.split(WORDMARK).join("").match(/Helix GTM(?! Consulting| Suite\b)/g) || []).length;
 
 test("report chrome: one company name in the header, footer, aria labels and structured data", () => {
   for (const name of ["HEADER", "SAMPLE_HEADER", "FOOTER", "NEXT", "SKIP", "SAMPLE_TITLE", "SAMPLE_DESC", "LD_SAMPLE"]) {

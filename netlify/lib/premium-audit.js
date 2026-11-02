@@ -200,5 +200,5 @@ export function withChrome(report, example = false) {
   return report
     .replace("</head>", `${STYLESHEETS}</head>`)
     .replace("<body>", `<body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx10-report">${example ? EXAMPLE_NOTE : ""}${ACTIONS}<section data-helix-report>`)
-    .replace("</body>", `</section>${NEXT}</main>${FOOTER}<script>${EDIT_SCRIPT}</script></body>`);
+    .replace("</body>", `</section>${NEXT}${RC.APP_ROUTES}</main>${FOOTER}<script>${EDIT_SCRIPT}</script></body>`);
 }

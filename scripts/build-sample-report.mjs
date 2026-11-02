@@ -128,6 +128,7 @@ ${chrome.LD_SAMPLE}
     ${report}
     ${chrome.NEXT}
     </div>
+    ${chrome.APP_ROUTES}
     </main>
     ${chrome.FOOTER.replaceAll("Use it in Claude or ChatGPT", "Connect your app")}
 </body>
