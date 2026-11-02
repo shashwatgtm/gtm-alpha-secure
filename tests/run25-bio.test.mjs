@@ -1,13 +1,13 @@
 // Run 25 P24-1 (owner, 11 October 2026): the published pages and the sample report's structured data carry the canonical
 // Organization and Person nodes of the project's work/chrome.py (bio facts from gtm-expert-schema facts/shashwat-ghosh.json,
-// Structured Data Reference v3.0): one Person @id, https://www.gtmexpert.com/#shashwat-ghosh, and none of the retired strings.
+// Structured Data Reference v3.0): one Person @id, https://gtmhelix.com/about/#shashwat-ghosh, and none of the retired strings.
 // Run: node --test tests/run25-bio.test.mjs
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { LD_SAMPLE } from "../netlify/lib/report-chrome.js";
 
-const PERSON_ID = "https://www.gtmexpert.com/#shashwat-ghosh";
+const PERSON_ID = "https://gtmhelix.com/about/#shashwat-ghosh";
 const RETIRED = ["CRED ($180M+)", "$180M+", "VP Performance Marketing", "#14 in AI Research", "https://gtmhelix.com/about/#person"];
 const PAGES = ["index.html", "pricing.html", "consultation.html", "integration.html", "faq.html", "api-docs.html", "privacy.html", "terms.html", "404.html", "sample-report/index.html", "README.md"];
 const read = (f) => readFileSync(new URL("../" + f, import.meta.url), "utf8");
@@ -28,6 +28,7 @@ test("every JSON-LD block has one Person, with the canonical @id, and every refe
     const people = g.filter((n) => n["@type"] === "Person");
     assert.equal(people.length, 1);
     assert.equal(people[0]["@id"], PERSON_ID);
+    assert.ok(people[0].sameAs.includes("https://www.gtmexpert.com/#shashwat-ghosh"));
     assert.equal(people[0].jobTitle, "Co-Founder and Fractional CMO");
     assert.ok(people[0].award.includes("Top 15 AI Research and Innovation (India)"));
     const org = g.find((n) => n["@type"] === "Organization");
