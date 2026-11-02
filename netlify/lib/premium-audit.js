@@ -162,7 +162,9 @@ export default async (req) => {
   if (!report) return messagePage(500, "The report could not be built", ["Please try again in a minute. If it keeps failing, email shashwat@gtmhelix.com."]);
 
   // R10-16: a report built from the form's example answers says so at the top (run 25: a real company used only as an example).
-  const page = withChrome(report, /\(example company\)$/.test(checked.clean.company_name));
+  const inputs = JSON.stringify(checked.clean).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
+  const bridge = '<script type="application/json" id="helix-result-inputs">' + inputs + '</script><script type="module" src="/assistant/launcher.mjs"></script>';
+  const page = withChrome(report, /\(example company\)$/.test(checked.clean.company_name)).replace('</body>', bridge + '</body>');
   return new Response(page, { status: 200, headers: { ...PAGE_HEADERS, "Content-Security-Policy": reportPolicy() } });
 };
 
@@ -174,9 +176,9 @@ export default async (req) => {
 const hashOf = (t) => "'sha256-" + createHash("sha256").update(t, "utf8").digest("base64") + "'";
 export function reportPolicy() {
   const hashes = [hashOf(PDF_SCRIPT), hashOf(EDIT_SCRIPT)];
-  return ["default-src 'none'", `script-src ${hashes.join(" ")}`,
+  return ["default-src 'none'", `script-src 'self' ${hashes.join(" ")}`,
     "style-src 'self' 'unsafe-inline'", "font-src 'self'",
-    "img-src 'self' data: blob:", "connect-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"].join("; ");
+    "img-src 'self' data: blob:", "connect-src 'self'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"].join("; ");
 }
 
 // Run 9 E11 F2: the report page carries the global header and the GTM Alpha footer like every other page, so a visitor can
@@ -197,6 +199,6 @@ export const EXAMPLE_NOTE = '<p class="hx10-note"><strong>This report uses the e
 export function withChrome(report, example = false) {
   return report
     .replace("</head>", `${STYLESHEETS}</head>`)
-    .replace("<body>", `<body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx10-report">${example ? EXAMPLE_NOTE : ""}${ACTIONS}`)
-    .replace("</body>", `${NEXT}</main>${FOOTER}<script>${EDIT_SCRIPT}</script></body>`);
+    .replace("<body>", `<body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx10-report">${example ? EXAMPLE_NOTE : ""}${ACTIONS}<section data-helix-report>`)
+    .replace("</body>", `</section>${NEXT}</main>${FOOTER}<script>${EDIT_SCRIPT}</script></body>`);
 }
