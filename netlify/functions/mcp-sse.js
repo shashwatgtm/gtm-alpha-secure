@@ -11,9 +11,9 @@ function stepsFor(letter, model) {
   const keep = (list) => (model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)) : list.slice());
   return { days_30: keep(ROADMAP_STEPS[letter].days_30), days_60: keep(ROADMAP_STEPS[letter].days_60), first_quarter: keep(ROADMAP_STEPS[letter].first_quarter) };
 }
-function sectorNotes(v) {
+function sectorNotes(v, caseText) {
   if (!v) return null;
-  return { sector: v.name, who_decides: v.committee, what_it_measures: v.metrics, usual_objections: v.objections.map((o) => o.objection), proof_that_lands: v.proofShape, sales_motion: v.salesMotion };
+  return { sector: v.name, who_decides: "Owner: founder. Before the next planning meeting, ask the buyer who approves " + (caseText || "this purchase") + ". Check the authority and approval steps against the buyer's stated process. Candidate roles, not confirmed facts: " + v.committee, what_it_measures: v.metrics, usual_objections: v.objections.map((o) => o.objection), proof_that_lands: v.proofShape, sales_motion: v.salesMotion };
 }
 
 const GTM_CONSULTANT = {
@@ -69,7 +69,7 @@ const GTM_CONSULTANT = {
       primary_focus: analysis.primary.motion,
       secondary_focus: analysis.secondary.motion,
       first_30_days: first,
-      sector_notes: sectorNotes(v),
+      sector_notes: sectorNotes(v, company || args.gtm_challenge),
       business_model: m.model ? MODEL_NAME[m.model] + (m.how === "input" ? "" : m.how === "sector" ? " (the usual model in this sector, assumed; set business_model to change it)" : " (read from your inputs)") : "Business model: not stated. Tell us how you charge and the plan will adjust.",
       epic_detail: analysis
     };
@@ -191,7 +191,7 @@ function handleToolCall(name, rawArgs) {
     var audit = GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
     var named = typeof args.company_name === "string" ? args.company_name.trim() : "";
     var sv = detectVertical(args.industry, args.challenge, args.current_channels);
-    return Object.assign(named ? { company: escapePiece(named) } : {}, audit, sv ? { sector_notes: sectorNotes(sv) } : {});
+    return Object.assign(named ? { company: escapePiece(named) } : {}, audit, sv ? { sector_notes: sectorNotes(sv, named || args.challenge) } : {});
   } else if (name === "generate_roadmap") {
     return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args.business_model);
   } else {
