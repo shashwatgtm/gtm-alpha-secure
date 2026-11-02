@@ -19,7 +19,7 @@ const PAGES = ["index.html", "pricing.html", "consultation.html", "integration.h
 // browsers and tools that ask for /favicon.ico.
 const FILES = [...PAGES, "favicon.svg", "favicon.ico", "apple-touch-icon.png", "logo.svg", "robots.txt", "sitemap.xml", "llms.txt", "_redirects", "_headers", "openapi.yaml",
   "5d1ec46b7e579accde50872ab5aef7a4.txt", ".well-known/openai-apps-challenge"];
-const DIRS = ["assets"];
+const DIRS = ["assets", "assistant"];
 
 // Run 10 R10-A1-5 c: rebuild the sample report from the report code first, so the published sample always matches the
 // published code (scripts/build-sample-report.mjs; the same answers as "Fill in an example").
