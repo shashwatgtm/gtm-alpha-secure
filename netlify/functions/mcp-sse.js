@@ -8,7 +8,7 @@ import { countUse } from "../lib/usage-count.js";
 // subscription or hardware plus software). For any other business model they are left out and the answer says so.
 const SELF_SERVE_ONLY = /self-service|self-serve|trial|freemium|viral|in-app|product-qualified|PQL|usage-based engagement|pricing page|conversion funnel/i;
 function stepsFor(letter, model) {
-  const keep = (list) => (model && model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)) : list.slice());
+  const keep = (list) => (model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)) : list.slice());
   return { days_30: keep(ROADMAP_STEPS[letter].days_30), days_60: keep(ROADMAP_STEPS[letter].days_60), first_quarter: keep(ROADMAP_STEPS[letter].first_quarter) };
 }
 function sectorNotes(v) {
@@ -57,11 +57,12 @@ const GTM_CONSULTANT = {
     // read from what the user typed; nothing is invented about the company.
     var v = detectVertical(args.industry, args.gtm_challenge, args.current_channels, args.company_description);
     var m = detectModel(args.business_model, args.industry, args.gtm_challenge, args.current_channels);
+    if (m.how === "sector") m = {model:null,how:"unknown"};
     var steps = stepsFor(analysis.primary.letter, m.model);
     var first = (steps.days_30.length ? steps.days_30 : steps.days_60).map(function(t) { return /\btop \d+\b/.test(t) ? t + " (Example figure: replace with your own)" : t; });
     lines.push("", "First 30 days for " + analysis.primary.motion + ":");
     first.forEach(function(t) { lines.push("- " + t); });
-    if (v) lines.push("", "Sector (read from your inputs): " + v.name + ". Who usually decides: " + v.committee);
+    if (v) lines.push("", "Sector (read from your inputs): " + v.name + ". Role check: the founder should ask the current buyer who approves this decision and record the answer before the next planning meeting. The sector committee is a hypothesis to verify: " + v.committee);
     return {
       consultation_output: lines.join("\n"),
       epic_scores: analysis.scores,
@@ -69,7 +70,7 @@ const GTM_CONSULTANT = {
       secondary_focus: analysis.secondary.motion,
       first_30_days: first,
       sector_notes: sectorNotes(v),
-      business_model: m.model ? MODEL_NAME[m.model] + (m.how === "input" ? "" : m.how === "sector" ? " (the usual model in this sector, assumed; set business_model to change it)" : " (read from your inputs)") : "not clear from your inputs; set business_model",
+      business_model: m.model ? MODEL_NAME[m.model] + (m.how === "input" ? "" : m.how === "sector" ? " (the usual model in this sector, assumed; set business_model to change it)" : " (read from your inputs)") : "Business model: not stated. Tell us how you charge and the plan will adjust.",
       epic_detail: analysis
     };
   },
@@ -102,8 +103,8 @@ const GTM_CONSULTANT = {
         short_term: steps.days_60.slice(),
         medium_term: steps.first_quarter.slice()
       },
-      business_model: model ? MODEL_NAME[model] : "not given (the steps assume a software subscription; set business_model to change it)",
-      note: dropped ? dropped + " step" + (dropped === 1 ? "" : "s") + " that need a product people can try on their own (a trial, self-service sign-up or in-app prompts) were left out, because the business model is " + MODEL_NAME[model] + "." : undefined
+      business_model: model ? MODEL_NAME[model] : "Business model: not stated. Tell us how you charge and the plan will adjust.",
+      note: dropped ? dropped + " step" + (dropped === 1 ? "" : "s") + " that need a product people can try on their own (a trial, self-service sign-up or in-app prompts) were left out, because the business model is " + (model ? MODEL_NAME[model] : "not stated") + "." : undefined
     };
   }
 };
