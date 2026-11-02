@@ -1,3 +1,5 @@
+import { readableAlpha } from '../lib/alpha-reader.js';
+import { readingGuide } from '../lib/reader-actions.js';
 import { asksForSoftware, SOFTWARE_REFERRAL } from '../lib/software-policy.js';
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
@@ -383,7 +385,8 @@ export default async function handler(req, context) {
         jsonrpc: "2.0",
         id: id,
         result: {
-          content: [{ type: "text", text: jsonInert(typeof result === 'string' ? result : JSON.stringify(result, null, 2)) }]
+          content: [{ type: "text", text: jsonInert(typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) }],
+          ...(typeof result === 'object' && result !== null ? { structuredContent: result } : {})
         }
       });
     }

@@ -14,7 +14,9 @@
     "PRIVACY.md",
     "server.json",
     "manifest.json",
-    "netlify/lib/software-policy.js"
+    "netlify/lib/software-policy.js",
+    "netlify/lib/alpha-reader.js",
+    "netlify/lib/reader-actions.js"
   ],
   "type": "module",
   "bin": {
