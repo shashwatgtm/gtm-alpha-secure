@@ -1,4 +1,4 @@
-import { readableAlpha } from '../lib/alpha-reader.js';
+import { readableAlpha, serviceRoadmap } from '../lib/alpha-reader.js';
 import { readingGuide } from '../lib/reader-actions.js';
 import { asksForSoftware, SOFTWARE_REFERRAL } from '../lib/software-policy.js';
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
@@ -10,6 +10,7 @@ import { countUse } from "../lib/usage-count.js";
 // subscription or hardware plus software). For any other business model they are left out and the answer says so.
 const SELF_SERVE_ONLY = /self-service|self-serve|trial|freemium|viral|in-app|product-qualified|PQL|usage-based engagement|pricing page|conversion funnel/i;
 function stepsFor(letter, model) {
+  if (model === 'services') return serviceRoadmap(letter);
   const keep = (list) => (model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)) : list.slice());
   return { days_30: keep(ROADMAP_STEPS[letter].days_30), days_60: keep(ROADMAP_STEPS[letter].days_60), first_quarter: keep(ROADMAP_STEPS[letter].first_quarter) };
 }
@@ -87,7 +88,7 @@ const GTM_CONSULTANT = {
     var label = function(list) { return list.map(function(t) { return /\btop \d+\b/.test(t) ? t + " (Example figure: replace with your own)" : t; }); };
     var kept = stepsFor(letter, model);
     var steps = { days_30: label(kept.days_30), days_60: label(kept.days_60), first_quarter: label(kept.first_quarter) };
-    var dropped = ROADMAP_STEPS[letter].days_30.length + ROADMAP_STEPS[letter].days_60.length + ROADMAP_STEPS[letter].first_quarter.length - (kept.days_30.length + kept.days_60.length + kept.first_quarter.length);
+    var dropped = model === 'services' ? 0 : ROADMAP_STEPS[letter].days_30.length + ROADMAP_STEPS[letter].days_60.length + ROADMAP_STEPS[letter].first_quarter.length - (kept.days_30.length + kept.days_60.length + kept.first_quarter.length);
     // The chosen timeframe sets the day range of each phase (thirds of 30, 60 or 90 days).
     var days = { "30-day": 30, "60-day": 60, "90-day": 90 }[timeframe] || 90;
     var third = days / 3;

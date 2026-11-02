@@ -8,6 +8,41 @@ const labels = {
   source_classification: 'Source classification',
 };
 const label = key => labels[key] || key.replace(/_/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, c=>c.toUpperCase());
+// Services need a delivery test, not a filtered software launch checklist.
+export function serviceRoadmap(letter) {
+  const first = {
+    E: 'Ask a potential referral partner and the buyer to confirm the service problem, introduction owner and approval route.',
+    P: 'Define a bounded service engagement with the buyer, including deliverable, exclusions and acceptance evidence.',
+    I: 'Interview the intended service buyer and test one outreach message against an observed delivery problem.',
+    C: 'Ask a willing customer to review a service outcome with peers; confirm permission before inviting anyone.'
+  };
+  return {
+    days_30: [
+      first[letter],
+      'Have the delivery lead estimate staff hours and available capacity for the first engagement; finance checks the fee against that cost.',
+      'Agree the buyer acceptance check, accountable service owner and review date before promising a start.'
+    ],
+    days_60: [
+      'Run the agreed service engagement within the confirmed staffing and scope; record actual hours, exceptions and rework.',
+      'Ask the buyer to accept or reject the deliverable using the agreed evidence; record unresolved concerns.',
+      'Compare the actual acquisition and delivery cost with the agreed fee before accepting more work.'
+    ],
+    first_quarter: [
+      'Repeat the engagement only if the buyer acceptance and margin checks pass; otherwise revise scope, fee or delivery method.',
+      'Ask the delivery lead to confirm spare capacity before widening the account or referral list.',
+      'Review buyer outcomes and repeat purchase intent before adding a sales team; dates remain proposed until owners agree.'
+    ]
+  };
+}
+
+export function alphaReading(name, args) {
+  if (name !== 'generate_roadmap') return '';
+  const focus = {E:'partner and account',P:'Product Led Growth',I:'inbound and outbound',C:'community'}[args.primary_focus] || 'selected';
+  const duration = {'30-day':'30 day','60-day':'60 day','90-day':'90 day'}[args.timeframe] || '90 day default';
+  const service = args.business_model === 'services';
+  const work = service ? 'service engagement' : 'first buyer test';
+  return `\n\n## Reading the answer\n\nThis ${duration} ${focus} sequence supports planning ${work === 'service engagement' ? 'a bounded service engagement' : 'a buyer test'}. Team capacity, budget and an agreed start are not supplied by this tool. ${service && args.primary_focus === 'P' ? 'The selected P label is a framework choice, not evidence that a people delivered service can grow through self service. The steps test delivery and acceptance.' : 'Treat dates and example account counts as proposals.'} Review the conclusion if the buyer rejects the acceptance check or acquisition and delivery costs exceed the agreed resource limit.\n\n## Decisions by role\n\nProposed owners. Confirm the named person before acting.\n\nFounder: ask a buyer to agree the outcome and exclusions for the ${work} before accepting the ${focus} sequence; record what would make them reject it.\n\nCEO: have the delivery lead cost the ${work} against available staff time before approving the ${duration} schedule; reduce scope if capacity is insufficient.\n\nCMO: check the claim used in the ${focus} approach against the accepted ${work} evidence before publishing it; keep unmeasured benefits labelled as hypotheses.\n\nCRO: ask the buyer to confirm an approver, acceptance check and feasible start for the ${work} before treating the ${duration} dates as mutual commitments.\n\nDemand generation head: cap the ${focus} outreach sample at the team's confirmed follow up capacity; compare accepted engagements and acquisition effort before increasing volume.\n`;
+}
 export function readableAlpha(value, depth=2) {
   if (value === null || value === undefined) return 'Not supplied';
   if (typeof value !== 'object') return String(value);

@@ -49,6 +49,8 @@ const GUIDES = {
     generate_roadmap: ['plan', 'The roadmap is a proposed sequence for the selected focus. It does not establish staffing or feasibility.', 'available owners, task dependencies and the acceptance check for the first milestone', 'the roadmap commitment'],
 };
 export function readingGuide(name, result, args = {}) {
+    const specific = alphaReading(name, args);
+    if (specific && result && !/^(?:Error|Invalid|Missing required)/i.test(result)) return specific;
     let caseLabel = '';
     for (const key of ['company_name', 'account_name', 'product_name', 'company']) {
         const value = args[key];
@@ -141,3 +143,4 @@ export function withReadingGuide(name, result, args = {}) {
     }
     return result + guide;
 }
+import { alphaReading } from './alpha-reader.js';
