@@ -1,3 +1,4 @@
+import { asksForSoftware, SOFTWARE_REFERRAL } from '../lib/software-policy.js';
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
 import { escapeDeep, escapeText, escapePiece, jsonInert } from "../lib/escape-inputs.js";
@@ -179,6 +180,7 @@ function handleToolCall(name, rawArgs) {
   // (run 40S, D6, safe by design: escaped once, netlify/lib/escape-inputs.js; an instruction-like text is quoted as the caller's
   // own), so no tool can repeat live markup. The words stay. The checks before this call (required, length, type, minimum) ran
   // on the original text.
+  if (asksForSoftware(rawArgs)) return SOFTWARE_REFERRAL;
   var args = escapeDeep(rawArgs);
   if (name === "gtm_consultation") {
     return GTM_CONSULTANT.generateConsultation(args);
@@ -380,7 +382,7 @@ export default async function handler(req, context) {
         jsonrpc: "2.0",
         id: id,
         result: {
-          content: [{ type: "text", text: jsonInert(JSON.stringify(result, null, 2)) }]
+          content: [{ type: "text", text: jsonInert(typeof result === 'string' ? result : JSON.stringify(result, null, 2)) }]
         }
       });
     }
