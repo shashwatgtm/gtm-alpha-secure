@@ -1,0 +1,20 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+@shashwatgtmalpha/gtm-alpha-mcp-server@1.3.20 /workspace/scratch/f4c2bd53a52a/alpha
+└─┬ netlify-cli@27.14.3
+  ├─┬ @fastify/static@10.1.4
+  │ └─┬ glob@13.0.6
+  │   └── minimatch@11.0.1 deduped
+  ├─┬ @netlify/build-info@11.3.0
+  │ └── minimatch@11.0.1 overridden
+  ├─┬ @netlify/build@37.7.2
+  │ └── minimatch@11.0.1 deduped
+  └─┬ @netlify/zip-it-and-ship-it@16.6.0
+    ├─┬ archiver@8.0.0
+    │ └─┬ readdir-glob@3.0.0
+    │   └── minimatch@11.0.1 deduped
+    ├── minimatch@11.0.1 deduped
+    └─┬ precinct@12.3.2
+      └─┬ detective-typescript@14.1.2
+        └─┬ @typescript-eslint/typescript-estree@8.72.1
+          └── minimatch@11.0.1 deduped
+
