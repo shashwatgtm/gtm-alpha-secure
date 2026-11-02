@@ -1,9 +1,13 @@
 import { readableAlpha, serviceRoadmap } from '../lib/alpha-reader.js';
+import { regionNotes } from '../lib/region-reader.js';
+import { regionalInputs } from '../lib/region-adapter.js';
 import { readingGuide } from '../lib/reader-actions.js';
 import { asksForSoftware, SOFTWARE_REFERRAL } from '../lib/software-policy.js';
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
-import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
-import { escapeDeep, escapeText, escapePiece, jsonInert } from "../lib/escape-inputs.js";
+// Preserve existing nonregional text and model decisions; the new shared taxonomy
+// is used by region-reader.js for country and industry notes.
+import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/legacy-sector-notes.js";
+import { escapeDeep, escapeText, escapePiece, jsonInert, cleanDeep } from "../lib/escape-inputs.js";
 import { countUse } from "../lib/usage-count.js";
 
 // Run 19 (D80, problems 3, 4 and 8): the plan steps that only fit a product people can try on their own (a software
@@ -386,7 +390,7 @@ export default async function handler(req, context) {
         jsonrpc: "2.0",
         id: id,
         result: {
-          content: [{ type: "text", text: jsonInert(typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) }],
+          content: [{ type: "text", text: jsonInert((typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) + (asksForSoftware(toolArgs) ? '' : regionNotes(regionalInputs({...cleanDeep(toolArgs), sector: toolArgs.industry})))) }],
           ...(typeof result === 'object' && result !== null ? { structuredContent: result } : {})
         }
       });

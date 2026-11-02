@@ -1,0 +1,503 @@
+{
+  "contract": {
+    "tools": [
+      {
+        "name": "gtm_consultation",
+        "title": "EPIC motion scores and first 30 days",
+        "description": "Scores the four motions from 1 to 10 with the documented rubric, names the primary and secondary motion, and lists the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "company_name": {
+              "type": "string",
+              "description": "Company name"
+            },
+            "gtm_challenge": {
+              "type": "string",
+              "description": "Your GTM challenge"
+            },
+            "business_stage": {
+              "type": "string",
+              "description": "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B)"
+            },
+            "industry": {
+              "type": "string",
+              "description": "Your industry"
+            },
+            "acv_usd": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Average contract value per year in US dollars (for example 42000)"
+            },
+            "deal_cycle_days": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Days from first touch to closed-won (for example 120)"
+            },
+            "nrr_percent": {
+              "type": "number",
+              "description": "Optional. Net revenue retention in percent (for example 108)"
+            },
+            "tam_accounts": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Number of addressable accounts (for example 2500)"
+            },
+            "self_serve": {
+              "type": "boolean",
+              "description": "Optional. true if customers can sign up and get value without talking to sales"
+            },
+            "deal_source": {
+              "type": "string",
+              "enum": [
+                "referrals",
+                "outbound",
+                "partnerships",
+                "inbound",
+                "mixed"
+              ],
+              "description": "Optional. Where the majority of deals come from"
+            },
+            "geography": {
+              "type": "string",
+              "enum": [
+                "india",
+                "us_eu",
+                "middle_east",
+                "apac",
+                "global"
+              ],
+              "description": "Optional. Primary market"
+            },
+            "current_channels": {
+              "type": "string",
+              "description": "Optional. What you do today (content, outbound, events, partnerships, PLG, community)"
+            },
+            "business_model": {
+              "type": "string",
+              "enum": [
+                "saas",
+                "services",
+                "connectivity",
+                "transactions",
+                "marketplace",
+                "hardware_software",
+                "investment"
+              ],
+              "description": "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Read from your other inputs when left out"
+            }
+          },
+          "required": [
+            "gtm_challenge"
+          ]
+        },
+        "annotations": {
+          "title": "EPIC motion scores and first 30 days",
+          "readOnlyHint": true,
+          "openWorldHint": false,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "epic_audit",
+        "title": "EPIC scores",
+        "description": "Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Add the optional inputs for a full score; without them the result is marked preliminary.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "challenge": {
+              "type": "string",
+              "description": "Describe your GTM situation"
+            },
+            "company_name": {
+              "type": "string",
+              "description": "Optional. Your company or product name, repeated in the answer"
+            },
+            "industry": {
+              "type": "string",
+              "description": "Your industry"
+            },
+            "business_stage": {
+              "type": "string",
+              "description": "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B)"
+            },
+            "acv_usd": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Average contract value per year in US dollars (for example 42000)"
+            },
+            "deal_cycle_days": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Days from first touch to closed-won (for example 120)"
+            },
+            "nrr_percent": {
+              "type": "number",
+              "description": "Optional. Net revenue retention in percent (for example 108)"
+            },
+            "tam_accounts": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Number of addressable accounts (for example 2500)"
+            },
+            "self_serve": {
+              "type": "boolean",
+              "description": "Optional. true if customers can sign up and get value without talking to sales"
+            },
+            "deal_source": {
+              "type": "string",
+              "enum": [
+                "referrals",
+                "outbound",
+                "partnerships",
+                "inbound",
+                "mixed"
+              ],
+              "description": "Optional. Where the majority of deals come from"
+            },
+            "geography": {
+              "type": "string",
+              "enum": [
+                "india",
+                "us_eu",
+                "middle_east",
+                "apac",
+                "global"
+              ],
+              "description": "Optional. Primary market"
+            },
+            "current_channels": {
+              "type": "string",
+              "description": "Optional. What you do today (content, outbound, events, partnerships, PLG, community)"
+            }
+          },
+          "required": [
+            "challenge"
+          ]
+        },
+        "annotations": {
+          "title": "EPIC scores",
+          "readOnlyHint": true,
+          "openWorldHint": false,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "generate_roadmap",
+        "title": "GTM Roadmap",
+        "description": "Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps, without the self-serve steps when your business model is not a software subscription. Builds text from the inputs only.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "primary_focus": {
+              "type": "string",
+              "enum": [
+                "E",
+                "P",
+                "I",
+                "C"
+              ],
+              "description": "EPIC motion to plan for: E, P, I or C"
+            },
+            "timeframe": {
+              "type": "string",
+              "enum": [
+                "30-day",
+                "60-day",
+                "90-day"
+              ],
+              "description": "30-day, 60-day or 90-day (default 90-day)"
+            },
+            "business_model": {
+              "type": "string",
+              "enum": [
+                "saas",
+                "services",
+                "connectivity",
+                "transactions",
+                "marketplace",
+                "hardware_software",
+                "investment"
+              ],
+              "description": "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Steps that need a product people can try on their own are left out for a business that is not a software subscription"
+            }
+          },
+          "required": [
+            "primary_focus"
+          ]
+        },
+        "annotations": {
+          "title": "GTM Roadmap",
+          "readOnlyHint": true,
+          "openWorldHint": false,
+          "destructiveHint": false
+        }
+      }
+    ]
+  },
+  "cases": [
+    {
+      "tool": "gtm_consultation",
+      "args": {
+        "company_name": "Test offer",
+        "gtm_challenge": "We sell payment processing software. Choose an acquisition test before hiring.",
+        "industry": "fintech",
+        "business_stage": "growth",
+        "business_model": "services"
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "**Consultation:** GTM Alpha Free EPIC audit\nCompany: Test offer\nChallenge: We sell payment processing software. Choose an acquisition test before hiring.\n\nPrimary Focus: Ecosystem and ABM\nSecondary Focus: Community-Led\nEPIC Scores (1 to 10): E:7, P:5, I:6, C:6\nNote: Your scores are evenly distributed. This usually means no motion has pulled ahead yet. Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own). Measure pipeline contribution, then score again after a quarter to see whether that motion pulls ahead.\nPreliminary: rerun when you have ACV, deal cycle, NRR, TAM, deal source, geography.\n\nFirst 30 days for Ecosystem and ABM:\n- Ask a potential referral partner and the buyer to confirm the service problem, introduction owner and approval route.\n- Have the delivery lead estimate staff hours and available capacity for the first engagement; finance checks the fee against that cost.\n- Agree the buyer acceptance check, accountable service owner and review date before promising a start.\n\nSector (read from your inputs): fintech. Role check: the founder should ask the current buyer who approves this decision and record the answer before the next planning meeting. The sector committee is a hypothesis to verify: The CFO signs; the Finance Controller or the head of the affected finance team champions; internal audit and compliance review controls; IT checks ERP integration and security; HR joins when employees are affected.\n\n## EPIC rubric scores\n\n**Ecosystem led growth:** 7\n\n**Product led growth:** 5\n\n**Inbound and outbound:** 6\n\n**Community led growth:** 6\n\n**First motion to test:** Ecosystem and ABM\n\n**Secondary focus:** Community-Led\n\n## First month\n\nAsk a potential referral partner and the buyer to confirm the service problem, introduction owner and approval route.\n\nHave the delivery lead estimate staff hours and available capacity for the first engagement; finance checks the fee against that cost.\n\nAgree the buyer acceptance check, accountable service owner and review date before promising a start.\n\n## Sector hypotheses to check\n\n**Sector:** fintech\n\n**Buying roles to confirm:** Owner: founder. Before the next planning meeting, ask the buyer who approves Test offer. Check the authority and approval steps against the buyer's stated process. Candidate roles, not confirmed facts: The CFO signs; the Finance Controller or the head of the affected finance team champions; internal audit and compliance review controls; IT checks ERP integration and security; HR joins when employees are affected.\n\n### Possible measures\n\ndays to close the books\n\nreconciliation effort\n\npolicy breach rate\n\napproval cycle time\n\naudit findings\n\ncost per transaction\n\npayment success rate\n\n### Questions to validate\n\nOur ERP already does this\n\nSecurity and compliance review\n\nMigration will disrupt the close\n\nRegulatory caution\n\n**Evidence to collect:** Close time or reconciliation effort before and after for one entity, signed off by the finance controller.\n\n**Proposed sales motion:** CFO-led with a security and compliance review inside the cycle; proof through a pilot on one entity or department.\n\n**Business model:** services (people-delivered, per FTE, per ticket or fixed price)\n\n## Epic detail\n\n### Rubric scores\n\n**Ecosystem led growth:** 7\n\n**Product led growth:** 5\n\n**Inbound and outbound:** 6\n\n**Community led growth:** 6\n\n**First motion to test:** E\n\n**Suggested motion:** Ecosystem and ABM\n\n**Method:** EPIC motion scoring, advanced version (epic-motion-diagnostic rubric, Helix GTM Consulting)\n\n**Scale:** 1 to 10 per motion\n\n### Primary\n\n**Letter:** E\n\n**Motion:** Ecosystem and ABM\n\n**Reason:** Ecosystem and ABM scores 7 of 10: Series B starting point 7; no further adjustment changed it.\n\n### Secondary\n\n**Letter:** C\n\n**Motion:** Community-Led\n\n**Reason:** Community-Led scores 6 of 10: Series B starting point 6; no further adjustment changed it.\n\n### Warnings\n\n\n\n### Limits and assumptions\n\nYour scores are evenly distributed. This usually means no motion has pulled ahead yet. Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own). Measure pipeline contribution, then score again after a quarter to see whether that motion pulls ahead.\n\n**Preliminary:** true\n\n### Skipped adjustments\n\nACV\n\ndeal cycle\n\nNRR\n\nTAM\n\ndeal source\n\ngeography\n\n**Evidence limit:** Preliminary: rerun when you have ACV, deal cycle, NRR, TAM, deal source, geography.\n\n**Stage used:** Series B\n\n### Adjustments applied\n\n**Rule:** Stage starting point: Series B\n\n#### Change\n\n**Ecosystem led growth:** 7\n\n**Product led growth:** 5\n\n**Inbound and outbound:** 6\n\n**Community led growth:** 6\n\n## Reading the answer\n\nFor Test offer, the rubric supports a first test of Ecosystem and ABM. It does not establish that hiring another sales team will pay back. Acquisition cost, buyer acceptance and delivery capacity need direct evidence. The conclusion needs review if a comparable buyer cannot complete the proposed first step, delivery misses acceptance, or measured acquisition and delivery costs exceed the agreed budget.\n\n## Decisions by role\n\nProposed owners. Confirm the named person before acting.\n\nFounder: ask a buyer to test the assumption behind \"We sell payment processing software. Choose an acquisition test before hiring.\" before endorsing Ecosystem and ABM; record the buyer observation that would reverse the choice.\n\nCEO: have finance and the delivery lead cost a small Ecosystem and ABM test for Test offer before adding staff; agree a spending limit and stop if accepted work cannot cover acquisition and delivery cost.\n\nCMO: separate the supplied channel description \"the stated acquisition channels\" from measured results; check source, period and buyer acceptance before claiming the channel works.\n\nCRO: compare the supplied annual value of USD not stated and unstated day cycle with closed and lost deals before expanding Ecosystem and ABM; record scope and cycle differences.\n\nDemand generation head: choose a small, dated account sample from the unstated number of addressable accounts; record reach, qualified conversations and acquisition effort before widening Ecosystem and ABM.\n"
+          }
+        ],
+        "structuredContent": {
+          "consultation_output": "GTM Alpha Free EPIC audit\nCompany: Test offer\nChallenge: We sell payment processing software. Choose an acquisition test before hiring.\n\nPrimary Focus: Ecosystem and ABM\nSecondary Focus: Community-Led\nEPIC Scores (1 to 10): E:7, P:5, I:6, C:6\nNote: Your scores are evenly distributed. This usually means no motion has pulled ahead yet. Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own). Measure pipeline contribution, then score again after a quarter to see whether that motion pulls ahead.\nPreliminary: rerun when you have ACV, deal cycle, NRR, TAM, deal source, geography.\n\nFirst 30 days for Ecosystem and ABM:\n- Ask a potential referral partner and the buyer to confirm the service problem, introduction owner and approval route.\n- Have the delivery lead estimate staff hours and available capacity for the first engagement; finance checks the fee against that cost.\n- Agree the buyer acceptance check, accountable service owner and review date before promising a start.\n\nSector (read from your inputs): fintech. Role check: the founder should ask the current buyer who approves this decision and record the answer before the next planning meeting. The sector committee is a hypothesis to verify: The CFO signs; the Finance Controller or the head of the affected finance team champions; internal audit and compliance review controls; IT checks ERP integration and security; HR joins when employees are affected.",
+          "epic_scores": {
+            "E": 7,
+            "P": 5,
+            "I": 6,
+            "C": 6
+          },
+          "primary_focus": "Ecosystem and ABM",
+          "secondary_focus": "Community-Led",
+          "first_30_days": [
+            "Ask a potential referral partner and the buyer to confirm the service problem, introduction owner and approval route.",
+            "Have the delivery lead estimate staff hours and available capacity for the first engagement; finance checks the fee against that cost.",
+            "Agree the buyer acceptance check, accountable service owner and review date before promising a start."
+          ],
+          "sector_notes": {
+            "sector": "fintech",
+            "who_decides": "Owner: founder. Before the next planning meeting, ask the buyer who approves Test offer. Check the authority and approval steps against the buyer's stated process. Candidate roles, not confirmed facts: The CFO signs; the Finance Controller or the head of the affected finance team champions; internal audit and compliance review controls; IT checks ERP integration and security; HR joins when employees are affected.",
+            "what_it_measures": [
+              "days to close the books",
+              "reconciliation effort",
+              "policy breach rate",
+              "approval cycle time",
+              "audit findings",
+              "cost per transaction",
+              "payment success rate"
+            ],
+            "usual_objections": [
+              "Our ERP already does this",
+              "Security and compliance review",
+              "Migration will disrupt the close",
+              "Regulatory caution"
+            ],
+            "proof_that_lands": "Close time or reconciliation effort before and after for one entity, signed off by the finance controller.",
+            "sales_motion": "CFO-led with a security and compliance review inside the cycle; proof through a pilot on one entity or department."
+          },
+          "business_model": "services (people-delivered, per FTE, per ticket or fixed price)",
+          "epic_detail": {
+            "scores": {
+              "E": 7,
+              "P": 5,
+              "I": 6,
+              "C": 6
+            },
+            "primaryFocus": "E",
+            "recommendation": "Ecosystem and ABM",
+            "method": "EPIC motion scoring, advanced version (epic-motion-diagnostic rubric, Helix GTM Consulting)",
+            "scale": "1 to 10 per motion",
+            "primary": {
+              "letter": "E",
+              "motion": "Ecosystem and ABM",
+              "reason": "Ecosystem and ABM scores 7 of 10: Series B starting point 7; no further adjustment changed it."
+            },
+            "secondary": {
+              "letter": "C",
+              "motion": "Community-Led",
+              "reason": "Community-Led scores 6 of 10: Series B starting point 6; no further adjustment changed it."
+            },
+            "warnings": [],
+            "notes": [
+              "Your scores are evenly distributed. This usually means no motion has pulled ahead yet. Pick one motion to test for 90 days with 60% of your GTM effort (Example figure: replace with your own). Measure pipeline contribution, then score again after a quarter to see whether that motion pulls ahead."
+            ],
+            "preliminary": true,
+            "skipped_adjustments": [
+              "ACV",
+              "deal cycle",
+              "NRR",
+              "TAM",
+              "deal source",
+              "geography"
+            ],
+            "preliminary_note": "Preliminary: rerun when you have ACV, deal cycle, NRR, TAM, deal source, geography.",
+            "stage_used": "Series B",
+            "adjustments_applied": [
+              {
+                "rule": "Stage starting point: Series B",
+                "change": {
+                  "E": 7,
+                  "P": 5,
+                  "I": 6,
+                  "C": 6
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "tool": "epic_audit",
+      "args": {
+        "company_name": "Test offer",
+        "industry": "fintech",
+        "challenge": "We sell payment processing software. Choose an acquisition test before hiring.",
+        "acv_usd": 24000,
+        "nrr_percent": 108,
+        "deal_cycle_days": 90,
+        "tam_accounts": 2500,
+        "deal_source": "referrals",
+        "current_channels": "Buyer introductions"
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "**Company:** Test offer\n\n## Rubric scores\n\n**Ecosystem led growth:** 7\n\n**Product led growth:** 5\n\n**Inbound and outbound:** 6\n\n**Community led growth:** 9\n\n**First motion to test:** C\n\n**Suggested motion:** Community-Led\n\n**Method:** EPIC motion scoring, advanced version (epic-motion-diagnostic rubric, Helix GTM Consulting)\n\n**Scale:** 1 to 10 per motion\n\n## Primary\n\n**Letter:** C\n\n**Motion:** Community-Led\n\n**Reason:** Community-Led scores 9 of 10: Series B (used because the stage was missing or not recognised) starting point 6; Majority of deals from referrals (tracked as the primary signal) (C +3).\n\n## Secondary\n\n**Letter:** E\n\n**Motion:** Ecosystem and ABM\n\n**Reason:** Ecosystem and ABM scores 7 of 10: Series B (used because the stage was missing or not recognised) starting point 7; no further adjustment changed it.\n\n## Warnings\n\n\n\n## Limits and assumptions\n\n\n\n**Preliminary:** true\n\n## Skipped adjustments\n\nbusiness stage\n\ngeography\n\n**Evidence limit:** Preliminary: rerun when you have business stage, geography.\n\n**Stage used:** Series B (used because the stage was missing or not recognised)\n\n## Adjustments applied\n\n**Rule:** Stage starting point: Series B (used because the stage was missing or not recognised)\n\n### Change\n\n**Ecosystem led growth:** 7\n\n**Product led growth:** 5\n\n**Inbound and outbound:** 6\n\n**Community led growth:** 6\n\n**Rule:** Majority of deals from referrals (tracked as the primary signal)\n\n### Change\n\n**Community led growth:** 3\n\n## Sector hypotheses to check\n\n**Sector:** fintech\n\n**Buying roles to confirm:** Owner: founder. Before the next planning meeting, ask the buyer who approves Test offer. Check the authority and approval steps against the buyer's stated process. Candidate roles, not confirmed facts: The CFO signs; the Finance Controller or the head of the affected finance team champions; internal audit and compliance review controls; IT checks ERP integration and security; HR joins when employees are affected.\n\n### Possible measures\n\ndays to close the books\n\nreconciliation effort\n\npolicy breach rate\n\napproval cycle time\n\naudit findings\n\ncost per transaction\n\npayment success rate\n\n### Questions to validate\n\nOur ERP already does this\n\nSecurity and compliance review\n\nMigration will disrupt the close\n\nRegulatory caution\n\n**Evidence to collect:** Close time or reconciliation effort before and after for one entity, signed off by the finance controller.\n\n**Proposed sales motion:** CFO-led with a security and compliance review inside the cycle; proof through a pilot on one entity or department.\n\n## Reading the answer\n\nFor Test offer, the EPIC score supports comparing motion hypotheses under the published rubric. Community-Led is the rubric's lead, not observed commercial fit or a growth forecast. Missing inputs retain the report's preliminary status. The conclusion needs review if verified economics change the score bands or a buyer test contradicts the lead motion.\n\n## Decisions by role\n\nProposed owners. Confirm the named person before acting.\n\nFounder: compare Community-Led with the runner up using the same buyer problem at Test offer; record one observation that would make the lower scoring motion preferable.\n\nCEO: ask finance to verify the supplied USD 24,000 annual value and 108% retention, including cohort and period, before using the score to allocate budget; agree a spending limit and stop condition before the buyer test.\n\nCMO: verify the source and outcomes behind \"Buyer introductions\" before treating the channel description as proof of fit for Community-Led; distinguish activity from accepted customer value.\n\nCRO: check the supplied 90 day sales cycle and majority source \"referrals\" against comparable won and lost deals before changing the motion; retain outliers and approval delays.\n\nDemand generation head: verify a dated sample of the 2,500 addressable accounts before scaling Community-Led; measure contactability and fit separately from the rubric score.\n"
+          }
+        ],
+        "structuredContent": {
+          "company": "Test offer",
+          "scores": {
+            "E": 7,
+            "P": 5,
+            "I": 6,
+            "C": 9
+          },
+          "primaryFocus": "C",
+          "recommendation": "Community-Led",
+          "method": "EPIC motion scoring, advanced version (epic-motion-diagnostic rubric, Helix GTM Consulting)",
+          "scale": "1 to 10 per motion",
+          "primary": {
+            "letter": "C",
+            "motion": "Community-Led",
+            "reason": "Community-Led scores 9 of 10: Series B (used because the stage was missing or not recognised) starting point 6; Majority of deals from referrals (tracked as the primary signal) (C +3)."
+          },
+          "secondary": {
+            "letter": "E",
+            "motion": "Ecosystem and ABM",
+            "reason": "Ecosystem and ABM scores 7 of 10: Series B (used because the stage was missing or not recognised) starting point 7; no further adjustment changed it."
+          },
+          "warnings": [],
+          "notes": [],
+          "preliminary": true,
+          "skipped_adjustments": [
+            "business stage",
+            "geography"
+          ],
+          "preliminary_note": "Preliminary: rerun when you have business stage, geography.",
+          "stage_used": "Series B (used because the stage was missing or not recognised)",
+          "adjustments_applied": [
+            {
+              "rule": "Stage starting point: Series B (used because the stage was missing or not recognised)",
+              "change": {
+                "E": 7,
+                "P": 5,
+                "I": 6,
+                "C": 6
+              }
+            },
+            {
+              "rule": "Majority of deals from referrals (tracked as the primary signal)",
+              "change": {
+                "C": 3
+              }
+            }
+          ],
+          "sector_notes": {
+            "sector": "fintech",
+            "who_decides": "Owner: founder. Before the next planning meeting, ask the buyer who approves Test offer. Check the authority and approval steps against the buyer's stated process. Candidate roles, not confirmed facts: The CFO signs; the Finance Controller or the head of the affected finance team champions; internal audit and compliance review controls; IT checks ERP integration and security; HR joins when employees are affected.",
+            "what_it_measures": [
+              "days to close the books",
+              "reconciliation effort",
+              "policy breach rate",
+              "approval cycle time",
+              "audit findings",
+              "cost per transaction",
+              "payment success rate"
+            ],
+            "usual_objections": [
+              "Our ERP already does this",
+              "Security and compliance review",
+              "Migration will disrupt the close",
+              "Regulatory caution"
+            ],
+            "proof_that_lands": "Close time or reconciliation effort before and after for one entity, signed off by the finance controller.",
+            "sales_motion": "CFO-led with a security and compliance review inside the cycle; proof through a pilot on one entity or department."
+          }
+        }
+      }
+    },
+    {
+      "tool": "generate_roadmap",
+      "args": {
+        "primary_focus": "E",
+        "timeframe": "90-day",
+        "business_model": "services"
+      },
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "**Timeframe:** 90-day\n\n**First motion to test:** Ecosystem and ABM\n\n## Schedule\n\n**Immediate:** Days 1 to 30\n\n**Short term:** Days 31 to 60\n\n**Medium term:** Days 61 to 90\n\n## Proposed actions\n\n### Immediate\n\nAsk a potential referral partner and the buyer to confirm the service problem, introduction owner and approval route.\n\nHave the delivery lead estimate staff hours and available capacity for the first engagement; finance checks the fee against that cost.\n\nAgree the buyer acceptance check, accountable service owner and review date before promising a start.\n\n### Short term\n\nRun the agreed service engagement within the confirmed staffing and scope; record actual hours, exceptions and rework.\n\nAsk the buyer to accept or reject the deliverable using the agreed evidence; record unresolved concerns.\n\nCompare the actual acquisition and delivery cost with the agreed fee before accepting more work.\n\n### Medium term\n\nRepeat the engagement only if the buyer acceptance and margin checks pass; otherwise revise scope, fee or delivery method.\n\nAsk the delivery lead to confirm spare capacity before widening the account or referral list.\n\nReview buyer outcomes and repeat purchase intent before adding a sales team; dates remain proposed until owners agree.\n\n**Business model:** services (people-delivered, per FTE, per ticket or fixed price)\n\n## Reading the answer\n\nThis 90 day partner and account sequence supports planning a bounded service engagement. Team capacity, budget and an agreed start are not supplied by this tool. Treat dates and example account counts as proposals. Review the conclusion if the buyer rejects the acceptance check or acquisition and delivery costs exceed the agreed resource limit.\n\n## Decisions by role\n\nProposed owners. Confirm the named person before acting.\n\nFounder: ask a buyer to agree the outcome and exclusions for the service engagement before accepting the partner and account sequence; record what would make them reject it.\n\nCEO: have the delivery lead cost the service engagement against available staff time before approving the 90 day schedule; reduce scope if capacity is insufficient.\n\nCMO: check the claim used in the partner and account approach against the accepted service engagement evidence before publishing it; keep unmeasured benefits labelled as hypotheses.\n\nCRO: ask the buyer to confirm an approver, acceptance check and feasible start for the service engagement before treating the 90 day dates as mutual commitments.\n\nDemand generation head: cap the partner and account outreach sample at the team's confirmed follow up capacity; compare accepted engagements and acquisition effort before increasing volume.\n"
+          }
+        ],
+        "structuredContent": {
+          "timeframe": "90-day",
+          "primary_focus": "Ecosystem and ABM",
+          "schedule": {
+            "immediate": "Days 1 to 30",
+            "short_term": "Days 31 to 60",
+            "medium_term": "Days 61 to 90"
+          },
+          "action_plan": {
+            "immediate": [
+              "Ask a potential referral partner and the buyer to confirm the service problem, introduction owner and approval route.",
+              "Have the delivery lead estimate staff hours and available capacity for the first engagement; finance checks the fee against that cost.",
+              "Agree the buyer acceptance check, accountable service owner and review date before promising a start."
+            ],
+            "short_term": [
+              "Run the agreed service engagement within the confirmed staffing and scope; record actual hours, exceptions and rework.",
+              "Ask the buyer to accept or reject the deliverable using the agreed evidence; record unresolved concerns.",
+              "Compare the actual acquisition and delivery cost with the agreed fee before accepting more work."
+            ],
+            "medium_term": [
+              "Repeat the engagement only if the buyer acceptance and margin checks pass; otherwise revise scope, fee or delivery method.",
+              "Ask the delivery lead to confirm spare capacity before widening the account or referral list.",
+              "Review buyer outcomes and repeat purchase intent before adding a sales team; dates remain proposed until owners agree."
+            ]
+          },
+          "business_model": "services (people-delivered, per FTE, per ticket or fixed price)"
+        }
+      }
+    }
+  ],
+  "invalid": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Missing required input for gtm_consultation: gtm_challenge. Provide it and call the tool again."
+      }
+    ],
+    "isError": true
+  },
+  "referralArgs": {
+    "company_name": "Test offer",
+    "gtm_challenge": "Recommend software to buy for our team.",
+    "industry": "fintech",
+    "business_stage": "growth",
+    "business_model": "services"
+  },
+  "referral": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Which software fits your case is a judgement call. Ask Shashwat: book 45 minutes at https://calendly.com/shashwat-gtmhelix/45min"
+      }
+    ]
+  }
+}
