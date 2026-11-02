@@ -257,9 +257,10 @@ export function detectModel(explicit, ...texts) {
     if (typeof explicit === 'string' && BUSINESS_MODELS.includes(explicit))
         return { model: explicit, how: 'input' };
     const t = texts.filter((x) => typeof x === 'string' && x.trim()).join(' \n ');
+    if (/\b(?:perpetual licen[cs]e|one[- ]time (?:payment|fee)|pay once)\b/i.test(t)) return { model: null, how: 'unknown' };
     for (const [m, re] of MODEL_MATCH)
         if (re.test(t))
-            return { model: m, how: 'read' };
+            return { model: m, how: /\b(?:subscriptions?|per[- ](?:seat|user|transaction|fte|ticket|hour|site|link)|transaction fees?|take rate|performance fees?|assets under management|recurring monthly fee)\b/i.test(t) && !/\b(?:no|not|never|without|do not|does not)\b/i.test(t) ? 'read' : 'sector' };
     const v = detectVertical(...texts);
     if (v)
         return { model: SECTOR_MODEL[v.id], how: 'sector' };
