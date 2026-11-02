@@ -106,7 +106,7 @@ ${chrome.LD_SAMPLE}
 </head>
 <body class="ga-sample">
     ${chrome.SKIP}
-    ${chrome.SAMPLE_HEADER}
+    ${chrome.SAMPLE_HEADER.replaceAll("Use it in Claude or ChatGPT", "Connect your app")}
     <main id="main">
     <section class="hx-hero ga-sample-hero">
         <div class="hx-wrap"><div class="hx-hero-inner hxr-head">
@@ -129,7 +129,7 @@ ${chrome.LD_SAMPLE}
     ${chrome.NEXT}
     </div>
     </main>
-    ${chrome.FOOTER}
+    ${chrome.FOOTER.replaceAll("Use it in Claude or ChatGPT", "Connect your app")}
 </body>
 </html>
 `;

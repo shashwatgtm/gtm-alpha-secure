@@ -52,7 +52,7 @@ test("built site: script-src has no unsafe-inline, and every inline script that 
 test("the build allows an inline script by its hash, and refuses an inline handler or an unsafe-inline policy", () => {
   const tmp = mkdtempSync(join(tmpdir(), "ga15-build-"));
   try {
-    for (const p of ["scripts", "netlify/lib", "assets", "package.json", "sample-report", "sitemap.xml", "robots.txt", "llms.txt",
+    for (const p of ["scripts", "netlify/lib", "assets", "assistant", "package.json", "sample-report", "sitemap.xml", "robots.txt", "llms.txt",
       "_redirects", "_headers", "openapi.yaml", "favicon.svg", "favicon.ico", "apple-touch-icon.png", "logo.svg", "5d1ec46b7e579accde50872ab5aef7a4.txt", ".well-known/openai-apps-challenge",
       "index.html", "pricing.html", "consultation.html", "integration.html", "faq.html", "api-docs.html", "privacy.html", "terms.html", "404.html"]) {
       mkdirSync(dirname(join(tmp, p)), { recursive: true });
