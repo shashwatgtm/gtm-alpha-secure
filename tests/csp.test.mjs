@@ -97,12 +97,14 @@ test("report page: no unsafe-inline script, every inline script it emits is allo
     assert.equal(res.status, 200);
     const csp = res.headers.get("content-security-policy");
     const src = directive(csp, "script-src");
-    assert.ok(!src.includes("'unsafe-inline'") && !src.includes("'self'") && !src.includes("'unsafe-eval'"), "script-src: " + src.join(" "));
-    assert.equal(src.length, 2, "exactly the report's two scripts");
+    assert.ok(!src.includes("'unsafe-inline'") && src.includes("'self'") && !src.includes("'unsafe-eval'"), "script-src: " + src.join(" "));
+    assert.equal(src.length, 3, "two hashed inline scripts and same origin panel modules");
     const html = await res.text();
     assert.deepEqual(inlineHandlers(html), []);
     const scripts = inlineScripts(html).filter((s) => s.executable);
     assert.equal(scripts.length, 2);
+    assert.match(html, /<script type="module" src="\/assistant\/launcher\.mjs"><\/script>/);
+    assert.deepEqual(directive(csp, "connect-src"), ["'self'"]);
     for (const sc of scripts) assert.ok(src.includes(hashOf(sc.text)), "an inline script is not allowed by a hash in the report policy");
     // nothing a visitor types changes what the policy allows
     const other = await post(new URLSearchParams({ ...FORM, company_name: "<script>alert(1)</script>" }).toString());
