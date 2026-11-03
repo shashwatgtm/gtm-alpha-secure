@@ -6,7 +6,7 @@ const alpha=packageName.includes('gtm-alpha');
 const revenue=packageName.includes('revenue-enablement');
 const {default:handler}=await import(alpha?'../netlify/functions/mcp-sse.js':'../netlify/functions/mcp.mjs');
 const {regionNotes,readRegionContext,NO_REGION_SUFFIX}=await import(alpha?'../netlify/lib/region-reader.js':'../dist/region-reader.js');
-const {regionalInputs}=await import(alpha?'../netlify/lib/region-adapter.js':'../dist/region-adapter.js');
+const {regionalInputs,ROADMAP_REGION_LIMIT}=await import(alpha?'../netlify/lib/region-adapter.js':'../dist/region-adapter.js');
 const {VERTICALS,SUBTYPES}=await import(alpha?'../netlify/lib/verticals.js':'../dist/verticals.js');
 const baseline=JSON.parse(readFileSync(new URL('./fixtures/regions-baseline.json',import.meta.url),'utf8'));
 const rpc=async(method,params)=>{const r=await handler(new Request('https://example.com/mcp',{method:'POST',headers:{'content-type':'application/json',accept:'application/json, text/event-stream'},body:JSON.stringify({jsonrpc:'2.0',id:1,method,params})}));return(await r.json()).result;};
@@ -26,8 +26,8 @@ for(const c of baseline.cases){
   const result=await rpc('tools/call',{name:c.tool,arguments:c.args});
   assert.ok(!result.isError);
   const text=result.content[0].text;
-  assert.ok(text.endsWith(NO_REGION_SUFFIX));
-  result.content[0].text=text.slice(0,-NO_REGION_SUFFIX.length);
+  const suffix=c.tool==='generate_roadmap'?ROADMAP_REGION_LIMIT:NO_REGION_SUFFIX;assert.ok(text.endsWith(suffix));
+  result.content[0].text=text.slice(0,-suffix.length);
   assert.deepEqual(result,c.result);
  });
  if(alpha&&c.tool==='generate_roadmap')continue; // All reviewed inputs are enums. Do not invent a hidden market field.

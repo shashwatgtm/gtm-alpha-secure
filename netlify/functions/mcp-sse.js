@@ -1,6 +1,6 @@
 import { readableAlpha, serviceRoadmap } from '../lib/alpha-reader.js';
 import { regionNotes } from '../lib/region-reader.js';
-import { regionalInputs } from '../lib/region-adapter.js';
+import { regionalInputs, ROADMAP_REGION_LIMIT } from '../lib/region-adapter.js';
 import { readingGuide } from '../lib/reader-actions.js';
 import { asksForSoftware, SOFTWARE_REFERRAL } from '../lib/software-policy.js';
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
@@ -390,7 +390,7 @@ export default async function handler(req, context) {
         jsonrpc: "2.0",
         id: id,
         result: {
-          content: [{ type: "text", text: jsonInert((typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) + (asksForSoftware(toolArgs) ? '' : regionNotes(regionalInputs({...cleanDeep(toolArgs), sector: toolArgs.industry})))) }],
+          content: [{ type: "text", text: jsonInert((typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) + (asksForSoftware(toolArgs) ? '' : toolName === 'generate_roadmap' ? ROADMAP_REGION_LIMIT : regionNotes(regionalInputs({...cleanDeep(toolArgs), sector: toolArgs.industry})))) }],
           ...(typeof result === 'object' && result !== null ? { structuredContent: result } : {})
         }
       });

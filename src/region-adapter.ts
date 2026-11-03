@@ -1,3 +1,4 @@
+export const ROADMAP_REGION_LIMIT='\n\nRegion coverage: generate_roadmap has only reviewed enum inputs and cannot carry a seller offering and selling country. Country advice is unavailable on this path. Use epic_audit or gtm_consultation with a genuine selling context for country checks. Keep geography out of roadmap enum values.';
 /** Internal aliases for existing reviewed tool fields. No MCP inputs are added. */
 export function regionalInputs(args: unknown, industryRole: 'seller' | 'buyer' = 'seller'): Record<string, unknown> {
   if (!args || typeof args !== 'object' || Array.isArray(args)) return {};
@@ -12,6 +13,9 @@ export function regionalInputs(args: unknown, industryRole: 'seller' | 'buyer' =
     if (typeof input[key] !== 'string') continue;
     for (const sentence of (input[key] as string).split(/(?<=[.!?])\s+|\n+/)) {
       if (/^\s*(?:we\s+(?:(?:do\s+not|never|currently|now|only|also|stopped|ceased|used\s+to)\s+)*(?:sell(?:ing)?|sold|serve|target|operate|offer|provide|are\s+(?:selling|not\s+selling))\b|our\s+(?:company|business|product|service|market)\s+(?:sells|serves|targets|operates|is|offers|provides)\b)/i.test(sentence)) seller.push(sentence);
+      if (/^\s*we\s+are\s+(?:a|an|the)\s+[^.!?\n]{1,70}\b(?:vendor|seller|provider)\s+selling\b/i.test(sentence) && !/[\"“”]/.test(sentence)) seller.push(sentence);
+      // An account receipt clause can precede the same seller's active sale.
+      if (/^\s*we\s+receiv(?:e|ing)\s+(?:our\s+)?payments?\s+into\s+[^.;!?\n"“”]*?\bbank\s+account\s+(?:and|but)\s+(?:we\s+)?(?:sell(?:ing)?|serve|offer|provide)\b/i.test(sentence) && !/["“”]/.test(sentence)) seller.push(sentence);
       const purchase = sentence.match(/\b(?:(?:is|are)\s+(?:buying|purchasing)|buys|purchases)\s+our\s+(?:(?!(?:competitor|rival|customer|partner|supplier|vendor)\b)[\p{L}\p{N}'-]+\s+){0,4}(?:software|product|platform|services?|solution)\b/iu);
       if (purchase && !/\b(?:not|never|no longer|may|might|could|would|whether|considering|unconfirmed|hypothetical)\b|\?/i.test(sentence)) seller.push(sentence);
     }
