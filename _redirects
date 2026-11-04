@@ -30,3 +30,7 @@ https://gtmalpha.netlify.app/llms.txt              https://gtmalpha.gtmhelix.com
 
 # Run 11 R11-A2-11 g: the two "/#consultation" and "/#access" rules were removed. A browser never sends the part after
 # "#" to the server, so they could never match.
+
+# Legacy installation address
+/connect          /integration                             301
+/connect/         /integration                             301
