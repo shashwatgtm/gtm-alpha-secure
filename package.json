@@ -16,7 +16,8 @@
     "manifest.json",
     "netlify/lib/software-policy.js",
     "netlify/lib/alpha-reader.js",
-    "netlify/lib/reader-actions.js"
+    "netlify/lib/reader-actions.js",
+    "netlify/lib/input-evidence.js"
   ],
   "type": "module",
   "bin": {

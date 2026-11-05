@@ -1,3 +1,4 @@
+import { missingEvidence, copyEvidenceReview } from '../lib/input-evidence.js';
 import { readableAlpha, serviceRoadmap } from '../lib/alpha-reader.js';
 import { readingGuide } from '../lib/reader-actions.js';
 import { softwareAdvice } from '../lib/software-policy.js';
@@ -186,6 +187,8 @@ function handleToolCall(name, rawArgs) {
   // on the original text.
   const advice = softwareAdvice(rawArgs);
   if (advice) return advice;
+  const evidenceIssue = missingEvidence(rawArgs, TOOLS.find(t => t.name === name)?.inputSchema) || copyEvidenceReview(name, rawArgs);
+  if (evidenceIssue) return evidenceIssue;
   var args = escapeDeep(rawArgs);
   if (name === "gtm_consultation") {
     return GTM_CONSULTANT.generateConsultation(args);
