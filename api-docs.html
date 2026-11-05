@@ -448,13 +448,13 @@
             <div class="hero-content">
                 <p class="hx-eyebrow">For developers</p>
                 <div class="crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><h1>GTM Alpha API and MCP docs</h1></div>
-                <p class="hx-lead hero-subtitle">Connect the three GTM Alpha tools over MCP, or call the REST API. No key needed, and free during testing.</p>
+                <p class="hx-lead hero-subtitle">Connect the three GTM Alpha tools over MCP, or call the REST API. You need no key, and it is free during testing.</p>
             <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-11-02">2 November 2026</time></p>
-                <p class="hx10-history">History: first commit 13 July 2025, first npm release 8 September 2025, in the MCP Registry since 11 December 2025.</p>
+                <p class="hx10-history">History: first commit on 13 July 2025, first npm release on 8 September 2025, and listed in the MCP Registry since 11 December 2025.</p>
             </div>
         </div>
     </section>
-<aside class="hx7-strip" aria-label="Built by Shashwat Ghosh"><div class="hx-wrap hx7-strip-row"><picture class="hx7-strip-photo"><source srcset="/assets/shashwat-ghosh-160.webp" type="image/webp"><img src="/assets/shashwat-ghosh-160.jpg" width="160" height="160" alt="Shashwat Ghosh" decoding="async"></picture><p><b>Built by Shashwat Ghosh</b>, Co-Founder and Fractional CMO, Helix GTM Consulting, with 24+ years in B2B and 10+ years fractional.</p><a href="https://gtmhelix.com/about/">About Shashwat</a></div></aside>
+<aside class="hx7-strip" aria-label="Built by Shashwat Ghosh"><div class="hx-wrap hx7-strip-row"><picture class="hx7-strip-photo"><source srcset="/assets/shashwat-ghosh-160.webp" type="image/webp"><img src="/assets/shashwat-ghosh-160.jpg" width="160" height="160" alt="Shashwat Ghosh" decoding="async"></picture><p><b>Built by Shashwat Ghosh</b>, Co-Founder and Fractional CMO, Helix GTM Consulting, with 24+ years in B2B and 10+ years of fractional work.</p><a href="https://gtmhelix.com/about/">About Shashwat</a></div></aside>
 
     <div class="container">
         <div class="main-content">
@@ -462,9 +462,9 @@
                 <p class="sidebar-title">Documentation</p>
                 <ul class="sidebar-nav">
                     <li><a href="#overview" class="active">Overview</a></li>
-                    <li><a href="#mcp-setup">MCP Setup</a></li>
-                    <li><a href="#available-tools">Available Tools</a></li>
-                    <li><a href="#endpoints">API Endpoints</a></li>
+                    <li><a href="#mcp-setup">MCP setup</a></li>
+                    <li><a href="#available-tools">Available tools</a></li>
+                    <li><a href="#endpoints">API endpoints</a></li>
                     <li><a href="#authentication">Authentication</a></li>
                     <li><a href="#limits">Limits</a></li>
                     <li><a href="#examples">Examples</a></li>
@@ -476,8 +476,8 @@
                 <section id="overview" class="docs-section">
                     <h2>Overview</h2>
                     <p>
-                        GTM Alpha offers three go-to-market analysis tools over the Model Context Protocol (MCP).
-                        They work in Claude, Cursor and other MCP-compatible clients.
+                        GTM Alpha offers three go to market analysis tools over the Model Context Protocol (MCP).
+                        They work in Claude, Cursor and other MCP compatible clients.
                     </p>
 
                     <div class="alert alert-success">
@@ -487,7 +487,7 @@
                         </div>
                     </div>
 
-                    <h3>What You Can Do</h3>
+                    <h3>What you can do</h3>
                     <ul style="margin-left: 20px; color: var(--text-secondary);">
                         <li>Get a Free EPIC audit summary using the EPIC framework</li>
                         <li>Get EPIC framework scores for a GTM situation</li>
@@ -496,15 +496,15 @@
                 </section>
 
                 <section id="mcp-setup" class="docs-section">
-                    <h2>MCP Setup</h2>
+                    <h2>MCP setup</h2>
                     <p>
-                        Add GTM Alpha to your MCP-compatible client by configuring the server endpoint.
+                        Add GTM Alpha to your MCP compatible client by setting the server endpoint.
                     </p>
 
                     <p>Server URL: <code>https://gtmalpha.gtmhelix.com/mcp</code>. Transport: Streamable HTTP (POST requests, JSON responses). Authentication: none. The older address <code>/mcp-sse</code> answers the same way.</p>
 
                     <h3>Claude (web, desktop and mobile)</h3>
-                    <p>Open Customize, then Connectors, select +, then Add custom connector. Enter the server URL above, leave the sign-in fields empty, then select Add.</p>
+                    <p>Open Customize, then Connectors, select + and choose Add custom connector. Enter the server URL above, leave the sign in fields empty, then select Add.</p>
 
                     <h3>Claude Code</h3>
                     <div class="code-block">
@@ -564,13 +564,13 @@
 
                     <div class="alert alert-info">
                         <div>
-                            <strong>Tip:</strong> After configuration, restart your client to load the GTM Alpha tools.
+                            <strong>Tip:</strong> after you set it up, restart your client to load the GTM Alpha tools.
                         </div>
                     </div>
                 </section>
 
                 <section id="available-tools" class="docs-section">
-                    <h2>Available Tools</h2>
+                    <h2>Available tools</h2>
                     <p>
                         GTM Alpha provides the following MCP tools, all free:
                     </p>
@@ -583,7 +583,7 @@
                             </div>
                             <div class="tool-desc">
                                 A Free EPIC audit summary using the EPIC framework (Ecosystem, Product-Led, Inbound and Outbound, Community): scores from 1 to 10 per motion, the primary and secondary motion, and any warnings.
-                                Required input: gtm_challenge. Optional: company_name, business_stage, industry. Optional EPIC inputs: acv_usd, deal_cycle_days, nrr_percent, tam_accounts, self_serve, deal_source, geography, current_channels. Without them the result is marked preliminary. Read-only.
+                                Required input: gtm_challenge. Optional: company_name, business_stage, industry. Optional EPIC inputs: acv_usd, deal_cycle_days, nrr_percent, tam_accounts, self_serve, deal_source, geography, current_channels. Without them the result is marked preliminary. Read only.
                             </div>
                         </div>
 
@@ -594,7 +594,7 @@
                             </div>
                             <div class="tool-desc">
                                 EPIC framework scores from 1 to 10 for each motion, the primary and secondary motion, warnings, notes, and the list of rules that set each score.
-                                Required input: challenge. Optional: industry, business_stage. Optional EPIC inputs: acv_usd, deal_cycle_days, nrr_percent, tam_accounts, self_serve, deal_source, geography, current_channels. Without them the result is marked preliminary. Read-only.
+                                Required input: challenge. Optional: industry, business_stage. Optional EPIC inputs: acv_usd, deal_cycle_days, nrr_percent, tam_accounts, self_serve, deal_source, geography, current_channels. Without them the result is marked preliminary. Read only.
                             </div>
                         </div>
 
@@ -605,16 +605,16 @@
                             </div>
                             <div class="tool-desc">
                                 A 30, 60 or 90 day GTM plan for one EPIC motion.
-                                Required input: primary_focus (E, P, I or C). Optional: timeframe (30-day, 60-day or 90-day). Read-only.
+                                Required input: primary_focus (E, P, I or C). Optional: timeframe (30-day, 60-day or 90-day). Read only.
                             </div>
                         </div>
                     </div>
                 
-<!-- run8-vis:tools-row --><div class="hx9-visrow"><figure class="hx8-vis "><svg viewBox="0 0 360 254" width="360" height="254" role="img" aria-labelledby="v2t v2d" class="hx8-svg"><title id="v2t">EPIC motion scores</title><desc id="v2d">EPIC motion scores: Ecosystem and ABM 10 of 10; Product-Led 4 of 10; Inbound and Outbound 5 of 10; Community 6 of 10. Primary focus: Ecosystem and ABM. Secondary: Community-Led.</desc><text x="0" y="16" class="v-k" text-anchor="start">EPIC motion scores</text><text x="0" y="42" class="v-t" text-anchor="start">Ecosystem and ABM</text><rect x="0" y="50" width="360" height="12" class="v-clay"/><rect x="0" y="50" width="360" height="12" class="v-sig v-grow d0"/><text x="360" y="42" class="v-tm" text-anchor="end">10 of 10</text><text x="0" y="84" class="v-t" text-anchor="start">Product-Led</text><rect x="0" y="92" width="360" height="12" class="v-clay"/><rect x="0" y="92" width="144" height="12" class="v-ink7 v-grow d1"/><text x="360" y="84" class="v-tm" text-anchor="end">4 of 10</text><text x="0" y="126" class="v-t" text-anchor="start">Inbound and Outbound</text><rect x="0" y="134" width="360" height="12" class="v-clay"/><rect x="0" y="134" width="180" height="12" class="v-ink7 v-grow d2"/><text x="360" y="126" class="v-tm" text-anchor="end">5 of 10</text><text x="0" y="168" class="v-t" text-anchor="start">Community</text><rect x="0" y="176" width="360" height="12" class="v-clay"/><rect x="0" y="176" width="216" height="12" class="v-ink7 v-grow d3"/><text x="360" y="168" class="v-tm" text-anchor="end">6 of 10</text><text x="0" y="212" class="v-tb v-oxt v-fade d9" text-anchor="start">Primary focus: Ecosystem and ABM.</text><text x="0" y="230" class="v-tb v-oxt v-fade d9" text-anchor="start">Secondary: Community-Led</text></svg><figcaption>Scores from GTM Alpha&#x27;s answer for the example company: Series B telecom, 150 day sales cycle, $240,000 deals.</figcaption></figure><figure class="hx8-vis "><svg viewBox="0 0 360 348" width="360" height="348" role="img" aria-labelledby="v3t v3d" class="hx8-svg"><title id="v3t">How your EPIC scores were set</title><desc id="v3d">How your EPIC scores were set. Starting points: Ecosystem 7, Product-Led 5, Inbound 6, Community 6. ACV above 50,000 US dollars: Ecosystem plus 2, Product-Led minus 1. Deal cycle above 90 days: Ecosystem plus 2, Inbound minus 1. Final scores: Ecosystem 10, Product-Led 4, Inbound 5, Community 6.</desc><text x="0" y="16" class="v-k" text-anchor="start">How your EPIC scores were set</text><line x1="0" y1="230" x2="360" y2="230" class="v-line"/><rect x="6" y="118" width="35" height="112" class="v-clayd v-grow-y d1"/><rect x="45" y="86" width="16" height="32" class="v-sig v-grow-y d3"/><rect x="45" y="54" width="16" height="32" class="v-sig v-grow-y d4"/><rect x="64" y="70" width="20" height="160" class="v-ox v-grow-y d7"/><text x="45.0" y="248" class="v-tb" text-anchor="middle">E 10</text><rect x="96" y="150" width="35" height="80" class="v-clayd v-grow-y d1"/><rect x="135" y="150" width="16" height="16" class="v-ink7 v-grow-y d3"/><rect x="154" y="166" width="20" height="64" class="v-ox v-grow-y d7"/><text x="135.0" y="248" class="v-tb" text-anchor="middle">P 4</text><rect x="186" y="134" width="35" height="96" class="v-clayd v-grow-y d1"/><rect x="225" y="134" width="16" height="16" class="v-ink7 v-grow-y d4"/><rect x="244" y="150" width="20" height="80" class="v-ox v-grow-y d7"/><text x="225.0" y="248" class="v-tb" text-anchor="middle">I 5</text><rect x="276" y="134" width="35" height="96" class="v-clayd v-grow-y d1"/><rect x="334" y="134" width="20" height="96" class="v-ox v-grow-y d7"/><text x="315.0" y="248" class="v-tb" text-anchor="middle">C 6</text><rect x="0" y="260" width="10" height="10" class="v-clayd"/><text x="16" y="270" class="v-ts" text-anchor="start">Stage starting point</text><rect x="180" y="260" width="10" height="10" class="v-sig"/><text x="196" y="270" class="v-ts" text-anchor="start">Rule adjustment</text><rect x="0" y="280" width="10" height="10" class="v-ox"/><text x="16" y="290" class="v-ts" text-anchor="start">Final score</text><rect x="180" y="280" width="10" height="10" class="v-ink7"/><text x="196" y="290" class="v-ts" text-anchor="start">Rule lowered it</text><text x="0" y="310" class="v-tm" text-anchor="start">ACV above 50,000 US dollars: E +2, P -1</text><text x="0" y="326" class="v-tm" text-anchor="start">Deal cycle above 90 days: E +2, I -1</text></svg><figcaption>The real steps GTM Alpha printed for the example on this site: Series B telecom, 150 day sales cycle, $240,000 deals.</figcaption></figure><figure class="hx8-vis "><svg viewBox="0 0 360 164" width="360" height="164" role="img" aria-labelledby="v4t v4d" class="hx8-svg"><title id="v4t">Your roadmap in thirds</title><desc id="v4d">Your roadmap in thirds: from Day 1 to Day 30, 60 or 90 through Immediate, Short term, Medium term.</desc><text x="0" y="16" class="v-k" text-anchor="start">Your roadmap in thirds</text><line x1="8" y1="58" x2="352" y2="58" class="v-line v-draw"/><rect x="0" y="50" width="16" height="16" class="v-ox"/><rect x="344" y="50" width="16" height="16" class="v-sig v-fade d9"/><text x="0" y="86" class="v-tm" text-anchor="start">Day 1</text><text x="360" y="86" class="v-tm" text-anchor="end">Day 30, 60 or 90</text><rect x="20" y="100" width="101" height="44" class="v-clay v-slide d1"/><text x="26" y="118" class="v-ts" text-anchor="start">Immediate</text><rect x="127" y="100" width="101" height="44" class="v-clay v-slide d2"/><text x="133" y="118" class="v-ts" text-anchor="start">Short term</text><rect x="233" y="100" width="101" height="44" class="v-clay v-slide d3"/><text x="239" y="118" class="v-ts" text-anchor="start">Medium term</text></svg><figcaption>GTM Alpha splits the 30, 60 or 90 days you choose into three parts.</figcaption></figure></div><!-- /run8-vis:tools-row -->
+<!-- run8-vis:tools-row --><div class="hx9-visrow"><figure class="hx8-vis "><svg viewBox="0 0 360 254" width="360" height="254" role="img" aria-labelledby="v2t v2d" class="hx8-svg"><title id="v2t">EPIC motion scores</title><desc id="v2d">EPIC motion scores: Ecosystem and ABM 10 of 10; Product-Led 4 of 10; Inbound and Outbound 5 of 10; Community 6 of 10. Primary focus: Ecosystem and ABM. Secondary: Community-Led.</desc><text x="0" y="16" class="v-k" text-anchor="start">EPIC motion scores</text><text x="0" y="42" class="v-t" text-anchor="start">Ecosystem and ABM</text><rect x="0" y="50" width="360" height="12" class="v-clay"/><rect x="0" y="50" width="360" height="12" class="v-sig v-grow d0"/><text x="360" y="42" class="v-tm" text-anchor="end">10 of 10</text><text x="0" y="84" class="v-t" text-anchor="start">Product-Led</text><rect x="0" y="92" width="360" height="12" class="v-clay"/><rect x="0" y="92" width="144" height="12" class="v-ink7 v-grow d1"/><text x="360" y="84" class="v-tm" text-anchor="end">4 of 10</text><text x="0" y="126" class="v-t" text-anchor="start">Inbound and Outbound</text><rect x="0" y="134" width="360" height="12" class="v-clay"/><rect x="0" y="134" width="180" height="12" class="v-ink7 v-grow d2"/><text x="360" y="126" class="v-tm" text-anchor="end">5 of 10</text><text x="0" y="168" class="v-t" text-anchor="start">Community</text><rect x="0" y="176" width="360" height="12" class="v-clay"/><rect x="0" y="176" width="216" height="12" class="v-ink7 v-grow d3"/><text x="360" y="168" class="v-tm" text-anchor="end">6 of 10</text><text x="0" y="212" class="v-tb v-oxt v-fade d9" text-anchor="start">Primary focus: Ecosystem and ABM.</text><text x="0" y="230" class="v-tb v-oxt v-fade d9" text-anchor="start">Secondary: Community-Led</text></svg><figcaption>Scores from GTM Alpha&#x27;s answer for the example company: Series B telecom, 150 day sales cycle, $240,000 deals.</figcaption></figure><figure class="hx8-vis "><svg viewBox="0 0 360 348" width="360" height="348" role="img" aria-labelledby="v3t v3d" class="hx8-svg"><title id="v3t">How your EPIC scores were set</title><desc id="v3d">How your EPIC scores were set. Starting points: Ecosystem 7, Product-Led 5, Inbound 6, Community 6. ACV above 50,000 US dollars: Ecosystem plus 2, Product-Led minus 1. Deal cycle above 90 days: Ecosystem plus 2, Inbound minus 1. Final scores: Ecosystem 10, Product-Led 4, Inbound 5, Community 6.</desc><text x="0" y="16" class="v-k" text-anchor="start">How your EPIC scores were set</text><line x1="0" y1="230" x2="360" y2="230" class="v-line"/><rect x="6" y="118" width="35" height="112" class="v-clayd v-grow-y d1"/><rect x="45" y="86" width="16" height="32" class="v-sig v-grow-y d3"/><rect x="45" y="54" width="16" height="32" class="v-sig v-grow-y d4"/><rect x="64" y="70" width="20" height="160" class="v-ox v-grow-y d7"/><text x="45.0" y="248" class="v-tb" text-anchor="middle">E 10</text><rect x="96" y="150" width="35" height="80" class="v-clayd v-grow-y d1"/><rect x="135" y="150" width="16" height="16" class="v-ink7 v-grow-y d3"/><rect x="154" y="166" width="20" height="64" class="v-ox v-grow-y d7"/><text x="135.0" y="248" class="v-tb" text-anchor="middle">P 4</text><rect x="186" y="134" width="35" height="96" class="v-clayd v-grow-y d1"/><rect x="225" y="134" width="16" height="16" class="v-ink7 v-grow-y d4"/><rect x="244" y="150" width="20" height="80" class="v-ox v-grow-y d7"/><text x="225.0" y="248" class="v-tb" text-anchor="middle">I 5</text><rect x="276" y="134" width="35" height="96" class="v-clayd v-grow-y d1"/><rect x="334" y="134" width="20" height="96" class="v-ox v-grow-y d7"/><text x="315.0" y="248" class="v-tb" text-anchor="middle">C 6</text><rect x="0" y="260" width="10" height="10" class="v-clayd"/><text x="16" y="270" class="v-ts" text-anchor="start">Stage starting point</text><rect x="180" y="260" width="10" height="10" class="v-sig"/><text x="196" y="270" class="v-ts" text-anchor="start">Rule adjustment</text><rect x="0" y="280" width="10" height="10" class="v-ox"/><text x="16" y="290" class="v-ts" text-anchor="start">Final score</text><rect x="180" y="280" width="10" height="10" class="v-ink7"/><text x="196" y="290" class="v-ts" text-anchor="start">Rule lowered it</text><text x="0" y="310" class="v-tm" text-anchor="start">ACV above 50,000 US dollars: E +2, P -1</text><text x="0" y="326" class="v-tm" text-anchor="start">Deal cycle above 90 days: E +2, I -1</text></svg><figcaption>The actual steps GTM Alpha showed for the example on this site: a Series B telecom company with a 150 day sales cycle and $240,000 deals.</figcaption></figure><figure class="hx8-vis "><svg viewBox="0 0 360 164" width="360" height="164" role="img" aria-labelledby="v4t v4d" class="hx8-svg"><title id="v4t">Your roadmap in thirds</title><desc id="v4d">Your roadmap in thirds: from Day 1 to Day 30, 60 or 90 through Immediate, Short term, Medium term.</desc><text x="0" y="16" class="v-k" text-anchor="start">Your roadmap in thirds</text><line x1="8" y1="58" x2="352" y2="58" class="v-line v-draw"/><rect x="0" y="50" width="16" height="16" class="v-ox"/><rect x="344" y="50" width="16" height="16" class="v-sig v-fade d9"/><text x="0" y="86" class="v-tm" text-anchor="start">Day 1</text><text x="360" y="86" class="v-tm" text-anchor="end">Day 30, 60 or 90</text><rect x="20" y="100" width="101" height="44" class="v-clay v-slide d1"/><text x="26" y="118" class="v-ts" text-anchor="start">Immediate</text><rect x="127" y="100" width="101" height="44" class="v-clay v-slide d2"/><text x="133" y="118" class="v-ts" text-anchor="start">Short term</text><rect x="233" y="100" width="101" height="44" class="v-clay v-slide d3"/><text x="239" y="118" class="v-ts" text-anchor="start">Medium term</text></svg><figcaption>GTM Alpha splits the 30, 60 or 90 days you choose into three parts.</figcaption></figure></div><!-- /run8-vis:tools-row -->
 </section>
 
                 <section id="endpoints" class="docs-section">
-                    <h2>API Endpoints</h2>
+                    <h2>API endpoints</h2>
 
                     <div class="endpoint-card">
                         <div class="endpoint-header">
@@ -632,7 +632,7 @@
                             <span class="endpoint-path">/api/epic-audit</span>
                         </div>
                         <p class="endpoint-desc">
-                            REST endpoint for an EPIC maturity audit. Returns JSON. It accepts only its documented fields (company, company_id, industry, company_stage, current_gtm, focus_areas, current_metrics), up to 32,000 bytes. The inputs you send are not stored; see the <a href="/privacy">privacy policy</a>.
+                            REST endpoint for an EPIC maturity audit that returns JSON. It accepts only its documented fields (company, company_id, industry, company_stage, current_gtm, focus_areas, current_metrics), up to 32,000 bytes. The inputs you send are not stored; see the <a href="/privacy">privacy policy</a>.
                         </p>
                     </div>
 
@@ -642,11 +642,11 @@
                             <span class="endpoint-path">/api/premium-audit</span>
                         </div>
                         <p class="endpoint-desc">
-                            Used by the <a href="/consultation">free EPIC audit form</a>. Takes the form's fields (form-encoded or JSON) and returns the report as an HTML page. The answers and the report are not stored.
+                            Used by the <a href="/consultation">free EPIC audit form</a>. It takes the form's fields (form encoded or JSON) and returns the report as an HTML page. The answers and the report are not stored.
                         </p>
                     </div>
 
-                    <p>Rate limits: the <code>/api</code> paths share 30 requests a minute per visitor, and the MCP server allows 300 a minute. Over a limit, the answer is 429 (Too Many Requests).</p>
+                    <p>Rate limits: the <code>/api</code> paths share 30 requests a minute per visitor, and the MCP server allows 300 a minute. If you go over a limit, the server returns 429 (Too Many Requests).</p>
                 </section>
 
                 <section id="authentication" class="docs-section">
@@ -657,35 +657,35 @@
 
                     <div class="alert alert-success">
                         <div>
-                            <strong>No API Key Required</strong><br>
-                            Simply connect to the MCP endpoint and start using the tools immediately.
+                            <strong>No API key required</strong><br>
+                            Connect to the MCP endpoint and start using the tools straight away.
                         </div>
                     </div>
                 </section>
 
                 <section id="limits" class="docs-section">
                     <h2>Limits and when not to use GTM Alpha</h2>
-                    <p>All three tools are read-only and return analysis as text. Scores run from 1 to 10; without the optional inputs (contract value, deal cycle, net revenue retention, target accounts, self-serve, deal source, region) the result is marked preliminary. The MCP endpoint answers POST requests only; other methods return 405. GTM Alpha is not the right tool for:</p>
+                    <p>All three tools are read only and return analysis as text. Scores run from 1 to 10. Without the optional inputs (contract value, deal cycle, net revenue retention, target accounts, self serve, deal source, region), the result is marked preliminary. The MCP endpoint answers POST requests only, and other methods return 405. GTM Alpha is not the right tool for:</p>
                     <ul>
-                        <li>Teams that want an AI-written strategy: the EPIC scores follow fixed rules from the documented rubric, and no AI model writes them.</li>
-                        <li>Companies that cannot share basic numbers: without contract value, deal cycle, net revenue retention and target account count, the result is marked preliminary.</li>
-                        <li>Anyone who needs live market data: GTM Alpha looks nothing up and works only from what you enter.</li>
-                        <li>Anyone who needs a tool that writes to a CRM or other systems: all three tools are read-only and return analysis only.</li>
+                        <li>Teams that want a strategy written by AI: the EPIC scores follow fixed rules from the documented rubric, and no AI model writes them.</li>
+                        <li>Companies that cannot share basic numbers: if contract value, deal cycle, net revenue retention or target account count is missing, the result is marked preliminary.</li>
+                        <li>Anyone who needs live market data: GTM Alpha does not look anything up and works only from what you enter.</li>
+                        <li>Anyone who needs a tool that writes to a CRM or other systems: all three tools are read only and return analysis only.</li>
                     </ul>
                 </section>
 
                 <section id="examples" class="docs-section">
-                    <h2>Usage Examples</h2>
+                    <h2>Usage examples</h2>
 
                     <h3 id="try-these-prompts">Try these prompts</h3>
                     <ul style="margin-left: 20px; color: var(--text-secondary);">
-                        <li>Use GTM Alpha to run an EPIC audit: telecom (managed SD-WAN and business internet for companies with many branches), Series B, deal cycle 150 days, ACV $240,000, not self-serve, most deals come through outbound, selling in India.</li>
-                        <li>Use GTM Alpha for a Free EPIC audit for a spend management software company (every figure here is an example): Series A, ACV $24,000, deal cycle 60 days, 9,000 target accounts, not self-serve, mostly inbound, India. We want to win mid-size companies with a finance controller and an ERP.</li>
-                        <li>Use GTM Alpha to generate a 60-day GTM roadmap focused on the Ecosystem motion.</li>
+                        <li>Use GTM Alpha to run an EPIC audit: telecom (managed SD-WAN and business internet for companies with many branches), Series B, deal cycle 150 days, ACV $240,000, not self serve, most deals come through outbound, selling in India.</li>
+                        <li>Use GTM Alpha to run a Free EPIC audit for a spend management software company (every figure here is an example): Series A, ACV $24,000, deal cycle 60 days, 9,000 target accounts, not self serve, mostly inbound, India. We want to win midsize companies that have a finance controller and an ERP.</li>
+                        <li>Use GTM Alpha to build a 60 day GTM roadmap focused on the Ecosystem motion.</li>
                     </ul>
 
                     <h3>Using with Claude</h3>
-                    <p>Once configured, simply ask Claude to use GTM Alpha tools:</p>
+                    <p>Once it is set up, ask Claude to use the GTM Alpha tools:</p>
 
                     <div class="code-block">
                         <div class="code-header">
@@ -727,7 +727,7 @@ platform to mid-market companies (100-1000 employees).</code></pre>
                 </section>
                 <section id="release-history" class="docs-section">
                     <h2>Release history</h2>
-                    <p>History: first commit 13 July 2025, first npm release 8 September 2025, in the MCP Registry since 11 December 2025. Versions and dates below come from the git history of this site's code, from npm and from the MCP Registry (checked 27 September 2026). npm has 1.0.0 to 1.0.5 and 1.2.0, its latest version, published 24 September 2026. Versions 1.1.0, 1.3.0, 1.3.1, 1.3.2, 1.3.3, 1.3.4, 1.3.5, 1.3.6, 1.3.7, 1.3.8, 1.3.9, 1.3.12, 1.3.13, 1.3.17 and 1.3.20 run on this site only and are not on npm, so the npm package can lag behind this site. The MCP Registry lists 1.0.2 and 1.0.5.</p>
+                    <p>History: first commit on 13 July 2025, first npm release on 8 September 2025, and listed in the MCP Registry since 11 December 2025. Versions and dates below come from the git history of this site's code, from npm and from the MCP Registry (checked 27 September 2026). npm has 1.0.0 to 1.0.5 and 1.2.0, its latest version, published 24 September 2026. Versions 1.1.0, 1.3.0, 1.3.1, 1.3.2, 1.3.3, 1.3.4, 1.3.5, 1.3.6, 1.3.7, 1.3.8, 1.3.9, 1.3.12, 1.3.13, 1.3.17 and 1.3.20 run on this site only and are not on npm, so the npm package can lag behind this site. The MCP Registry lists 1.0.2 and 1.0.5.</p>
                     <table class="hx10-release">
                         <thead><tr><th>Version</th><th>Date</th><th>Where</th><th>What changed</th></tr></thead>
                         <tbody>
@@ -757,7 +757,7 @@ platform to mid-market companies (100-1000 employees).</code></pre>
             </div>
         </div>
     </div>
-    <section class="hx-section hx-app-section" aria-labelledby="helix-apps-heading"><h2 id="helix-apps-heading">Choose your app</h2><p>Run the free audit in your browser. Copy its result into ChatGPT, Claude or Gemini when you want help acting on it. The MCP connector works with supported plans in Claude, ChatGPT, Cursor, VS Code and Windsurf. Gemini CLI and Antigravity use the separate Helix GTM Suite skills package.</p><p><a href="/integration">Connector setup</a> · <a href="https://github.com/shashwatgtm/helix-gtm-suite">Skills package setup</a></p></section></main>
+    <section class="hx-section hx-app-section" aria-labelledby="helix-apps-heading"><h2 id="helix-apps-heading">Choose your app</h2><p>Run the free audit in your browser. Copy its result into ChatGPT, Claude or Gemini when you want help acting on it. The MCP connector works with supported plans in Claude, ChatGPT, Cursor, VS Code and Windsurf. Gemini CLI and Antigravity use the separate Helix GTM Suite skills package.</p><p><a href="/integration">Use it in Claude or ChatGPT</a> · <a href="https://github.com/shashwatgtm/helix-gtm-suite">How to install</a></p></section></main>
 
     <footer class="hx-footer">
         <div class="hx-wrap">
@@ -765,7 +765,7 @@ platform to mid-market companies (100-1000 employees).</code></pre>
             <div class="hx-footer-grid">
                 <div>
                     <a class="hx-lockup hx-lock2" href="/" aria-label="GTM Alpha, by Helix GTM, home"><span class="hx9-mark" aria-hidden="true">h</span><span class="hx-lock-t"><span class="hx-lock-b">Helix GTM</span><span class="hx-lock-s">GTM Alpha</span></span></a>
-                    <p>Go-to-market scoring and planning with Shashwat Ghosh&#x27;s EPIC framework. The scores follow documented rules; no AI model writes them.</p>
+                    <p>Go to market scoring and planning with Shashwat Ghosh&#x27;s EPIC framework. The scores follow documented rules, and no AI model writes them.</p>
                     <a href="https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/">LinkedIn</a>
                     <a href="https://x.com/Shashwat_Ghosh">X (Twitter)</a>
                 </div>
