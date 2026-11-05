@@ -10,8 +10,8 @@ const bases=JSON.parse(readFileSync(new URL('./fixtures/round5-reader-cases.json
 const source=new URL(alpha?'../netlify/lib/input-evidence.js':'../src/input-evidence.ts',import.meta.url);
 const moduleURL=new URL(alpha?'../netlify/lib/input-evidence.js':'../dist/input-evidence.js',import.meta.url);
 const plain=['none','none yet','(none yet)','n/a','na','not applicable','tbd','unknown','not sure','no idea','-','','empty'];
-const placeholders=[...new Set(plain.flatMap(v=>[v,v.toUpperCase(),` [${v}] `,`{${v}}!`,`\"${v}\".`,v.replaceAll(' ','...'),v.replaceAll(' ','')]))];
-const denials=['no champion','budget not confirmed','CFO unknown','[NO CHAMPION]!','(Budget not confirmed).','CFO: unknown','we have no champion yet',"budget isn't confirmed",'CFO remains unknown for now','no budget owner has been named'];
+const placeholders=[...new Set(plain.flatMap(v=>[v,v.toUpperCase(),` [${v}] `,`{${v}}!`,`\"${v}\".`,v.replaceAll(' ','...'),v.replaceAll(' ',''),v.split('').join('.')]))];
+const denials=['no champion','budget not confirmed','CFO unknown','[NO CHAMPION]!','(Budget not confirmed).','CFO: unknown','we have no champion yet',"budget isn't confirmed",'CFO remains unknown for now','no budget owner has been named','C.F.O. unknown','budget.not.confirmed'];
 const text=r=>r.result?.content?.filter(c=>c.type==='text').map(c=>c.text).join('\n')||JSON.stringify(r.error);
 const leaves=(schema,path=[])=>{
  if(schema?.type==='string'&&!schema.enum)return [path];
@@ -49,10 +49,11 @@ test('RTM39 supplied object keys cannot introduce an inherited budget owner',asy
 });
 test('RTM04 all absolute claim forms hold copy and specify the evidence needed',async()=>{
  const {copyEvidenceReview}=await import(moduleURL);
- for(const v of ['we stop 100% of attacks','100 percent effective','we guarantee delivery','guaranteed savings','never fails','the only solution','zero risk','we stop all attacks']){
+ for(const v of ['we stop 100% of attacks','100 percent effective','100.0% effective','100 per cent effective','we guarantee delivery','guaranteed savings','never fails','never-fails','the only solution','only-solution','zero risk','zero-risk','we stop all attacks','all-attacks']){
   const held=copyEvidenceReview('email_sequence_generator',{key_value_prop:v});assert.match(held,/Absolute claim held out/);assert.match(held,/sample, period, limitations and the source/);assert.ok(!held.includes(v));
  }
  assert.equal(copyEvidenceReview('email_sequence_generator',{key_value_prop:'One pilot reduced review time by 12%'}),null);
+ assert.equal(copyEvidenceReview('email_sequence_generator',{key_value_prop:'A pilot included 100 customers'}),null);
 });
 test('RTM04 customer names require affirmative permission for this endorsement',async()=>{
  const {copyEvidenceReview,hasPublicationPermission}=await import(moduleURL);

@@ -4,11 +4,14 @@
 const EMPTY_WORDS = new Set(['', 'none', 'none yet', 'noneyet', 'n a', 'na', 'not applicable', 'notapplicable', 'tbd', 'unknown', 'not sure', 'notsure', 'no idea', 'noidea', 'empty']);
 const normal = value => String(value).normalize('NFKC').replace(/[\u200B-\u200D\u2060\uFEFF]/g, '').toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim().replace(/\s+/g, ' ');
 export function isPlaceholder(value) {
-  return typeof value === 'string' && EMPTY_WORDS.has(normal(value));
+  if (typeof value !== 'string') return false;
+  const text=normal(value);
+  return EMPTY_WORDS.has(text) || EMPTY_WORDS.has(text.replace(/\s/g,''));
 }
 export function isDenial(value) {
   if (typeof value !== 'string') return false;
-  const text = normal(value.replace(/\b(?:isn['’]?t|wasn['’]?t|aren['’]?t)\b/gi,' is not ').replace(/\b(?:hasn['’]?t|haven['’]?t)\b/gi,' has not '));
+  const text = normal(value.replace(/\bC[._\s]*F[._\s]*O\b/gi,'CFO').replace(/\b(?:isn['’]?t|wasn['’]?t|aren['’]?t)\b/gi,' is not ').replace(/\b(?:hasn['’]?t|haven['’]?t)\b/gi,' has not '));
+  if (['nochampion','budgetnotconfirmed','cfounknown'].includes(text.replace(/\s/g,''))) return true;
   const role = '(?:champion|budget(?: owner| authority)?|economic buyer|cfo|approv(?:al|er|al authority)|authority)';
   return new RegExp('^(?:no|without|not confirmed|unconfirmed|unknown) (?:a |an |the |named |confirmed )?' + role + '$').test(text)
     || new RegExp('^(?:the )?' + role + '(?: is| has| remains)? (?:not confirmed|not approved|unconfirmed|unknown|not known|not identified|not established|not supplied|not yet confirmed)$').test(text)
@@ -62,7 +65,9 @@ export function guardInputs(args, schema = {}) {
 }
 export function hasAbsoluteClaim(value) {
   if (typeof value !== 'string') return false;
-  return /(?:\b100\s*(?:%|percent\b)|\bguarantee(?:d|s)?\b|\bnever\s+fails?\b|\bonly\s+solution\b|\bzero\s+risk\b|\ball\s+attacks\b|\b(?:replace|stop|prevent)s?\s+all\b)/i.test(value.normalize('NFKC'));
+  const raw=value.normalize('NFKC').replace(/[\u200B-\u200D\u2060\uFEFF]/g,'');
+  return /\b0*100(?:\.0+)?\s*(?:%|percent\b|per\s+cent\b)/i.test(raw)
+    || /\b(?:guarantee(?:d|s)?|never fails?|only solution|zero risk|all attacks|100 (?:percent|per cent)|(?:replace|stop|prevent)s? all)\b/i.test(normal(raw));
 }
 export function hasPublicationPermission(value) {
   if (typeof value !== 'string') return false;
