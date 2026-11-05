@@ -44,7 +44,7 @@ export function guardInputs(args, schema = {}) {
     if (Array.isArray(value)) return value.map((item, index) => {
       // "None" as the last option in a scoring rule is an absence worth zero,
       // never an observed customer fact. Keep the existing zero point rule.
-      if (path[0] === 'scoring_criteria' && path.at(-1) === 'values' && index === value.length-1 && value.length>1 && normal(item)==='none' && value.some(v=>typeof v==='string'&&!isPlaceholder(v))) return item;
+      if (path[0] === 'scoring_criteria' && path.at(-1) === 'values' && index === value.length-1 && value.length>1 && typeof item==='string' && normal(item)==='none' && value.some(v=>typeof v==='string'&&!isPlaceholder(v))) return item;
       return walk(item, spec?.items, false, [...path,index]);
     }).filter(item => item !== undefined);
     if (value && typeof value === 'object') {
@@ -69,6 +69,8 @@ export function hasPublicationPermission(value) {
   // Permission is affirmative, tied to publication and to this endorsement.
   // Negated, pending and hypothetical permissions cannot unlock customer names.
   if (/\b(?:not|no|without|pending|awaiting|unless|if|seek|request|need|unconfirmed|revoked|denied)\b/i.test(value)) return false;
+  if (/\b(?:website|web site|blog)\b[^.;\n]{0,35}\bonly\b|\bonly\b[^.;\n]{0,35}\b(?:website|web site|blog)\b/i.test(value)) return false;
+  if (/\bpermission (?:is |was |has been )?granted\b|\b(?:gave|granted|provided) (?:us )?(?:(?:written|explicit) )?permission\b/i.test(value)) return true;
   return /\b(?:we (?:have|obtained)|customer (?:gave|granted)|permission (?:is )?granted|approved for)\b[^.\n;]{0,80}\b(?:permission|publish|publication|public use|email|endorsement|customer name)\b/i.test(value)
     || /\b(?:written|explicit) permission to (?:publish|use|name|cite)\b/i.test(value);
 }
@@ -76,20 +78,22 @@ const COPY_TOOLS = new Set(['case_study_generator','newsletter_builder','webinar
 export function unapprovedCustomerNames(args) {
   const names = new Set();
   const strings = Object.entries(args || {}).filter(([,v])=>typeof v==='string');
-  const add=(name,value)=>{
+  const add=(name,value,explicit=false)=>{
     if (/^(?:i|you|we|they|he|she|it|this|that|these|those|the|our|their|customer|customers|teams|users|company|one|anonymous|unnamed)\b/i.test(name)) return;
+    if (!explicit && /^(?:AI|API|IT|CRM|ERP|HR|B2B|B2C)$/i.test(name)) return;
+    if (!explicit && strings.some(([field,v])=>/^(?:your_solution|your_product|product|product_name|company_name)$/.test(field)&&v.toLowerCase().startsWith(name.toLowerCase()))) return;
     if (hasPublicationPermission(value) || strings.some(([,v])=>v.includes(name)&&hasPublicationPermission(v))) return;
     names.add(name);
   };
   const company='([A-Z][A-Za-z0-9&.]*\\b(?: [A-Z][A-Za-z0-9&.]*\\b){0,3})';
   for (const [field,value] of strings) {
     if (/social_proof|testimonial|customer_quote|proof_points|customer_metrics/.test(field)) {
-      for(const match of value.matchAll(new RegExp('\\b(?:[Uu]sed by|[Tt]rusted by|[Cc]ustomers? includes?|[Cc]lients? includes?)\\s+'+company,'g'))) add(match[1],value);
-      for(const match of value.matchAll(/\b(?:used by|trusted by)\s+([a-z][a-z0-9&.]*)/gi)) if(!/^(?:over|more|nearly|about|around|teams|users|customers|companies|banks|businesses|global|leading|many|some|hundreds|thousands|millions)$/i.test(match[1])) add(match[1],value);
+      for(const match of value.matchAll(new RegExp('\\b(?:[Uu]sed by|[Tt]rusted by|[Cc]ustomers? includes?|[Cc]lients? includes?)\\s+'+company,'g'))) add(match[1],value,true);
+      for(const match of value.matchAll(/\b(?:used by|trusted by)\s+([a-z][a-z0-9&.]*)/gi)) if(!/^(?:over|more|nearly|about|around|teams|users|customers|companies|banks|businesses|global|leading|many|some|hundreds|thousands|millions)$/i.test(match[1])) add(match[1],value,true);
       for(const match of value.matchAll(new RegExp('\\b'+company+'\\s+(?:uses?|said|says|cut|reduced?|increased?|raised?|saved?|achieved?)\\b','g'))) add(match[1],value);
-      for(const match of value.matchAll(new RegExp('\\b(?:at|from)\\s+'+company+'(?=[:;]|\\s*\\(|\\s*["“])','g'))) add(match[1],value);
+      for(const match of value.matchAll(new RegExp('\\b(?:at|from)\\s+'+company+'(?=[:;]|\\s*\\(|\\s*["“])','g'))) add(match[1],value,true);
     }
-    if (/^customer_(?:name|company)$/.test(field)&&value.trim()) add(value.trim(),value);
+    if (/^customer_(?:name|company)$/.test(field)&&value.trim()) add(value.trim(),value,true);
   }
   return [...names];
 }
@@ -114,6 +118,7 @@ export function holdBuyerCopy(tool, args, text) {
   const review = copyEvidenceReview(tool,args);
   if (!review) return text;
   const names = unapprovedCustomerNames(args);
+  const namePatterns = names.map(name=>new RegExp('(?:^|[^\\p{L}\\p{N}])'+name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'(?=$|[^\\p{L}\\p{N}])','iu'));
   const held = [];
   const kept = [];
   let internalEvidence = false;
@@ -121,7 +126,7 @@ export function holdBuyerCopy(tool, args, text) {
     if (tool === 'impact_pinpoint_value' && /^## [^#]/.test(line)) internalEvidence = /^## (?:Value Quantification Matrix|Proof Point Framework)\b/.test(line);
     if (tool === 'email_sequence_generator' && /^## Before you send\b/.test(line)) internalEvidence = true;
     if (internalEvidence) {kept.push(line);continue;}
-    if (hasAbsoluteClaim(line) || names.some(name=>line.toLowerCase().includes(name.toLowerCase()))) {
+    if (hasAbsoluteClaim(line) || namePatterns.some(pattern=>pattern.test(line))) {
       const statement=line.trim();
       if(statement&&!held.includes(statement))held.push(statement);
     } else kept.push(line);

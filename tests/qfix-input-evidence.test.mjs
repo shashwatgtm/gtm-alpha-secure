@@ -56,12 +56,21 @@ test('RTM04 all absolute claim forms hold copy and specify the evidence needed',
 });
 test('RTM04 customer names require affirmative permission for this endorsement',async()=>{
  const {copyEvidenceReview,hasPublicationPermission}=await import(moduleURL);
- for(const qualifier of ['', '; permission not granted','; permission pending','; if we have permission to publish','; permission denied','; we do not have permission to publish','; permission revoked']){
+ for(const qualifier of ['', '; permission not granted','; permission pending','; if we have permission to publish','; permission denied','; we do not have permission to publish','; permission revoked','; we have permission for website use only']){
   assert.match(copyEvidenceReview('email_sequence_generator',{social_proof:'used by JPMorgan'+qualifier}),/Named customer social proof held out/);
  }
  const allowed='used by Acme; we have written permission to publish this endorsement in email';
  assert.equal(hasPublicationPermission(allowed),true);assert.equal(copyEvidenceReview('email_sequence_generator',{social_proof:allowed}),null);
+ for(const qualifier of ['permission granted','permission is granted','the customer granted us permission to publish in email'])assert.equal(copyEvidenceReview('email_sequence_generator',{social_proof:'used by Acme; '+qualifier}),null);
  assert.equal(copyEvidenceReview('email_sequence_generator',{social_proof:'Customer quote: "I saved two hours in the pilot."'}),null,'a first person pronoun is not a customer name');
+});
+test('RTM04 customer names match complete words and technology is not a named customer',async()=>{
+ const {holdBuyerCopy,unapprovedCustomerNames}=await import(moduleURL);
+ const result=holdBuyerCopy('email_sequence_generator',{social_proof:'used by Wise'},'### Email 1\n\nLikewise, we can discuss your workflow.\n\nOur product is used by Wise.');
+ const copy=result.split('## Draft with held statements omitted')[1];
+ assert.match(copy,/### Email 1/);assert.match(copy,/Likewise/);assert.doesNotMatch(copy,/\bWise\b/);
+ assert.deepEqual(unapprovedCustomerNames({social_proof:'AI saved two hours in the pilot',your_solution:'ReviewMate software'}),[]);
+ assert.deepEqual(unapprovedCustomerNames({social_proof:'ReviewMate raised conversion 12%',your_solution:'ReviewMate software'}),[]);
 });
 let fields=0;
 for(const tool of tools){
