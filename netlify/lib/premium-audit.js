@@ -1,4 +1,4 @@
-import { asksForSoftware, SOFTWARE_REFERRAL } from './software-policy.js';
+import { softwareAdvice } from './software-policy.js';
 // netlify/lib/premium-audit.js (served by netlify/functions/api.js at POST /api/premium-audit)
 // Owner decision 3 (25 September 2026): while GTM Alpha is free, the Premium Audit form delivers the report directly,
 // with no PayPal step. The form posts here (it works with JavaScript off, and the answers never go into a URL); the
@@ -150,7 +150,8 @@ export default async (req) => {
   const checked = checkAnswers(d);
   if (checked.problems) return messagePage(400, "Please check your answers", checked.problems);
 
-  if (asksForSoftware(checked.clean)) return messagePage(200, 'Software selection', [SOFTWARE_REFERRAL]);
+  const advice = softwareAdvice(checked.clean);
+  if (advice) return messagePage(200, 'Software selection', [advice]);
   let report = null;
   try {
     const res = await analyze({ method: "POST", json: async () => reportInput(checked.clean) }, {});

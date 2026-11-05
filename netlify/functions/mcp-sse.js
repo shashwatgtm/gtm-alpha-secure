@@ -1,6 +1,6 @@
 import { readableAlpha, serviceRoadmap } from '../lib/alpha-reader.js';
 import { readingGuide } from '../lib/reader-actions.js';
-import { asksForSoftware, SOFTWARE_REFERRAL } from '../lib/software-policy.js';
+import { softwareAdvice } from '../lib/software-policy.js';
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
 import { escapeDeep, escapeText, escapePiece, jsonInert } from "../lib/escape-inputs.js";
@@ -184,7 +184,8 @@ function handleToolCall(name, rawArgs) {
   // (run 40S, D6, safe by design: escaped once, netlify/lib/escape-inputs.js; an instruction-like text is quoted as the caller's
   // own), so no tool can repeat live markup. The words stay. The checks before this call (required, length, type, minimum) ran
   // on the original text.
-  if (asksForSoftware(rawArgs)) return SOFTWARE_REFERRAL;
+  const advice = softwareAdvice(rawArgs);
+  if (advice) return advice;
   var args = escapeDeep(rawArgs);
   if (name === "gtm_consultation") {
     return GTM_CONSULTANT.generateConsultation(args);

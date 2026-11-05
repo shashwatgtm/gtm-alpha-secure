@@ -1,4 +1,4 @@
-import { asksForSoftware, SOFTWARE_REFERRAL } from './software-policy.js';
+import { softwareAdvice } from './software-policy.js';
 // netlify/lib/epic-audit.js (served by netlify/functions/api.js at POST /api/epic-audit)
 // EPIC Framework Audit with a 6-month roadmap (results are not stored)
 
@@ -910,7 +910,8 @@ export default async (req, context) => {
     // Run 30D (independent-audit/run30/gtm-alpha-rest-path.md): the same echo safeguard as /mcp. This answer goes to API callers
     // and assistants (the Custom GPT action), and it repeats company_id and the stage and industry text, so every checked text
     // input is made inert once, here, before the audit is built. Ordinary text and the scores do not change.
-    if (asksForSoftware(checked.clean)) return new Response(JSON.stringify({recommendation: SOFTWARE_REFERRAL}), {status: 200, headers: {'Content-Type':'application/json'}});
+    const advice = softwareAdvice(checked.clean);
+  if (advice) return new Response(JSON.stringify({recommendation: advice}), {status: 200, headers: {'Content-Type':'application/json'}});
     const inputData = escapeDeep(checked.clean);
     
     // Validate required fields
