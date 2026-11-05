@@ -1,4 +1,4 @@
-import { asksForSoftware, SOFTWARE_REFERRAL } from './software-policy.js';
+import { softwareAdvice } from './software-policy.js';
 // netlify/lib/premium-audit.js (served by netlify/functions/api.js at POST /api/premium-audit)
 // Owner decision 3 (25 September 2026): while GTM Alpha is free, the Premium Audit form delivers the report directly,
 // with no PayPal step. The form posts here (it works with JavaScript off, and the answers never go into a URL); the
@@ -150,7 +150,8 @@ export default async (req) => {
   const checked = checkAnswers(d);
   if (checked.problems) return messagePage(400, "Please check your answers", checked.problems);
 
-  if (asksForSoftware(checked.clean)) return messagePage(200, 'Software selection', [SOFTWARE_REFERRAL]);
+  const advice = softwareAdvice(checked.clean);
+  if (advice) return messagePage(200, 'Software selection', [advice]);
   let report = null;
   try {
     const res = await analyze({ method: "POST", json: async () => reportInput(checked.clean) }, {});
@@ -162,7 +163,9 @@ export default async (req) => {
   if (!report) return messagePage(500, "The report could not be built", ["Please try again in a minute. If it keeps failing, email shashwat@gtmhelix.com."]);
 
   // R10-16: a report built from the form's example answers says so at the top (run 25: a real company used only as an example).
-  const page = withChrome(report, /\(example company\)$/.test(checked.clean.company_name));
+  const inputs = JSON.stringify(checked.clean).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
+  const bridge = '<script type="application/json" id="helix-result-inputs">' + inputs + '</script><script type="module" src="/assistant/launcher.mjs"></script>';
+  const page = withChrome(report, /\(example company\)$/.test(checked.clean.company_name)).replace('</body>', bridge + '</body>');
   return new Response(page, { status: 200, headers: { ...PAGE_HEADERS, "Content-Security-Policy": reportPolicy() } });
 };
 
@@ -174,9 +177,9 @@ export default async (req) => {
 const hashOf = (t) => "'sha256-" + createHash("sha256").update(t, "utf8").digest("base64") + "'";
 export function reportPolicy() {
   const hashes = [hashOf(PDF_SCRIPT), hashOf(EDIT_SCRIPT)];
-  return ["default-src 'none'", `script-src ${hashes.join(" ")}`,
+  return ["default-src 'none'", `script-src 'self' ${hashes.join(" ")}`,
     "style-src 'self' 'unsafe-inline'", "font-src 'self'",
-    "img-src 'self' data: blob:", "connect-src 'none'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"].join("; ");
+    "img-src 'self' data: blob:", "connect-src 'self'", "base-uri 'none'", "form-action 'none'", "frame-ancestors 'none'"].join("; ");
 }
 
 // Run 9 E11 F2: the report page carries the global header and the GTM Alpha footer like every other page, so a visitor can
@@ -197,6 +200,6 @@ export const EXAMPLE_NOTE = '<p class="hx10-note"><strong>This report uses the e
 export function withChrome(report, example = false) {
   return report
     .replace("</head>", `${STYLESHEETS}</head>`)
-    .replace("<body>", `<body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx10-report">${example ? EXAMPLE_NOTE : ""}${ACTIONS}`)
-    .replace("</body>", `${NEXT}</main>${FOOTER}<script>${EDIT_SCRIPT}</script></body>`);
+    .replace("<body>", `<body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx10-report">${example ? EXAMPLE_NOTE : ""}${ACTIONS}<section data-helix-report>`)
+    .replace("</body>", `</section>${NEXT}${RC.APP_ROUTES}</main>${FOOTER}<script>${EDIT_SCRIPT}</script></body>`);
 }

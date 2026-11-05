@@ -14,7 +14,9 @@
     "PRIVACY.md",
     "server.json",
     "manifest.json",
-    "netlify/lib/software-policy.js"
+    "netlify/lib/software-policy.js",
+    "netlify/lib/alpha-reader.js",
+    "netlify/lib/reader-actions.js"
   ],
   "type": "module",
   "bin": {
@@ -58,6 +60,7 @@
   "author": "Shashwat Ghosh <shashwat@gtmhelix.com> (https://gtmhelix.com/about/)",
   "license": "MIT",
   "overrides": {
-    "sharp": "^0.35.5"
+    "sharp": "^0.35.5",
+    "minimatch": "11.0.1"
   }
 }

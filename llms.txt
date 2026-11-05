@@ -53,5 +53,5 @@ CRAFT GTM (go-to-market planning), CRAFT Content (B2B content), IMPACT (position
 - IMPACT: https://impact.gtmhelix.com/
 - ICP Intelligence: https://icp-intelligence.gtmhelix.com/
 - Revenue Enablement: https://revenue-enablement.gtmhelix.com/
-- All connectors and Claude plugins: https://tools.gtmhelix.com/
+- All connectors and Helix skills packages: https://tools.gtmhelix.com/
 - [gtmexpert.com](https://www.gtmexpert.com/)

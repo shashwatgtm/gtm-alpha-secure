@@ -1,0 +1,41 @@
+[
+    {
+        "args":  {
+                     "industry":  "logistics_tech",
+                     "acv_usd":  24000,
+                     "business_stage":  "series-a",
+                     "geography":  "india",
+                     "self_serve":  false,
+                     "deal_source":  "outbound",
+                     "tam_accounts":  2500,
+                     "current_channels":  "Referrals and direct outreach",
+                     "deal_cycle_days":  90,
+                     "nrr_percent":  108,
+                     "gtm_challenge":  "Validate demand for dispatch planning software before adding a sales team",
+                     "company_name":  "Synthetic fleet service",
+                     "business_model":  "services"
+                 },
+        "tool":  "gtm_consultation"
+    },
+    {
+        "args":  {
+                     "acv_usd":  24000,
+                     "deal_source":  "outbound",
+                     "challenge":  "Validate demand for dispatch planning services before hiring",
+                     "self_serve":  false,
+                     "tam_accounts":  2500,
+                     "deal_cycle_days":  90,
+                     "nrr_percent":  108,
+                     "business_model":  "services"
+                 },
+        "tool":  "epic_audit"
+    },
+    {
+        "args":  {
+                     "primary_focus":  "E",
+                     "timeframe":  "90-day",
+                     "business_model":  "services"
+                 },
+        "tool":  "generate_roadmap"
+    }
+]

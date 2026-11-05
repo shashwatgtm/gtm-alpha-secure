@@ -1,0 +1,239 @@
+{
+  "production_commit": "dcf9a35614c02d7feafa96d46560eb755052194a",
+  "tools_list": {
+    "tools": [
+      {
+        "name": "gtm_consultation",
+        "title": "EPIC motion scores and first 30 days",
+        "description": "Scores the four motions from 1 to 10 with the documented rubric, names the primary and secondary motion, and lists the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "company_name": {
+              "type": "string",
+              "description": "Company name"
+            },
+            "gtm_challenge": {
+              "type": "string",
+              "description": "Your GTM challenge"
+            },
+            "business_stage": {
+              "type": "string",
+              "description": "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B)"
+            },
+            "industry": {
+              "type": "string",
+              "description": "Your industry"
+            },
+            "acv_usd": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Average contract value per year in US dollars (for example 42000)"
+            },
+            "deal_cycle_days": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Days from first touch to closed-won (for example 120)"
+            },
+            "nrr_percent": {
+              "type": "number",
+              "description": "Optional. Net revenue retention in percent (for example 108)"
+            },
+            "tam_accounts": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Number of addressable accounts (for example 2500)"
+            },
+            "self_serve": {
+              "type": "boolean",
+              "description": "Optional. true if customers can sign up and get value without talking to sales"
+            },
+            "deal_source": {
+              "type": "string",
+              "enum": [
+                "referrals",
+                "outbound",
+                "partnerships",
+                "inbound",
+                "mixed"
+              ],
+              "description": "Optional. Where the majority of deals come from"
+            },
+            "geography": {
+              "type": "string",
+              "enum": [
+                "india",
+                "us_eu",
+                "middle_east",
+                "apac",
+                "global"
+              ],
+              "description": "Optional. Primary market"
+            },
+            "current_channels": {
+              "type": "string",
+              "description": "Optional. What you do today (content, outbound, events, partnerships, PLG, community)"
+            },
+            "business_model": {
+              "type": "string",
+              "enum": [
+                "saas",
+                "services",
+                "connectivity",
+                "transactions",
+                "marketplace",
+                "hardware_software",
+                "investment"
+              ],
+              "description": "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Read from your other inputs when left out"
+            }
+          },
+          "required": [
+            "gtm_challenge"
+          ]
+        },
+        "annotations": {
+          "title": "EPIC motion scores and first 30 days",
+          "readOnlyHint": true,
+          "openWorldHint": false,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "epic_audit",
+        "title": "EPIC scores",
+        "description": "Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Add the optional inputs for a full score; without them the result is marked preliminary.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "challenge": {
+              "type": "string",
+              "description": "Describe your GTM situation"
+            },
+            "company_name": {
+              "type": "string",
+              "description": "Optional. Your company or product name, repeated in the answer"
+            },
+            "industry": {
+              "type": "string",
+              "description": "Your industry"
+            },
+            "business_stage": {
+              "type": "string",
+              "description": "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B)"
+            },
+            "acv_usd": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Average contract value per year in US dollars (for example 42000)"
+            },
+            "deal_cycle_days": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Days from first touch to closed-won (for example 120)"
+            },
+            "nrr_percent": {
+              "type": "number",
+              "description": "Optional. Net revenue retention in percent (for example 108)"
+            },
+            "tam_accounts": {
+              "type": "number",
+              "minimum": 0,
+              "description": "Optional. Number of addressable accounts (for example 2500)"
+            },
+            "self_serve": {
+              "type": "boolean",
+              "description": "Optional. true if customers can sign up and get value without talking to sales"
+            },
+            "deal_source": {
+              "type": "string",
+              "enum": [
+                "referrals",
+                "outbound",
+                "partnerships",
+                "inbound",
+                "mixed"
+              ],
+              "description": "Optional. Where the majority of deals come from"
+            },
+            "geography": {
+              "type": "string",
+              "enum": [
+                "india",
+                "us_eu",
+                "middle_east",
+                "apac",
+                "global"
+              ],
+              "description": "Optional. Primary market"
+            },
+            "current_channels": {
+              "type": "string",
+              "description": "Optional. What you do today (content, outbound, events, partnerships, PLG, community)"
+            }
+          },
+          "required": [
+            "challenge"
+          ]
+        },
+        "annotations": {
+          "title": "EPIC scores",
+          "readOnlyHint": true,
+          "openWorldHint": false,
+          "destructiveHint": false
+        }
+      },
+      {
+        "name": "generate_roadmap",
+        "title": "GTM Roadmap",
+        "description": "Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps, without the self-serve steps when your business model is not a software subscription. Builds text from the inputs only.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "primary_focus": {
+              "type": "string",
+              "enum": [
+                "E",
+                "P",
+                "I",
+                "C"
+              ],
+              "description": "EPIC motion to plan for: E, P, I or C"
+            },
+            "timeframe": {
+              "type": "string",
+              "enum": [
+                "30-day",
+                "60-day",
+                "90-day"
+              ],
+              "description": "30-day, 60-day or 90-day (default 90-day)"
+            },
+            "business_model": {
+              "type": "string",
+              "enum": [
+                "saas",
+                "services",
+                "connectivity",
+                "transactions",
+                "marketplace",
+                "hardware_software",
+                "investment"
+              ],
+              "description": "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Steps that need a product people can try on their own are left out for a business that is not a software subscription"
+            }
+          },
+          "required": [
+            "primary_focus"
+          ]
+        },
+        "annotations": {
+          "title": "GTM Roadmap",
+          "readOnlyHint": true,
+          "openWorldHint": false,
+          "destructiveHint": false
+        }
+      }
+    ]
+  }
+}

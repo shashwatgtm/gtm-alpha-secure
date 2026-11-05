@@ -1,4 +1,6 @@
-import { asksForSoftware, SOFTWARE_REFERRAL } from '../lib/software-policy.js';
+import { readableAlpha, serviceRoadmap } from '../lib/alpha-reader.js';
+import { readingGuide } from '../lib/reader-actions.js';
+import { softwareAdvice } from '../lib/software-policy.js';
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
 import { escapeDeep, escapeText, escapePiece, jsonInert } from "../lib/escape-inputs.js";
@@ -8,12 +10,13 @@ import { countUse } from "../lib/usage-count.js";
 // subscription or hardware plus software). For any other business model they are left out and the answer says so.
 const SELF_SERVE_ONLY = /self-service|self-serve|trial|freemium|viral|in-app|product-qualified|PQL|usage-based engagement|pricing page|conversion funnel/i;
 function stepsFor(letter, model) {
-  const keep = (list) => (model && model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)) : list.slice());
+  if (model === 'services') return serviceRoadmap(letter);
+  const keep = (list) => (model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)) : list.slice());
   return { days_30: keep(ROADMAP_STEPS[letter].days_30), days_60: keep(ROADMAP_STEPS[letter].days_60), first_quarter: keep(ROADMAP_STEPS[letter].first_quarter) };
 }
-function sectorNotes(v) {
+function sectorNotes(v, caseText) {
   if (!v) return null;
-  return { sector: v.name, who_decides: v.committee, what_it_measures: v.metrics, usual_objections: v.objections.map((o) => o.objection), proof_that_lands: v.proofShape, sales_motion: v.salesMotion };
+  return { sector: v.name, who_decides: "Owner: founder. Before the next planning meeting, ask the buyer who approves " + (caseText || "this purchase") + ". Check the authority and approval steps against the buyer's stated process. Candidate roles, not confirmed facts: " + v.committee, what_it_measures: v.metrics, usual_objections: v.objections.map((o) => o.objection), proof_that_lands: v.proofShape, sales_motion: v.salesMotion };
 }
 
 const GTM_CONSULTANT = {
@@ -57,19 +60,20 @@ const GTM_CONSULTANT = {
     // read from what the user typed; nothing is invented about the company.
     var v = detectVertical(args.industry, args.gtm_challenge, args.current_channels, args.company_description);
     var m = detectModel(args.business_model, args.industry, args.gtm_challenge, args.current_channels);
+    if (m.how === "sector") m = {model:null,how:"unknown"};
     var steps = stepsFor(analysis.primary.letter, m.model);
     var first = (steps.days_30.length ? steps.days_30 : steps.days_60).map(function(t) { return /\btop \d+\b/.test(t) ? t + " (Example figure: replace with your own)" : t; });
     lines.push("", "First 30 days for " + analysis.primary.motion + ":");
     first.forEach(function(t) { lines.push("- " + t); });
-    if (v) lines.push("", "Sector (read from your inputs): " + v.name + ". Who usually decides: " + v.committee);
+    if (v) lines.push("", "Sector (read from your inputs): " + v.name + ". Role check: the founder should ask the current buyer who approves this decision and record the answer before the next planning meeting. The sector committee is a hypothesis to verify: " + v.committee);
     return {
       consultation_output: lines.join("\n"),
       epic_scores: analysis.scores,
       primary_focus: analysis.primary.motion,
       secondary_focus: analysis.secondary.motion,
       first_30_days: first,
-      sector_notes: sectorNotes(v),
-      business_model: m.model ? MODEL_NAME[m.model] + (m.how === "input" ? "" : m.how === "sector" ? " (the usual model in this sector, assumed; set business_model to change it)" : " (read from your inputs)") : "not clear from your inputs; set business_model",
+      sector_notes: sectorNotes(v, company || args.gtm_challenge),
+      business_model: m.model ? MODEL_NAME[m.model] + (m.how === "input" ? "" : m.how === "sector" ? " (the usual model in this sector, assumed; set business_model to change it)" : " (read from your inputs)") : "Business model: not stated. Tell us how you charge and the plan will adjust.",
       epic_detail: analysis
     };
   },
@@ -84,7 +88,7 @@ const GTM_CONSULTANT = {
     var label = function(list) { return list.map(function(t) { return /\btop \d+\b/.test(t) ? t + " (Example figure: replace with your own)" : t; }); };
     var kept = stepsFor(letter, model);
     var steps = { days_30: label(kept.days_30), days_60: label(kept.days_60), first_quarter: label(kept.first_quarter) };
-    var dropped = ROADMAP_STEPS[letter].days_30.length + ROADMAP_STEPS[letter].days_60.length + ROADMAP_STEPS[letter].first_quarter.length - (kept.days_30.length + kept.days_60.length + kept.first_quarter.length);
+    var dropped = model === 'services' ? 0 : ROADMAP_STEPS[letter].days_30.length + ROADMAP_STEPS[letter].days_60.length + ROADMAP_STEPS[letter].first_quarter.length - (kept.days_30.length + kept.days_60.length + kept.first_quarter.length);
     // The chosen timeframe sets the day range of each phase (thirds of 30, 60 or 90 days).
     var days = { "30-day": 30, "60-day": 60, "90-day": 90 }[timeframe] || 90;
     var third = days / 3;
@@ -102,8 +106,8 @@ const GTM_CONSULTANT = {
         short_term: steps.days_60.slice(),
         medium_term: steps.first_quarter.slice()
       },
-      business_model: model ? MODEL_NAME[model] : "not given (the steps assume a software subscription; set business_model to change it)",
-      note: dropped ? dropped + " step" + (dropped === 1 ? "" : "s") + " that need a product people can try on their own (a trial, self-service sign-up or in-app prompts) were left out, because the business model is " + MODEL_NAME[model] + "." : undefined
+      business_model: model ? MODEL_NAME[model] : "Business model: not stated. Tell us how you charge and the plan will adjust.",
+      note: dropped ? dropped + " step" + (dropped === 1 ? "" : "s") + " that need a product people can try on their own (a trial, self-service sign-up or in-app prompts) were left out, because the business model is " + (model ? MODEL_NAME[model] : "not stated") + "." : undefined
     };
   }
 };
@@ -180,7 +184,8 @@ function handleToolCall(name, rawArgs) {
   // (run 40S, D6, safe by design: escaped once, netlify/lib/escape-inputs.js; an instruction-like text is quoted as the caller's
   // own), so no tool can repeat live markup. The words stay. The checks before this call (required, length, type, minimum) ran
   // on the original text.
-  if (asksForSoftware(rawArgs)) return SOFTWARE_REFERRAL;
+  const advice = softwareAdvice(rawArgs);
+  if (advice) return advice;
   var args = escapeDeep(rawArgs);
   if (name === "gtm_consultation") {
     return GTM_CONSULTANT.generateConsultation(args);
@@ -190,7 +195,7 @@ function handleToolCall(name, rawArgs) {
     var audit = GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
     var named = typeof args.company_name === "string" ? args.company_name.trim() : "";
     var sv = detectVertical(args.industry, args.challenge, args.current_channels);
-    return Object.assign(named ? { company: escapePiece(named) } : {}, audit, sv ? { sector_notes: sectorNotes(sv) } : {});
+    return Object.assign(named ? { company: escapePiece(named) } : {}, audit, sv ? { sector_notes: sectorNotes(sv, named || args.challenge) } : {});
   } else if (name === "generate_roadmap") {
     return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args.business_model);
   } else {
@@ -382,7 +387,8 @@ export default async function handler(req, context) {
         jsonrpc: "2.0",
         id: id,
         result: {
-          content: [{ type: "text", text: jsonInert(typeof result === 'string' ? result : JSON.stringify(result, null, 2)) }]
+          content: [{ type: "text", text: jsonInert(typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) }],
+          ...(typeof result === 'object' && result !== null ? { structuredContent: result } : {})
         }
       });
     }

@@ -12,7 +12,7 @@ const call = async (name, args) => {
   const r = await mcp(new Request("https://gtmalpha.gtmhelix.com/mcp", { method: "POST", headers: { "content-type": "application/json" },
     body: JSON.stringify({ jsonrpc: "2.0", id: id++, method: "tools/call", params: { name, arguments: args } }) }), {});
   const j = await r.json();
-  return { isError: !!j.result.isError, text: j.result.content.map((c) => c.text).join("\n") };
+  return { isError: !!j.result.isError, text: JSON.stringify(j.result.structuredContent), display: j.result.content.map((c) => c.text).join("\n") };
 };
 const B75 = /\b(clinics?|patients?|hospitals?|healthcare|hipaa|ehr|appointments?|no-shows?|dental|physio\w*|ExampleCo|Acme Notes|ClinicFlow|legal tech)\b/i;
 
@@ -69,4 +69,14 @@ test("gtm_consultation: an example count in the first steps is labelled as an ex
   const j = JSON.parse((await call("gtm_consultation", { gtm_challenge: "We sell managed SD-WAN to enterprises with many branches.", industry: "Telecom", business_stage: "series-b", acv_usd: 240000, deal_cycle_days: 150, tam_accounts: 800 })).text);
   for (const t of j.first_30_days) if (/\btop \d+\b/.test(t)) assert.match(t, /Example figure: replace with your own/);
   assert.ok(j.first_30_days.some((t) => /\btop \d+\b/.test(t)), "the E steps include a top-N count");
+});
+
+test("Round 5: readable MCP answer retains the complete structured audit", async () => {
+  const r = await call("epic_audit", {challenge:"Validate buyer demand for dispatch planning software", industry:"logistics_tech", business_stage:"series-a", acv_usd:24000, deal_cycle_days:90});
+  const data = JSON.parse(r.text);
+  assert.ok(data.scores && data.primary);
+  assert.match(r.display, /## Reading the answer/);
+  assert.match(r.display, /CEO:.*stop condition/);
+  assert.doesNotMatch(r.display, /"sector_notes"|"primaryFocus"|"epic_scores"/);
+  assert.match(r.display, new RegExp(String(data.scores.E)));
 });
