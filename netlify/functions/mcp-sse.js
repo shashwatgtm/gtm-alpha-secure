@@ -394,7 +394,7 @@ export default async function handler(req, context) {
         jsonrpc: "2.0",
         id: id,
         result: {
-          content: [{ type: "text", text: jsonInert((typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) + (asksForSoftware(toolArgs) ? '' : toolName === 'generate_roadmap' ? ROADMAP_REGION_LIMIT : regionNotes(regionalInputs({...cleanDeep(toolArgs), sector: toolArgs.industry})))) }],
+          content: [{ type: "text", text: jsonInert((typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) + (softwareAdvice(toolArgs) ? '' : toolName === 'generate_roadmap' ? ROADMAP_REGION_LIMIT : regionNotes(regionalInputs({...cleanDeep(toolArgs), sector: toolArgs.industry})))) }],
           ...(typeof result === 'object' && result !== null ? { structuredContent: result } : {})
         }
       });
