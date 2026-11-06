@@ -103,6 +103,7 @@ ${chrome.LD_SAMPLE}
     <link rel="stylesheet" href="/assets/helix.css?v=${chrome.V_HELIX}">
     <link rel="stylesheet" href="/assets/helix-report.css?v=${chrome.V_HELIX_REPORT}">
     <link rel="stylesheet" href="/assets/site.css?v=${chrome.V_SITE}">
+    <link rel="stylesheet" href="/assets/jtbd.css">
 </head>
 <body class="ga-sample">
     ${chrome.SKIP}
@@ -126,6 +127,7 @@ ${chrome.LD_SAMPLE}
     </section>
     <div class="hx-wrap hx10-report">
     ${report}
+    <p class="hx-notenough"><strong>When a tool is not enough:</strong> if the decision needs more than one answer, talk it through with Shashwat. <a href="https://calendly.com/shashwat-gtmhelix/45min">Book 45 minutes</a>.</p>
     ${chrome.NEXT}
     </div>
     ${chrome.APP_ROUTES}
