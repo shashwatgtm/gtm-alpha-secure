@@ -11,7 +11,9 @@ import { exampleAnswers } from "../scripts/build-sample-report.mjs";
 
 const WORDMARK = '<span class="hx9-word">Helix GTM</span>';
 // The company is "Helix GTM Consulting"; "Helix GTM Suite" names the separate skills package. Outside the wordmark (the SVG text "HELIX GTM" is upper case and is the wordmark too).
-const loose = (s) => (s.split(WORDMARK).join("").match(/Helix GTM(?! Consulting| Suite\b)/g) || []).length;
+// Owner, 6 Nov 2026: the one logo lockup ("Helix GTM" over the site name) is the wordmark too, with its aria label.
+const LOCKUP = '<span class="hx-lock-b">Helix GTM</span>';
+const loose = (s) => (s.split(WORDMARK).join("").split(LOCKUP).join("").replace(/aria-label="[^"]*, by Helix GTM, home"/g, "").replace(/"alternateName":\s*"Helix GTM"/g, "").match(/Helix GTM(?! Consulting| Suite\b)/g) || []).length;
 
 test("report chrome: one company name in the header, footer, aria labels and structured data", () => {
   for (const name of ["HEADER", "SAMPLE_HEADER", "FOOTER", "NEXT", "SKIP", "SAMPLE_TITLE", "SAMPLE_DESC", "LD_SAMPLE"]) {
@@ -27,7 +29,7 @@ test("report chrome: one company name in the header, footer, aria labels and str
   const ld = JSON.parse(RC.LD_SAMPLE);
   const org = ld["@graph"].find((n) => n["@type"] === "Organization");
   assert.equal(org.name, "Helix GTM Consulting");
-  assert.equal(org.alternateName, undefined);
+  assert.equal(org.alternateName, "Helix GTM", "owner approved entity data, 6 Nov 2026");
   const crumbs = ld["@graph"].find((n) => n["@type"] === "BreadcrumbList");
   assert.equal(crumbs.itemListElement[0].name, "Helix GTM Consulting");
 });

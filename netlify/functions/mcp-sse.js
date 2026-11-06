@@ -1,10 +1,14 @@
 import { missingEvidence, copyEvidenceReview } from '../lib/input-evidence.js';
 import { readableAlpha, serviceRoadmap } from '../lib/alpha-reader.js';
+import { regionNotes } from '../lib/region-reader.js';
+import { regionalInputs, ROADMAP_REGION_LIMIT } from '../lib/region-adapter.js';
 import { readingGuide } from '../lib/reader-actions.js';
 import { softwareAdvice } from '../lib/software-policy.js';
 import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
-import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/verticals.js";
-import { escapeDeep, escapeText, escapePiece, jsonInert } from "../lib/escape-inputs.js";
+// Preserve existing nonregional text and model decisions; the new shared taxonomy
+// is used by region-reader.js for country and industry notes.
+import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/legacy-sector-notes.js";
+import { escapeDeep, escapeText, escapePiece, jsonInert, cleanDeep } from "../lib/escape-inputs.js";
 import { countUse } from "../lib/usage-count.js";
 
 // Run 19 (D80, problems 3, 4 and 8): the plan steps that only fit a product people can try on their own (a software
@@ -117,7 +121,7 @@ var TOOLS = [
   {
     name: "gtm_consultation",
     title: "EPIC motion scores and first 30 days",
-    description: "Scores the four motions from 1 to 10 with the documented rubric, names the primary and secondary motion, and lists the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Add the optional inputs (ACV, deal cycle, NRR, TAM, self-serve, deal source, geography) for a full score; without them the result is marked preliminary.",
+    description: "Helps you decide which go to market motion to lead with and what to do first. You give your main GTM challenge, plus your stage and industry and the optional ACV, deal cycle, NRR, TAM, self serve, deal source and geography for a full score. You get a score from 1 to 10 for each of the four EPIC motions from the documented rubric, the primary and secondary motion and the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Without the optional inputs the result is marked preliminary.",
     inputSchema: {
       type: "object",
       properties: {
@@ -142,7 +146,7 @@ var TOOLS = [
   {
     name: "epic_audit",
     title: "EPIC scores",
-    description: "Get EPIC framework scores for your GTM strategy: Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, Community-Led, each 1 to 10, with the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Add the optional inputs for a full score; without them the result is marked preliminary.",
+    description: "Helps you decide which go to market motion fits your company. You give your GTM challenge, plus your stage and industry and the optional inputs (ACV, deal cycle, NRR, TAM, self serve, deal source, geography) for a full score. You get EPIC scores from 1 to 10 for Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, and Community-Led, the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Without the optional inputs the result is marked preliminary.",
     inputSchema: {
       type: "object",
       properties: {
@@ -166,7 +170,7 @@ var TOOLS = [
   {
     name: "generate_roadmap",
     title: "GTM Roadmap",
-    description: "Return a GTM action plan for one EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) over 30, 60 or 90 days: immediate, short-term and medium-term steps, without the self-serve steps when your business model is not a software subscription. Builds text from the inputs only.",
+    description: "Helps you decide what to do in the next 30, 60 or 90 days for one motion. You give the EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) and the time frame. You get immediate, short term and medium term steps, without the self serve steps when your business model is not a software subscription. It builds text from your inputs only.",
     inputSchema: {
       type: "object",
       properties: {
@@ -390,7 +394,7 @@ export default async function handler(req, context) {
         jsonrpc: "2.0",
         id: id,
         result: {
-          content: [{ type: "text", text: jsonInert(typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) }],
+          content: [{ type: "text", text: jsonInert((typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) + (softwareAdvice(toolArgs) ? '' : toolName === 'generate_roadmap' ? ROADMAP_REGION_LIMIT : regionNotes(regionalInputs({...cleanDeep(toolArgs), sector: toolArgs.industry})))) }],
           ...(typeof result === 'object' && result !== null ? { structuredContent: result } : {})
         }
       });
