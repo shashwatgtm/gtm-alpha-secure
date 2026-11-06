@@ -28,7 +28,9 @@ test("every JSON-LD block has one Person, with the canonical @id, and every refe
     const people = g.filter((n) => n["@type"] === "Person");
     assert.equal(people.length, 1);
     assert.equal(people[0]["@id"], PERSON_ID);
-    assert.ok(people[0].sameAs.includes("https://www.gtmexpert.com/#shashwat-ghosh"));
+    // Owner, 5 and 6 Nov 2026: only profiles he controls; gtmexpert.com (noindex) is dropped.
+    assert.deepEqual(people[0].sameAs, ["https://www.linkedin.com/in/shashwatghosh-ai-b2b-gtm-fractionalcmo/", "https://github.com/shashwatgtm", "https://www.npmjs.com/org/shashwatgtmalpha", "https://apify.com/shashghosh", "https://x.com/Shashwat_Ghosh", "https://www.skills.sh/shashwatgtm"]);
+    assert.ok(!JSON.stringify(people[0]).includes("gtmexpert.com"));
     assert.equal(people[0].jobTitle, "Co-Founder and Fractional CMO");
     assert.ok(people[0].award.includes("Top 15 AI Research and Innovation (India)"));
     const org = g.find((n) => n["@type"] === "Organization");
