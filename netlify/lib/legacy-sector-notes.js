@@ -225,7 +225,6 @@ export function detectVertical(...texts) {
     const t = texts.filter((x) => typeof x === 'string' && x.trim()).join(' \n ').replace(/_/g, ' ');
     if (!t)
         return null;
-    for (const x of texts) { if (typeof x === 'string' && x.trim()) { const slug = x.trim().toLowerCase().replace(/[\s_]+/g, '-'); const exact = VERTICALS.find((v) => v.id === slug || v.name.toLowerCase() === x.trim().toLowerCase()); if (exact) return exact; } }
     const scored = ORDER.map((id) => {
         const v = VERTICALS.find((x) => x.id === id);
         const n = new Set((t.match(new RegExp(v.match.source, 'gi')) || []).map((w) => w.toLowerCase())).size;

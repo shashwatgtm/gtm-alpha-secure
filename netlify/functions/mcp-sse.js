@@ -17,7 +17,7 @@ import { countUse } from "../lib/usage-count.js";
 const SELF_SERVE_ONLY = /self-service|self-serve|trial|freemium|viral|in-app|product-qualified|PQL|usage-based engagement|pricing page|conversion funnel/i;
 function stepsFor(letter, model) {
   if (model === 'services') return serviceRoadmap(letter);
-  const keep = (list) => (model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)).map((t) => t.replace(/\bPLG motions\b/g, 'onboarding and rollout steps').replace(/\buser onboarding flow\b/g, 'site and customer onboarding flow').replace(/\buser journey\b/g, 'rollout')) : list.slice());
+  const keep = (list) => (model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)) : list.slice());
   return { days_30: keep(ROADMAP_STEPS[letter].days_30), days_60: keep(ROADMAP_STEPS[letter].days_60), first_quarter: keep(ROADMAP_STEPS[letter].first_quarter) };
 }
 function sectorNotes(v, caseText) {
@@ -66,7 +66,8 @@ const GTM_CONSULTANT = {
     // read from what the user typed; nothing is invented about the company.
     var rawV = detectVertical(args.industry, args.gtm_challenge, args.current_channels, args.company_description);
     var m = detectModel(args.business_model, args.industry, args.gtm_challenge, args.current_channels);
-    var v = profileFor(rawV, m.model);
+    // Investment notes only when the user chose business_model "investment"; a word such as "portfolio" or "funds" in the text never swaps the sector notes.
+    var v = m.how === "input" && m.model === "investment" ? profileFor(rawV, "investment") : rawV;
     if (m.how === "sector") m = {model:null,how:"unknown"};
     var steps = stepsFor(analysis.primary.letter, m.model);
     var first = (steps.days_30.length ? steps.days_30 : steps.days_60).map(function(t) { return /\btop \d+\b/.test(t) ? t + " (Example figure: replace with your own)" : t; });
@@ -203,9 +204,7 @@ function handleToolCall(name, rawArgs) {
     // sector clearly, its buying committee and usual objections follow the scores (nothing is invented about the company).
     var audit = GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
     var named = typeof args.company_name === "string" ? args.company_name.trim() : "";
-    var rawSv = detectVertical(args.industry, args.challenge, args.current_channels);
-    var sm = detectModel(args.business_model, args.industry, args.challenge, args.current_channels);
-    var sv = profileFor(rawSv, sm.model);
+    var sv = detectVertical(args.industry, args.challenge, args.current_channels);
     return Object.assign(named ? { company: escapePiece(named) } : {}, audit, sv ? { sector_notes: sectorNotes(sv, named || args.challenge) } : {});
   } else if (name === "generate_roadmap") {
     return GTM_CONSULTANT.generateRoadmap(args.primary_focus || "P", args.timeframe, args.business_model);
