@@ -333,7 +333,8 @@ export function scoreEpic(input) {
 
   // Run 19 (D80, problem 4): a motion the inputs rule out never wins a tie. When self_serve is false, Product-Led Growth moves
   // to the end of the tie-break order (E, C, I, P); its score is unchanged. Before run 19 the order was always E, P, C, I.
-  const tieOrder = selfServe === false ? ["E", "C", "I", "P"] : TIE_ORDER;
+  const noSelfServe = selfServe === false || /\b(?:no|not|never|without|do not|don't)\s+(?:run\s+|use\s+|have\s+|offer\s+)?(?:plg|product[- ]led|self[- ]serve|free trial)\b/i.test(text);
+  const tieOrder = noSelfServe ? ["E", "C", "I", "P"] : TIE_ORDER;
   const ranked = ["E", "P", "I", "C"].sort((a, b) => (sc[b] - sc[a]) || (tieOrder.indexOf(a) - tieOrder.indexOf(b)));
   const vals = Object.values(sc);
   if (Math.max(...vals) - Math.min(...vals) <= 2) {
