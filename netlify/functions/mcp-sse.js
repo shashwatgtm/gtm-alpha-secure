@@ -17,7 +17,10 @@ import { countUse } from "../lib/usage-count.js";
 const SELF_SERVE_ONLY = /self-service|self-serve|trial|freemium|viral|in-app|product-qualified|PQL|usage-based engagement|pricing page|conversion funnel/i;
 function stepsFor(letter, model) {
   if (model === 'services') return serviceRoadmap(letter);
-  const keep = (list) => (model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)) : list.slice());
+  const keep = (list) => (model !== "saas" && model !== "hardware_software" ? list.filter((t) => !SELF_SERVE_ONLY.test(t)) : list.slice())
+    .map(t => model !== 'saas' && /\bPLG\b/.test(t)
+      ? 'Repeat the agreed buyer test only after acceptance and acquisition cost checks pass'
+      : t);
   return { days_30: keep(ROADMAP_STEPS[letter].days_30), days_60: keep(ROADMAP_STEPS[letter].days_60), first_quarter: keep(ROADMAP_STEPS[letter].first_quarter) };
 }
 function sectorNotes(v, caseText) {
