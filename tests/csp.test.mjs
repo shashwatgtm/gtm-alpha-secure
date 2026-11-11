@@ -49,8 +49,8 @@ test("built site: script-src has no unsafe-inline, and every inline script that 
       if (sc.executable) assert.ok(scriptSrc.includes(hashOf(sc.text)), f + ": an inline script is not allowed by a hash in _headers");
       else assert.equal(sc.type, "application/ld+json", f + ": only JSON-LD data blocks are inline");
     }
-    // every script that loads is one of the site's own files
-    for (const m of html.matchAll(/<script\b[^>]*\ssrc\s*=\s*["']([^"']+)["']/gi)) assert.ok(m[1].startsWith("/assets/js/"), f + ": " + m[1]);
+    // Scripts are local assets or the exact owner approved Helix history script.
+    for (const m of html.matchAll(/<script\b[^>]*\ssrc\s*=\s*["']([^"']+)["']/gi)) assert.ok(m[1].startsWith("/assets/js/") || /^\/assets\/look\.js(?:\?v=[0-9a-f]{10})?$/.test(m[1]) || m[1] === "https://gtmhelix.com/journey/history.js", f + ": " + m[1]);
   }
 });
 

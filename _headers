@@ -3,7 +3,7 @@
 # The report returned by /api/premium-audit sets its own, stricter policy (netlify/lib/premium-audit.js).
 # Run 10 R10-10: HSTS for a year, set explicitly (no preload, no includeSubDomains).
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' https://analytics.ahrefs.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.g.doubleclick.net; connect-src 'self' https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.google.com https://*.g.doubleclick.net https://analytics.ahrefs.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://analytics.ahrefs.com https://gtmhelix.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://*.google-analytics.com https://*.g.doubleclick.net; connect-src 'self' https://*.google-analytics.com https://analytics.google.com https://*.analytics.google.com https://www.google.com https://*.g.doubleclick.net https://analytics.ahrefs.com; form-action 'self'; base-uri 'self'; frame-ancestors 'none'; object-src 'none'; frame-src 'self' https://gtmhelix.com
   X-Content-Type-Options: nosniff
   Strict-Transport-Security: max-age=31536000
   Referrer-Policy: strict-origin-when-cross-origin

@@ -1,3 +1,4 @@
+const historyTag = '<script src="https://gtmhelix.com/journey/history.js" defer></script>';
 const tag = '<script type="module" src="/assistant/launcher.mjs"></script>';
 
 export default async (request, context) => {
@@ -12,7 +13,7 @@ export default async (request, context) => {
     if ((!/^\/tools\/[^/]+\/?$/.test(path) && !/^\/consultation(?:\.html|\/)?$/.test(path) && /<form\b/i.test(html)) || !/<\/body\s*>/i.test(html) || /<script\b[^>]*\bsrc\s*=\s*["']\/assistant\/launcher\.mjs(?:\?[^"']*)?["']/i.test(html)) return res;
     const h = new Headers(res.headers);
     h.delete('content-length'); h.delete('etag');
-    return new Response(html.replace(/<\/body\s*>/i, tag + '\n</body>'), {
+    return new Response(html.replace(/<\/body\s*>/i, tag + (html.includes(historyTag) ? '' : '\n' + historyTag) + '\n</body>'), {
       status: res.status, statusText: res.statusText, headers: h,
     });
   } catch {

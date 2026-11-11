@@ -68,43 +68,8 @@ export async function buildSampleReport() {
   const company = answers.company_name.replace(/ \(example company\)$/, "");
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const out = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${esc(chrome.SAMPLE_TITLE)}</title>
-    <meta name="description" content="${esc(chrome.SAMPLE_DESC)}">
-    <meta name="robots" content="index, follow, max-image-preview:large">
-    <meta name="author" content="Shashwat Ghosh, Helix GTM Consulting">
-    <link rel="canonical" href="${chrome.SAMPLE_URL}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="GTM Alpha">
-    <meta property="og:title" content="${esc(chrome.SAMPLE_TITLE)}">
-    <meta property="og:description" content="${esc(chrome.SAMPLE_DESC)}">
-    <meta property="og:url" content="${chrome.SAMPLE_URL}">
-    <meta property="og:image" content="https://gtmalpha.gtmhelix.com/assets/og.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="GTM Alpha by Helix GTM Consulting">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="${esc(chrome.SAMPLE_TITLE)}">
-    <meta name="twitter:description" content="${esc(chrome.SAMPLE_DESC)}">
-    <meta name="twitter:image" content="https://gtmalpha.gtmhelix.com/assets/og.png">
-    <meta name="twitter:creator" content="@Shashwat_Ghosh">
-    <script type="application/ld+json">
-${chrome.LD_SAMPLE}
-</script>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-    <link rel="preload" href="/assets/fonts/Archivo-latin-1.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/assets/fonts/VT323-latin-400.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="/assets/fonts.css?v=${chrome.V_FONTS}">
-    ${style[0]}
-    <link rel="stylesheet" href="/assets/helix.css?v=${chrome.V_HELIX}">
-    <link rel="stylesheet" href="/assets/helix-report.css?v=${chrome.V_HELIX_REPORT}">
-    <link rel="stylesheet" href="/assets/site.css?v=${chrome.V_SITE}">
-    <link rel="stylesheet" href="/assets/jtbd.css">
-</head>
+<html lang="en" class="hx-look">
+${readFileSync(join(ROOT, "scripts/sample-report-head.html"), "utf8").replace(/<style>[\s\S]*?<\/style>/, style[0])}
 <body class="ga-sample">
     ${chrome.SKIP}
     ${chrome.SAMPLE_HEADER.replaceAll("Use it in Claude or ChatGPT", "Connect your app")}
@@ -132,7 +97,7 @@ ${chrome.LD_SAMPLE}
     </div>
     ${chrome.APP_ROUTES}
     </main>
-    ${chrome.FOOTER.replaceAll("Use it in Claude or ChatGPT", "Connect your app")}
+    ${readFileSync(join(ROOT, "scripts/sample-report-footer.html"), "utf8")}
 </body>
 </html>
 `;
