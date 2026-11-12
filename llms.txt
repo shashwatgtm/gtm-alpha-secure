@@ -59,4 +59,4 @@ CRAFT GTM (go-to-market planning), CRAFT Content (B2B content), IMPACT (position
 ## Continue the work
 
 - [Team workshops](https://tools.gtmhelix.com/workshops/): Compare market and positioning assumptions with your team, then use the larger Helix tools.
-- [All tools](https://tools.gtmhelix.com/tools/): 49 tools and 37 different skills, 86 in all, in six connectors and nine plugins.
+- [All tools](https://tools.gtmhelix.com/tools/): 52 tools and 37 different skills, 89 in all, in six connectors and nine plugins.
