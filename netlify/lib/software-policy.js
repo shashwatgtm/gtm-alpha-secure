@@ -6,6 +6,25 @@ export const SOFTWARE_OUTSIDE_SCOPE = 'This tool and Helix do not advise on soft
 // fact or a question about positioning the user's own offering is not advice.
 const SOFTWARE = /\b(?:Outreach|Salesloft|Demandbase|Gainsight|ChurnZero|Semrush|Ahrefs|ON24|PartnerStack|Crossbeam|ABM|intent data|enrichment|revenue intelligence|conversation intelligence|CPQ|customer success|security tooling|developer tools?|analytics|SEO|cloud|software|tools?|apps?|platforms?|vendors?|CRM|ERP|SIEM|SOAR|EDR|XDR|CDP|HRIS|HRMS|HCM|ATS|TMS|WMS|CPaaS|CCaaS|iPaaS|ITSM|BI|data warehouses?|data lakes?|lakehouses?|payment gateways?|payment processors?|observability|APM|monitoring|marketing automation|sales engagement|accounting|payroll|help ?desks?|service desks?|project management|vector databases?|feature stores?|model serving|MLOps|LLMOps|identity providers?|API gateways?|fleet management|route planning|procurement|billing|ecommerce|e-commerce|HubSpot|Salesforce|Marketo|Clari|Gong|ZoomInfo|Apollo|6sense|Slack|Asana|Notion|Trello|Zapier|Segment|Apigee|Kong|Snowflake|BigQuery|Redshift|Databricks|Splunk|Sentinel|CrowdStrike|SentinelOne|Oracle|SAP|NetSuite|Dynamics|Workday|BambooHR|Rippling|Greenhouse|Lever|Stripe|Adyen|Razorpay|Twilio|Vonage|Sinch|Datadog|New Relic|Grafana|Dynatrace|ServiceNow|Zendesk|Freshdesk|Manhattan|Blue Yonder|Shipwell|project44|Samsara|Motive|Pinecone|Weaviate|SageMaker|Vertex AI|Vercel|GitHub|GitLab|Jira|Okta|Auth0|QuickBooks|Xero|Shopify)\b/i;
 
+// The user's own offering, described by what it is ("for a telecom analytics
+// product", "with our analytics platform", "for our AI app that helps ITeS
+// firms run service desks"), names what is being sold, not what to buy. It is
+// removed before the sentence is read for a software request, so "Choose
+// between partner-led and outbound for a telecom analytics product" is a GTM
+// question, while "Which CRM should we buy for our analytics product" still
+// asks for a CRM. "for" after a buying word ("looking for", "vendor for",
+// "recommendations for") keeps the phrase, since there it names the purchase.
+const MODIFIER = String.raw`(?:(?!(?:and|or|vs|versus|to|from|than|but|that|which|who)\b)[\w-]+\s+)`;
+const OFFERING = String.raw`(?:products?|startups?|compan(?:y|ies)|business(?:es)?|firms?|offerings?|solutions?|brands?|ventures?|SaaS|software|platforms?|apps?|tools?)\b`;
+const OFFERING_CLAUSE = String.raw`(?:\s+(?:that|which|who|sold|used|built|made|designed|aimed|targeting)\b[^,;:?.!]*)?`;
+const BUYING_WORD = String.raw`(?<!\b(?:look\w*|search\w*|shop\w*|hunt\w*|pay\w*|budget\w*|need\w*|want\w*|options?|alternatives?|replacements?|substitutes?|vendors?|providers?|suppliers?|recommend\w*|suggest\w*|advice|advise)\s+)`;
+const OWN_OFFERING = new RegExp(String.raw`\b(?:(?:for|of|with|behind|around)\s+(?:our|my)\s+|${BUYING_WORD}for\s+(?:(?:a|an|the|this)\s+)?|(?:sell(?:ing|s)?|market(?:ing)?|launch(?:ing)?|position(?:ing)?|pric(?:e|ing)|build(?:ing)?|make|offer)\s+(?:a|an|the|our|my|this)\s+)${MODIFIER}{0,4}${OFFERING}${OFFERING_CLAUSE}`, 'gi');
+const withoutOwnOffering = (sentence) => sentence.replace(OWN_OFFERING, ' ').replace(/^[\s,;:]+/, '');
+
+// "HubSpot or Salesforce?" compares two named products, as "versus" does.
+const NAMED = String.raw`(?:HubSpot|Salesforce|Marketo|Clari|Gong|ZoomInfo|Apollo|6sense|Outreach|Salesloft|Demandbase|Gainsight|ChurnZero|Semrush|Ahrefs|ON24|PartnerStack|Crossbeam|Snowflake|BigQuery|Redshift|Databricks|Splunk|Sentinel|CrowdStrike|SentinelOne|Datadog|New Relic|Stripe|Adyen|Razorpay|Twilio|Zendesk|Freshdesk|ServiceNow|Workday|Rippling)`;
+const NAMED_PAIR = new RegExp(String.raw`\b${NAMED}\s+or\s+${NAMED}\b`, 'i');
+
 function softwareQuestions(value) {
   const texts = [];
   const visit = (x) => {
@@ -25,12 +44,12 @@ function softwareQuestions(value) {
     }
   };
   visit(value);
-  return texts.flatMap(text => text.split(/(?<=[.!?;])\s+|\n/)).filter(sentence => {
+  return texts.flatMap(text => text.split(/(?<=[.!?;])\s+|\n/)).map(withoutOwnOffering).filter(sentence => {
     if (!SOFTWARE.test(sentence)) return false;
     // A labelled differentiation statement is supplied positioning evidence.
     if (/^\s*What sets (?:it|us|them) apart\s*:/i.test(sentence)) return false;
     if (/\b(?:not asking|do not recommend|don't recommend|do not suggest|don't suggest|no software recommendations|do not choose|don't choose|do not compare|don't compare)\b/i.test(sentence)) return false;
-    if (/\b(?:which|what) (?:(?:go[ -]to[ -]market|GTM)\s+)?(?:motion|operational\s+pain|pain|buyer|customer(?! success)|audience|team|role|persona|people|employee|metric|KPI|strategy|step|action|message|campaign|report|dashboard|workflow|field)s?\b/i.test(sentence)) return false;
+    if (/\b(?:which|what) (?:(?:go[ -]to[ -]market|GTM)\s+)?(?:motion|operational\s+pain|pain|buyer|customer(?! success)|segment|audience|team|role|persona|people|employee|metric|KPI|strategy|step|action|message|campaign|report|dashboard|workflow|field)s?\b/i.test(sentence)) return false;
     if (/^\s*(?:please\s+)?(?:choose|pick|recommend|suggest|compare)\s+(?:a\s+|the\s+)?(?:(?:go[ -]to[ -]market|GTM)\s+)?(?:motion|strategy|positioning|message)\b/i.test(sentence)) return false;
     // These questions concern the seller's product and its market, even when
     // they mention a named competitor or use words such as "better"/"choose".
@@ -45,6 +64,7 @@ function softwareQuestions(value) {
       || /\bwhat\b[^.!?]*\b(?:buy|choose|use|adopt|switch|replace|keep|avoid|recommend|suggest|best|better|alternative|fits?|suits?)\b/i.test(sentence)
       || /\b(?:recommend(?:ations?)?|suggest(?:ions?)?|shortlist|choose|decide|pick|compare|advice|advise)\b/i.test(sentence)
       || /\b(?:better|worse|best|worst|worth|alternative|alternatives|versus|vs\.?)\b/i.test(sentence)
+      || NAMED_PAIR.test(sentence)
       || /\b(?:should|shall|can|could|would|do) (?:I|we|our team)\b[^.!?]{0,100}\b(?:buy|use|choose|adopt|switch|replace|migrate|keep|retain|stay|avoid|drop|renew|move|leave|stop|stick)\b/i.test(sentence);
   });
 }
