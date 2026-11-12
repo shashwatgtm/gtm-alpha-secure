@@ -266,6 +266,80 @@ function missingRequired(tool, args) {
   });
 }
 
+// Fix 12 Nov 2026 (gtm_consultation error rate): a client model often sends an optional value in a near form ("India",
+// "SaaS", "United States", "yes", "$24k", "108%", or "" for a field it has nothing for). The checks below refused the whole
+// call for that (isError), which is what the directory counted as a failed call. For gtm_consultation only, before the
+// checks run: an empty optional choice, number or yes/no counts as not supplied, a choice is matched without regard to case, spacing or a
+// common synonym, a yes/no and a number written as text are read, and an optional choice that still matches nothing is
+// left out with a note in the answer. Required input, the length cap and minimum still refuse as before.
+var CONSULT_SYNONYMS = {
+  geography: {
+    india: "india", in: "india", bharat: "india",
+    us_eu: "us_eu", us: "us_eu", usa: "us_eu", united_states: "us_eu", north_america: "us_eu", america: "us_eu", eu: "us_eu", europe: "us_eu", uk: "us_eu", united_kingdom: "us_eu", us_and_eu: "us_eu", us_europe: "us_eu",
+    middle_east: "middle_east", uae: "middle_east", gcc: "middle_east", mena: "middle_east", saudi_arabia: "middle_east", ksa: "middle_east",
+    apac: "apac", asia: "apac", asia_pacific: "apac", sea: "apac", southeast_asia: "apac", singapore: "apac", australia: "apac", japan: "apac", anz: "apac",
+    global: "global", worldwide: "global", international: "global"
+  },
+  deal_source: {
+    referrals: "referrals", referral: "referrals", word_of_mouth: "referrals",
+    outbound: "outbound", outbound_sales: "outbound", cold_outreach: "outbound", cold_email: "outbound", sdr: "outbound",
+    partnerships: "partnerships", partnership: "partnerships", partners: "partnerships", partner: "partnerships", channel: "partnerships", channel_partners: "partnerships", resellers: "partnerships",
+    inbound: "inbound", inbound_marketing: "inbound", content: "inbound", seo: "inbound",
+    mixed: "mixed", mix: "mixed", multiple: "mixed", blended: "mixed"
+  },
+  business_model: {
+    saas: "saas", subscription: "saas", software_subscription: "saas", software: "saas", b2b_saas: "saas",
+    services: "services", service: "services", consulting: "services", professional_services: "services", agency: "services",
+    connectivity: "connectivity",
+    transactions: "transactions", transaction: "transactions", per_transaction: "transactions", transactional: "transactions",
+    marketplace: "marketplace",
+    hardware_software: "hardware_software", hardware: "hardware_software", hardware_plus_software: "hardware_software", hardware_and_software: "hardware_software",
+    investment: "investment", investment_management: "investment", asset_management: "investment"
+  }
+};
+
+function choiceKey(v) {
+  return String(v).normalize("NFKC").trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, "_").replace(/^_+|_+$/g, "");
+}
+
+function readNumberText(v) {
+  var m = String(v).trim().match(/^(?:usd|us\$|\$)?\s*([0-9][0-9,]*(?:\.[0-9]+)?)\s*(k|m)?\s*(?:%|percent|usd|dollars|days|accounts)?$/i);
+  if (!m) return null;
+  var n = Number(m[1].replace(/,/g, ""));
+  if (!isFinite(n)) return null;
+  if (m[2]) n = n * (m[2].toLowerCase() === "k" ? 1000 : 1000000);
+  return n;
+}
+
+function normalizeConsultationArgs(tool, args) {
+  var props = (tool.inputSchema && tool.inputSchema.properties) || {};
+  var required = (tool.inputSchema && tool.inputSchema.required) || [];
+  var out = Object.assign({}, args), notes = [];
+  Object.keys(props).forEach(function(key) {
+    var p = props[key], v = out[key];
+    if (v === undefined || v === null || required.indexOf(key) >= 0) return;
+    // An empty choice, number or yes/no means not supplied. An empty free text stays, so the missing input notice still shows.
+    if (typeof v === "string" && v.trim() === "" && (Array.isArray(p.enum) || p.type !== "string")) { delete out[key]; return; }
+    if (Array.isArray(p.enum) && typeof v === "string" && p.enum.indexOf(v) === -1) {
+      var k = choiceKey(v), mapped = p.enum.indexOf(k) >= 0 ? k : (CONSULT_SYNONYMS[key] || {})[k];
+      if (mapped) out[key] = mapped;
+      else { delete out[key]; notes.push(key + " was left out: the value given is not one of " + p.enum.join(", ") + "."); }
+      return;
+    }
+    if (p.type === "boolean" && typeof v === "string") {
+      var b = choiceKey(v);
+      if (["true", "yes", "y"].indexOf(b) >= 0) out[key] = true;
+      else if (["false", "no", "n"].indexOf(b) >= 0) out[key] = false;
+      return;
+    }
+    if ((p.type === "number" || p.type === "integer") && typeof v === "string") {
+      var n = readNumberText(v);
+      if (n !== null) out[key] = n;
+    }
+  });
+  return { args: out, notes: notes };
+}
+
 // Decision N2 (run 6): amounts, counts and durations cannot be negative; the schema says which (minimum).
 // Run 6 N2 and run 7 (T2, T6): a number sent as text is read with commas allowed or refused; minimum holds; a choice
 // must be one of the listed values. Numbers read from text replace the text in args before the tool runs.
@@ -375,13 +449,18 @@ export default async function handler(req, context) {
 
     if (method === "tools/call") {
       var toolName = params.name;
-      var toolArgs = params.arguments && typeof params.arguments === "object" && !Array.isArray(params.arguments) ? params.arguments : {};
+      var rawArguments = params.arguments;
+      // Fix 12 Nov 2026: a client that sends the gtm_consultation arguments as a JSON string gets them read, not refused as missing.
+      if (toolName === "gtm_consultation" && typeof rawArguments === "string") { try { rawArguments = JSON.parse(rawArguments); } catch (e) { rawArguments = {}; } }
+      var toolArgs = rawArguments && typeof rawArguments === "object" && !Array.isArray(rawArguments) ? rawArguments : {};
       var tool = TOOLS.find(function(t) { return t.name === toolName; });
       if (!tool) {
         // Run 12 R12-12 a (A5-4 a): a name that is not text, or is longer than 100 characters, is never echoed back.
         if (typeof toolName !== "string" || toolName.length > 100) return toolError(id, "Unknown tool.");
         return toolError(id, "Unknown tool: " + escapeText(toolName) + ". Available tools: " + TOOLS.map(function(t) { return t.name; }).join(", ") + ".");
       }
+      var inputNotes = [];
+      if (toolName === "gtm_consultation") { var normal = normalizeConsultationArgs(tool, toolArgs); toolArgs = normal.args; inputNotes = normal.notes; }
       var missing = missingRequired(tool, toolArgs);
       if (missing.length > 0) {
         return toolError(id, "Missing required input for " + toolName + ": " + missing.join(", ") + ". Provide " + (missing.length === 1 ? "it" : "them") + " and call the tool again.");
@@ -400,7 +479,7 @@ export default async function handler(req, context) {
         jsonrpc: "2.0",
         id: id,
         result: {
-          content: [{ type: "text", text: jsonInert((typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) + (softwareAdvice(toolArgs) ? '' : toolName === 'generate_roadmap' ? ROADMAP_REGION_LIMIT : regionNotes(regionalInputs({...cleanDeep(toolArgs), sector: toolArgs.industry})))) }],
+          content: [{ type: "text", text: jsonInert((typeof result === 'string' ? result : readableAlpha(result) + readingGuide(toolName, readableAlpha(result), escapeDeep(toolArgs))) + (softwareAdvice(toolArgs) ? '' : toolName === 'generate_roadmap' ? ROADMAP_REGION_LIMIT : regionNotes(regionalInputs({...cleanDeep(toolArgs), sector: toolArgs.industry}))) + (inputNotes.length ? '\n\nInput note: ' + inputNotes.join(' ') : '')) }],
           ...(typeof result === 'object' && result !== null ? { structuredContent: result } : {})
         }
       });
