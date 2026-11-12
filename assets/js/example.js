@@ -73,6 +73,8 @@
     if (params.get('example') === '1') {
         fill();
         if (window.history && history.replaceState) history.replaceState(null, '', window.location.pathname + window.location.hash);
-        if (note && note.scrollIntoView) note.scrollIntoView({ block: 'center' });
+        // Fixes B (12 Nov 2026, red team): the hero's "Try it with an example" runs the example, as on the connector tools:
+        // the filled form is sent to the same /api/premium-audit address, so the report opens in one click.
+        if (form.requestSubmit) form.requestSubmit(); else form.submit();
     }
 })();
