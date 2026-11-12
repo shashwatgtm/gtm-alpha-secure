@@ -35,13 +35,40 @@ test('gtm_consultation reads arguments sent as a JSON string', async () => {
   assert.ok(!r.isError, r.content[0].text);
 });
 
-test('gtm_consultation still refuses a missing challenge, a negative amount and a wrong type', async () => {
+test('gtm_consultation still refuses a missing challenge and a negative amount; an unreadable optional value is left out with a note', async () => {
   assert.ok((await call({ gtm_challenge: '' })).isError);
   assert.ok((await call({ ...base, acv_usd: -5 })).isError);
-  assert.ok((await call({ ...base, self_serve: 'maybe' })).isError);
+  assert.ok((await call({ ...base, acv_usd: '-5' })).isError);
+  const r = await call({ ...base, self_serve: 'maybe' });
+  assert.ok(!r.isError);
+  assert.match(r.content[0].text, /Input note: self_serve was left out/);
 });
 
-test('the other tools are unchanged: epic_audit still refuses a near enum value', async () => {
-  const r = await call({ challenge: 'We sell billing software.', geography: 'India' }, 'epic_audit');
-  assert.ok(r.isError);
+// Round 2 (12 Nov 2026): the same reading for epic_audit and generate_roadmap.
+const eb = { challenge: 'We sell billing software to mid-market retailers.', business_stage: 'series-a', acv_usd: 20000 };
+for (const [tool, near, exact] of [
+  ['epic_audit', { ...eb, geography: 'India' }, { ...eb, geography: 'india' }],
+  ['epic_audit', { ...eb, deal_source: 'Partners', self_serve: 'no' }, { ...eb, deal_source: 'partnerships', self_serve: false }],
+  ['epic_audit', { ...eb, nrr_percent: '108%', geography: '' }, { ...eb, nrr_percent: 108 }],
+  ['generate_roadmap', { primary_focus: 'p' }, { primary_focus: 'P' }],
+  ['generate_roadmap', { primary_focus: 'Product-Led Growth', timeframe: '30 days' }, { primary_focus: 'P', timeframe: '30-day' }],
+  ['generate_roadmap', { primary_focus: 'I', timeframe: '3 months', business_model: 'SaaS' }, { primary_focus: 'I', timeframe: '90-day', business_model: 'saas' }],
+  ['generate_roadmap', { primary_focus: 'E', timeframe: '', business_model: '' }, { primary_focus: 'E' }],
+]) test(tool + ' reads ' + JSON.stringify(near) + ' as the exact value', async () => {
+  const a = await call(near, tool), b = await call(exact, tool);
+  assert.ok(!a.isError, a.content[0].text);
+  assert.deepEqual(a.structuredContent, b.structuredContent);
+});
+
+test('generate_roadmap leaves out an unknown timeframe with a note and still refuses an unknown or missing motion', async () => {
+  const r = await call({ primary_focus: 'I', timeframe: '6 months' }, 'generate_roadmap');
+  assert.ok(!r.isError);
+  assert.match(r.content[0].text, /Input note: timeframe was left out/);
+  assert.ok((await call({ primary_focus: 'Z' }, 'generate_roadmap')).isError);
+  assert.ok((await call({ timeframe: '90-day' }, 'generate_roadmap')).isError);
+});
+
+test('epic_audit still refuses a missing challenge and a negative amount', async () => {
+  assert.ok((await call({ challenge: '' }, 'epic_audit')).isError);
+  assert.ok((await call({ ...eb, acv_usd: -5 }, 'epic_audit')).isError);
 });
