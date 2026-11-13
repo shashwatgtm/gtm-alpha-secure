@@ -88,7 +88,7 @@ const CHROME = join(ROOT, "netlify", "lib", "report-chrome.js");
 let chromeJs = readFileSync(CHROME, "utf8");
 const chromeBefore = chromeJs;
 for (const [name, cssFile] of [["fonts", "fonts.css"], ["brand", "brand.css"], ["helix", "helix.css"],
-  ["helix_report", "helix-report.css"], ["site", "site.css"]]) {
+  ["helix_report", "helix-report.css"], ["site", "site.css"], ["look", "helix-look.css"], ["look_js", "look.js"]]) {
   const v = createHash("sha256").update(readFileSync(join(OUT, "assets", cssFile))).digest("hex").slice(0, 10);
   const re = new RegExp(`export const V_${name.toUpperCase()} = "[0-9a-f]+";`);
   if (!re.test(chromeJs)) throw new Error("build-site: V_" + name.toUpperCase() + " missing in report-chrome.js");
@@ -103,7 +103,7 @@ for (const [name, file] of [["ARCHIVO", "Archivo-latin-1.woff2"], ["VT323", "VT3
   chromeJs = re.test(chromeJs) ? chromeJs.replace(re, line) : chromeJs.replace(/\n?$/, "\n" + line + "\n");
 }
 if (chromeJs !== chromeBefore) writeFileSync(CHROME, chromeJs);
-console.log(`build-site: report-chrome.js V_FONTS, V_BRAND, V_HELIX, V_HELIX_REPORT, V_SITE, V_ARCHIVO, V_VT323 set from site/assets (${chromeJs === chromeBefore ? "unchanged" : "updated"})`);
+console.log(`build-site: report-chrome.js V_FONTS, V_BRAND, V_HELIX, V_HELIX_REPORT, V_SITE, V_LOOK, V_LOOK_JS, V_ARCHIVO, V_VT323 set from site/assets (${chromeJs === chromeBefore ? "unchanged" : "updated"})`);
 
 // Run 15 D40: the site policy allows no 'unsafe-inline' script. Every executable inline script in a published page is allowed by
 // the sha256 hash of its exact text, computed here from the page as served (after the versioning above, which can change a

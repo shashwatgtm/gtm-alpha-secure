@@ -18,5 +18,7 @@ export const V_HELIX_REPORT = "2d01db963e";
 export const V_SITE = "84740e5985";
 export const V_ARCHIVO = "8f704806db";
 export const V_VT323 = "8ddbebcc10";
+export const V_LOOK = "4489578d57";
+export const V_LOOK_JS = "8ddfc15129";
 
 export const APP_ROUTES = "<section class=\"hx-section hx-app-section\" aria-labelledby=\"helix-apps-heading\"><h2 id=\"helix-apps-heading\">Choose your app</h2><p>Run the free audit in your browser. Copy its result into ChatGPT, Claude or Gemini when you want help acting on it. The MCP connector works with supported plans in Claude, ChatGPT, Cursor, VS Code and Windsurf. Gemini CLI and Antigravity use the separate Helix GTM Suite skills package.</p><p><a href=\"/integration\">Connector setup</a> \u00b7 <a href=\"https://github.com/shashwatgtm/helix-gtm-suite\">Skills package setup</a></p></section>";

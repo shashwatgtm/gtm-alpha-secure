@@ -64,12 +64,16 @@ const STYLESHEETS = `<link rel="icon" type="image/svg+xml" href="/favicon.svg">`
   `<link rel="stylesheet" href="/assets/fonts.css?v=${V_FONTS}">` +
   `<link rel="stylesheet" href="/assets/helix.css?v=${V_HELIX}">` +
   `<link rel="stylesheet" href="/assets/helix-report.css?v=${V_HELIX_REPORT}">` +
-  `<link rel="stylesheet" href="/assets/site.css?v=${V_SITE}">`;
+  `<link rel="stylesheet" href="/assets/site.css?v=${V_SITE}">` +
+  // 13 Nov 2026 (owner: every MCP page and widget on Helix Paper): the same look layer as the static pages.
+  `<link rel="stylesheet" href="/assets/helix-look.css?v=${RC.V_LOOK}">`;
+// <html class="hx-look"> turns the look layer on, as on the static pages.
+const lookOn = (html) => html.replace(/<html lang="en">/, '<html lang="en" class="hx-look">');
 
 function messagePage(status, title, lines) {
   const csp = "default-src 'none'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
   const body = `<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
+<html lang="en" class="hx-look"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
 <title>${esc(title)} | GTM Alpha</title>${STYLESHEETS}</head>
 <body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx-message"><h1>${esc(title)}</h1>
 <ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>
@@ -198,8 +202,8 @@ export const EDIT_SCRIPT = "(function(){var a=document.getElementById('edit-answ
 export const EXAMPLE_NOTE = '<p class="hx10-note"><strong>This report uses the example answers (CloudSEK, a real company used only as an example to show the tool).</strong> ' +
   'Every figure in them is hypothetical, and the name and role are placeholders. Press Edit my answers to change them to your own.</p>';
 export function withChrome(report, example = false) {
-  return report
-    .replace("</head>", `${STYLESHEETS}</head>`)
+  return lookOn(report)
+    .replace("</head>", `${STYLESHEETS}<script src="/assets/look.js?v=${RC.V_LOOK_JS}" defer></script></head>`)
     .replace("<body>", `<body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx10-report">${example ? EXAMPLE_NOTE : ""}${ACTIONS}<section data-helix-report>`)
     .replace("</body>", `</section>${NEXT}${RC.APP_ROUTES}</main>${FOOTER}<script>${EDIT_SCRIPT}</script></body>`);
 }
