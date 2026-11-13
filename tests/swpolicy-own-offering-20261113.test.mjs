@@ -46,8 +46,11 @@ test('GTM questions about software, analytics and AI products are answered', () 
 });
 
 test('a buying word before "for" keeps the purchase in the sentence', () => {
-  for (const q of ['We need recommendations for analytics software.', 'Which vendor for our analytics product?', 'Recommend a tool for our analytics product.', 'Which analytics tool is best for our SaaS product?'])
+  for (const q of ['Which vendor for our analytics product?', 'Recommend a tool for our analytics product.'])
     assert.equal(classifySoftwareQuestion({challenge: q}), 'outside', q);
+  // Owner decision 13 Nov 2026: a plain analytics tool purchase goes to the booking.
+  for (const q of ['We need recommendations for analytics software.', 'Which analytics tool is best for our SaaS product?'])
+    assert.equal(classifySoftwareQuestion({challenge: q}), 'gtm', q);
   assert.equal(classifySoftwareQuestion({challenge: 'What is the best marketing automation platform for a B2B SaaS company?'}), 'gtm');
   assert.equal(classifySoftwareQuestion({challenge: 'Should we use Segment or mParticle?'}), 'outside');
 });

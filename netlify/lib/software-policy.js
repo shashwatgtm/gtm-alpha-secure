@@ -18,7 +18,7 @@ const MODIFIER = String.raw`(?:(?!(?:and|or|vs|versus|to|from|than|but|that|whic
 const OFFERING = String.raw`(?:products?|startups?|compan(?:y|ies)|business(?:es)?|firms?|offerings?|solutions?|brands?|ventures?|SaaS|software|platforms?|apps?|tools?)\b`;
 const OFFERING_CLAUSE = String.raw`(?:\s+(?:that|which|who|sold|used|built|made|designed|aimed|targeting)\b[^,;:?.!]*)?`;
 const BUYING_WORD = String.raw`(?<!\b(?:look\w*|search\w*|shop\w*|hunt\w*|pay\w*|budget\w*|need\w*|want\w*|options?|alternatives?|replacements?|substitutes?|vendors?|providers?|suppliers?|recommend\w*|suggest\w*|advice|advise)\s+)`;
-const OWN_OFFERING = new RegExp(String.raw`\b(?:(?:for|of|with|behind|around)\s+(?:our|my)\s+|${BUYING_WORD}for\s+(?:(?:a|an|the|this)\s+)?|(?:sell(?:ing|s)?|market(?:ing)?|launch(?:ing)?|position(?:ing)?|pric(?:e|ing)|build(?:ing)?|make|offer)\s+(?:a|an|the|our|my|this)\s+)${MODIFIER}{0,4}${OFFERING}${OFFERING_CLAUSE}`, 'gi');
+const OWN_OFFERING = new RegExp(String.raw`\b(?:(?:for|of|with|behind|around)\s+(?:our|my)\s+|${BUYING_WORD}for\s+(?:(?:a|an|the|this)\s+)?|(?:sell(?:ing|s)?|market(?:ing)?|launch(?:ing)?|position(?:ing)?|pric(?:e|ing)|build(?:ing)?|make|offer)\s+(?:a|an|the|our|my|this)\s+)${MODIFIER}{0,6}${OFFERING}${OFFERING_CLAUSE}`, 'gi');
 const withoutOwnOffering = (sentence) => sentence.replace(OWN_OFFERING, ' ').replace(/^[\s,;:]+/, '');
 
 // "HubSpot or Salesforce?" compares two named products, as "versus" does.
@@ -55,7 +55,8 @@ function softwareQuestions(value) {
     // they mention a named competitor or use words such as "better"/"choose".
     if (/\b(?:how|what|which|who)\b[^.!?]*\b(?:position|market|sell|message|price|differentiate|launch|improve|describe|explain|features?|buyers?|customers?)\b[^.!?]*\b(?:our|my|your) (?:own )?(?:product|solution|offering|software|platform|CRM|ERP|SIEM|TMS|HRIS|CPaaS)\b/i.test(sentence)
       || /\b(?:what|which) features?\b[^.!?]*\b(?:our|my|your)\b[^.!?]*\b(?:product|solution|offering)\b/i.test(sentence)
-      || /\b(?:is|does|can|should|would) (?:our|my|your) (?:own )?(?:product|solution|offering|software|platform|CRM|ERP|SIEM|TMS|HRIS|CPaaS)\b/i.test(sentence)
+      // "should our software marketing team buy" names a team, not the product.
+      || /\b(?:is|does|can|should|would) (?:our|my|your) (?:own )?(?:product|solution|offering|software|platform|CRM|ERP|SIEM|TMS|HRIS|CPaaS)\b(?!\s+(?:[\w-]+\s+)?(?:teams?|departments?)\b)/i.test(sentence)
       || /\b(?:buyers?|customers?)\b[^.!?]*\bchoose (?:our|my|your)\b/i.test(sentence)) return false;
     // Require a question or a request: past switches and supplied rival names
     // remain evidence, including "we chose the better CRM last year".
@@ -72,8 +73,18 @@ function softwareQuestions(value) {
 
 // Categories name the advice requested, independently of the seller's vertical.
 // Explicit categories take precedence over ambiguous product names (e.g. Dynamics).
-const GTM_CATEGORY = /\b(?:CRM|marketing automation|sales engagement|ABM|account.based marketing|intent data|enrichment|revenue intelligence|conversation intelligence|CPQ|customer success (?:platforms?|software|tools?)|(?:marketing|sales|revenue|pipeline|campaign) analytics|analytics for (?:marketing|sales|marketing and sales)|content (?:tools?|software|platforms?)|SEO(?: tools?| software| platforms?)?|events? (?:tools?|software|platforms?)|webinar(?: tools?| software| platforms?)?|partner (?:tools?|software|platforms?|relationship management))\b/i;
+const GTM_CATEGORY = /\b(?:CRM|marketing automation|sales engagement|ABM|account.based marketing|intent data|enrichment|revenue intelligence|conversation intelligence|CPQ|customer success (?:platforms?|software|tools?)|(?:marketing|sales|revenue|pipeline|campaign|demand (?:gen|generation)|customer success|CS|go[ -]to[ -]market|GTM) analytics|analytics for (?:marketing|sales|marketing and sales|demand (?:gen|generation)|customer success|go[ -]to[ -]market|GTM)|content (?:tools?|software|platforms?)|SEO(?: tools?| software| platforms?)?|events? (?:tools?|software|platforms?)|webinar(?: tools?| software| platforms?)?|partner (?:tools?|software|platforms?|relationship management))\b/i;
 const OUTSIDE_CATEGORY = /\b(?:data warehouses?|data lakes?|lakehouses?|SIEM|SOAR|EDR|XDR|ERP|HRIS|HRMS|HCM|ATS|TMS|WMS|CPaaS|CCaaS|iPaaS|ITSM|BI|cloud(?: infrastructure| platforms?| providers?)?|payroll|developer tools?|security (?:tools?|tooling|software|platforms?)|payment gateways?|payment processors?|observability|APM|monitoring|accounting|help ?desks?|service desks?|project management|vector databases?|feature stores?|model serving|MLOps|LLMOps|identity providers?|API gateways?|fleet management|route planning|procurement|billing|ecommerce|e-commerce)\b/i;
+// Owner decision, 13 Nov 2026: a plain analytics tool question ("What is the
+// best analytics tool for us?") is a GTM stack question and goes to the
+// booking, like marketing, sales, demand generation and customer success
+// analytics. "Plain" means no qualifier, or only a light word ("best", "an",
+// "which"), before "analytics". A non-GTM qualifier ("security analytics",
+// "product analytics", "telecom analytics"), the user's own product ("our
+// analytics platform") or a non-GTM purpose ("for our SOC team") keeps the
+// plain decline.
+const PLAIN_ANALYTICS = /(?<!\b(?:our|my|your|their)\s+(?:[\w-]+\s+){0,3})(?:^\s*|\b(?:best|top|good|great|better|right|ideal|recommended|suitable|simple|cheap|free|affordable|basic|modern|leading|popular|reliable|new|single|an?|the|which|what|any|some|one|for|of|on|about|with|and|or)\s+)analytics\s+(?:tools?|platforms?|software|solutions?|stack|vendors?|providers?|suites?|apps?|systems?|packages?)\b/i;
+const NON_GTM_USE = /\b(?:security|SOC|fraud|threats?|network (?:operations|traffic|performance)|logs?|finance (?:team|function|department)|FP&A|supply chain|inventory|warehouses?|fleet|manufacturing|factory|IoT|engineering|DevOps|infrastructure|HR|payroll|clinical|patients?|trading)\b/i;
 const GTM_PRODUCT = /\b(?:HubSpot|Salesforce|Marketo|Clari|Gong|ZoomInfo|Apollo|6sense|Outreach|Salesloft|Demandbase|Gainsight|ChurnZero|Semrush|Ahrefs|ON24|PartnerStack|Crossbeam)\b/i;
 
 export function classifySoftwareQuestion(value) {
@@ -84,7 +95,7 @@ export function classifySoftwareQuestion(value) {
     // Ignore a stack fact before a direct request in the same sentence.
     const start = question.search(/\b(?:which|what|recommend|suggest|shortlist|compare|should (?:I|we)|any suggestions)\b/i);
     const requested = (start >= 0 ? question.slice(start) : question)
-      .replace(/analytics for (?:marketing and sales|marketing|sales)\b/gi, 'marketing analytics');
+      .replace(/analytics for (?:marketing and sales|marketing|sales|demand (?:gen|generation)|customer success|go[ -]to[ -]market|GTM)\b/gi, 'marketing analytics');
     // The category being selected takes precedence over its use case. A CRM
     // for cloud-security sellers is GTM; a warehouse for sales analytics is not.
     const purpose = requested.search(/\b(?:for|to (?:help|reach|manage|track|engage|sell|coordinate|support))\b/i);
@@ -92,6 +103,7 @@ export function classifySoftwareQuestion(value) {
     const target = GTM_CATEGORY.test(beforePurpose) || OUTSIDE_CATEGORY.test(beforePurpose) || GTM_PRODUCT.test(beforePurpose) ? beforePurpose : requested;
     if (OUTSIDE_CATEGORY.test(target)) return 'outside';
     if (GTM_CATEGORY.test(target) || GTM_PRODUCT.test(target)) gtm = true;
+    else if (PLAIN_ANALYTICS.test(target) && !NON_GTM_USE.test(requested)) gtm = true;
     else return 'outside';
   }
   return gtm ? 'gtm' : 'outside';
