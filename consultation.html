@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free EPIC Audit Report, No Sign In | GTM Alpha, Helix GTM</title>
-    <meta name="description" content="Fill in one form for your free EPIC audit: scores for all four motions, the one to lead with and a 180 day plan. No sign in, and answers are not stored.">
+    <meta name="description" content="Fill in one form for your free EPIC audit: scores for all four motions, the one to lead with and a 180 day plan. No sign in and no email needed.">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="author" content="Shashwat Ghosh, Helix GTM Consulting">
     <link rel="canonical" href="https://gtmalpha.gtmhelix.com/consultation">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="GTM Alpha">
     <meta property="og:title" content="Free EPIC Audit Report, No Sign In | GTM Alpha, Helix GTM">
-    <meta property="og:description" content="Fill in one form for your free EPIC audit: scores for all four motions, the one to lead with and a 180 day plan. No sign in, and answers are not stored.">
+    <meta property="og:description" content="Fill in one form for your free EPIC audit: scores for all four motions, the one to lead with and a 180 day plan. No sign in and no email needed.">
     <meta property="og:url" content="https://gtmalpha.gtmhelix.com/consultation">
     <meta property="og:image" content="https://gtmalpha.gtmhelix.com/assets/og.png">
     <meta property="og:image:width" content="1200">
@@ -19,7 +19,7 @@
     <meta property="og:image:alt" content="GTM Alpha by Helix GTM Consulting">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Free EPIC Audit Report, No Sign In | GTM Alpha, Helix GTM">
-    <meta name="twitter:description" content="Fill in one form for your free EPIC audit: scores for all four motions, the one to lead with and a 180 day plan. No sign in, and answers are not stored.">
+    <meta name="twitter:description" content="Fill in one form for your free EPIC audit: scores for all four motions, the one to lead with and a 180 day plan. No sign in and no email needed.">
     <meta name="twitter:image" content="https://gtmalpha.gtmhelix.com/assets/og.png">
     <meta name="twitter:creator" content="@Shashwat_Ghosh">
     <script type="application/ld+json">
@@ -146,7 +146,7 @@
    "@id": "https://gtmalpha.gtmhelix.com/consultation#page",
    "url": "https://gtmalpha.gtmhelix.com/consultation",
    "name": "Free EPIC Audit Report, No Sign In | GTM Alpha, Helix GTM",
-   "description": "Answer one form and get your free EPIC audit report: four motion scores, the motion to lead with and a 180 day plan. No sign-in, answers not stored.",
+   "description": "Answer one form and get your free EPIC audit report: four motion scores, the motion to lead with and a 180 day plan. No sign-in and no email needed.",
    "isPartOf": {
     "@id": "https://gtmalpha.gtmhelix.com/#site"
    },
@@ -381,7 +381,7 @@
                 </div>
                 
                 <div class="security-note">
-                    Your answers are used only to build your report, which opens on the next page. They are not stored, logged or emailed.
+                    Your answers are used to build your report, which opens on the next page. They are not logged or emailed, and the only answer we keep is your GTM challenge (see the note under it).
                 </div>
 
                 <div class="ga-sample-out hx-sample" role="group" aria-labelledby="ga-sample-h"><h3 id="ga-sample-h">What you get</h3><p class="hx-sample-note">This sample shows GTM Alpha's real scores for a made up Series B telecom company with a 150 day sales cycle and $240,000 deals.</p><div class="hx-sample-body"><ul><li>Ecosystem and ABM: 10 of 10</li><li>Product-Led: 4 of 10</li><li>Inbound and Outbound: 5 of 10</li><li>Community: 6 of 10</li></ul><p>Lead with Ecosystem and ABM, with recommendations and a plan for days 1 to 180.</p></div><p class="hx-sample-more"><a href="/sample-report/">See a full sample report</a></p></div>
@@ -435,6 +435,7 @@
                             <label for="gtm_challenge">Main GTM challenge <span class="required">*</span></label>
                             <textarea id="gtm_challenge" name="gtm_challenge" required 
                                       placeholder="Your main go to market challenges, pain points or goals"></textarea>
+                            <p class="hx-keep-note" id="challenge-note">If you give a company website, we keep your GTM challenge for 90 days and may show it to verified colleagues from the same company domain (see <a href="/privacy#audits">privacy</a>).</p>
                         </div>
 
                         <div class="form-row">
@@ -490,6 +491,9 @@
                             <div class="form-group">
                                 <label for="company_website">Company website (optional)</label>
                                 <input type="url" id="company_website" name="company_website" placeholder="https://example.com">
+                                <p class="hx-keep-note" id="audit-seen" role="status" aria-live="polite" hidden></p>
+                                <div id="colleague-check" hidden></div>
+                                <input type="hidden" id="colleague_token" name="colleague_token" value="">
                             </div>
                             <div class="form-group">
                                 <label for="linkedin_url">LinkedIn URL (optional)</label>
@@ -622,7 +626,7 @@
 Help me prepare a GTM Alpha EPIC audit. Ask for missing company facts before scoring. Explain the lead motion, which assumptions could change it and one action I can own this week. Treat a preliminary result as a starting point, not proof.</blockquote>
         <p>After the audit, use the <a href="/integration">GTM Roadmap in your connected app</a> to turn the chosen motion into a plan with owners and dates.</p>
     </section>
-    <section class="hx-section" aria-labelledby="read-h"><h2 id="read-h">How to read the answer</h2><p class="hx-prose">Each consultation scores the four EPIC go to market motions (Ecosystem and ABM, Product-Led, Inbound and Outbound, and Community) from 1 to 10 based on your stage, industry, deal size, sales cycle, NRR, TAM, self-serve capability, deal source, and geography. You get a recommended lead motion and a secondary motion, any warnings, and a Days 1 to 180 plan in four stages (Days 1 to 30, Days 31 to 60, Days 61 to 90, and Days 91 to 180).</p><h3 id="next-h">What to do next</h3><ul class="hx-prose"><li><strong>Founder:</strong> Compare the lead EPIC motion against the runner-up on the same buyer problem and record what buyer observation would change the choice.</li><li><strong>CEO:</strong> Ask finance to verify your supplied annual contract value and retention figures before committing budget, and agree a spending limit and stop condition for the first motion test.</li><li><strong>CMO:</strong> Separate your supplied channel description from measured buyer acceptance before treating current channel activity as proof of motion fit.</li><li><strong>CRO:</strong> Check your entered deal cycle and primary deal source against closed-won and closed-lost deals before changing sales coverage or quotas.</li><li><strong>Demand generation head:</strong> Run the Days 1 to 30 steps on a dated sample of your addressable accounts and measure reach and qualified conversations before scaling into Days 31 to 180.</li></ul><h3 id="back-h">Why come back</h3><p class="hx-prose">Re-run the consultation when your average contract value shifts, when you move upmarket to a new buyer segment, or when your stage or geography changes. The tool applies the same fixed rules every time. It does not call an AI model, and this site does not keep what you enter.</p></section>
+    <section class="hx-section" aria-labelledby="read-h"><h2 id="read-h">How to read the answer</h2><p class="hx-prose">Each consultation scores the four EPIC go to market motions (Ecosystem and ABM, Product-Led, Inbound and Outbound, and Community) from 1 to 10 based on your stage, industry, deal size, sales cycle, NRR, TAM, self-serve capability, deal source, and geography. You get a recommended lead motion and a secondary motion, any warnings, and a Days 1 to 180 plan in four stages (Days 1 to 30, Days 31 to 60, Days 61 to 90, and Days 91 to 180).</p><h3 id="next-h">What to do next</h3><ul class="hx-prose"><li><strong>Founder:</strong> Compare the lead EPIC motion against the runner-up on the same buyer problem and record what buyer observation would change the choice.</li><li><strong>CEO:</strong> Ask finance to verify your supplied annual contract value and retention figures before committing budget, and agree a spending limit and stop condition for the first motion test.</li><li><strong>CMO:</strong> Separate your supplied channel description from measured buyer acceptance before treating current channel activity as proof of motion fit.</li><li><strong>CRO:</strong> Check your entered deal cycle and primary deal source against closed-won and closed-lost deals before changing sales coverage or quotas.</li><li><strong>Demand generation head:</strong> Run the Days 1 to 30 steps on a dated sample of your addressable accounts and measure reach and qualified conversations before scaling into Days 31 to 180.</li></ul><h3 id="back-h">Why come back</h3><p class="hx-prose">Re-run the consultation when your average contract value shifts, when you move upmarket to a new buyer segment, or when your stage or geography changes. The tool applies the same fixed rules every time. It does not call an AI model, and this site keeps only the GTM challenge from the audit form, for 90 days.</p></section>
     <section class="hx-section hx-app-section" aria-labelledby="helix-apps-heading"><h2 id="helix-apps-heading">Choose your app</h2><p>Run the free audit in your browser. Copy its result into ChatGPT, Claude or Gemini when you want help acting on it. The MCP connector works with supported plans in Claude, ChatGPT, Cursor, VS Code and Windsurf. Gemini CLI and Antigravity use the separate Helix GTM Suite skills package.</p><p><a href="/integration">Use it in Claude, ChatGPT or Gemini</a> · <a href="https://github.com/shashwatgtm/helix-gtm-suite">How to install</a></p></section></main>
     <footer class="hx-footer">
         <div class="hx-wrap">

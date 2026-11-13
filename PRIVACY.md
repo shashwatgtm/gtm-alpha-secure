@@ -6,7 +6,8 @@ Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
 ## What we collect
 
-- **Premium Audit form (website):** your name and role, company name, company description, GTM challenge, industry, business stage, team size, monthly budget, primary focus, company website and LinkedIn URL, and, if you choose to give them, your contract value band, deal cycle band, net revenue retention band, number of addressable accounts, main deal source, primary market and whether you offer self-serve sign-up. The form sends them to `/api/premium-audit`, which builds your report in that request and returns it to your browser. Our code does not store or log them. The form does not ask for your email address, and no payment is taken.
+- **Premium Audit form (website):** your name and role, company name, company description, GTM challenge, industry, business stage, team size, monthly budget, primary focus, company website and LinkedIn URL, and, if you choose to give them, your contract value band, deal cycle band, net revenue retention band, number of addressable accounts, main deal source, primary market and whether you offer self-serve sign-up. The form sends them to `/api/premium-audit`, which builds your report in that request and returns it to your browser. Our code does not store or log them, except the GTM challenge (see Audits from the same company). The form itself does not ask for your email address, and no payment is taken.
+- **Audits from the same company:** from 13 November 2026, when you give a company website on the form, we keep your GTM challenge, the company domain (the website address without www) and the day of the audit (store "audit-memory"). Free mail domains and shared hosts are never kept or matched. Audits are kept for 90 days, then deleted automatically. On request we delete them within 30 days. A later visitor from the same company sees only that an audit was run, unless they confirm a work email at that company, in which case they see the earlier GTM challenge. The work email check requires the email domain to equal the company domain, never a free mail domain; we keep only a keyed hash of the email with the colleague's own audit, deleted with it. This check is not switched on yet.
 - **EPIC audit API:** new audits are not kept. Inputs sent to `/api/epic-audit` are used only to build the result; our code does not store them. Audits saved by earlier versions (store "epic-audits") are deleted on request within 30 days.
 - **MCP server (`/mcp`, also `/mcp-sse`, and the npm package):** receives the tool name and inputs of each call and uses them only to build the reply. Our code does not store or log the inputs or the reply. It does count the call (see Usage counts). The npm package runs on your computer and sends nothing to us.
 - **Usage counts:** since 17 October 2026, each audit from the free EPIC audit form or the EPIC audit API, and each GTM Alpha tool call, adds one record to a usage count in Netlify's storage for this site. Each record holds only the date and time, this site's name and the tool's name, one word for the kind of app (such as `claude`, `chatgpt` or `browser`, read from the User-Agent header) and whether the call came from the website or an AI assistant. It never holds your answers, your inputs, the report, your IP address or the full User-Agent.
@@ -14,14 +15,15 @@ Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
 ## Retention
 
-- Premium Audit form answers and reports, EPIC audit API inputs and results, and MCP tool inputs and results: not stored. New audits are not kept.
+- Audits from the free EPIC audit form (GTM challenge, company domain, day and any email hash, store "audit-memory"): Audits are kept for 90 days, then deleted automatically. On request we delete them within 30 days.
+- Other Premium Audit form answers and reports, EPIC audit API inputs and results, and MCP tool inputs and results: not stored.
 - Stored records (store "epic-audits", and the older stores "pending-payments", "gtm-consultations" and "consultations", which nothing writes to now): kept until you ask us to delete them, and deleted on request within 30 days. There is no automatic deletion.
 - Usage counts: From 13 November 2026, usage count records keep only the day of the call, not the time, and every record is deleted after 90 days. They cannot be linked to you, so we cannot find or delete one person's records.
 - Netlify request logs: kept by Netlify under its own policy.
 
 ## Sharing
 
-Netlify (hosting, usage counts, database, logs) and legal authorities when required by law. We do not sell your data, share it with competitors or use it to train AI models.
+Netlify (hosting, usage counts, audits kept for 90 days, database, logs) and legal authorities when required by law. We do not sell your data, share it with competitors or use it to train AI models.
 
 ## Your rights
 
@@ -29,6 +31,6 @@ Email shashwat@gtmhelix.com with subject "Data Rights Request" to access, correc
 
 ## Security
 
-HTTPS for all traffic, security headers on every page, no user accounts or passwords held by us and no payments taken, rate limits (30 requests a minute per visitor across the website's API paths, 300 a minute on the MCP server), a hidden form field that refuses automated submissions, and no public endpoint that reads stored records back.
+HTTPS for all traffic, security headers on every page, no user accounts or passwords held by us and no payments taken, rate limits (30 requests a minute per visitor across the website's API paths, 300 a minute on the MCP server), a hidden form field that refuses automated submissions, and no public endpoint that reads stored records back, except the earlier GTM challenge, shown only after a work email check at the same company domain.
 
 Size limits: a request to the free EPIC audit form or the EPIC audit API may hold at most 32,000 characters, with at most 4,000 characters for the company description and for the GTM challenge; a request to the GTM Alpha tools may hold at most 65,536 bytes, with at most 4,000 characters in each text input.

@@ -19,8 +19,9 @@ const FORM = {
 const post = (path, body, type = "application/x-www-form-urlencoded") =>
   api(new Request(BASE + path, { method: "POST", headers: { "content-type": type }, body }), {});
 
-test("the function serves exactly the three API paths, with one rate limit", () => {
-  assert.deepEqual(config.path, ["/api/epic-audit", "/api/premium-audit", "/api/health"]);
+// 13 Nov 2026 (owner): two more paths for the colleague notice and the work email check on the audit form.
+test("the function serves exactly the five API paths, with one rate limit", () => {
+  assert.deepEqual(config.path, ["/api/epic-audit", "/api/premium-audit", "/api/health", "/api/audit-seen", "/api/colleague-check"]);
   assert.deepEqual(config.rateLimit, { windowSize: 60, windowLimit: 30, aggregateBy: ["ip", "domain"] });
 });
 

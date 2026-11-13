@@ -3,8 +3,10 @@ import { softwareAdvice } from './software-policy.js';
 // Owner decision 3 (25 September 2026): while GTM Alpha is free, the Premium Audit form delivers the report directly,
 // with no PayPal step. The form posts here (it works with JavaScript off, and the answers never go into a URL); the
 // answers are checked, the report is built in this request by netlify/lib/analyze.js, and the report page is returned.
-// Nothing is stored, logged or sent anywhere else.
+// Nothing else is stored, logged or sent anywhere. 13 Nov 2026 (owner): when the visitor gives a company website with a
+// company domain, the GTM challenge is kept for 90 days under that domain (netlify/lib/audit-memory.js), then deleted.
 import { createHash } from "node:crypto";
+import { STORE, domainOf, recordAudit, verifiedHash } from "./audit-memory.js";
 import analyze, { PDF_SCRIPT } from "./analyze.js";
 import * as RC from "./report-chrome.js";
 const { HEADER, FOOTER, NEXT, SKIP, V_FONTS, V_BRAND, V_HELIX, V_SITE, V_HELIX_REPORT } = RC;
@@ -140,7 +142,30 @@ export function reportInput(c) {
   };
 }
 
-export default async (req) => {
+// Keeps the GTM challenge under the company domain for 90 days. Example runs, free mail and shared hosts are never kept.
+// A failure here never affects the report.
+export async function keepAudit(clean, token, deps = {}) {
+  try {
+    if (/\(example company\)$/.test(clean.company_name || "")) return null;
+    const domain = domainOf(clean.company_website);
+    if (!domain) return null;
+    const env = deps.env || process.env;
+    // Loaded here, not at the top: scripts/build-site.mjs imports this file during the build, without node_modules.
+    const store = deps.store || (await import("@netlify/blobs")).getStore(STORE);
+    const emailHash = verifiedHash(env, typeof token === "string" ? token : "", domain);
+    let timer;
+    const late = new Promise((resolve) => { timer = setTimeout(() => resolve(null), 1500); });
+    try {
+      return await Promise.race([recordAudit(store, { domain, challenge: clean.gtm_challenge, emailHash }, deps.now), late]);
+    } finally {
+      clearTimeout(timer);
+    }
+  } catch {
+    return null;
+  }
+}
+
+export default async (req, context, deps) => {
   if (req.method !== "POST") {
     return messagePage(405, "Use the form", ["Open the free audit form and press the button to get your report."]);
   }
@@ -165,6 +190,7 @@ export default async (req) => {
     report = null;
   }
   if (!report) return messagePage(500, "The report could not be built", ["Please try again in a minute. If it keeps failing, email shashwat@gtmhelix.com."]);
+  await keepAudit(checked.clean, d.colleague_token, deps);
 
   // R10-16: a report built from the form's example answers says so at the top (run 25: a real company used only as an example).
   const inputs = JSON.stringify(checked.clean).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
