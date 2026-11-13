@@ -160,9 +160,9 @@ test('the audit form keeps the challenge under the company domain, and only that
 
 test('form notice and privacy page state the 90 day rule', () => {
   const form = readFileSync(new URL('../consultation.html', import.meta.url), 'utf8');
-  assert.match(form, /<p class="hx-keep-note" id="challenge-note">If you give a company website, we keep your GTM challenge for 90 days and may show it to verified colleagues from the same company domain \(see <a href="\/privacy#audits">privacy<\/a>\)\.<\/p>/);
+  assert.match(form, /<p class="hx-keep-note" id="challenge-note">If you give a company website, we keep your GTM challenge for 90 days and may show it to verified colleagues from the same company domain \(see <a href="\/privacy#audits">privacy<\/a>\)\. Anyone who later enters the same company website will see that an audit was run from it and how many days ago, never the text\.<\/p>/);
   assert.doesNotMatch(form, /answers are not stored|They are not stored, logged or emailed/);
-  const owner = 'Audits are kept for 90 days, then deleted automatically. On request we delete them within 30 days. A later visitor from the same company sees only that an audit was run, unless they confirm a work email at that company, in which case they see the earlier GTM challenge.';
+  const owner = 'Audits are kept for 90 days, then deleted automatically. On request we delete them within 30 days. Anyone who enters the same company website sees only that an audit was run and how many days ago; the GTM challenge itself is shown only after a work email check at that company.';
   for (const file of ['../privacy.html', '../PRIVACY.md']) {
     const page = readFileSync(new URL(file, import.meta.url), 'utf8');
     assert.ok(page.includes(owner), file);
@@ -170,6 +170,6 @@ test('form notice and privacy page state the 90 day rule', () => {
   }
   const privacy = readFileSync(new URL('../privacy.html', import.meta.url), 'utf8');
   assert.match(privacy, /<h3 id="audits">2\.7 Audits from the same company<\/h3>/);
-  assert.match(privacy, /Last updated <time datetime="2026-11-13">13 November 2026<\/time>/);
+  assert.match(privacy, /Last updated <time datetime="2026-11-14">14 November 2026<\/time>/);
   assert.match(privacy, /<td>Audits are kept for 90 days, then deleted automatically\. On request we delete them within 30 days<\/td>/);
 });
