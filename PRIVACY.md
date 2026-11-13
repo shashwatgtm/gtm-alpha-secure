@@ -1,6 +1,6 @@
 # GTM Alpha Privacy Policy
 
-Last updated: 29 October 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
+Last updated: 13 November 2026. The same policy is published at https://gtmalpha.gtmhelix.com/privacy.
 
 Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
@@ -16,7 +16,7 @@ Contact: Shashwat Ghosh, shashwat@gtmhelix.com
 
 - Premium Audit form answers and reports, EPIC audit API inputs and results, and MCP tool inputs and results: not stored. New audits are not kept.
 - Stored records (store "epic-audits", and the older stores "pending-payments", "gtm-consultations" and "consultations", which nothing writes to now): kept until you ask us to delete them, and deleted on request within 30 days. There is no automatic deletion.
-- Usage counts: no set end date. They cannot be linked to you, so we cannot find or delete one person's records.
+- Usage counts: From 13 November 2026, usage count records keep only the day of the call, not the time, and every record is deleted after 90 days. They cannot be linked to you, so we cannot find or delete one person's records.
 - Netlify request logs: kept by Netlify under its own policy.
 
 ## Sharing
