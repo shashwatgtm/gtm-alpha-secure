@@ -1,6 +1,6 @@
 # GTM Alpha MCP Server v1.3.21
 
-[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-Listed-green)](https://registry.modelcontextprotocol.io)
+[![MCP Registry](https://img.shields.io/badge/MCP%20Registry-Listed-green)](https://registry.modelcontextprotocol.io/?search=io.github.shashwatgtm%2Fgtm-alpha-consultant)
 [![npm version](https://img.shields.io/npm/v/@shashwatgtmalpha/gtm-alpha-mcp-server)](https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -12,19 +12,24 @@ On the website, the free EPIC audit (https://gtmalpha.gtmhelix.com/consultation)
 
 ## Quick Start
 
-The hosted server at https://gtmalpha.gtmhelix.com/mcp always runs the newest version and needs no install. The npm package below can lag behind it until a new version is published; compare its version with the one the hosted server reports.
+Add `https://gtmalpha.gtmhelix.com/mcp` as a Streamable HTTP connector. It needs no sign in. On 15 November 2026 the hosted server reported version 1.3.21 and 3 tools. [Connection instructions](https://gtmalpha.gtmhelix.com/integration).
 
-### Option 1: Claude Desktop (Recommended)
+For a local stdio connection, run `npx -y @shashwatgtmalpha/gtm-alpha-mcp-server`. On 15 November 2026 the latest published npm version was 1.3.20. Check the available version with `npm view @shashwatgtmalpha/gtm-alpha-mcp-server version`.
+
+### Option 1: Claude Desktop
 
 First install the package globally, which adds the `gtm-alpha-mcp` command:
 
+```bash
 npm install -g @shashwatgtmalpha/gtm-alpha-mcp-server
+```
 
 Then add to your Claude Desktop config file:
 
 Windows: %APPDATA%\Claude\claude_desktop_config.json
 Mac: ~/Library/Application Support/Claude/claude_desktop_config.json
 
+```json
 {
   "mcpServers": {
     "gtm-alpha": {
@@ -32,6 +37,7 @@ Mac: ~/Library/Application Support/Claude/claude_desktop_config.json
     }
   }
 }
+```
 
 Restart Claude Desktop after saving.
 
@@ -39,14 +45,18 @@ Restart Claude Desktop after saving.
 
 ### Option 2: npx (No Installation Required)
 
-npx @shashwatgtmalpha/gtm-alpha-mcp-server
+```bash
+npx -y @shashwatgtmalpha/gtm-alpha-mcp-server
+```
 
 ---
 
 ### Option 3: Global Install
 
+```bash
 npm install -g @shashwatgtmalpha/gtm-alpha-mcp-server
 gtm-alpha-mcp
+```
 
 ---
 
@@ -77,7 +87,7 @@ Use the function declarations in gemini-functions.json:
 
 ## Tools and inputs
 
-Generated on 29 September 2026 from the server's own tool list and checked again on 16 October 2026 (`tools/list` of gtm-alpha-mcp-server 1.3.21, the same code as the hosted MCP address), so every tool name, title, description and input below is exactly what the server accepts. Every tool is read-only.
+The 3 tools below come from `tools/list` of gtm-alpha-mcp-server 1.3.21 in this repository, checked on 15 November 2026. Each table shows the accepted fields. A dot marks a field inside an object and `[]` marks an array item. A nested field marked required is required when its parent is supplied.
 
 | # | Tool | Title | What it does |
 |---|---|---|---|
@@ -91,19 +101,19 @@ Generated on 29 September 2026 from the server's own tool list and checked again
 
 | Input | Required | Type | Description |
 |---|---|---|---|
-| `gtm_challenge` | Yes | string | Your GTM challenge |
 | `company_name` | No | string | Company name |
+| `gtm_challenge` | Yes | string | Your GTM challenge |
 | `business_stage` | No | string | Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B) |
 | `industry` | No | string | Your industry |
-| `acv_usd` | No | number (0 or more) | Optional. Average contract value per year in US dollars (for example 42000) |
-| `deal_cycle_days` | No | number (0 or more) | Optional. Days from first touch to closed-won (for example 120) |
+| `acv_usd` | No | number (minimum 0) | Optional. Average contract value per year in US dollars (for example 42000) |
+| `deal_cycle_days` | No | number (minimum 0) | Optional. Days from first touch to closed-won (for example 120) |
 | `nrr_percent` | No | number | Optional. Net revenue retention in percent (for example 108) |
-| `tam_accounts` | No | number (0 or more) | Optional. Number of addressable accounts (for example 2500) |
+| `tam_accounts` | No | number (minimum 0) | Optional. Number of addressable accounts (for example 2500) |
 | `self_serve` | No | boolean | Optional. true if customers can sign up and get value without talking to sales |
-| `deal_source` | No | one of: `referrals`, `outbound`, `partnerships`, `inbound`, `mixed` | Optional. Where the majority of deals come from |
-| `geography` | No | one of: `india`, `us_eu`, `middle_east`, `apac`, `global` | Optional. Primary market |
+| `deal_source` | No | one of `referrals`, `outbound`, `partnerships`, `inbound`, `mixed` | Optional. Where the majority of deals come from |
+| `geography` | No | one of `india`, `us_eu`, `middle_east`, `apac`, `global` | Optional. Primary market |
 | `current_channels` | No | string | Optional. What you do today (content, outbound, events, partnerships, PLG, community) |
-| `business_model` | No | one of: `saas`, `services`, `connectivity`, `transactions`, `marketplace`, `hardware_software`, `investment` | Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Read from your other inputs when left out |
+| `business_model` | No | one of `saas`, `services`, `connectivity`, `transactions`, `marketplace`, `hardware_software`, `investment` | Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Read from your other inputs when left out |
 
 #### 2. EPIC scores (`epic_audit`)
 
@@ -113,22 +123,22 @@ Generated on 29 September 2026 from the server's own tool list and checked again
 | `company_name` | No | string | Optional. Your company or product name, repeated in the answer |
 | `industry` | No | string | Your industry |
 | `business_stage` | No | string | Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B) |
-| `acv_usd` | No | number (0 or more) | Optional. Average contract value per year in US dollars (for example 42000) |
-| `deal_cycle_days` | No | number (0 or more) | Optional. Days from first touch to closed-won (for example 120) |
+| `acv_usd` | No | number (minimum 0) | Optional. Average contract value per year in US dollars (for example 42000) |
+| `deal_cycle_days` | No | number (minimum 0) | Optional. Days from first touch to closed-won (for example 120) |
 | `nrr_percent` | No | number | Optional. Net revenue retention in percent (for example 108) |
-| `tam_accounts` | No | number (0 or more) | Optional. Number of addressable accounts (for example 2500) |
+| `tam_accounts` | No | number (minimum 0) | Optional. Number of addressable accounts (for example 2500) |
 | `self_serve` | No | boolean | Optional. true if customers can sign up and get value without talking to sales |
-| `deal_source` | No | one of: `referrals`, `outbound`, `partnerships`, `inbound`, `mixed` | Optional. Where the majority of deals come from |
-| `geography` | No | one of: `india`, `us_eu`, `middle_east`, `apac`, `global` | Optional. Primary market |
+| `deal_source` | No | one of `referrals`, `outbound`, `partnerships`, `inbound`, `mixed` | Optional. Where the majority of deals come from |
+| `geography` | No | one of `india`, `us_eu`, `middle_east`, `apac`, `global` | Optional. Primary market |
 | `current_channels` | No | string | Optional. What you do today (content, outbound, events, partnerships, PLG, community) |
 
 #### 3. GTM Roadmap (`generate_roadmap`)
 
 | Input | Required | Type | Description |
 |---|---|---|---|
-| `primary_focus` | Yes | one of: `E`, `P`, `I`, `C` | EPIC motion to plan for: E, P, I or C |
-| `timeframe` | No | one of: `30-day`, `60-day`, `90-day` | 30-day, 60-day or 90-day (default 90-day) |
-| `business_model` | No | one of: `saas`, `services`, `connectivity`, `transactions`, `marketplace`, `hardware_software`, `investment` | Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Steps that need a product people can try on their own are left out for a business that is not a software subscription |
+| `primary_focus` | Yes | one of `E`, `P`, `I`, `C` | EPIC motion to plan for: E, P, I or C |
+| `timeframe` | No | one of `30-day`, `60-day`, `90-day` | 30-day, 60-day or 90-day (default 90-day) |
+| `business_model` | No | one of `saas`, `services`, `connectivity`, `transactions`, `marketplace`, `hardware_software`, `investment` | Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Steps that need a product people can try on their own are left out for a business that is not a software subscription |
 
 ---
 

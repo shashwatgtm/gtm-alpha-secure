@@ -3,6 +3,7 @@
 > GTM Alpha scores a company's go-to-market motion with Shashwat Ghosh's EPIC framework (Ecosystem and ABM, Product-Led Growth, Inbound and Outbound Demand Generation, Community-Led Advocacy), each from 1 to 10, and names the motion to lead with. By Helix GTM Consulting.
 
 - MCP server URL (Streamable HTTP, no sign-in, read-only tools): https://gtmalpha.gtmhelix.com/mcp
+- Hosted version 1.3.21 with 3 tools. Local stdio command: `npx -y @shashwatgtmalpha/gtm-alpha-mcp-server`. npm latest on 15 November 2026: 1.3.20.
 - Setup for Claude, ChatGPT and other assistants: https://gtmalpha.gtmhelix.com/integration
 - API and tool documentation: https://gtmalpha.gtmhelix.com/api-docs
 - Free EPIC audit (web form, report with a 180 day plan): https://gtmalpha.gtmhelix.com/consultation
@@ -12,9 +13,9 @@
 
 ## Tools
 
-- EPIC motion scores and first 30 days (gtm_consultation): EPIC scores from 1 to 10, primary and secondary motion, warnings and the first 30 days of steps for the primary motion.
-- EPIC scores (epic_audit): EPIC scores from 1 to 10 with the rules that set each score. Optional inputs: ACV, deal cycle, NRR, TAM, self-serve, deal source, geography.
-- GTM Roadmap (generate_roadmap): a 30, 60 or 90 day plan for one EPIC motion.
+- EPIC motion scores and first 30 days (`gtm_consultation`): Helps you decide which go to market motion to lead with and what to do first. You give your main GTM challenge, plus your stage and industry and the optional ACV, deal cycle, NRR, TAM, self serve, deal source and geography for a full score. You get a score from 1 to 10 for each of the four EPIC motions from the documented rubric, the primary and secondary motion and the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Without the optional inputs the result is marked preliminary.
+- EPIC scores (`epic_audit`): Helps you decide which go to market motion fits your company. You give your GTM challenge, plus your stage and industry and the optional inputs (ACV, deal cycle, NRR, TAM, self serve, deal source, geography) for a full score. You get EPIC scores from 1 to 10 for Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, and Community-Led, the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Without the optional inputs the result is marked preliminary.
+- GTM Roadmap (`generate_roadmap`): Helps you decide what to do in the next 30, 60 or 90 days for one motion. You give the EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) and the time frame. You get immediate, short term and medium term steps, without the self serve steps when your business model is not a software subscription. It builds text from your inputs only.
 
 ## Questions and answers
 
