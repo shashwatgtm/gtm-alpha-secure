@@ -1,0 +1,74 @@
+[
+  {
+    "sector": "SaaS",
+    "process": "subscription onboarding",
+    "teams": "customer success teams",
+    "exact": "For subscription onboarding, a new buyer can set up the workspace without a seller.",
+    "paraphrase": "A buyer starts using the workspace on their own for subscription onboarding.",
+    "opposite": "For subscription onboarding, staff must set up the workspace before a buyer can use it."
+  },
+  {
+    "sector": "ITeS",
+    "process": "service desk handovers",
+    "teams": "service desk teams",
+    "exact": "For service desk handovers, a new buyer can set up the service desk queue without a seller.",
+    "paraphrase": "A buyer starts using the service desk queue on their own for service desk handovers.",
+    "opposite": "For service desk handovers, staff must set up the service desk queue before a buyer can use it."
+  },
+  {
+    "sector": "fintech",
+    "process": "settlement reconciliation",
+    "teams": "payments operations teams",
+    "exact": "For settlement reconciliation, a new buyer can set up the settlement queue without a seller.",
+    "paraphrase": "A buyer starts using the settlement queue on their own for settlement reconciliation.",
+    "opposite": "For settlement reconciliation, staff must set up the settlement queue before a buyer can use it."
+  },
+  {
+    "sector": "HR tech",
+    "process": "candidate screening",
+    "teams": "recruiting teams",
+    "exact": "For candidate screening, a new buyer can set up the recruiting queue without a seller.",
+    "paraphrase": "A buyer starts using the recruiting queue on their own for candidate screening.",
+    "opposite": "For candidate screening, staff must set up the recruiting queue before a buyer can use it."
+  },
+  {
+    "sector": "logistics",
+    "process": "parcel dispatch",
+    "teams": "dispatch teams",
+    "exact": "For parcel dispatch, a new buyer can set up the dispatch board without a seller.",
+    "paraphrase": "A buyer starts using the dispatch board on their own for parcel dispatch.",
+    "opposite": "For parcel dispatch, staff must set up the dispatch board before a buyer can use it."
+  },
+  {
+    "sector": "healthcare IT",
+    "process": "clinic scheduling",
+    "teams": "clinic scheduling teams",
+    "exact": "For clinic scheduling, a new buyer can set up the scheduling board without a seller.",
+    "paraphrase": "A buyer starts using the scheduling board on their own for clinic scheduling.",
+    "opposite": "For clinic scheduling, staff must set up the scheduling board before a buyer can use it."
+  },
+  {
+    "sector": "manufacturing software",
+    "process": "production inspection",
+    "teams": "plant quality teams",
+    "exact": "For production inspection, a new buyer can set up the inspection queue without a seller.",
+    "paraphrase": "A buyer starts using the inspection queue on their own for production inspection.",
+    "opposite": "For production inspection, staff must set up the inspection queue before a buyer can use it."
+  },
+  {
+    "sector": "edtech",
+    "process": "classroom scheduling",
+    "teams": "teaching teams",
+    "exact": "For classroom scheduling, a new buyer can set up the class schedule without a seller.",
+    "paraphrase": "A buyer starts using the class schedule on their own for classroom scheduling.",
+    "opposite": "For classroom scheduling, staff must set up the class schedule before a buyer can use it."
+  },
+  {
+    "sector": "martech",
+    "process": "campaign approval",
+    "teams": "campaign operations teams",
+    "exact": "For campaign approval, a new buyer can set up the campaign calendar without a seller.",
+    "paraphrase": "A buyer starts using the campaign calendar on their own for campaign approval.",
+    "opposite": "For campaign approval, staff must set up the campaign calendar before a buyer can use it."
+  }
+]
