@@ -153,7 +153,7 @@
    "about": {
     "@id": "https://gtmalpha.gtmhelix.com/#app"
    },
-   "dateModified": "2026-11-02",
+   "dateModified": "2026-11-15",
    "inLanguage": "en",
    "primaryImageOfPage": "https://gtmalpha.gtmhelix.com/assets/og.png"
   },
@@ -443,7 +443,7 @@
                 <div class="crop"><span class="cm tl" aria-hidden="true"></span><span class="cm tr" aria-hidden="true"></span><span class="cm bl" aria-hidden="true"></span><span class="cm br" aria-hidden="true"></span><h1>GTM Alpha API and MCP docs</h1></div>
                 <p class="hx-for"><b>For</b> developers, revenue operations teams and GTM leaders. <b>The decision:</b> how to call GTM Alpha from your assistant or your own code.</p>
                 <p class="hx-lead hero-subtitle">Connect the three GTM Alpha tools over MCP, or call the REST API. The tools return EPIC motion scores from 1 to 10 and a GTM roadmap. You need no key, and it is free to use. This page covers their inputs, endpoints, limits, examples and setup.</p>
-            <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-11-02">2 November 2026</time></p>
+            <p class="hx-byline">By <a href="https://gtmhelix.com/about/" rel="author">Shashwat Ghosh</a>, Co-Founder and Fractional CMO, Helix&nbsp;GTM&nbsp;Consulting · Last updated <time datetime="2026-11-15">15 November 2026</time></p>
                 <p class="hx10-history">History: first commit on 13 July 2025, first npm release on 8 September 2025, and listed in the MCP Registry since 11 December 2025.</p>
             </div>
         </div>
@@ -571,39 +571,28 @@
 
                     <div class="tool-list">
                         <div class="tool-item">
-                            <div class="tool-name">
-                                EPIC motion scores and first 30 days: gtm_consultation
-                                <span class="free-badge">FREE</span>
-                            </div>
+                            <div class="tool-name">EPIC motion scores and first 30 days: <code>gtm_consultation</code> <span class="free-badge">FREE</span></div>
                             <div class="tool-desc">
                                 Helps you decide which go to market motion to lead with and what to do first. You give your main GTM challenge, plus your stage and industry and the optional ACV, deal cycle, NRR, TAM, self serve, deal source and geography for a full score. You get a score from 1 to 10 for each of the four EPIC motions from the documented rubric, the primary and secondary motion and the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Without the optional inputs the result is marked preliminary.
-                                Required input: gtm_challenge. Optional: company_name, business_stage, industry. Optional EPIC inputs: acv_usd, deal_cycle_days, nrr_percent, tam_accounts, self_serve, deal_source, geography, current_channels. Without them the result is marked preliminary. Read only.
+                                <p>Required: <code>gtm_challenge</code>. Optional: <code>company_name</code>, <code>business_stage</code>, <code>industry</code>, <code>acv_usd</code>, <code>deal_cycle_days</code>, <code>nrr_percent</code>, <code>tam_accounts</code>, <code>self_serve</code>, <code>deal_source</code>, <code>geography</code>, <code>current_channels</code>, <code>business_model</code>.</p>
                             </div>
                         </div>
-
                         <div class="tool-item">
-                            <div class="tool-name">
-                                EPIC scores: epic_audit
-                                <span class="free-badge">FREE</span>
-                            </div>
+                            <div class="tool-name">EPIC scores: <code>epic_audit</code> <span class="free-badge">FREE</span></div>
                             <div class="tool-desc">
-                                Helps you decide which go to market motion fits your company. You give your GTM challenge, plus your stage and industry and the optional inputs (ACV, deal cycle, NRR, TAM, self serve, deal source, geography) for a full score. You get EPIC scores from 1 to 10 for Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, and Community-Led, the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Without the optional inputs the result is marked preliminary.
-                                Required input: challenge. Optional: industry, business_stage. Optional EPIC inputs: acv_usd, deal_cycle_days, nrr_percent, tam_accounts, self_serve, deal_source, geography, current_channels. Without them the result is marked preliminary. Read only.
+                                Helps you decide which go to market motion fits your company. You give your GTM challenge, plus your stage and industry and the optional inputs (ACV, deal cycle, NRR, TAM, self serve, deal source, geography) for a full score. You get EPIC scores from 1 to 10 for Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, and Community-Led, the lead motion, warnings and notes, and the sector&#x27;s buying committee and usual objections when your inputs name the sector. Without the optional inputs the result is marked preliminary.
+                                <p>Required: <code>challenge</code>. Optional: <code>company_name</code>, <code>industry</code>, <code>business_stage</code>, <code>acv_usd</code>, <code>deal_cycle_days</code>, <code>nrr_percent</code>, <code>tam_accounts</code>, <code>self_serve</code>, <code>deal_source</code>, <code>geography</code>, <code>current_channels</code>.</p>
                             </div>
                         </div>
-
                         <div class="tool-item">
-                            <div class="tool-name">
-                                GTM Roadmap: generate_roadmap
-                                <span class="free-badge">FREE</span>
-                            </div>
+                            <div class="tool-name">GTM Roadmap: <code>generate_roadmap</code> <span class="free-badge">FREE</span></div>
                             <div class="tool-desc">
                                 Helps you decide what to do in the next 30, 60 or 90 days for one motion. You give the EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) and the time frame. You get immediate, short term and medium term steps, without the self serve steps when your business model is not a software subscription. It builds text from your inputs only.
-                                Required input: primary_focus (E, P, I or C). Optional: timeframe (30-day, 60-day or 90-day). Read only.
+                                <p>Required: <code>primary_focus</code>. Optional: <code>timeframe</code>, <code>business_model</code>.</p>
                             </div>
                         </div>
                     </div>
-                
+
 <!-- run8-vis:tools-row --><div class="hx9-visrow"><figure class="hx8-vis "><svg viewBox="0 0 360 254" width="360" height="254" role="img" aria-labelledby="v2t v2d" class="hx8-svg"><title id="v2t">EPIC motion scores</title><desc id="v2d">EPIC motion scores: Ecosystem and ABM 10 of 10; Product-Led 4 of 10; Inbound and Outbound 5 of 10; Community 6 of 10. Primary focus: Ecosystem and ABM. Secondary: Community-Led.</desc><text x="0" y="16" class="v-k" text-anchor="start">EPIC motion scores</text><text x="0" y="42" class="v-t" text-anchor="start">Ecosystem and ABM</text><rect x="0" y="50" width="360" height="12" class="v-clay"/><rect x="0" y="50" width="360" height="12" class="v-sig v-grow d0"/><text x="360" y="42" class="v-tm" text-anchor="end">10 of 10</text><text x="0" y="84" class="v-t" text-anchor="start">Product-Led</text><rect x="0" y="92" width="360" height="12" class="v-clay"/><rect x="0" y="92" width="144" height="12" class="v-ink7 v-grow d1"/><text x="360" y="84" class="v-tm" text-anchor="end">4 of 10</text><text x="0" y="126" class="v-t" text-anchor="start">Inbound and Outbound</text><rect x="0" y="134" width="360" height="12" class="v-clay"/><rect x="0" y="134" width="180" height="12" class="v-ink7 v-grow d2"/><text x="360" y="126" class="v-tm" text-anchor="end">5 of 10</text><text x="0" y="168" class="v-t" text-anchor="start">Community</text><rect x="0" y="176" width="360" height="12" class="v-clay"/><rect x="0" y="176" width="216" height="12" class="v-ink7 v-grow d3"/><text x="360" y="168" class="v-tm" text-anchor="end">6 of 10</text><text x="0" y="212" class="v-tb v-oxt v-fade d9" text-anchor="start">Primary focus: Ecosystem and ABM.</text><text x="0" y="230" class="v-tb v-oxt v-fade d9" text-anchor="start">Secondary: Community-Led</text></svg><figcaption>Scores from GTM Alpha&#x27;s answer for the example company: Series B telecom, 150 day sales cycle, $240,000 deals.</figcaption></figure><figure class="hx8-vis "><svg viewBox="0 0 360 348" width="360" height="348" role="img" aria-labelledby="v3t v3d" class="hx8-svg"><title id="v3t">How your EPIC scores were set</title><desc id="v3d">How your EPIC scores were set. Starting points: Ecosystem 7, Product-Led 5, Inbound 6, Community 6. ACV above 50,000 US dollars: Ecosystem plus 2, Product-Led minus 1. Deal cycle above 90 days: Ecosystem plus 2, Inbound minus 1. Final scores: Ecosystem 10, Product-Led 4, Inbound 5, Community 6.</desc><text x="0" y="16" class="v-k" text-anchor="start">How your EPIC scores were set</text><line x1="0" y1="230" x2="360" y2="230" class="v-line"/><rect x="6" y="118" width="35" height="112" class="v-clayd v-grow-y d1"/><rect x="45" y="86" width="16" height="32" class="v-sig v-grow-y d3"/><rect x="45" y="54" width="16" height="32" class="v-sig v-grow-y d4"/><rect x="64" y="70" width="20" height="160" class="v-ox v-grow-y d7"/><text x="45.0" y="248" class="v-tb" text-anchor="middle">E 10</text><rect x="96" y="150" width="35" height="80" class="v-clayd v-grow-y d1"/><rect x="135" y="150" width="16" height="16" class="v-ink7 v-grow-y d3"/><rect x="154" y="166" width="20" height="64" class="v-ox v-grow-y d7"/><text x="135.0" y="248" class="v-tb" text-anchor="middle">P 4</text><rect x="186" y="134" width="35" height="96" class="v-clayd v-grow-y d1"/><rect x="225" y="134" width="16" height="16" class="v-ink7 v-grow-y d4"/><rect x="244" y="150" width="20" height="80" class="v-ox v-grow-y d7"/><text x="225.0" y="248" class="v-tb" text-anchor="middle">I 5</text><rect x="276" y="134" width="35" height="96" class="v-clayd v-grow-y d1"/><rect x="334" y="134" width="20" height="96" class="v-ox v-grow-y d7"/><text x="315.0" y="248" class="v-tb" text-anchor="middle">C 6</text><rect x="0" y="260" width="10" height="10" class="v-clayd"/><text x="16" y="270" class="v-ts" text-anchor="start">Stage starting point</text><rect x="180" y="260" width="10" height="10" class="v-sig"/><text x="196" y="270" class="v-ts" text-anchor="start">Rule adjustment</text><rect x="0" y="280" width="10" height="10" class="v-ox"/><text x="16" y="290" class="v-ts" text-anchor="start">Final score</text><rect x="180" y="280" width="10" height="10" class="v-ink7"/><text x="196" y="290" class="v-ts" text-anchor="start">Rule lowered it</text><text x="0" y="310" class="v-tm" text-anchor="start">ACV above 50,000 US dollars: E +2, P -1</text><text x="0" y="326" class="v-tm" text-anchor="start">Deal cycle above 90 days: E +2, I -1</text></svg><figcaption>The actual steps GTM Alpha showed for the example on this site: a Series B telecom company with a 150 day sales cycle and $240,000 deals.</figcaption></figure><figure class="hx8-vis "><svg viewBox="0 0 360 164" width="360" height="164" role="img" aria-labelledby="v4t v4d" class="hx8-svg"><title id="v4t">Your roadmap in thirds</title><desc id="v4d">Your roadmap in thirds: from Day 1 to Day 30, 60 or 90 through Immediate, Short term, Medium term.</desc><text x="0" y="16" class="v-k" text-anchor="start">Your roadmap in thirds</text><line x1="8" y1="58" x2="352" y2="58" class="v-line v-draw"/><rect x="0" y="50" width="16" height="16" class="v-ox"/><rect x="344" y="50" width="16" height="16" class="v-sig v-fade d9"/><text x="0" y="86" class="v-tm" text-anchor="start">Day 1</text><text x="360" y="86" class="v-tm" text-anchor="end">Day 30, 60 or 90</text><rect x="20" y="100" width="101" height="44" class="v-clay v-slide d1"/><text x="26" y="118" class="v-ts" text-anchor="start">Immediate</text><rect x="127" y="100" width="101" height="44" class="v-clay v-slide d2"/><text x="133" y="118" class="v-ts" text-anchor="start">Short term</text><rect x="233" y="100" width="101" height="44" class="v-clay v-slide d3"/><text x="239" y="118" class="v-ts" text-anchor="start">Medium term</text></svg><figcaption>GTM Alpha splits the 30, 60 or 90 days you choose into three parts.</figcaption></figure></div><!-- /run8-vis:tools-row -->
 </section>
 
@@ -721,7 +710,7 @@ platform to mid-market companies (100-1000 employees).</code></pre>
                 </section>
                 <section id="release-history" class="docs-section">
                     <h2>Release history</h2>
-                    <p>History: first commit on 13 July 2025, first npm release on 8 September 2025, and listed in the MCP Registry since 11 December 2025. Versions and dates below come from the git history of this site's code, from npm and from the MCP Registry (checked 27 September 2026). npm has 1.0.0 to 1.0.5 and 1.2.0, its latest version, published 24 September 2026. Versions 1.1.0, 1.3.0, 1.3.1, 1.3.2, 1.3.3, 1.3.4, 1.3.5, 1.3.6, 1.3.7, 1.3.8, 1.3.9, 1.3.12, 1.3.13, 1.3.17 and 1.3.21 run on this site only and are not on npm, so the npm package can lag behind this site. The MCP Registry lists 1.0.2 and 1.0.5.</p>
+                    <p>History: first commit on 13 July 2025, first npm release on 8 September 2025, and listed in the MCP Registry since 11 December 2025. Versions and dates below come from the git history of this site's code, from npm and from the MCP Registry (checked 27 September 2026). On 15 November 2026 the hosted version was 1.3.21. The latest npm and MCP Registry versions were both 1.3.20.</p>
                     <table class="hx10-release">
                         <thead><tr><th>Version</th><th>Date</th><th>Where</th><th>What changed</th></tr></thead>
                         <tbody>
@@ -730,7 +719,7 @@ platform to mid-market companies (100-1000 employees).</code></pre>
                             <tr><td>1.0.3</td><td>12 December 2025</td><td>npm</td><td>Command-line MCP server for local use (commit 8f8dfb96)</td></tr>
                             <tr><td>1.0.4 and 1.0.5</td><td>19 December 2025; MCP Registry 20 December 2025</td><td>npm and the MCP Registry (as io.github.shashwatgtm/gtm-alpha-consultant, 1.0.5)</td><td>Tool safety annotations and a privacy policy for ChatGPT apps (commits 993debd5, 36e4e41e)</td></tr>
                             <tr><td>1.1.0</td><td>24 September 2026</td><td>this site only (not on npm)</td><td>Prepared for the Claude connector directory (commit ea2ef939)</td></tr>
-                            <tr><td>1.2.0</td><td>24 September 2026</td><td>this site and npm (published 24 September 2026 from commit ced1812b; npm's latest version)</td><td>Advanced EPIC scoring from the documented rubric (commit 31cd0e5a); the npm package holds only the files the command-line server needs (commit ced1812b)</td></tr>
+                            <tr><td>1.2.0</td><td>24 September 2026</td><td>this site and npm (published 24 September 2026 from commit ced1812b; the latest npm version at that time)</td><td>Advanced EPIC scoring from the documented rubric (commit 31cd0e5a); the npm package holds only the files the command-line server needs (commit ced1812b)</td></tr>
                             <tr><td>1.3.0</td><td>26 September 2026</td><td>this site only (not on npm)</td><td>Negative amounts refused, one npm code path (commit 2d4f9cca)</td></tr>
                             <tr><td>1.3.1</td><td>26 September 2026</td><td>this site only (not on npm)</td><td>Fixes from a code check (commit f58d31d9)</td></tr>
                             <tr><td>1.3.2</td><td>29 September 2026</td><td>this site only (not on npm)</td><td>The tool output heading and example prompt say Free EPIC audit; the 64 KB request limit counts bytes</td></tr>

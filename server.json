@@ -1,12 +1,22 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.shashwatgtm/gtm-alpha-consultant",
-  "description": "Professional GTM EPIC audit using EPIC framework for strategic go-to-market advice.",
-  "websiteUrl": "https://tools.gtmhelix.com/connectors/",
+  "title": "GTM Alpha by Helix",
+  "description": "Score four EPIC motions and plan the first 30, 60 or 90 days for the chosen motion.",
+  "websiteUrl": "https://gtmalpha.gtmhelix.com/",
   "repository": {
     "url": "https://github.com/shashwatgtm/gtm-alpha-secure",
     "source": "github"
   },
+  "icons": [
+    {
+      "src": "https://gtmalpha.gtmhelix.com/apple-touch-icon.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "180x180"
+      ]
+    }
+  ],
   "version": "1.3.21",
   "packages": [
     {
@@ -16,6 +26,12 @@
       "transport": {
         "type": "stdio"
       }
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://gtmalpha.gtmhelix.com/mcp"
     }
   ]
 }
