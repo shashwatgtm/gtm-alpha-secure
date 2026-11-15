@@ -87,7 +87,7 @@ Use the function declarations in gemini-functions.json:
 
 ## Tools and inputs
 
-The 3 tools below come from `tools/list` in the 1.3.21 source build, checked on 15 November 2026. Each table shows the accepted fields. A dot marks a field inside an object and `[]` marks an array item. A nested field marked required is required when its parent is supplied.
+The 3 tools below come from `tools/list` of gtm-alpha-mcp-server 1.3.21 in this repository, checked on 15 November 2026. Each table shows the accepted fields. A dot marks a field inside an object and `[]` marks an array item. A nested field marked required is required when its parent is supplied.
 
 | # | Tool | Title | What it does |
 |---|---|---|---|
