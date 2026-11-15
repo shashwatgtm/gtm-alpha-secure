@@ -20,10 +20,8 @@
     });
 })();
 
-// 13 Nov 2026 (owner decision): when the visitor gives a company website, the form asks the server whether someone from
-// that company domain ran an audit in the last 90 days. Everyone sees only "Someone using this company's website ran this audit
-// N days ago." (14 Nov 2026: anyone can type any website, so the notice does not claim the visitor is a colleague.) The earlier GTM challenge is shown only after a work email check at that domain, and only while the check is
-// switched on (the server says so in "check"). Text from the server is always set with textContent, never as markup.
+// A website can start the work email check. Only its verified response shows earlier audit activity and the challenge.
+// Text from the server is always set with textContent.
 (function () {
     var form = document.getElementById('gtmForm');
     var site = document.getElementById('company_website');

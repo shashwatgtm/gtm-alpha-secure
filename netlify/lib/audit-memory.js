@@ -4,8 +4,7 @@
 // A record is kept only when the visitor gives a company website whose domain is a company domain (never a free mail
 // domain or a shared host). It holds the company domain (in the key), the day (never the time), the GTM challenge and,
 // only when a colleague confirmed a work email, a keyed hash of that email. Nothing else from the form is kept.
-// A later visitor from the same domain sees only that an audit was run N days ago. The earlier GTM challenge is shown only
-// after a work email check at that domain (the colleague check), which is OFF until the owner picks an email sender.
+// Only a colleague who verifies a work email at the same domain can see earlier activity, its age and the challenge.
 import { randomUUID, randomInt, createHmac, timingSafeEqual } from "node:crypto";
 
 export const KEEP_DAYS = 90;
