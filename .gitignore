@@ -25,5 +25,10 @@ Thumbs.db
 # Built publish folder (scripts/build-site.mjs)
 site/
 
-# Never publish or commit MCP Registry tokens or environment files (run 6)
+# Registry and local authentication files
 .mcpregistry_*
+.netrc
+.npmrc.local
+*.p12
+*.pfx
+*.pem

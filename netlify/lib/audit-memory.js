@@ -147,11 +147,10 @@ export function unsign(secret, token, now = Date.now()) {
 }
 
 // Step 1 of the check: email a six digit code. Returns { token } or { error }.
-export async function startCheck({ store, env, send, now = new Date() }, { website, email }) {
+export async function startCheck({ env, send, now = new Date() }, { website, email }) {
   const domain = domainOf(website);
   if (!domain) return { error: "Give your company website first. Free mail and shared hosts cannot be checked." };
   if (!emailMatches(email, domain)) return { error: "Use your work email at " + domain + ". Free mail addresses do not qualify." };
-  if (!(await findRecent(store, domain, now))) return { error: "There is no earlier audit to compare." };
   const code = String(randomInt(0, 1000000)).padStart(6, "0");
   const h = emailHash(env.AUDIT_CHECK_SECRET, email);
   await send({ to: String(email).trim(), subject: "Your GTM Alpha check code",

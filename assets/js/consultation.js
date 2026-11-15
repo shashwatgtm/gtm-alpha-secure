@@ -68,7 +68,7 @@
     }
     function offerCheck(website) {
         box.textContent = '';
-        var label = el('label', 'See what they wrote: confirm your work email at the same company domain (free mail addresses do not qualify).', { for: 'colleague_email' });
+        var label = el('label', 'To check for an earlier audit, confirm your work email at this domain.', { for: 'colleague_email' });
         var email = el('input', '', { type: 'email', id: 'colleague_email', autocomplete: 'email' });
         var send = el('button', 'Email me a code', { type: 'button' });
         var msg = el('p', '', { role: 'status' });
@@ -79,6 +79,7 @@
         send.addEventListener('click', function () {
             msg.textContent = 'Sending...';
             post('/api/colleague-check', { step: 'send', website: website, email: email.value }).then(function (r) {
+                if (asked !== website) return;
                 if (!r.token) { msg.textContent = r.error || 'The check could not be started.'; return; }
                 var codeLabel = el('label', 'Enter the six digit code we emailed you.', { for: 'colleague_code' });
                 var code = el('input', '', { type: 'text', id: 'colleague_code', inputmode: 'numeric', autocomplete: 'one-time-code', maxlength: '6' });
@@ -89,7 +90,12 @@
                 box.appendChild(check);
                 check.addEventListener('click', function () {
                     post('/api/colleague-check', { step: 'code', token: r.token, code: code.value }).then(function (v) {
-                        if (typeof v.challenge === 'string') showChallenge(v.challenge, v.verified);
+                        if (asked !== website) return;
+                        if (typeof v.challenge === 'string') {
+                            seen.textContent = 'A colleague ran an audit ' + ago(v.days_ago) + '.';
+                            seen.hidden = false;
+                            showChallenge(v.challenge, v.verified);
+                        }
                         else msg.textContent = v.error || 'That code is not right.';
                     }).catch(function () { msg.textContent = 'The check could not be completed. Please try again.'; });
                 });
@@ -104,10 +110,7 @@
         reset();
         if (!/^https?:\/\/\S+\.\S+/i.test(website)) return;
         post('/api/audit-seen', { website: website }).then(function (r) {
-            if (asked !== website || !r || !r.seen) return;
-            seen.textContent = 'Someone using this company\'s website ran this audit ' + ago(r.days_ago) + '.';
-            seen.hidden = false;
-            if (r.check) offerCheck(website);
+            if (asked === website && r && r.check) offerCheck(website);
         }).catch(function () {});
     }
     site.addEventListener('change', ask);
