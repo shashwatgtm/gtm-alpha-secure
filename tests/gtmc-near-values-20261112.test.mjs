@@ -24,10 +24,10 @@ for (const [near, exact] of [
   assert.deepEqual(a.structuredContent, b.structuredContent);
 });
 
-test('gtm_consultation leaves out an unknown optional choice and says so', async () => {
+test('gtm_consultation asks for a known deal source before scoring', async () => {
   const r = await call({ ...base, deal_source: 'events' });
-  assert.ok(!r.isError);
-  assert.match(r.content[0].text, /Input note: deal_source was left out/);
+  assert.ok(r.isError);
+  assert.match(r.content[0].text, /choose deal_source from/);
 });
 
 test('gtm_consultation reads arguments sent as a JSON string', async () => {
@@ -60,10 +60,10 @@ for (const [tool, near, exact] of [
   assert.deepEqual(a.structuredContent, b.structuredContent);
 });
 
-test('generate_roadmap leaves out an unknown timeframe with a note and still refuses an unknown or missing motion', async () => {
+test('generate_roadmap refuses an unsupported timeframe and an unknown or missing motion', async () => {
   const r = await call({ primary_focus: 'I', timeframe: '6 months' }, 'generate_roadmap');
-  assert.ok(!r.isError);
-  assert.match(r.content[0].text, /Input note: timeframe was left out/);
+  assert.ok(r.isError);
+  assert.match(r.content[0].text, /30-day.*60-day.*90-day/);
   assert.ok((await call({ primary_focus: 'Z' }, 'generate_roadmap')).isError);
   assert.ok((await call({ timeframe: '90-day' }, 'generate_roadmap')).isError);
 });
@@ -72,3 +72,16 @@ test('epic_audit still refuses a missing challenge and a negative amount', async
   assert.ok((await call({ challenge: '' }, 'epic_audit')).isError);
   assert.ok((await call({ ...eb, acv_usd: -5 }, 'epic_audit')).isError);
 });
+
+for (const [name, input] of [['gtm_consultation', base], ['epic_audit', eb]]) {
+  for (const [field, value, choices] of [
+    ['geography', 'South America', /india.*us_eu.*middle_east.*apac.*global/],
+    ['deal_source', 'trade fairs', /referrals.*outbound.*partnerships.*inbound.*mixed/]
+  ]) test(name + ' asks for a valid ' + field + ' before scoring', async () => {
+    const response = await call({...input, [field]: value}, name);
+    assert.equal(response.isError, true);
+    assert.match(response.content[0].text, choices);
+    assert.match(response.content[0].text, /choose|which/i);
+    assert.equal(response.structuredContent, undefined);
+  });
+}

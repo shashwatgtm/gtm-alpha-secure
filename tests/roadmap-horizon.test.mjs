@@ -39,3 +39,9 @@ for (const [vertical, focus, model, days] of cases) {
     assert.doesNotMatch(first.content[0].text, /90 day default|default, not supplied/);
   });
 }
+test('supported day count, conflicting horizons and omitted timeframe', async () => {
+  const result = await roadmap({primary_focus: 'I', horizon_days: 60});
+  assert.equal(result.structuredContent.timeframe, '60-day');
+  assert.equal((await roadmap({primary_focus: 'I', timeframe: '30-day', horizon_days: 60})).isError, true);
+  assert.match((await roadmap({primary_focus: 'I'})).structuredContent.timeframe, /90-day \(default, not supplied/);
+});

@@ -343,7 +343,7 @@ function normalizeToolArgs(tool, args) {
       if (typeof v === "string" && v.trim() === "") { if (!isRequired) delete out[key]; return; }
       var mapped = typeof v === "string" || typeof v === "number" ? matchChoice(key, p.enum, v) : null;
       if (mapped) out[key] = mapped;
-      else if (!isRequired) leaveOut(key, "the value given is not one of " + p.enum.join(", "));
+      else if (!isRequired && key !== "geography" && key !== "deal_source") leaveOut(key, "the value given is not one of " + p.enum.join(", "));
       return;
     }
     if (isRequired) return;
@@ -383,6 +383,10 @@ function belowMinimum(tool, args) {
   Object.keys(props).forEach(function(key) {
     var p = props[key], v = args[key];
     if (v === undefined || v === null) return;
+    if ((key === "geography" || key === "deal_source") && !p.enum.includes(v)) {
+      problems.push("choose " + key + " from: " + p.enum.join(", "));
+      return;
+    }
     if (Array.isArray(p.enum) && typeof v === "string" && p.enum.indexOf(v) === -1) { problems.push(key + " must be one of: " + p.enum.join(", ")); return; }
     // Run 12 R12-12 a (A5-4 d): a value of the wrong type is refused with the type it must be, as on the connectors.
     if (p.type === "string" && typeof v !== "string") { problems.push(key + " must be text"); return; }
@@ -492,6 +496,22 @@ export default async function handler(req, context) {
         // Run 12 R12-12 a (A5-4 a): a name that is not text, or is longer than 100 characters, is never echoed back.
         if (typeof toolName !== "string" || toolName.length > 100) return toolError(id, "Unknown tool.");
         return toolError(id, "Unknown tool: " + escapeText(toolName) + ". Available tools: " + TOOLS.map(function(t) { return t.name; }).join(", ") + ".");
+      }
+      if (toolName === "generate_roadmap") {
+        const choices = tool.inputSchema.properties.timeframe.enum;
+        const values = [toolArgs.timeframe, toolArgs.horizon_days].filter(
+          value => value != null && !(typeof value === "string" && !value.trim())
+        );
+        const horizons = values.map(value => {
+          if (typeof value !== "string" && typeof value !== "number") return null;
+          const duration = String(value).normalize("NFKC").trim();
+          if (!/^[a-z0-9]+(?:[ _-]+[a-z0-9]+)*$/i.test(duration)) return null;
+          return matchChoice("timeframe", choices, duration);
+        });
+        if (horizons.some(value => !value || value !== horizons[0])) {
+          return toolError(id, "The supplied roadmap horizon is unsupported or conflicting. Choose one timeframe: " + choices.join(", ") + ".");
+        }
+        if (horizons.length) toolArgs.timeframe = horizons[0];
       }
       var inputNotes = [];
       var normal = normalizeToolArgs(tool, toolArgs); toolArgs = normal.args; inputNotes = normal.notes;
