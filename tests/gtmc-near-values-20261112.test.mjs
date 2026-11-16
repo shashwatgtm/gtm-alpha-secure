@@ -85,3 +85,27 @@ for (const [name, input] of [['gtm_consultation', base], ['epic_audit', eb]]) {
     assert.equal(response.structuredContent, undefined);
   });
 }
+
+const scoringCases = [
+  ['B2B SaaS', 'Subscription billing software'], ['fintech', 'Payment reconciliation'],
+  ['HR tech', 'Shift scheduling software'], ['sales tech', 'Call coaching software'],
+  ['ops tech', 'Equipment maintenance planning'], ['ITeS', 'Managed application support'],
+  ['AI-native', 'Support agent with human escalation'], ['cybersecurity', 'Cloud exposure management'],
+  ['martech', 'Consent measurement software']
+];
+for (const [vertical, product] of scoringCases) {
+  test(vertical + ' verifies scoring and clarification twice on both tools', async () => {
+    for (const [name, challenge] of [['gtm_consultation', 'gtm_challenge'], ['epic_audit', 'challenge']]) {
+      const valid = {...eb, [challenge]: 'We sell ' + product + ' to regional operators.', industry: vertical,
+        geography: 'india', deal_source: 'referrals'};
+      if (challenge !== 'challenge') delete valid.challenge;
+      for (const fields of [{}, {geography: 'South America'}, {deal_source: 'trade fairs'}]) {
+        const args = {...valid, ...fields};
+        const response = await call(args, name);
+        assert.deepEqual(await call(args, name), response);
+        assert.equal(Boolean(response.isError), Object.keys(fields).length > 0);
+        if (response.isError) assert.equal(response.structuredContent, undefined);
+      }
+    }
+  });
+}
