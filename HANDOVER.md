@@ -4,4 +4,4 @@
 
 Connected roadmap call with primary_focus I and timeframe 120-day returned a 90 day default labelled not supplied. The same happened with horizon_days 120.
 
-Next: capture the failing regression, repair the MCP path, compare the base and branch suites, and run each of the nine vertical fixtures twice. The fixes are for coordinator review only. Production stays on its existing release.
+The failing regression is in tests/roadmap-horizon.test.mjs. It ran against the base handler using offline adapters for unavailable runtime packages. It failed on the buyer facing result. Next: complete implementation, run the same test and the field matrix, compare the full suites and record release instructions.
