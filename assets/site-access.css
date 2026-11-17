@@ -67,3 +67,36 @@ html body .brand { display: inline-flex; align-items: center; }
  html:root body #hx-consent .hx-d { background:#352831 !important; color:#fff4ef !important; }
  html:root body :is(button,a,summary,input,select):focus-visible { outline:3px solid #ffd699 !important; }
 }
+
+/* Measured controls on tool, install and editorial pages. */
+@layer helix-accessibility {
+@media(max-width:600px){
+}
+@media(prefers-color-scheme:light) {
+#endpoints > div.endpoint-card,
+#for-developers,
+#gtmalpha-epic-visual > figure.hx8-vis,
+#report-content,
+details.hx9-menu > summary,
+div.code-block > pre,
+div.epic-grid > div.epic-item.card,
+div.epic-scores > div.epic-item.hxr-keep,
+div.features-grid > div.feature-card.card,
+div.form-container > details.hx8-dev,
+div.form-container > div.win.ga-form-win,
+div.ga-sample-grid > div.win.ga-sample-who,
+div.hx-viz > figure.hx-viz-p,
+div.hx9-visrow > figure.hx8-vis,
+div.integration-content > div.code-container,
+div.integration-text > div.file-location,
+div.pricing-grid > div.pricing-card,
+div.roadmap > div.roadmap-item.hxr-keep,
+picture.hx7-cred-photo > img,
+picture.hx7-strip-photo > img { border-color:#746873 !important; }
+}
+@media(prefers-color-scheme:dark) {
+picture.hx7-cred-photo > img,
+picture.hx7-strip-photo > img { border-color:#baabb1 !important; }
+html body #hx-consent .hx-a { background:#783b4f !important; color:#fff5ef !important; border-color:#dec1c7 !important; }
+}
+}
