@@ -1,3 +1,4 @@
+import { readLimitedText } from "./read-limited-text.js";
 import { softwareAdvice } from './software-policy.js';
 // netlify/lib/premium-audit.js (served by netlify/functions/api.js at POST /api/premium-audit)
 // Owner decision 3 (25 September 2026): while GTM Alpha is free, the Premium Audit form delivers the report directly,
@@ -84,8 +85,8 @@ function messagePage(status, title, lines) {
 }
 
 async function readInput(req) {
-  const text = await req.text();
-  if (Buffer.byteLength(text, "utf8") > MAX_BODY) return { error: "too_large" };
+  const text = await readLimitedText(req, MAX_BODY);
+  if (text === null) return { error: "too_large" };
   const type = (req.headers.get("content-type") || "").toLowerCase();
   if (type.includes("application/json")) {
     try {
@@ -152,7 +153,7 @@ export async function keepAudit(clean, token, deps = {}) {
     const env = deps.env || process.env;
     // Loaded here, not at the top: scripts/build-site.mjs imports this file during the build, without node_modules.
     const store = deps.store || (await import("@netlify/blobs")).getStore(STORE);
-    const emailHash = verifiedHash(env, typeof token === "string" ? token : "", domain);
+    const emailHash = verifiedHash(env, typeof token === "string" ? token : "", domain, deps.now?.getTime());
     let timer;
     const late = new Promise((resolve) => { timer = setTimeout(() => resolve(null), 1500); });
     try {

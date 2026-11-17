@@ -85,19 +85,19 @@ test('free mail never counts: not as a company domain, not as a work email, neve
   assert.equal(store.data.size, 0);
 });
 
-test('unverified view: everyone sees that an audit was run and how long ago, never the earlier text', async () => {
+test('unverified view: audit activity and age stay private until email verification', async () => {
   const store = fakeStore({ 'acme.com/2026-11-01/x': JSON.stringify({ day: '2026-11-01', challenge: CHALLENGE }) });
   for (const env of [OFF, ON]) {
     const res = await auditSeen(post('/api/audit-seen', { website: 'https://www.acme.com' }), { store, env, send: async () => {}, now: NOW });
     const text = await res.text();
     assert.equal(res.status, 200);
     assert.doesNotMatch(text, /hospital|outbound|challenge/i);
-    assert.deepEqual(JSON.parse(text), { seen: true, days_ago: 12, check: env === ON });
+    assert.deepEqual(JSON.parse(text), { seen: false, check: env === ON });
   }
   const none = await auditSeen(post('/api/audit-seen', { website: 'https://other.com' }), { store, env: OFF, now: NOW });
-  assert.deepEqual(await none.json(), { seen: false });
+  assert.deepEqual(await none.json(), { seen: false, check: false });
   const free = await auditSeen(post('/api/audit-seen', { website: 'https://gmail.com' }), { store: fakeStore({ 'gmail.com/2026-11-01/x': '{}' }), env: OFF, now: NOW });
-  assert.deepEqual(await free.json(), { seen: false });
+  assert.deepEqual(await free.json(), { seen: false, check: false });
   // With the check off (no email sender), the colleague check answers 404 and shows nothing.
   assert.equal(colleagueCheckOn(OFF), false);
   assert.equal(colleagueCheckOn({ ...ON }), false, 'no email sender is set up, so the check stays off in production');
@@ -111,10 +111,11 @@ test('verified view (flag on in tests): a work email at the same domain sees the
   const sent = [];
   const deps = { store, env: ON, send: async (m) => { sent.push(m); }, now: NOW };
   assert.equal(colleagueCheckOn(ON, deps.send), true);
-  // Refused: free mail, another domain, a domain with no earlier audit.
+  // Domain checks are independent of audit history.
   assert.match((await startCheck(deps, { website: 'https://acme.com', email: 'a@gmail.com' })).error, /work email at acme\.com/);
   assert.match((await startCheck(deps, { website: 'https://acme.com', email: 'a@rival.com' })).error, /work email/);
-  assert.match((await startCheck(deps, { website: 'https://new.com', email: 'a@new.com' })).error, /no earlier audit/);
+  const empty = await startCheck({ ...deps, send: async () => {} }, { website: 'https://new.com', email: 'a@new.com' });
+  assert.equal(typeof empty.token, 'string');
   assert.equal(sent.length, 0);
   // Through the endpoint: send a code, a wrong code fails, the right code shows the challenge.
   const r1 = await colleagueCheck(post('/api/colleague-check', { step: 'send', website: 'https://www.acme.com', email: 'Priya@acme.com' }), deps);
@@ -160,9 +161,9 @@ test('the audit form keeps the challenge under the company domain, and only that
 
 test('form notice and privacy page state the 90 day rule', () => {
   const form = readFileSync(new URL('../consultation.html', import.meta.url), 'utf8');
-  assert.match(form, /<p class="hx-keep-note" id="challenge-note">If you give a company website, we keep your GTM challenge for 90 days and may show it to verified colleagues from the same company domain \(see <a href="\/privacy#audits">privacy<\/a>\)\. Anyone who later enters the same company website will see that an audit was run from it and how many days ago, never the text\.<\/p>/);
+  assert.match(form, /<p class="hx-keep-note" id="challenge-note">If you give a company website, we keep your GTM challenge for 90 days and may show it to verified colleagues from the same company domain \(see <a href="\/privacy#audits">privacy<\/a>\)\. Only verified colleagues can see whether an earlier audit exists and how many days ago it ran\.<\/p>/);
   assert.doesNotMatch(form, /answers are not stored|They are not stored, logged or emailed/);
-  const owner = 'Audits are kept for 90 days, then deleted automatically. On request we delete them within 30 days. Anyone who enters the same company website sees only that an audit was run and how many days ago; the GTM challenge itself is shown only after a work email check at that company.';
+  const owner = 'Audits are kept for 90 days, then deleted automatically. On request we delete them within 30 days. Only someone who verifies a work email at the same domain can see whether an earlier audit exists, how many days ago it ran and the earlier GTM challenge.';
   for (const file of ['../privacy.html', '../PRIVACY.md']) {
     const page = readFileSync(new URL(file, import.meta.url), 'utf8');
     assert.ok(page.includes(owner), file);
@@ -170,6 +171,6 @@ test('form notice and privacy page state the 90 day rule', () => {
   }
   const privacy = readFileSync(new URL('../privacy.html', import.meta.url), 'utf8');
   assert.match(privacy, /<h3 id="audits">2\.7 Audits from the same company<\/h3>/);
-  assert.match(privacy, /Last updated <time datetime="2026-11-14">14 November 2026<\/time>/);
+  assert.match(privacy, /Last updated <time datetime="2026-11-19">19 November 2026<\/time>/);
   assert.match(privacy, /<td>Audits are kept for 90 days, then deleted automatically\. On request we delete them within 30 days<\/td>/);
 });
