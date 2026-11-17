@@ -44,7 +44,7 @@ export async function buildSampleReport() {
   if (start < 0 || end < 0) throw new Error("build-sample-report: report container not found");
   let report = page.slice(start, end).trimEnd().replace(/^(<div class="report-container hxr" id="report-content") data-pdf-name="[^"]*">/, "$1>");
   one(report, /<h1 class="hxr-title">Your free EPIC audit report<\/h1>/g, "the report H1");
-  report = report.replace(`<h1 class="hxr-title">Your free EPIC audit report</h1>`, `<h1 class="hxr-title">Sample EPIC audit report</h1>`);
+  report = report.replace(`<h1 class="hxr-title">Your free EPIC audit report</h1><p class="hx-lead">See how the four EPIC motion scores lead to a recommended go-to-market motion. Read the sample plan, then open the free audit to generate a report from your own inputs.</p>`, `<h1 class="hxr-title">Sample EPIC audit report</h1>`);
   one(report, /<p class="consultation-id">Audit ID: GTM-\d+<\/p>\s*<p class="consultation-id">Generated: [0-9: -]+ UTC<\/p>/g, "the consultation ID and time");
   report = report.replace(/<p class="consultation-id">Audit ID: GTM-\d+<\/p>\s*<p class="consultation-id">Generated: [0-9: -]+ UTC<\/p>/,
     `<p class="consultation-id">Built by the GTM Alpha ${version} report code from the example answers on the free audit form.</p>`);
@@ -105,9 +105,7 @@ ${readFileSync(join(ROOT, "scripts/sample-report-head.html"), "utf8").replace(/<
     if (out.includes(bad)) throw new Error("build-sample-report: page contains " + JSON.stringify(bad));
   }
   mkdirSync(join(ROOT, "sample-report"), { recursive: true });
-  const sampleHtml = out.replaceAll("/assets/og.png", "/assets/share/sample-report.jpg")
-    .replace("</head>", '<link rel="stylesheet" href="/assets/site-access.css">\n</head>');
-  writeFileSync(join(ROOT, "sample-report/index.html"), sampleHtml);
+  writeFileSync(join(ROOT, "sample-report/index.html"), out);
   return out;
 }
 
