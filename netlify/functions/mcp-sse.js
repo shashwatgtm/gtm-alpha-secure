@@ -127,23 +127,23 @@ var TOOLS = [
   {
     name: "gtm_consultation",
     title: "EPIC motion scores and first 30 days",
-    description: "Helps you decide which go to market motion to lead with and what to do first. You give your main GTM challenge, plus your stage and industry and the optional ACV, deal cycle, NRR, TAM, self serve, deal source and geography for a full score. You get a score from 1 to 10 for each of the four EPIC motions from the documented rubric, the primary and secondary motion and the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Without the optional inputs the result is marked preliminary.",
+    description: "Helps you decide which go to market motion to lead with and what to do first. You give your main GTM challenge, plus your stage and industry and the optional ACV, deal cycle, NRR, TAM, self serve, deal source and geography for a full score. You get a score from 1 to 10 for each of the four EPIC motions from the documented rubric, the primary and secondary motion and the first 30 days of steps for the primary motion, with sector notes when your inputs name the sector. Without the optional inputs the result is marked preliminary. Read-only for business data. It needs no sign-in and stores no inputs or outputs. Hosted usage metadata is recorded. Missing required fields or invalid values return an error naming what to supply or correct. Use this instead of epic_audit when you want EPIC motion scores together with first-30-day actions.",
     inputSchema: {
       type: "object",
       properties: {
-        company_name: { type: "string", description: "Company name" },
-        gtm_challenge: { type: "string", description: "Your GTM challenge" },
-        business_stage: { type: "string", description: "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B)" },
-        industry: { type: "string", description: "Your industry" },
-        acv_usd: { type: "number", minimum: 0, description: "Optional. Average contract value per year in US dollars (for example 42000)" },
-        deal_cycle_days: { type: "number", minimum: 0, description: "Optional. Days from first touch to closed-won (for example 120)" },
-        nrr_percent: { type: "number", description: "Optional. Net revenue retention in percent (for example 108)" },
-        tam_accounts: { type: "number", minimum: 0, description: "Optional. Number of addressable accounts (for example 2500)" },
-        self_serve: { type: "boolean", description: "Optional. true if customers can sign up and get value without talking to sales" },
-        deal_source: { type: "string", enum: ["referrals", "outbound", "partnerships", "inbound", "mixed"], description: "Optional. Where the majority of deals come from" },
-        geography: { type: "string", enum: ["india", "us_eu", "middle_east", "apac", "global"], description: "Optional. Primary market" },
-        current_channels: { type: "string", description: "Optional. What you do today (content, outbound, events, partnerships, PLG, community)" },
-        business_model: { type: "string", enum: ["saas", "services", "connectivity", "transactions", "marketplace", "hardware_software", "investment"], description: "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Read from your other inputs when left out" }
+        company_name: { type: "string", description: "Company name. Format is text. For example, \"invoice review service\"." },
+        gtm_challenge: { type: "string", description: "Your GTM challenge. Format is text. For example, \"invoice exceptions delay close\"." },
+        business_stage: { type: "string", description: "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B). Format is text. For example, \"series-a\"." },
+        industry: { type: "string", description: "Your industry. Format is text. For example, \"manufacturing\"." },
+        acv_usd: { type: "number", minimum: 0, description: "Optional. Average contract value per year in US dollars (for example 42000). Format is a JSON number." },
+        deal_cycle_days: { type: "number", minimum: 0, description: "Optional. Days from first touch to closed-won (for example 120). Format is a JSON number." },
+        nrr_percent: { type: "number", description: "Optional. Net revenue retention in percent (for example 108). Format is a JSON number." },
+        tam_accounts: { type: "number", minimum: 0, description: "Optional. Number of addressable accounts (for example 2500). Format is a JSON number." },
+        self_serve: { type: "boolean", description: "Optional. true if customers can sign up and get value without talking to sales. Format is true or false. For example, true." },
+        deal_source: { type: "string", enum: ["referrals", "outbound", "partnerships", "inbound", "mixed"], description: "Optional. Where the majority of deals come from. Format is text using one of the listed labels. For example, \"referrals\"." },
+        geography: { type: "string", enum: ["india", "us_eu", "middle_east", "apac", "global"], description: "Optional. Primary market. Format is text using one of the listed labels. For example, \"india\"." },
+        current_channels: { type: "string", description: "Optional. What you do today (content, outbound, events, partnerships, PLG, community). Format is text. For example, \"events and referrals\"." },
+        business_model: { type: "string", enum: ["saas", "services", "connectivity", "transactions", "marketplace", "hardware_software", "investment"], description: "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Read from your other inputs when left out. Format is text using one of the listed labels. For example, \"saas\"." }
       },
       required: ["gtm_challenge"]
     },
@@ -152,22 +152,22 @@ var TOOLS = [
   {
     name: "epic_audit",
     title: "EPIC scores",
-    description: "Helps you decide which go to market motion fits your company. You give your GTM challenge, plus your stage and industry and the optional inputs (ACV, deal cycle, NRR, TAM, self serve, deal source, geography) for a full score. You get EPIC scores from 1 to 10 for Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, and Community-Led, the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Without the optional inputs the result is marked preliminary.",
+    description: "Helps you decide which go to market motion fits your company. You give your GTM challenge, plus your stage and industry and the optional inputs (ACV, deal cycle, NRR, TAM, self serve, deal source, geography) for a full score. You get EPIC scores from 1 to 10 for Ecosystem and ABM, Product-Led Growth, Inbound and Outbound, and Community-Led, the lead motion, warnings and notes, and the sector's buying committee and usual objections when your inputs name the sector. Without the optional inputs the result is marked preliminary. Read-only for business data. It needs no sign-in and stores no inputs or outputs. Hosted usage metadata is recorded. Missing required fields or invalid values return an error naming what to supply or correct. Use this instead of gtm_consultation when you want the motion assessment with warnings and sector context.",
     inputSchema: {
       type: "object",
       properties: {
-        challenge: { type: "string", description: "Describe your GTM situation" },
-        company_name: { type: "string", description: "Optional. Your company or product name, repeated in the answer" },
-        industry: { type: "string", description: "Your industry" },
-        business_stage: { type: "string", description: "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B)" },
-        acv_usd: { type: "number", minimum: 0, description: "Optional. Average contract value per year in US dollars (for example 42000)" },
-        deal_cycle_days: { type: "number", minimum: 0, description: "Optional. Days from first touch to closed-won (for example 120)" },
-        nrr_percent: { type: "number", description: "Optional. Net revenue retention in percent (for example 108)" },
-        tam_accounts: { type: "number", minimum: 0, description: "Optional. Number of addressable accounts (for example 2500)" },
-        self_serve: { type: "boolean", description: "Optional. true if customers can sign up and get value without talking to sales" },
-        deal_source: { type: "string", enum: ["referrals", "outbound", "partnerships", "inbound", "mixed"], description: "Optional. Where the majority of deals come from" },
-        geography: { type: "string", enum: ["india", "us_eu", "middle_east", "apac", "global"], description: "Optional. Primary market" },
-        current_channels: { type: "string", description: "Optional. What you do today (content, outbound, events, partnerships, PLG, community)" }
+        challenge: { type: "string", description: "Describe your GTM situation. Format is text. For example, \"invoice exceptions delay month-end close\"." },
+        company_name: { type: "string", description: "Optional. Your company or product name, repeated in the answer. Format is text. For example, \"invoice review service\"." },
+        industry: { type: "string", description: "Your industry. Format is text. For example, \"manufacturing\"." },
+        business_stage: { type: "string", description: "Stage: pre-seed, seed, series-a, series-b, series-c, bootstrapped (growth counts as Series B). Format is text. For example, \"series-a\"." },
+        acv_usd: { type: "number", minimum: 0, description: "Optional. Average contract value per year in US dollars (for example 42000). Format is a JSON number." },
+        deal_cycle_days: { type: "number", minimum: 0, description: "Optional. Days from first touch to closed-won (for example 120). Format is a JSON number." },
+        nrr_percent: { type: "number", description: "Optional. Net revenue retention in percent (for example 108). Format is a JSON number." },
+        tam_accounts: { type: "number", minimum: 0, description: "Optional. Number of addressable accounts (for example 2500). Format is a JSON number." },
+        self_serve: { type: "boolean", description: "Optional. true if customers can sign up and get value without talking to sales. Format is true or false. For example, true." },
+        deal_source: { type: "string", enum: ["referrals", "outbound", "partnerships", "inbound", "mixed"], description: "Optional. Where the majority of deals come from. Format is text using one of the listed labels. For example, \"referrals\"." },
+        geography: { type: "string", enum: ["india", "us_eu", "middle_east", "apac", "global"], description: "Optional. Primary market. Format is text using one of the listed labels. For example, \"india\"." },
+        current_channels: { type: "string", description: "Optional. What you do today (content, outbound, events, partnerships, PLG, community). Format is text. For example, \"events and referrals\"." }
       },
       required: ["challenge"]
     },
@@ -176,13 +176,13 @@ var TOOLS = [
   {
     name: "generate_roadmap",
     title: "GTM Roadmap",
-    description: "Helps you decide what to do in the next 30, 60 or 90 days for one motion. You give the EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) and the time frame. You get immediate, short term and medium term steps, without the self serve steps when your business model is not a software subscription. It builds text from your inputs only.",
+    description: "Helps you decide what to do in the next 30, 60 or 90 days for one motion. You give the EPIC motion (E Ecosystem and ABM, P Product-Led Growth, I Inbound and Outbound, C Community-Led) and the time frame. You get immediate, short term and medium term steps, without the self serve steps when your business model is not a software subscription. It builds text from your inputs only. Read-only for business data. It needs no sign-in and stores no inputs or outputs. Hosted usage metadata is recorded. Missing required fields or invalid values return an error naming what to supply or correct. Use this instead of gtm_consultation when you have already chosen an EPIC motion and need its 30-, 60- or 90-day steps.",
     inputSchema: {
       type: "object",
       properties: {
-        primary_focus: { type: "string", enum: ["E", "P", "I", "C"], description: "EPIC motion to plan for: E, P, I or C" },
-        timeframe: { type: "string", enum: ["30-day", "60-day", "90-day"], description: "30-day, 60-day or 90-day (default 90-day)" },
-        business_model: { type: "string", enum: ["saas", "services", "connectivity", "transactions", "marketplace", "hardware_software", "investment"], description: "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Steps that need a product people can try on their own are left out for a business that is not a software subscription" }
+        primary_focus: { type: "string", enum: ["E", "P", "I", "C"], description: "EPIC motion to plan for: E, P, I or C. Format is text using one of the listed labels. For example, \"E\"." },
+        timeframe: { type: "string", enum: ["30-day", "60-day", "90-day"], description: "30-day, 60-day or 90-day (default 90-day). Format is text using one of the listed labels. For example, \"30-day\"." },
+        business_model: { type: "string", enum: ["saas", "services", "connectivity", "transactions", "marketplace", "hardware_software", "investment"], description: "Optional. How you charge: software subscription, services, connectivity, per transaction, marketplace, hardware plus software, or investment management. Steps that need a product people can try on their own are left out for a business that is not a software subscription. Format is text using one of the listed labels. For example, \"saas\"." }
       },
       required: ["primary_focus"]
     },
@@ -467,7 +467,7 @@ export default async function handler(req, context) {
         id: id,
         result: {
           protocolVersion: version,
-          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.21" },
+          serverInfo: { name: "gtm-alpha-mcp-server", version: "1.3.22" },
           capabilities: { tools: {} }
         }
       });
