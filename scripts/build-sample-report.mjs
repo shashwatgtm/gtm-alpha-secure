@@ -44,7 +44,7 @@ export async function buildSampleReport() {
   if (start < 0 || end < 0) throw new Error("build-sample-report: report container not found");
   let report = page.slice(start, end).trimEnd().replace(/^(<div class="report-container hxr" id="report-content") data-pdf-name="[^"]*">/, "$1>");
   one(report, /<h1 class="hxr-title">Your free EPIC audit report<\/h1>/g, "the report H1");
-  report = report.replace(`<h1 class="hxr-title">Your free EPIC audit report</h1><p class="hx-lead">See how the four EPIC motion scores lead to a recommended go-to-market motion. Read the sample plan, then open the free audit to generate a report from your own inputs.</p>`, `<h1 class="hxr-title">Sample EPIC audit report</h1>`);
+  report = report.replace(`<h1 class="hxr-title">Your free EPIC audit report</h1>`, `<h1 class="hxr-title">Sample EPIC audit report</h1>`);
   one(report, /<p class="consultation-id">Audit ID: GTM-\d+<\/p>\s*<p class="consultation-id">Generated: [0-9: -]+ UTC<\/p>/g, "the consultation ID and time");
   report = report.replace(/<p class="consultation-id">Audit ID: GTM-\d+<\/p>\s*<p class="consultation-id">Generated: [0-9: -]+ UTC<\/p>/,
     `<p class="consultation-id">Built by the GTM Alpha ${version} report code from the example answers on the free audit form.</p>`);
@@ -78,7 +78,7 @@ ${readFileSync(join(ROOT, "scripts/sample-report-head.html"), "utf8").replace(/<
         <div class="hx-wrap"><div class="hx-hero-inner hxr-head">
             <p class="hx-eyebrow">Sample report</p>
             <p class="hxr-tag">GTM Alpha report</p>
-            <div class="crop">${CM}<h1>Sample EPIC audit report</h1></div>
+            <div class="crop">${CM}<h1>Sample EPIC audit report</h1><p class="hx-lead">See how the four EPIC motion scores lead to a recommended go-to-market motion. Read the sample plan, then open the free audit to generate a report from your own inputs.</p></div>
             <div class="ga-sample-grid">
                 <div>
     <p class="hx10-note"><strong>Sample report for ${esc(company)}, a real company used only as an example to show the tool.</strong> ${esc(company)} did not ask for, write or review this report and is not a customer or partner of Helix GTM Consulting. The facts in the example answers come from its own pages, read on 11 October 2026; every figure in them is hypothetical, and the name and role are placeholders, not a real person. Every score and line below is what GTM Alpha's report code returns for the example answers on the free audit form.</p>
