@@ -1,0 +1,112 @@
+/* Standalone controls and adjacent links measured on the weekly pages. */
+#questions > details > p > a,
+div.container > div > div > a,
+div.faq-answer > p > a,
+div.hero-cta.hx-cta-row > a.tlink,
+div.highlight-box > a,
+div.hx-footer-grid > div > a,
+div.hx-wrap > p > a,
+div.hx9-menu-site > a,
+div.hx9-menu-site > a.hx9-on,
+div.integration-tabs > p > a,
+nav.hx9-site > a,
+nav.hx9-site > a.hx9-on,
+p.hx-sample-more > a,
+section.hx-section.hx-app-section > p > a,
+section.hx10-sec > ol > li > a,
+section.hx10-sec > p > a { box-sizing: border-box; min-inline-size: 44px !important; min-block-size: 44px !important; max-inline-size: 100%; display: inline-flex; align-items: center; vertical-align: middle; overflow-wrap: anywhere; }
+@media (max-width: 600px) {
+#questions > details > p > a,
+div.container > div > div > a,
+div.faq-answer > p > a,
+div.hero-cta.hx-cta-row > a.tlink,
+div.highlight-box > a,
+div.hx-footer-grid > div > a,
+div.hx-wrap > p > a,
+div.hx9-menu-site > a,
+div.hx9-menu-site > a.hx9-on,
+div.integration-tabs > p > a,
+nav.hx9-site > a,
+nav.hx9-site > a.hx9-on,
+section.hx-section.hx-app-section > p > a,
+section.hx10-sec > ol > li > a,
+section.hx10-sec > p > a { display: flex !important; width: fit-content; margin-block: .2rem; }
+}
+:where(a,button,summary,input,select):focus-visible { outline: 3px solid #a73347; outline-offset: 2px; }
+@media (prefers-color-scheme: dark) {
+a.active,
+aside.hx7-strip,
+button#tab-cursor.tab-btn,
+button#tab-openai.tab-btn,
+details#for-developers.hx8-dev,
+details.hx8-dev,
+div.alert.alert-info,
+div.alert.alert-success,
+div.code-block,
+div.code-container,
+div.code-header,
+div.endpoint-card,
+div.epic-item.card,
+div.feature-card.card,
+div.file-location,
+div.ga-band.band-rose,
+div.highlight-box,
+div.hx9-row2,
+div.hx9-row2.hx9-row2-nocrumb,
+div.security-note,
+div.tool-item,
+div.win.ga-form-win,
+figure.hx8-vis,
+footer.hx-footer,
+header.hx9-gh,
+input#client_designation,
+input#client_name,
+input#company_name,
+input#company_website,
+input#linkedin_url,
+input#primary_focus,
+p#example-note.hx9-example-note,
+section.hx7-cred,
+select#acv_band,
+select#business_stage,
+select#deal_cycle_band,
+select#deal_source,
+select#geography,
+select#industry,
+select#monthly_budget,
+select#nrr_band,
+select#self_serve,
+select#tam_band,
+select#team_size,
+table.hx10-release,
+textarea#company_description,
+textarea#gtm_challenge { background-color: #322429 !important; background-image: none !important; color: #fff5eb !important; }
+div.code-block > pre > code,
+div.form-group > label > small,
+figure.hx-viz-p > h3,
+figure.hx-viz-p > p.hx-viz-in,
+figure.hx-viz-p > p.hxv-big,
+li.is-lead > span.lbl,
+li.is-lead > span.val,
+section.hx10-sec > table > tr > th,
+table.hx10-release > thead > tr > th,
+ul.hxv-bars > li > span.lbl,
+ul.hxv-bars > li > span.val { color: #fff5eb !important; background-color: #322429 !important; }
+body :is(.hx9-gh,.hx9-row2,.hx-footer,.hx-panel,.hx-table,.hx8-vis,.card,.win,.hx-viz-p,.trow,.aeo,.hx-code-block,.hx7-strip) :is(h1,h2,h3,h4,p,small,span,strong,b,li,dt,dd,th,td,figcaption,code) { color: #fff5eb; }
+body :is(.hx9-gh,.hx-footer,.hx-panel,.hx-table,.card,.trow,.hx7-strip) a { color: #ffd0c8; }
+body :is(button,summary,input,select,textarea,[role=button],a.hx-btn,a.btn) { border-color: #b69eab; }
+:focus-visible { outline-color: #ffd699; }
+#hx-consent { background: #322429; color: #fff5eb; border-color: #b69eab; }
+#hx-consent a { color: #ffd0c8; }
+}
+@media (max-width: 480px) {
+  #hx-consent { box-sizing: border-box; left: 4px; right: 4px; bottom: max(4px, env(safe-area-inset-bottom)); padding: 7px 12px; font: 14px/1.25 system-ui,sans-serif; }
+  #hx-consent p { margin: 0 0 4px; }
+  #hx-consent .hx-b { display: flex; flex-wrap: nowrap; gap: 8px; }
+  #hx-consent button { flex: 1; min-height: 44px; }
+  .hx-look .hx-hero.hx9-home, .hx-look .hx-hero.at-hero-sub { padding-block: 14px; }
+  .hx-look .hx9-home h1, .hx-look .at-hero-sub h1 { font-size: clamp(32px,9vw,42px); line-height: 1.06; }
+  .hx-look .hx9-home .crop > p, .hx-look .at-hero-sub .crop > p { margin-block: 8px; }
+}
+.install-jump { margin-block: .6rem; }
+#install-command, #connector-list { scroll-margin-top: 7rem; }

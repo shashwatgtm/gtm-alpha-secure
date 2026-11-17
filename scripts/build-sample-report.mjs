@@ -105,7 +105,9 @@ ${readFileSync(join(ROOT, "scripts/sample-report-head.html"), "utf8").replace(/<
     if (out.includes(bad)) throw new Error("build-sample-report: page contains " + JSON.stringify(bad));
   }
   mkdirSync(join(ROOT, "sample-report"), { recursive: true });
-  writeFileSync(join(ROOT, "sample-report/index.html"), out);
+  const sampleHtml = out.replaceAll("/assets/og.png", "/assets/share/sample-report.jpg")
+    .replace("</head>", '<link rel="stylesheet" href="/assets/site-access.css">\n</head>');
+  writeFileSync(join(ROOT, "sample-report/index.html"), sampleHtml);
   return out;
 }
 

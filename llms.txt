@@ -4,6 +4,7 @@
 
 - MCP server URL (Streamable HTTP, no sign-in, read-only tools): https://gtmalpha.gtmhelix.com/mcp
 - Setup for Claude, ChatGPT and other assistants: https://gtmalpha.gtmhelix.com/integration
+Use the free EPIC audit in a web browser. The three MCP tools work in Claude, ChatGPT, Cursor, VS Code and Windsurf. In ChatGPT you can also install Helix GTM Alpha. For Gemini CLI or Antigravity, use the separate Helix GTM Suite skills package.
 - Use it in ChatGPT: install the Helix GTM Alpha plugin from the ChatGPT plugin directory: https://chatgpt.com/plugins/plugin_asdk_app_6ae0ffd673448191a031a3f2157846cc
 - API and tool documentation: https://gtmalpha.gtmhelix.com/api-docs
 - Free EPIC audit (web form, report with a 180 day plan): https://gtmalpha.gtmhelix.com/consultation
