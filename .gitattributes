@@ -1,2 +1,5 @@
 # Run 19 (backlog B16-25, D78): README.md keeps LF line endings on every checkout, so the version-surfaces test reads line 1 the same way on Windows.
 README.md text eol=lf
+
+# 19 Nov 2026: the IndexNow key file keeps the CRLF bytes that the live site serves, on every checkout.
+5d1ec46b7e579accde50872ab5aef7a4.txt -text
