@@ -1,0 +1,17 @@
+{
+  "base": "cc95bf2b13537a5befd4a143bab765a120b78e4e",
+  "source": "In process MCP response on the base revision, with internet sockets blocked.",
+  "tool": "epic_audit",
+  "arguments": {
+    "acv_usd": 24000,
+    "deal_source": "outbound",
+    "challenge": "Which CRM should our sales team use?",
+    "self_serve": false,
+    "tam_accounts": 2500,
+    "deal_cycle_days": 90,
+    "nrr_percent": 108,
+    "business_model": "services"
+  },
+  "text": "Which software fits your case is a judgement call. Ask Shashwat: book 45 minutes at https://calendly.com/shashwat-gtmhelix/45min",
+  "returnedBookingLine": true
+}

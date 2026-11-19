@@ -1,0 +1,8 @@
+{
+  "base": "cc95bf2b13537a5befd4a143bab765a120b78e4e",
+  "tools": {
+    "gtm_consultation": "2e6afdc4cccf5f2119da8bbeb6fc1c5ed89575fd08fbe4a8ed1fa6d78ee2a36b",
+    "epic_audit": "afb9f729d043c5d466b49fbea8abc2d83d2fc2ccc5372cedfcd7ff332d3b78e6",
+    "generate_roadmap": "166dec7146a2638894c120d6b777043d56daf0e1ec793df913a15ab21c83a3be"
+  }
+}
