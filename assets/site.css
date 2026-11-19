@@ -248,3 +248,7 @@ a[href^="mailto:"] { display: inline-flex; align-items: center; min-height: 44px
      like every other label (D22), so it survives "background graphics" off */
   .ga-sample .hx-eyebrow { background: none !important; color: #1A0E10 !important; border: 1.5px solid #1A0E10 !important; }
 }
+
+/* 19 Nov 2026: the worked result in the home hero (free GTM motion scorer first screen) */
+.hero .hx-hero-ex { margin: 22px 0 8px; max-width: 760px; }
+.hero .hx-hero-ex .hxv-big { margin: 2px 0 12px; }
