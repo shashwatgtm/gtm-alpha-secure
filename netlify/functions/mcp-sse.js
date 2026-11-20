@@ -1,10 +1,11 @@
+import { epicInputs } from '../lib/epic-inputs.js';
 import { missingEvidence, copyEvidenceReview } from '../lib/input-evidence.js';
 import { readableAlpha, serviceRoadmap } from '../lib/alpha-reader.js';
 import { regionNotes } from '../lib/region-reader.js';
 import { regionalInputs, ROADMAP_REGION_LIMIT } from '../lib/region-adapter.js';
 import { readingGuide } from '../lib/reader-actions.js';
 import { softwareAdvice } from '../lib/software-policy.js';
-import { scoreEpic, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
+import { scoreEpic, stageRow, MOTIONS, ROADMAP_STEPS } from "../lib/epic-advanced.js";
 // Preserve existing nonregional text and model decisions; the new shared taxonomy
 // is used by region-reader.js for country and industry notes.
 import { detectVertical, detectModel, MODEL_NAME, BUSINESS_MODELS } from "../lib/legacy-sector-notes.js";
@@ -199,6 +200,12 @@ function handleToolCall(name, rawArgs) {
   if (advice) return advice;
   const evidenceIssue = missingEvidence(rawArgs, TOOLS.find(t => t.name === name)?.inputSchema) || copyEvidenceReview(name, rawArgs);
   if (evidenceIssue) return evidenceIssue;
+  let interpretation;
+  if (name === "epic_audit") {
+    interpretation = epicInputs(rawArgs);
+    if (!stageRow(interpretation.args.business_stage)) return 'Please supply the current business stage (pre-seed, seed, Series A to D+, growth, public or bootstrapped). Also include ACV in USD, sales cycle in days, addressable account count and region for a fuller assessment. ' + interpretation.issues.join(' ');
+    rawArgs = interpretation.args;
+  }
   var args = escapeDeep(rawArgs);
   if (name === "gtm_consultation") {
     return GTM_CONSULTANT.generateConsultation(args);
@@ -206,6 +213,8 @@ function handleToolCall(name, rawArgs) {
     // Run 19 (D80, problem 8): the scores are unchanged; the company name given is echoed and, when the inputs name a
     // sector clearly, its buying committee and usual objections follow the scores (nothing is invented about the company).
     var audit = GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
+    audit.inputs_read_from_challenge = escapeDeep(interpretation.inferred);
+    if (interpretation.issues.length) audit.input_reading_notes = interpretation.issues;
     var named = typeof args.company_name === "string" ? args.company_name.trim() : "";
     var sv = detectVertical(args.industry, args.challenge, args.current_channels);
     return Object.assign(named ? { company: escapePiece(named) } : {}, audit, sv ? { sector_notes: sectorNotes(sv, named || args.challenge) } : {});
