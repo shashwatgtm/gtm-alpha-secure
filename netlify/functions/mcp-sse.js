@@ -1,4 +1,4 @@
-import { epicInputs } from '../lib/epic-inputs.js';
+import { epicInputs, hasEpicContext } from '../lib/epic-inputs.js';
 import { missingEvidence, copyEvidenceReview } from '../lib/input-evidence.js';
 import { readableAlpha, serviceRoadmap } from '../lib/alpha-reader.js';
 import { regionNotes } from '../lib/region-reader.js';
@@ -203,7 +203,7 @@ function handleToolCall(name, rawArgs) {
   let interpretation;
   if (name === "epic_audit") {
     interpretation = epicInputs(rawArgs);
-    if (!stageRow(interpretation.args.business_stage)) return 'Please supply the current business stage (pre-seed, seed, Series A to D+, growth, public or bootstrapped). Also include ACV in USD, sales cycle in days, addressable account count and region for a fuller assessment. ' + interpretation.issues.join(' ');
+    if (!stageRow(interpretation.args.business_stage) && !hasEpicContext(interpretation.args)) return 'Please supply the current business stage (pre-seed, seed, Series A to D+, growth, public or bootstrapped). Also include ACV in USD, sales cycle in days, addressable account count and region for a fuller assessment. ' + interpretation.issues.join(' ');
     rawArgs = interpretation.args;
   }
   var args = escapeDeep(rawArgs);
@@ -213,7 +213,7 @@ function handleToolCall(name, rawArgs) {
     // Run 19 (D80, problem 8): the scores are unchanged; the company name given is echoed and, when the inputs name a
     // sector clearly, its buying committee and usual objections follow the scores (nothing is invented about the company).
     var audit = GTM_CONSULTANT.analyzeEPIC(Object.assign({}, args, { gtm_challenge: args.challenge || "" }));
-    audit.inputs_read_from_challenge = escapeDeep(interpretation.inferred);
+    if (Object.keys(interpretation.inferred).length) audit.inputs_read_from_challenge = escapeDeep(interpretation.inferred);
     if (interpretation.issues.length) audit.input_reading_notes = interpretation.issues;
     var named = typeof args.company_name === "string" ? args.company_name.trim() : "";
     var sv = detectVertical(args.industry, args.challenge, args.current_channels);
