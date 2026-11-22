@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     env:
-      SOURCE_REF: 480b6356bfd61ae14622cff9438d1d7e218863a6
+      SOURCE_REF: c2f385b6991b0fa87e902ee4ded21037336330cb
       HELIX_PROFILE: current
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
