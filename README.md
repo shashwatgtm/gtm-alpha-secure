@@ -3,6 +3,7 @@
 [![MCP Registry](https://img.shields.io/badge/MCP%20Registry-Listed-green)](https://registry.modelcontextprotocol.io)
 [![npm version](https://img.shields.io/npm/v/@shashwatgtmalpha/gtm-alpha-mcp-server)](https://www.npmjs.com/package/@shashwatgtmalpha/gtm-alpha-mcp-server)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![GTM Alpha MCP connector](https://glama.ai/mcp/connectors/io.github.shashwatgtm/gtm-alpha-consultant/badges/score.svg)](https://glama.ai/mcp/connectors/io.github.shashwatgtm/gtm-alpha-consultant)
 
 Free EPIC audit using Shashwat Ghosh's EPIC framework.
 
