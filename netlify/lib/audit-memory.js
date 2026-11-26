@@ -4,7 +4,8 @@
 // A record is kept only when the visitor gives a company website whose domain is a company domain (never a free mail
 // domain or a shared host). It holds the company domain (in the key), the day (never the time), the GTM challenge and,
 // only when a colleague confirmed a work email, a keyed hash of that email. Nothing else from the form is kept.
-// Only a colleague who verifies a work email at the same domain can see earlier activity, its age and the challenge.
+// A later visitor from the same domain sees only that an audit was run N days ago. The earlier GTM challenge is shown only
+// after a work email check at that domain (the colleague check), which is OFF until the owner picks an email sender.
 import { randomUUID, randomInt, createHmac, timingSafeEqual } from "node:crypto";
 
 export const KEEP_DAYS = 90;
@@ -146,10 +147,11 @@ export function unsign(secret, token, now = Date.now()) {
 }
 
 // Step 1 of the check: email a six digit code. Returns { token } or { error }.
-export async function startCheck({ env, send, now = new Date() }, { website, email }) {
+export async function startCheck({ store, env, send, now = new Date() }, { website, email }) {
   const domain = domainOf(website);
   if (!domain) return { error: "Give your company website first. Free mail and shared hosts cannot be checked." };
   if (!emailMatches(email, domain)) return { error: "Use your work email at " + domain + ". Free mail addresses do not qualify." };
+  if (!(await findRecent(store, domain, now))) return { error: "There is no earlier audit to compare." };
   const code = String(randomInt(0, 1000000)).padStart(6, "0");
   const h = emailHash(env.AUDIT_CHECK_SECRET, email);
   await send({ to: String(email).trim(), subject: "Your GTM Alpha check code",

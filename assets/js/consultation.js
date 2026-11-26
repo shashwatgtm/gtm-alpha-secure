@@ -20,8 +20,10 @@
     });
 })();
 
-// A website can start the work email check. Only its verified response shows earlier audit activity and the challenge.
-// Text from the server is always set with textContent.
+// 13 Nov 2026 (owner decision): when the visitor gives a company website, the form asks the server whether someone from
+// that company domain ran an audit in the last 90 days. Everyone sees only "Someone using this company's website ran this audit
+// N days ago." (14 Nov 2026: anyone can type any website, so the notice does not claim the visitor is a colleague.) The earlier GTM challenge is shown only after a work email check at that domain, and only while the check is
+// switched on (the server says so in "check"). Text from the server is always set with textContent, never as markup.
 (function () {
     var form = document.getElementById('gtmForm');
     var site = document.getElementById('company_website');
@@ -66,7 +68,7 @@
     }
     function offerCheck(website) {
         box.textContent = '';
-        var label = el('label', 'To check for an earlier audit, confirm your work email at this domain.', { for: 'colleague_email' });
+        var label = el('label', 'See what they wrote: confirm your work email at the same company domain (free mail addresses do not qualify).', { for: 'colleague_email' });
         var email = el('input', '', { type: 'email', id: 'colleague_email', autocomplete: 'email' });
         var send = el('button', 'Email me a code', { type: 'button' });
         var msg = el('p', '', { role: 'status' });
@@ -77,7 +79,6 @@
         send.addEventListener('click', function () {
             msg.textContent = 'Sending...';
             post('/api/colleague-check', { step: 'send', website: website, email: email.value }).then(function (r) {
-                if (asked !== website) return;
                 if (!r.token) { msg.textContent = r.error || 'The check could not be started.'; return; }
                 var codeLabel = el('label', 'Enter the six digit code we emailed you.', { for: 'colleague_code' });
                 var code = el('input', '', { type: 'text', id: 'colleague_code', inputmode: 'numeric', autocomplete: 'one-time-code', maxlength: '6' });
@@ -88,12 +89,7 @@
                 box.appendChild(check);
                 check.addEventListener('click', function () {
                     post('/api/colleague-check', { step: 'code', token: r.token, code: code.value }).then(function (v) {
-                        if (asked !== website) return;
-                        if (typeof v.challenge === 'string') {
-                            seen.textContent = 'A colleague ran an audit ' + ago(v.days_ago) + '.';
-                            seen.hidden = false;
-                            showChallenge(v.challenge, v.verified);
-                        }
+                        if (typeof v.challenge === 'string') showChallenge(v.challenge, v.verified);
                         else msg.textContent = v.error || 'That code is not right.';
                     }).catch(function () { msg.textContent = 'The check could not be completed. Please try again.'; });
                 });
@@ -108,7 +104,10 @@
         reset();
         if (!/^https?:\/\/\S+\.\S+/i.test(website)) return;
         post('/api/audit-seen', { website: website }).then(function (r) {
-            if (asked === website && r && r.check) offerCheck(website);
+            if (asked !== website || !r || !r.seen) return;
+            seen.textContent = 'Someone using this company\'s website ran this audit ' + ago(r.days_ago) + '.';
+            seen.hidden = false;
+            if (r.check) offerCheck(website);
         }).catch(function () {});
     }
     site.addEventListener('change', ask);

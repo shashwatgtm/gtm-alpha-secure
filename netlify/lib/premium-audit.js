@@ -153,7 +153,7 @@ export async function keepAudit(clean, token, deps = {}) {
     const env = deps.env || process.env;
     // Loaded here, not at the top: scripts/build-site.mjs imports this file during the build, without node_modules.
     const store = deps.store || (await import("@netlify/blobs")).getStore(STORE);
-    const emailHash = verifiedHash(env, typeof token === "string" ? token : "", domain, deps.now?.getTime());
+    const emailHash = verifiedHash(env, typeof token === "string" ? token : "", domain);
     let timer;
     const late = new Promise((resolve) => { timer = setTimeout(() => resolve(null), 1500); });
     try {

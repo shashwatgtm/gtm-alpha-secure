@@ -1,4 +1,7 @@
-// Public retention wording and verified access to activity from the same domain.
+// Red team round 1, 14 Nov 2026, findings 4 and 5 (wording only; the owner decision stands: the notice is shown to everyone).
+// 4. /privacy and /faq no longer say inputs are never stored, which contradicted the 90 day GTM challenge.
+// 5. The colleague notice and the text around it say plainly that anyone who enters the same company website sees that an audit
+//    was run and when, never the text.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -14,16 +17,14 @@ test('finding 4: privacy and FAQ state the 90 day exception instead of "never st
   assert.match(faq, /Last updated <time datetime="2026-11-14">14 November 2026<\/time>/);
 });
 
-test('the form and privacy notices reserve earlier audit activity for a verified colleague', () => {
+test('finding 5: the notice does not claim the visitor is a colleague, and the text says who sees what', () => {
   const js = read('assets/js/consultation.js');
-  const publicCheck = js.slice(js.indexOf('function ask()'));
-  assert.match(publicCheck, /r\.check\) offerCheck\(website\)/);
-  assert.doesNotMatch(publicCheck, /days_ago|showChallenge|seen\.hidden = false/);
-  assert.match(js, /step: 'code'[\s\S]*?typeof v\.challenge === 'string'[\s\S]*?ago\(v\.days_ago\)[\s\S]*?showChallenge\(v\.challenge, v\.verified\)/);
-  assert.ok(read('consultation.html').includes('Only verified colleagues can see whether an earlier audit exists and how many days ago it ran.'));
-  const rule = 'Only someone who verifies a work email at the same domain can see whether an earlier audit exists, how many days ago it ran and the earlier GTM challenge.';
+  assert.match(js, /'Someone using this company\\'s website ran this audit ' \+ ago\(r\.days_ago\) \+ '\.'/);
+  assert.doesNotMatch(js, /'Someone from your organisation/);
+  assert.ok(read('consultation.html').includes('Anyone who later enters the same company website will see that an audit was run from it and how many days ago, never the text.'));
+  const rule = 'Anyone who enters the same company website sees only that an audit was run and how many days ago; the GTM challenge itself is shown only after a work email check at that company.';
   for (const f of ['privacy.html', 'PRIVACY.md']) {
     assert.ok(read(f).includes(rule), f);
-    assert.doesNotMatch(read(f), /Anyone who enters the same company website sees|A later visitor from the same company sees only/, f);
+    assert.doesNotMatch(read(f), /A later visitor from the same company sees only/, f);
   }
 });
