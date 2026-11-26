@@ -259,7 +259,7 @@ const GTM_ALPHA_ENGINE = {
     return `
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head><meta name="googlebot-news" content="noindex">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your free EPIC audit report: ${esc(inputData.company_name || inputData.client_name)} | GTM Alpha</title>
