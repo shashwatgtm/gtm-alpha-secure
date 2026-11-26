@@ -123,7 +123,7 @@ for (const row of sectors) {
 }
 for (const acv of ['INR 2 lakh', 'INR 1 crore', 'USD 20000 and INR 3 lakh']) {
   test('ACV in dollars cannot silently score ' + acv, async () => {
-    const r = await call('epic_audit', {challenge: 'Review the first sales motion', acv_usd: acv});
+    const r = await call('epic_audit', {challenge: 'Review the first sales motion', business_stage: 'series-b', acv_usd: acv});
     const text = answerText(r);
     assert.match(text, /ACV|contract value/i);
     if (!r.isError) assert.ok(r.structuredContent?.skipped_adjustments.includes('ACV'), 'ACV must remain unscored');

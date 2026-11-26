@@ -1,5 +1,5 @@
 {
-  "base": "cc95bf2b13537a5befd4a143bab765a120b78e4e",
+  "base": "08a7fae1619ef338f036ccde85e9560a3da2f440",
   "source": "In process MCP response on the base revision, with internet sockets blocked.",
   "tool": "epic_audit",
   "arguments": {
