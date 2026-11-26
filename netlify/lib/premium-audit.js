@@ -76,7 +76,7 @@ const lookOn = (html) => html.replace(/<html lang="en">/, '<html lang="en" class
 function messagePage(status, title, lines) {
   const csp = "default-src 'none'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'";
   const body = `<!DOCTYPE html>
-<html lang="en" class="hx-look"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
+<html lang="en" class="hx-look"><head><meta name="googlebot-news" content="noindex"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="robots" content="noindex">
 <title>${esc(title)} | GTM Alpha</title>${STYLESHEETS}</head>
 <body>${SKIP}${HEADER}<main id="main" class="hx-wrap hx-message"><h1>${esc(title)}</h1>
 <ul>${lines.map((l) => `<li>${esc(l)}</li>`).join("")}</ul>

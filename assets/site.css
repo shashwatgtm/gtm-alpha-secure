@@ -12,7 +12,8 @@
 .hx10-skip:focus, .hx10-skip:focus-visible { top: 12px; }
 
 /* The pages' own containers line up with the header (helix.css .hx-wrap: 1440 px, side padding var(--gut)) */
-.container { max-width: var(--maxw); margin-left: auto; margin-right: auto; padding-left: var(--gut); padding-right: var(--gut); }
+.container,
+main > .hx-section[aria-labelledby="read-h"] { max-width: var(--maxw); margin-left: auto; margin-right: auto; padding-left: var(--gut); padding-right: var(--gut); }
 .hx-hero .container, .hx-hero .hx-wrap { position: relative; }
 .hx-hero .hero-content, .hx-hero .hx-hero-inner { max-width: none; margin: 0; text-align: left; }
 .hx-hero .hx-lead { margin: 18px 0 0; }
@@ -247,3 +248,7 @@ a[href^="mailto:"] { display: inline-flex; align-items: center; min-height: 44px
      like every other label (D22), so it survives "background graphics" off */
   .ga-sample .hx-eyebrow { background: none !important; color: #1A0E10 !important; border: 1.5px solid #1A0E10 !important; }
 }
+
+/* 19 Nov 2026: the worked result in the home hero (free GTM motion scorer first screen) */
+.hero .hx-hero-ex { margin: 22px 0 8px; max-width: 760px; }
+.hero .hx-hero-ex .hxv-big { margin: 2px 0 12px; }
