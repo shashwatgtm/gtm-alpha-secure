@@ -6,6 +6,7 @@
   "files": [
     "bin/cli.js",
     "netlify/functions/mcp-sse.js",
+    "netlify/lib/read-limited-text.js",
     "netlify/lib/escape-inputs.js",
     "netlify/lib/epic-advanced.js",
     "netlify/lib/verticals.js",

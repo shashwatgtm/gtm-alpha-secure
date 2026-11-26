@@ -1,3 +1,4 @@
+import { readLimitedText } from "../lib/read-limited-text.js";
 import { epicInputs, hasEpicContext } from '../lib/epic-inputs.js';
 import { missingEvidence, copyEvidenceReview } from '../lib/input-evidence.js';
 import { readableAlpha, serviceRoadmap } from '../lib/alpha-reader.js';
@@ -441,9 +442,8 @@ export default async function handler(req, context) {
 
   var body;
   try {
-    var text = await req.text();
-    // Run 11 R11-A3-9 c: the limit counts bytes (UTF-8), not characters, so multi-byte text cannot pass 64 KB.
-    if (Buffer.byteLength(text, "utf8") > MAX_BODY) {
+    var text = await readLimitedText(req, MAX_BODY);
+    if (text === null) {
       return rpcError(null, -32600, "Invalid request: the request body is larger than 64 KB.", 413);
     }
     body = JSON.parse(text);

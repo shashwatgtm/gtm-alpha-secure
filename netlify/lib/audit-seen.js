@@ -3,6 +3,7 @@
 // The answer says only whether someone from that company domain ran an audit in the last 90 days, and how many days ago.
 // It never holds the earlier text. /api/colleague-check shows the earlier GTM challenge only after a work email check at
 // that domain; it answers 404 while the check is off (no email sender is set up yet).
+import { readLimitedText } from "./read-limited-text.js";
 import { getStore } from "@netlify/blobs";
 import { STORE, domainOf, findRecent, mailSender, colleagueCheckOn, startCheck, finishCheck } from "./audit-memory.js";
 import { jsonInert } from "./escape-inputs.js";
@@ -12,8 +13,8 @@ const HEADERS = { "Content-Type": "application/json", "Cache-Control": "no-store
 const reply = (status, obj) => new Response(jsonInert(JSON.stringify(obj)), { status, headers: HEADERS });
 
 async function body(req) {
-  const text = await req.text();
-  if (Buffer.byteLength(text, "utf8") > 2000) return null;
+  const text = await readLimitedText(req, 2000);
+  if (text === null) return null;
   try {
     const j = JSON.parse(text);
     return j && typeof j === "object" && !Array.isArray(j) ? j : null;
