@@ -20,7 +20,7 @@ const refused = async (res, why) => {
   assert.deepEqual(j, { jsonrpc: "2.0", id: null, error: { code: -32000, message: MSG } }, why);
   assert.match(res.headers.get("content-type"), /^application\/json/);
   assert.equal(res.headers.get("cache-control"), "no-store");
-  assert.equal(res.headers.get("access-control-allow-origin"), "*");
+  assert.equal(res.headers.get("access-control-allow-origin"), null);
 };
 
 test("a POST with no Content-Type is refused with 415", async () => {
